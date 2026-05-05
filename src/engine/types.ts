@@ -35,6 +35,7 @@ export type Player = {
   inventory: string[];
   techniques: string[];
   skills: Record<string, number>;
+  skillPractice: Record<string, number>;
   elementalEssence: Partial<Record<ElementalEssence, number>>;
   constitutions: string[];
   techniqueMastery: Record<string, number>;

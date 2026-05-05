@@ -1,10 +1,10 @@
-[
+﻿[
   {
     "id": "river_endurance",
     "name": "River Endurance",
     "tree": "Mortal Foundation",
     "tier": 1,
-    "maxRank": 3,
+    "maxRank": 4,
     "effects": {
       "combatDefense": 1
     },
@@ -15,7 +15,7 @@
     "name": "Farmhand Strength",
     "tree": "Mortal Foundation",
     "tier": 1,
-    "maxRank": 3,
+    "maxRank": 4,
     "effects": {
       "combatDamage": 1
     },
@@ -26,7 +26,7 @@
     "name": "Village Fist Forms",
     "tree": "Martial Arts",
     "tier": 1,
-    "maxRank": 3,
+    "maxRank": 4,
     "effects": {
       "combatDamage": 1,
       "combatDefense": 1
@@ -38,7 +38,7 @@
     "name": "Staff Basics",
     "tree": "Martial Arts",
     "tier": 1,
-    "maxRank": 3,
+    "maxRank": 4,
     "effects": {
       "combatDamage": 1,
       "combatDefense": 1
@@ -50,7 +50,7 @@
     "name": "Sparring Instinct",
     "tree": "Martial Arts",
     "tier": 2,
-    "maxRank": 3,
+    "maxRank": 4,
     "requiresSkills": {
       "village_fist_forms": 1
     },
@@ -64,7 +64,7 @@
     "name": "Corrected Stance",
     "tree": "Martial Arts",
     "tier": 2,
-    "maxRank": 3,
+    "maxRank": 4,
     "requiresSkills": {
       "village_fist_forms": 1
     },
@@ -79,7 +79,7 @@
     "name": "Skin Tempering",
     "tree": "Body Tempering",
     "tier": 1,
-    "maxRank": 3,
+    "maxRank": 4,
     "effects": {
       "combatDefense": 1
     },
@@ -90,7 +90,7 @@
     "name": "Sinew Tempering",
     "tree": "Body Tempering",
     "tier": 2,
-    "maxRank": 3,
+    "maxRank": 4,
     "requiresSkills": {
       "skin_tempering": 1
     },
@@ -105,7 +105,7 @@
     "name": "Careful Eye",
     "tree": "Mind And Perception",
     "tier": 1,
-    "maxRank": 3,
+    "maxRank": 4,
     "description": "You notice small details before they become large problems."
   },
   {
@@ -113,7 +113,7 @@
     "name": "Calm Breath",
     "tree": "Mind And Perception",
     "tier": 1,
-    "maxRank": 3,
+    "maxRank": 4,
     "description": "You can slow fear into something almost useful."
   },
   {
@@ -121,7 +121,7 @@
     "name": "Plain Speech",
     "tree": "Social Bearing",
     "tier": 1,
-    "maxRank": 3,
+    "maxRank": 4,
     "description": "You speak like a mortal among mortals, which can be rarer than talent."
   },
   {
@@ -129,7 +129,7 @@
     "name": "Campcraft",
     "tree": "Survival",
     "tier": 1,
-    "maxRank": 3,
+    "maxRank": 4,
     "description": "You know how to keep warm, dry, fed, and moving on a bad road."
   },
   {
@@ -137,7 +137,7 @@
     "name": "Herb Recognition",
     "tree": "Alchemy",
     "tier": 1,
-    "maxRank": 3,
+    "maxRank": 4,
     "description": "You can tell useful leaves from pretty poison and wasted effort."
   },
   {
@@ -145,7 +145,7 @@
     "name": "Heat Control",
     "tree": "Alchemy",
     "tier": 1,
-    "maxRank": 3,
+    "maxRank": 4,
     "description": "You know when a brew needs patience and when the fire should bite."
   },
   {
@@ -153,7 +153,7 @@
     "name": "Crude Elixir Refining",
     "tree": "Alchemy",
     "tier": 2,
-    "maxRank": 3,
+    "maxRank": 4,
     "requiresSkills": {
       "herb_recognition": 1
     },
@@ -164,7 +164,7 @@
     "name": "Impurity Awareness",
     "tree": "Alchemy",
     "tier": 2,
-    "maxRank": 3,
+    "maxRank": 4,
     "requiresSkills": {
       "herb_recognition": 1
     },
@@ -175,7 +175,7 @@
     "name": "Herbalist Apprentice",
     "tree": "Alchemy",
     "tier": 2,
-    "maxRank": 3,
+    "maxRank": 4,
     "requiresSkills": {
       "herb_recognition": 1
     },
@@ -186,7 +186,7 @@
     "name": "Bellows Rhythm",
     "tree": "Blacksmithing",
     "tier": 1,
-    "maxRank": 3,
+    "maxRank": 4,
     "description": "You can feed a forge without letting the fire rule you."
   },
   {
@@ -194,7 +194,7 @@
     "name": "Iron Sense",
     "tree": "Blacksmithing",
     "tier": 1,
-    "maxRank": 3,
+    "maxRank": 4,
     "description": "Flaws in plain metal catch your eye before they break under strain."
   },
   {
@@ -202,7 +202,7 @@
     "name": "Tool Repair",
     "tree": "Blacksmithing",
     "tier": 2,
-    "maxRank": 3,
+    "maxRank": 4,
     "requiresSkills": {
       "iron_sense": 1
     },
@@ -216,7 +216,7 @@
     "name": "Hammer Discipline",
     "tree": "Blacksmithing",
     "tier": 2,
-    "maxRank": 3,
+    "maxRank": 4,
     "requiresSkills": {
       "bellows_rhythm": 1
     },
@@ -230,7 +230,7 @@
     "name": "Forge Apprentice",
     "tree": "Blacksmithing",
     "tier": 2,
-    "maxRank": 3,
+    "maxRank": 4,
     "requiresSkills": {
       "iron_sense": 1
     },
@@ -244,7 +244,7 @@
     "name": "Untrained Circulation",
     "tree": "Cultivation Foundation",
     "tier": 1,
-    "maxRank": 3,
+    "maxRank": 4,
     "description": "You can stir qi by instinct, though instinct is not the same as safety."
   },
   {
@@ -252,7 +252,7 @@
     "name": "Foundation Control",
     "tree": "Cultivation Foundation",
     "tier": 2,
-    "maxRank": 3,
+    "maxRank": 4,
     "requiresSkills": {
       "calm_breath": 1
     },
@@ -263,7 +263,7 @@
     "name": "Shrine Breathing",
     "tree": "Cultivation Foundation",
     "tier": 1,
-    "maxRank": 3,
+    "maxRank": 4,
     "description": "A shrine keeper's counting method steadies breath before it becomes true cultivation."
   },
   {
@@ -271,7 +271,7 @@
     "name": "Azure Cloud Breathing Roots",
     "tree": "Azure Cloud Methods",
     "tier": 1,
-    "maxRank": 3,
+    "maxRank": 4,
     "description": "The sect method has begun to settle into your body instead of only your memory."
   }
 ]

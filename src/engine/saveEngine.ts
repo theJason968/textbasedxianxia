@@ -54,6 +54,10 @@ function mergePlayer(initialPlayer: Player, savedPlayer?: Partial<Player>): Play
       ...initialPlayer.skills,
       ...savedPlayer?.skills,
     },
+    skillPractice: {
+      ...initialPlayer.skillPractice,
+      ...savedPlayer?.skillPractice,
+    },
     elementalEssence: {
       ...initialPlayer.elementalEssence,
       ...savedPlayer?.elementalEssence,

@@ -2,10 +2,10 @@ import type { GameState } from "./types";
 
 export function createInitialGameState(): GameState {
   return {
-    currentSceneId: "pre_exam_days",
+    currentSceneId: "ordinary_morning",
     combat: null,
     player: {
-      name: "Unnamed Disciple",
+      name: "Unnamed Villager",
       realm: "Mortal",
       stage: "Early",
       health: 30,
@@ -26,6 +26,7 @@ export function createInitialGameState(): GameState {
       inventory: [],
       techniques: [],
       skills: {},
+      skillPractice: {},
       elementalEssence: {},
       constitutions: [],
       techniqueMastery: {},

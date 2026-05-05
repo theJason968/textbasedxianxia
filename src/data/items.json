@@ -49,5 +49,41 @@
     "description": "A plain staff strengthened with iron bands at the village forge. It is not an immortal weapon, but the mountain road is still a road.",
     "icon": "/assets/items/reinforced_walking_staff.png",
     "effects": {}
+  },
+  {
+    "id": "childs_cloud_jade",
+    "name": "Child's Cloud Jade",
+    "type": "favor",
+    "rarity": "low-grade",
+    "description": "A small jade pendant carried by the immortal child you rescued from the bandit road. Its cloud mark feels warmer than plain stone.",
+    "icon": "/assets/items/childs_cloud_jade.png",
+    "effects": {}
+  },
+  {
+    "id": "roadside_whisper_notes",
+    "name": "Roadside Whisper Notes",
+    "type": "lore",
+    "rarity": "mortal",
+    "description": "Scraps of merchant gossip about talismans, sect debts, and a black-thread token seen near the broken trade road.",
+    "icon": "/assets/items/roadside_whisper_notes.png",
+    "effects": {}
+  },
+  {
+    "id": "cloud_iron_field_manual",
+    "name": "Cloud-Iron Field Manual",
+    "type": "manual",
+    "rarity": "low-grade",
+    "description": "A stained repair manual for keeping carts, weapons, and simple spirit-worked fittings alive under road pressure.",
+    "icon": "/assets/items/cloud_iron_field_manual.png",
+    "effects": {}
+  },
+  {
+    "id": "silk_lotus_hairpin",
+    "name": "Silk Lotus Hairpin",
+    "type": "keepsake",
+    "rarity": "low-grade",
+    "description": "A pale hairpin left by the injured immortal girl after you treated her wounds. A faint medicinal fragrance clings to it.",
+    "icon": "/assets/items/silk_lotus_hairpin.png",
+    "effects": {}
   }
 ]

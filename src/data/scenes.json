@@ -1,8 +1,112 @@
 [
   {
+    "id": "ordinary_morning",
+    "title": "An Ordinary Village Morning",
+    "body": "Morning smoke hangs low over the village. Your hands still ache from yesterday's chores, and the day ahead promises nothing grand: water to carry, tools to mend, herbs to sort, and a body that will stay weak unless you make it useful. Your world is mud, iron, hunger, and family.",
+    "choices": [
+      {
+        "label": "Carry stones at the river before chores",
+        "nextScene": "ordinary_river_training",
+        "effects": {
+          "physique": 1,
+          "trainingFatigue": 1,
+          "addSkills": {
+            "river_endurance": 1
+          },
+          "setFlags": {
+            "trained_as_mortal": true
+          }
+        }
+      },
+      {
+        "label": "Help Blacksmith Guo mend farm tools",
+        "nextScene": "ordinary_forge_work",
+        "effects": {
+          "physique": 1,
+          "addSkills": {
+            "bellows_rhythm": 1,
+            "iron_sense": 1
+          },
+          "setFlags": {
+            "worked_as_mortal": true
+          }
+        }
+      },
+      {
+        "label": "Sort bitter herbs for Aunt Lin",
+        "nextScene": "ordinary_herb_work",
+        "effects": {
+          "comprehension": 1,
+          "addSkills": {
+            "herb_recognition": 1
+          },
+          "setFlags": {
+            "helped_as_mortal": true
+          }
+        }
+      },
+      {
+        "label": "Take a porter errand toward the south road",
+        "nextScene": "ordinary_road_errand",
+        "effects": {
+          "addSkills": {
+            "campcraft": 1
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "ordinary_river_training",
+    "title": "Cold Stones",
+    "body": "The river does not care about ambition. It numbs your calves, steals your breath, and makes every stone heavier than it looked from shore. By the time you stagger back, your arms shake, but your feet remember how not to slip.",
+    "choices": [
+      {
+        "label": "Follow the shouting from the south road",
+        "nextScene": "ordinary_road_errand"
+      }
+    ]
+  },
+  {
+    "id": "ordinary_forge_work",
+    "title": "Honest Iron",
+    "body": "Guo gives you a cracked hoe, not a sword. You pump the bellows, hold the tongs, and learn that bad iron complains before it fails. When a boy runs past the forge shouting about a broken wagon on the south road, Guo's hammer stops mid-swing.",
+    "choices": [
+      {
+        "label": "Go see what happened on the south road",
+        "nextScene": "ordinary_road_errand"
+      }
+    ]
+  },
+  {
+    "id": "ordinary_herb_work",
+    "title": "Leaves That Look Alike",
+    "body": "Aunt Lin makes you sort roots until your fingertips smell bitter. She says most people die because they cannot tell medicine from poison until too late. Then a wounded mule limps into view, dragging half a harness and panic behind it.",
+    "choices": [
+      {
+        "label": "Carry Aunt Lin's medicine satchel toward the road",
+        "nextScene": "ordinary_road_errand"
+      }
+    ]
+  },
+  {
+    "id": "ordinary_road_errand",
+    "title": "Trouble On The South Road",
+    "body": "At first it sounds like a normal road accident: a snapped axle, frightened traders, someone crying for help. Then you see the scorch mark on the dirt. It is too clean, too round, and still smoking without flame.",
+    "choices": [
+      {
+        "label": "Step into the broken trade road",
+        "nextScene": "bandit_road_crossing",
+        "effects": {
+          "startQuest": "broken_trade_route"
+        }
+      }
+    ]
+  },
+  {
     "id": "pre_exam_days",
-    "title": "Ten Days Before The Exam",
-    "body": "The Azure Cloud Sect will open its mountain gate in ten days. Your village is mortal soil: smoke from cookfires, cold river stones, patched sleeves, iron tools, bitter herbs, and people trying not to say goodbye too early. If you mean to climb toward immortals, you have a little time to make your mortal foundation worth something.",
+    "title": "Ten Days Before The Mountain Gate",
+    "body": "The Azure Cloud Sect will open its mountain gate in ten days. Yesterday, immortals were only rumor. Now the road has left proof in your hands: jade, blood, cloud-iron, whispers, or a black-thread token. If you mean to survive the chance that found you, your mortal foundation has to become worth something quickly.",
     "choices": [
       {
         "label": "Train your body at the river stone ford",
@@ -71,8 +175,8 @@
         }
       },
       {
-        "label": "Return to the village square",
-        "nextScene": "pre_exam_days"
+        "label": "Step back before the trouble swallows you",
+        "nextScene": "ordinary_morning"
       }
     ]
   },
@@ -1075,6 +1179,260 @@
       {
         "label": "Return to the village square",
         "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "bandit_road_crossing",
+    "title": "The Broken Trade Road",
+    "body": "The south road should smell of mule sweat, tea bundles, and dust. Today it smells of split axles, cold ash, and fear. Merchants whisper about bandits, but their eyes keep sliding toward the hills as if the real danger is not standing on the road at all. A black thread is tied around one broken wagon spoke.",
+    "choices": [
+      {
+        "label": "Take up a staff and confront the bandits",
+        "nextScene": "bandit_road_ambush",
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "trainingFatigue": 1,
+          "addSkills": {
+            "village_fist_forms": 1,
+            "staff_basics": 1
+          },
+          "startCombat": {
+            "enemyId": "road_bandits",
+            "victorySceneId": "bandit_child_rescue",
+            "defeatSceneId": "bandit_road_forced_retreat"
+          }
+        }
+      },
+      {
+        "label": "Question merchants, guards, and frightened witnesses",
+        "nextScene": "bandit_road_social_clues",
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "comprehension": 1,
+          "karma": 1,
+          "addItems": ["roadside_whisper_notes"],
+          "addSkills": {
+            "plain_speech": 1,
+            "careful_eye": 1
+          },
+          "updateQuest": {
+            "questId": "broken_trade_route",
+            "step": 2
+          },
+          "completeQuest": "broken_trade_route",
+          "setFlags": {
+            "learned_bandit_patron_hint": true,
+            "saw_black_thread_token": true
+          }
+        }
+      },
+      {
+        "label": "Help repair wagons, harness, and road gear",
+        "nextScene": "bandit_road_craft_manual",
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "physique": 1,
+          "addItems": ["cloud_iron_field_manual"],
+          "addSkills": {
+            "tool_repair": 1,
+            "iron_sense": 1,
+            "campcraft": 1
+          },
+          "updateQuest": {
+            "questId": "broken_trade_route",
+            "step": 2
+          },
+          "completeQuest": "broken_trade_route",
+          "setFlags": {
+            "found_cloud_iron_manual": true,
+            "saw_black_thread_token": true
+          }
+        }
+      },
+      {
+        "label": "Treat the wounded hidden in the roadside ditch",
+        "nextScene": "bandit_road_injured_immortal_girl",
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "willpower": 1,
+          "karma": 1,
+          "addItems": ["silk_lotus_hairpin"],
+          "addSkills": {
+            "herb_recognition": 1,
+            "heat_control": 1,
+            "impurity_awareness": 1
+          },
+          "addElements": {
+            "Wood": 1,
+            "Water": 1
+          },
+          "updateQuest": {
+            "questId": "broken_trade_route",
+            "step": 2
+          },
+          "completeQuest": "broken_trade_route",
+          "setFlags": {
+            "saved_injured_immortal_girl": true,
+            "saw_black_thread_token": true
+          }
+        }
+      },
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "bandit_road_ambush",
+    "title": "Spears In The Dust",
+    "body": "You follow boot prints past a burned waymarker. Men step from the scrub with stolen spears and road knives, but none of them look proud. Behind them, someone small is crying inside a covered cart.",
+    "combatNarration": {
+      "opening": [
+        "{enemy} spread across the road while a child sobs behind the cart canvas."
+      ],
+      "strike": [
+        "You step inside a spear thrust and strike {enemy} for {damage} damage.",
+        "Dust jumps under your heel as your blow lands on {enemy} for {damage} damage."
+      ],
+      "focus": [
+        "You force qi into your limbs and break the bandit line for {damage} damage."
+      ],
+      "enemyAttack": [
+        "{enemy} answer with desperate, ugly strikes for {damage} damage."
+      ],
+      "victory": [
+        "The last bandit drops his weapon and runs for the hill scrub."
+      ],
+      "defeat": [
+        "A spear haft catches your ribs, and the bandits drag the cart deeper into dust."
+      ]
+    },
+    "choices": []
+  },
+  {
+    "id": "bandit_child_rescue",
+    "title": "The Missing Child",
+    "body": "Inside the cart, a child in travel-stained silk clutches a cloud-marked jade pendant. They cannot be older than seven. When you cut the rope from their wrists, the pendant warms against your palm, and for one breath the air smells like rain over high mountains.",
+    "choices": [
+      {
+        "label": "Calm the child and send them back with the merchants",
+        "nextScene": "bandit_road_after_rescue",
+        "effects": {
+          "karma": 2,
+          "addItems": ["childs_cloud_jade"],
+          "addSkills": {
+            "sparring_instinct": 1,
+            "plain_speech": 1
+          },
+          "updateQuest": {
+            "questId": "broken_trade_route",
+            "step": 2
+          },
+          "completeQuest": "broken_trade_route",
+          "setFlags": {
+            "rescued_immortal_child": true,
+            "saw_black_thread_token": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "bandit_road_after_rescue",
+    "title": "A Debt With No Name",
+    "body": "The child will not give a family name, only a shaky promise that someone will remember. One merchant notices the jade and goes pale. Another mutters that no road bandit should dare touch a child carrying such a mark unless someone stronger made them do it.",
+    "choices": [
+      {
+        "label": "Return to the village square with the road's dust still on you",
+        "nextScene": "immortal_opportunity"
+      }
+    ]
+  },
+  {
+    "id": "bandit_road_forced_retreat",
+    "title": "Driven From The Road",
+    "body": "The bandits fight like cornered dogs. You are forced back before you can reach the covered cart, but not before you see a black-thread token passed from one bandit to another. Their fear is not of you. That may matter later.",
+    "choices": [
+      {
+        "label": "Return to the village square and bind your bruises",
+        "nextScene": "immortal_opportunity",
+        "effects": {
+          "health": -2,
+          "addSkills": {
+            "careful_eye": 1
+          },
+          "setFlags": {
+            "saw_black_thread_token": true,
+            "failed_bandit_child_rescue": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "bandit_road_social_clues",
+    "title": "Whispers Beside Broken Wheels",
+    "body": "You pour tea, listen more than you speak, and let frightened people contradict each other until the shape of the truth appears. A caravan guard saw a paper charm flare before the attack. A merchant heard the words mountain gate. A captured lookout says the bandits pay tribute to someone who wears blue cloud silk.",
+    "choices": [
+      {
+        "label": "Mark the names and return to the village square",
+        "nextScene": "immortal_opportunity"
+      }
+    ]
+  },
+  {
+    "id": "bandit_road_craft_manual",
+    "title": "The Manual In The Axle Box",
+    "body": "You mend cracked wheel hubs, reset harness buckles, and patch spear cuts in leather. In a hidden axle box, wrapped in oilcloth, you find a field manual full of practical repairs for cloud-iron fittings. It is not a grand inheritance, but it is the kind of knowledge people kill to keep useful.",
+    "choices": [
+      {
+        "label": "Hide the manual in your pack and return to the village square",
+        "nextScene": "immortal_opportunity"
+      }
+    ]
+  },
+  {
+    "id": "bandit_road_injured_immortal_girl",
+    "title": "The Girl With Splintered Breath",
+    "body": "The wounded girl is hidden under reeds beside the ditch, her silk sleeve dark with blood and her breathing uneven in a way you do not understand. She tries to tell you she is only a merchant's niece, then fails to hide the pale light moving under her skin. Your village medicine should not matter to someone like this, but pain has made her human enough.",
+    "choices": [
+      {
+        "label": "Steady her qi with herbs, water, and patient hands",
+        "nextScene": "bandit_road_lotus_hairpin"
+      }
+    ]
+  },
+  {
+    "id": "bandit_road_lotus_hairpin",
+    "title": "A Name Not Given",
+    "body": "By dusk the girl's pulse no longer fights itself. She leaves before the village can ask questions, pausing only to press a pale lotus hairpin into your hand. I will remember this, she says. She does not give her name, which makes the promise heavier rather than lighter.",
+    "choices": [
+      {
+        "label": "Return to the village square with the hairpin hidden away",
+        "nextScene": "immortal_opportunity"
+      }
+    ]
+  },
+  {
+    "id": "immortal_opportunity",
+    "title": "A Chance From The Clouds",
+    "body": "By nightfall the village is awake and afraid. The road trouble was not just bandits. Someone recognizes the cloud jade. Someone else has heard of blue-robed immortals gathering mortal candidates. Near midnight, a messenger arrives with a paper seal that refuses to burn in the cooking fire. The Azure Cloud Sect will test those with enough grit to climb. For the first time, the impossible has an address.",
+    "choices": [
+      {
+        "label": "Begin preparing for the Azure Cloud mountain gate",
+        "nextScene": "pre_exam_days",
+        "effects": {
+          "startQuest": "enter_azure_cloud_sect",
+          "setFlags": {
+            "learned_about_azure_cloud_exam": true
+          }
+        }
       }
     ]
   },

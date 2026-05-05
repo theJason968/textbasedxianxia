@@ -54,8 +54,17 @@ the bottom as the fallback.
 
 ## Writing Skill Tree Hooks
 
-Player skill ranks live on `player.skills`. Scene effects can grant ranks with
-`addSkills`, and choices or outcomes can require minimum ranks with `skills`.
+Player skill levels live on `player.skills`, and practice progress toward the
+next level lives on `player.skillPractice`. Scene effects use `addSkills` to
+practice a skill. The first practice unlocks Novice; after that, three practice
+points raise the skill by one level. Choices or outcomes can require minimum
+levels with `skills`.
+Ranks display as named skill levels:
+
+1. Novice
+2. Intermediate
+3. Skilled
+4. Expert
 
 ```json
 {

@@ -76,5 +76,18 @@
       "Match breath to incense smoke.",
       "Carry a steadier breath toward the sect road."
     ]
+  },
+  {
+    "id": "broken_trade_route",
+    "name": "The Broken Trade Route",
+    "description": "Investigate trouble on the village road and find out why ordinary bandits are afraid of something above them.",
+    "steps": [
+      "Hear how the road has gone bad.",
+      "Choose how to help: fight, listen, repair, or heal.",
+      "Find a thread leading toward the immortal world."
+    ],
+    "rewards": {
+      "spiritStones": 1
+    }
   }
 ]

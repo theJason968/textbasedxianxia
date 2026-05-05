@@ -8,5 +8,15 @@
     "defense": 1,
     "qiReward": 4,
     "itemRewards": ["mist_wolf_core"]
+  },
+  {
+    "id": "road_bandits",
+    "name": "Road Bandits",
+    "description": "Hungry mortals with stolen spears, frightened eyes, and orders from someone they dare not name.",
+    "maxHealth": 16,
+    "attack": 3,
+    "defense": 1,
+    "qiReward": 1,
+    "itemRewards": []
   }
 ]

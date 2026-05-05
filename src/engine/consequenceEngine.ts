@@ -14,7 +14,11 @@ import {
 } from "./constitutionEngine";
 import { completeQuest, failQuest, startQuest, updateQuest } from "./questEngine";
 import { meetsRequirements } from "./conditionEngine";
-import { formatSkillEffectSummary } from "./skillEngine";
+import {
+  formatSkillEffectSummary,
+  getSkillLevelName,
+  skillPracticesPerLevel,
+} from "./skillEngine";
 import enemies from "../data/enemies.json";
 import items from "../data/items.json";
 import quests from "../data/quests.json";
@@ -200,7 +204,7 @@ function applyEffects(player: Player, effects?: ChoiceEffect): Player {
     ...statChanges,
     inventory: mergeUnique(player.inventory, effects.addItems),
     techniques: mergeUnique(player.techniques, effects.learnTechniques),
-    skills: mergeSkillRanks(player.skills, effects.addSkills),
+    ...applySkillPractice(player, effects.addSkills),
     elementalEssence: mergeElementalEssence(
       player.elementalEssence,
       effects.addElements,
@@ -249,16 +253,53 @@ function mergeUnique(current: string[], additions: string[] = []): string[] {
   return [...new Set([...current, ...additions])];
 }
 
-function mergeSkillRanks(
-  currentSkills: Player["skills"],
-  skillChanges: Player["skills"] = {},
-): Player["skills"] {
-  return Object.entries(skillChanges).reduce<Player["skills"]>(
-    (nextSkills, [skillId, change]) => ({
-      ...nextSkills,
-      [skillId]: clampSkillRank(skillId, (nextSkills[skillId] ?? 0) + change),
-    }),
-    { ...currentSkills },
+function applySkillPractice(
+  player: Player,
+  practiceChanges: Player["skills"] = {},
+): Pick<Player, "skills" | "skillPractice"> {
+  return Object.entries(practiceChanges).reduce<Pick<Player, "skills" | "skillPractice">>(
+    (nextSkillState, [skillId, practiceGain]) => {
+      let nextRank = nextSkillState.skills[skillId] ?? 0;
+      let nextPractice = nextSkillState.skillPractice[skillId] ?? 0;
+      const maxRank = getSkillMaxRank(skillId);
+
+      if (practiceGain <= 0 || nextRank >= maxRank) {
+        return nextSkillState;
+      }
+
+      if (nextRank <= 0) {
+        nextRank = 1;
+        practiceGain -= 1;
+      }
+
+      if (practiceGain > 0 && nextRank < maxRank) {
+        nextPractice += practiceGain;
+
+        while (nextPractice >= skillPracticesPerLevel && nextRank < maxRank) {
+          nextPractice -= skillPracticesPerLevel;
+          nextRank += 1;
+        }
+      }
+
+      if (nextRank >= maxRank) {
+        nextPractice = 0;
+      }
+
+      return {
+        skills: {
+          ...nextSkillState.skills,
+          [skillId]: clampSkillRank(skillId, nextRank),
+        },
+        skillPractice: {
+          ...nextSkillState.skillPractice,
+          [skillId]: Math.max(0, nextPractice),
+        },
+      };
+    },
+    {
+      skills: { ...player.skills },
+      skillPractice: { ...player.skillPractice },
+    },
   );
 }
 
@@ -279,10 +320,11 @@ function mergeElementalEssence(
 }
 
 function clampSkillRank(skillId: string, value: number): number {
-  const skill = skillData.find((candidate) => candidate.id === skillId);
-  const maxRank = skill?.maxRank ?? Number.MAX_SAFE_INTEGER;
+  return Math.min(getSkillMaxRank(skillId), Math.max(0, value));
+}
 
-  return Math.min(maxRank, Math.max(0, value));
+function getSkillMaxRank(skillId: string): number {
+  return skillData.find((candidate) => candidate.id === skillId)?.maxRank ?? 4;
 }
 
 function getRealmMessages(previousPlayer: Player, nextPlayer: Player): string[] {
@@ -379,17 +421,28 @@ function getSkillMessages(previousPlayer: Player, nextPlayer: Player): string[] 
   return Object.keys(nextPlayer.skills)
     .map((skillId) => {
       const rankGain = (nextPlayer.skills[skillId] ?? 0) - (previousPlayer.skills[skillId] ?? 0);
-
-      if (rankGain <= 0) {
-        return null;
-      }
+      const practiceGain =
+        (nextPlayer.skillPractice[skillId] ?? 0) -
+        (previousPlayer.skillPractice[skillId] ?? 0);
 
       const skill = skillData.find((candidate) => candidate.id === skillId);
       const skillName = skill?.name ?? skillId;
       const treeName = skill?.tree ?? "Skill";
-      const effectSummary = skill ? formatSkillEffectSummary(skill, rankGain) : "";
+      const nextRank = nextPlayer.skills[skillId] ?? 0;
+      const levelName = getSkillLevelName(nextRank);
+      const effectSummary = skill ? formatSkillEffectSummary(skill, nextRank) : "";
 
-      return `Character has learned +${rankGain} ${treeName}: ${skillName}${
+      if (rankGain <= 0) {
+        if (practiceGain <= 0 || !skill || nextRank >= skill.maxRank) {
+          return null;
+        }
+
+        return `Character practiced ${treeName}: ${skillName} (${nextPlayer.skillPractice[skillId]}/${skillPracticesPerLevel} to ${getSkillLevelName(
+          nextRank + 1,
+        )}).`;
+      }
+
+      return `Character reached ${levelName} ${treeName}: ${skillName}${
         effectSummary ? ` (${effectSummary})` : ""
       }.`;
     })

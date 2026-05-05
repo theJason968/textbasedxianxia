@@ -22,7 +22,11 @@ import { createInitialGameState } from "./engine/gameState";
 import { useItem } from "./engine/itemEngine";
 import { clearSavedGame, hasSavedGame, loadGame, saveGame } from "./engine/saveEngine";
 import { getSceneById } from "./engine/sceneEngine";
-import { formatSkillEffectSummary } from "./engine/skillEngine";
+import {
+  formatSkillEffectSummary,
+  formatSkillLevel,
+  formatSkillPracticeProgress,
+} from "./engine/skillEngine";
 import type { Choice, Constitution, ElementalEssence, Player, Scene, Skill } from "./engine/types";
 
 const sceneData = scenes as Scene[];
@@ -106,6 +110,10 @@ const mountainTrialScenes = new Set([
   "mist_wolf_escape",
 ]);
 
+function hasLearnedAboutMountainGate(player: Player): boolean {
+  return player.flags.learned_about_azure_cloud_exam === true;
+}
+
 function getSceneLocationTitle(sceneId: string): string {
   if (mortalVillageScenes.has(sceneId)) {
     return "Mortal Village";
@@ -171,7 +179,13 @@ function App() {
       .map(([skillId, rank]) => {
         const skill = skillData.find((candidate) => candidate.id === skillId);
 
-        return skill && rank > 0 ? { ...skill, rank } : null;
+        return skill && rank > 0
+          ? {
+              ...skill,
+              rank,
+              practice: gameState.player.skillPractice[skillId] ?? 0,
+            }
+          : null;
       })
       .filter((skill) => skill !== null)
       .sort((firstSkill, secondSkill) => firstSkill.tier - secondSkill.tier);
@@ -183,7 +197,7 @@ function App() {
       }),
       {},
     );
-  }, [gameState.player.skills]);
+  }, [gameState.player.skillPractice, gameState.player.skills]);
   const awakenedConstitutions = useMemo(
     () =>
       gameState.player.constitutions.map((constitutionId) => {
@@ -425,11 +439,15 @@ function App() {
             <dd>{gameState.player.spiritStones}</dd>
           </div>
           <div>
-            <dt>Exam</dt>
+            <dt>
+              {hasLearnedAboutMountainGate(gameState.player) ? "Mountain Gate" : "Day"}
+            </dt>
             <dd>
-              {gameState.player.daysRemainingToExam > 0
-                ? `${gameState.player.daysRemainingToExam} days`
-                : "Today"}
+              {hasLearnedAboutMountainGate(gameState.player)
+                ? gameState.player.daysRemainingToExam > 0
+                  ? `${gameState.player.daysRemainingToExam} days`
+                  : "Today"
+                : "Ordinary morning"}
             </dd>
           </div>
         </dl>
@@ -590,7 +608,20 @@ function App() {
                               ) : null}
                             </span>
                             <small>
-                              {skill.rank}/{skill.maxRank}
+                              {formatSkillLevel(skill.rank, skill.maxRank)}
+                              {formatSkillPracticeProgress(
+                                skill.rank,
+                                skill.maxRank,
+                                skill.practice,
+                              ) ? (
+                                <span className="effect-summary">
+                                  {formatSkillPracticeProgress(
+                                    skill.rank,
+                                    skill.maxRank,
+                                    skill.practice,
+                                  )}
+                                </span>
+                              ) : null}
                             </small>
                           </li>
                         ))}
