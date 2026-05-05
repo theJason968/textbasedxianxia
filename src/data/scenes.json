@@ -2,8 +2,17 @@
   {
     "id": "ordinary_morning",
     "title": "An Ordinary Village Morning",
-    "body": "Morning smoke hangs low over the village. Your hands still ache from yesterday's chores, and the day ahead promises nothing grand: water to carry, tools to mend, herbs to sort, and a body that will stay weak unless you make it useful. Your world is mud, iron, hunger, and family.",
+    "body": "Morning smoke hangs low over the village. Your hands still ache from yesterday's chores, and the day ahead promises nothing grand: water to carry, tools to mend, herbs to sort, and a body that will stay weak unless you make it useful. Before the road can become a story, the village is still your whole world: mud, iron, bitter medicine, shrine ash, and familiar voices.",
     "choices": [
+      {
+        "label": "Walk through the village square and greet the people already awake",
+        "nextScene": "village_square_intro",
+        "effects": {
+          "setFlags": {
+            "visited_village_square": true
+          }
+        }
+      },
       {
         "label": "Carry stones at the river before chores",
         "nextScene": "ordinary_river_training",
@@ -23,6 +32,11 @@
         "nextScene": "ordinary_forge_work",
         "effects": {
           "physique": 1,
+          "meetNpc": "blacksmith_guo",
+          "recordNpcConversation": {
+            "npcId": "blacksmith_guo",
+            "topic": "Helped him mend farm tools and learned that bad iron complains before it fails."
+          },
           "addSkills": {
             "bellows_rhythm": 1,
             "iron_sense": 1
@@ -37,6 +51,11 @@
         "nextScene": "ordinary_herb_work",
         "effects": {
           "comprehension": 1,
+          "meetNpc": "aunt_lin",
+          "recordNpcConversation": {
+            "npcId": "aunt_lin",
+            "topic": "Sorted bitter herbs for her and learned that medicine and poison can look nearly identical."
+          },
           "addSkills": {
             "herb_recognition": 1
           },
@@ -44,15 +63,134 @@
             "helped_as_mortal": true
           }
         }
+      }
+    ]
+  },
+  {
+    "id": "village_square_intro",
+    "title": "The Village Wakes",
+    "body": "The square wakes in layers. Old Ren sits with his cane across his knees, pretending not to watch every stance in sight. Aunt Lin ties bundles of herbs with red cord. Blacksmith Guo carries a repaired hinge still warm from the forge. Shrine Keeper Mei sweeps ash into a line so neat it feels like a lesson.\n\nYou slow near the well, listening as small rumors move from mouth to mouth: a broken wagon, frightened traders, scorch marks on the south road.\n\n\"Everyone keeps looking south,\" you say. \"What happened out there?\"",
+    "choices": [
+      {
+        "label": "Ask Old Ren why the caravan guards look nervous",
+        "nextScene": "old_ren_road_rumor",
+        "effects": {
+          "meetNpc": "old_ren",
+          "recordNpcConversation": {
+            "npcId": "old_ren",
+            "topic": "Warned you that the south road feels wrong: frightened guards, bad orders, and danger in the hills."
+          },
+          "setFlags": {
+            "heard_old_ren_road_rumor": true
+          }
+        }
       },
       {
-        "label": "Take a porter errand toward the south road",
+        "label": "Ask Aunt Lin what medicine the traders requested",
+        "nextScene": "aunt_lin_road_rumor",
+        "effects": {
+          "meetNpc": "aunt_lin",
+          "recordNpcConversation": {
+            "npcId": "aunt_lin",
+            "topic": "Said the traders needed burn salve and pain medicine, and that clean round burns are not bandit work."
+          },
+          "setFlags": {
+            "heard_aunt_lin_road_rumor": true
+          }
+        }
+      },
+      {
+        "label": "Ask Blacksmith Guo about the broken wagon axle",
+        "nextScene": "guo_road_rumor",
+        "effects": {
+          "meetNpc": "blacksmith_guo",
+          "recordNpcConversation": {
+            "npcId": "blacksmith_guo",
+            "topic": "Showed you axle iron burned too cleanly for ordinary damage."
+          },
+          "setFlags": {
+            "heard_guo_road_rumor": true
+          }
+        }
+      },
+      {
+        "label": "Ask Shrine Keeper Mei what the incense smoke warned her about",
+        "nextScene": "mei_road_rumor",
+        "effects": {
+          "meetNpc": "shrine_keeper_mei",
+          "recordNpcConversation": {
+            "npcId": "shrine_keeper_mei",
+            "topic": "Told you the shrine bell rang by itself in the night, thin as thread from the south."
+          },
+          "setFlags": {
+            "heard_mei_road_rumor": true
+          }
+        }
+      },
+      {
+        "label": "Take the gathered rumors toward the south road",
         "nextScene": "ordinary_road_errand",
+        "requires": {
+          "flags": {
+            "heard_old_ren_road_rumor": true,
+            "heard_aunt_lin_road_rumor": true,
+            "heard_guo_road_rumor": true,
+            "heard_mei_road_rumor": true
+          }
+        },
         "effects": {
           "addSkills": {
             "campcraft": 1
           }
         }
+      },
+      {
+        "label": "Return home before choosing where to help",
+        "nextScene": "ordinary_morning"
+      }
+    ]
+  },
+  {
+    "id": "old_ren_road_rumor",
+    "title": "Old Ren Watches The Road",
+    "body": "You stop beside Old Ren's stool and nod toward the nervous caravan guards.\n\n\"You used to walk those roads. Are they afraid of bandits?\"\n\nOld Ren taps his cane against the packed dirt.\n\n\"Caravan guards get nervous for three reasons: bad pay, bad orders, or something in the hills that makes bad men act like prey. The south road has all three smells today.\"\n\n\"So I should stay away?\"\n\n\"No. If you go, keep your ribs guarded and listen before you swing.\"",
+    "choices": [
+      {
+        "label": "Return to the village square with Old Ren's warning",
+        "nextScene": "village_square_intro"
+      }
+    ]
+  },
+  {
+    "id": "aunt_lin_road_rumor",
+    "title": "Aunt Lin's Bitter Warning",
+    "body": "You carry a bundle of bitterleaf to Aunt Lin's table and lower your voice.\n\n\"The traders came to you first. What did they need?\"\n\nAunt Lin does not look up from her herbs.\n\n\"Fever powder, burn salve, and something to keep a child quiet through pain.\"\n\n\"That sounds worse than a broken wagon.\"\n\nShe cuts a root too sharply.\n\n\"Bandits make bruises. Clean round burns are not bandit work.\"",
+    "choices": [
+      {
+        "label": "Return to the village square with Aunt Lin's warning",
+        "nextScene": "village_square_intro"
+      }
+    ]
+  },
+  {
+    "id": "guo_road_rumor",
+    "title": "Guo's Broken Axle",
+    "body": "You find Guo beside the forge, turning a sliver of axle iron in his fingers.\n\n\"Can you fix it?\"\n\nHe shows you the break: too smooth, too hot, as if a tiny sun passed through the metal and kept walking.\n\n\"I can fix a wheel. I cannot fix whatever made this.\"\n\n\"Then what does the road need?\"\n\nHe closes his fist around the iron.\n\n\"More than a repaired wheel.\"",
+    "choices": [
+      {
+        "label": "Return to the village square with Guo's warning",
+        "nextScene": "village_square_intro"
+      }
+    ]
+  },
+  {
+    "id": "mei_road_rumor",
+    "title": "Mei Counts The Smoke",
+    "body": "You pause at the shrine while Mei watches incense drift sideways though the morning air is still.\n\n\"Is that a bad sign?\"\n\n\"A sign is only a sign. Fear makes it larger. Pride makes it useless.\"\n\n\"And what do you make of it?\"\n\n\"The shrine bell rang once in the night without a hand touching it. The sound came from the south, thin as thread. Trouble is walking toward the immortal world, and mortals are already in its footprints.\"",
+    "choices": [
+      {
+        "label": "Return to the village square with Mei's warning",
+        "nextScene": "village_square_intro"
       }
     ]
   },
@@ -62,30 +200,30 @@
     "body": "The river does not care about ambition. It numbs your calves, steals your breath, and makes every stone heavier than it looked from shore. By the time you stagger back, your arms shake, but your feet remember how not to slip.",
     "choices": [
       {
-        "label": "Follow the shouting from the south road",
-        "nextScene": "ordinary_road_errand"
+        "label": "Return to the village square and hear what people are saying",
+        "nextScene": "village_square_intro"
       }
     ]
   },
   {
     "id": "ordinary_forge_work",
     "title": "Honest Iron",
-    "body": "Guo gives you a cracked hoe, not a sword. You pump the bellows, hold the tongs, and learn that bad iron complains before it fails. When a boy runs past the forge shouting about a broken wagon on the south road, Guo's hammer stops mid-swing.",
+    "body": "Guo gives you a cracked hoe, not a sword.\n\n\"I was hoping for something sharper,\" you say.\n\n\"Then learn not to ruin dull things first.\"\n\nYou pump the bellows, hold the tongs, and learn that bad iron complains before it fails. When a boy runs past the forge shouting about a broken wagon on the south road, Guo's hammer stops mid-swing.",
     "choices": [
       {
-        "label": "Go see what happened on the south road",
-        "nextScene": "ordinary_road_errand"
+        "label": "Return to the village square and ask what happened",
+        "nextScene": "village_square_intro"
       }
     ]
   },
   {
     "id": "ordinary_herb_work",
     "title": "Leaves That Look Alike",
-    "body": "Aunt Lin makes you sort roots until your fingertips smell bitter. She says most people die because they cannot tell medicine from poison until too late. Then a wounded mule limps into view, dragging half a harness and panic behind it.",
+    "body": "Aunt Lin makes you sort roots until your fingertips smell bitter.\n\n\"These two look the same,\" you complain.\n\n\"Then look again. Most people die because they cannot tell medicine from poison until too late.\"\n\nYou swallow the answer you wanted to give her. Then a wounded mule limps into view, dragging half a harness and panic behind it.",
     "choices": [
       {
-        "label": "Carry Aunt Lin's medicine satchel toward the road",
-        "nextScene": "ordinary_road_errand"
+        "label": "Return to the village square with the medicine satchel",
+        "nextScene": "village_square_intro"
       }
     ]
   },
@@ -150,6 +288,11 @@
         "label": "Ask Old Ren to judge your martial stance",
         "nextScene": "old_ren_stance_test",
         "effects": {
+          "meetNpc": "old_ren",
+          "recordNpcConversation": {
+            "npcId": "old_ren",
+            "topic": "Asked him to judge your martial stance before the sect exam."
+          },
           "startQuest": "old_ren_stance_test"
         }
       },
@@ -157,6 +300,11 @@
         "label": "Help Aunt Lin prepare exam medicine",
         "nextScene": "aunt_lin_medicine_task",
         "effects": {
+          "meetNpc": "aunt_lin",
+          "recordNpcConversation": {
+            "npcId": "aunt_lin",
+            "topic": "Asked to help prepare medicine for the sect exam."
+          },
           "startQuest": "aunt_lin_medicine_task"
         }
       },
@@ -164,6 +312,11 @@
         "label": "Ask Blacksmith Guo for an honest forge lesson",
         "nextScene": "guo_honest_iron",
         "effects": {
+          "meetNpc": "blacksmith_guo",
+          "recordNpcConversation": {
+            "npcId": "blacksmith_guo",
+            "topic": "Asked him for a forge lesson and a practical road preparation."
+          },
           "startQuest": "guo_honest_iron"
         }
       },
@@ -171,6 +324,11 @@
         "label": "Ask Shrine Keeper Mei to teach you breath counting",
         "nextScene": "mei_three_breaths",
         "effects": {
+          "meetNpc": "shrine_keeper_mei",
+          "recordNpcConversation": {
+            "npcId": "shrine_keeper_mei",
+            "topic": "Asked her to teach breath counting before the mountain trial."
+          },
           "startQuest": "mei_three_breaths"
         }
       },
@@ -345,7 +503,7 @@
   {
     "id": "aunt_lin_clean_medicine",
     "title": "Medicine That Leaves Less Debt",
-    "body": "The powder settles pale and even. Aunt Lin sniffs it, says nothing for a very long moment, then slides a crude qi elixir toward you. Good medicine, she says, is what helps without asking too much back.",
+    "body": "The powder settles pale and even. Aunt Lin sniffs it, says nothing for a very long moment, then slides a crude qi elixir toward you.\n\n\"Good medicine is what helps without asking too much back.\"",
     "choices": [
       {
         "label": "Return to the village square",
@@ -371,7 +529,7 @@
   {
     "id": "guo_honest_iron",
     "title": "Guo's Honest Iron",
-    "body": "Blacksmith Guo listens to metal more than people. He hands you a cracked sickle and says immortal swords can wait until you stop ruining mortal tools.",
+    "body": "Blacksmith Guo listens to metal more than people. He hands you a cracked sickle.\n\n\"Immortal swords can wait until you stop ruining mortal tools.\"",
     "choices": [
       {
         "label": "Temper the cracked sickle without hiding the flaw",
@@ -469,7 +627,7 @@
   {
     "id": "mei_three_breaths",
     "title": "Mei's Three Breaths",
-    "body": "Shrine Keeper Mei is younger than the title sounds and older than her face suggests. She sweeps ash into a neat line and tells you the first immortal test is usually whether a mortal can stop performing long enough to breathe.",
+    "body": "Shrine Keeper Mei is younger than the title sounds and older than her face suggests. She sweeps ash into a neat line.\n\n\"The first immortal test is usually whether a mortal can stop performing long enough to breathe.\"",
     "choices": [
       {
         "label": "Match three breaths to the incense smoke",
@@ -552,7 +710,7 @@
   {
     "id": "mei_unsteady_smoke",
     "title": "Smoke That Shivers",
-    "body": "Your breath keeps trying to impress the shrine instead of match it. Mei lets you fail three times before speaking. Better here, she says, than on the mountain steps.",
+    "body": "Your breath keeps trying to impress the shrine instead of match it. Mei lets you fail three times before speaking.\n\n\"Better here than on the mountain steps.\"",
     "choices": [
       {
         "label": "Return after steadying your breath",
@@ -1076,7 +1234,7 @@
   {
     "id": "staff_reinforcement",
     "title": "Iron-Banded Staff",
-    "body": "The staff remains plain wood, but iron bands now guard the places most likely to split. The blacksmith tests it against the anvil, nods once, and tells you not to trust anything that looks too fine for honest use.",
+    "body": "The staff remains plain wood, but iron bands now guard the places most likely to split. The blacksmith tests it against the anvil and nods once.\n\n\"Do not trust anything that looks too fine for honest use.\"",
     "choices": [
       {
         "label": "Return to the village square",
@@ -1349,8 +1507,8 @@
     "body": "The child will not give a family name, only a shaky promise that someone will remember. One merchant notices the jade and goes pale. Another mutters that no road bandit should dare touch a child carrying such a mark unless someone stronger made them do it.",
     "choices": [
       {
-        "label": "Return to the village square with the road's dust still on you",
-        "nextScene": "immortal_opportunity"
+        "label": "Search the abandoned road before returning home",
+        "nextScene": "roadside_search_after_lotus"
       }
     ]
   },
@@ -1360,8 +1518,8 @@
     "body": "The bandits fight like cornered dogs. You are forced back before you can reach the covered cart, but not before you see a black-thread token passed from one bandit to another. Their fear is not of you. That may matter later.",
     "choices": [
       {
-        "label": "Return to the village square and bind your bruises",
-        "nextScene": "immortal_opportunity",
+        "label": "Bind your bruises, then search what the bandits left behind",
+        "nextScene": "roadside_search_after_lotus",
         "effects": {
           "health": -2,
           "addSkills": {
@@ -1381,8 +1539,8 @@
     "body": "You pour tea, listen more than you speak, and let frightened people contradict each other until the shape of the truth appears. A caravan guard saw a paper charm flare before the attack. A merchant heard the words mountain gate. A captured lookout says the bandits pay tribute to someone who wears blue cloud silk.",
     "choices": [
       {
-        "label": "Mark the names and return to the village square",
-        "nextScene": "immortal_opportunity"
+        "label": "Search the road for the object behind the rumors",
+        "nextScene": "roadside_search_after_lotus"
       }
     ]
   },
@@ -1392,8 +1550,8 @@
     "body": "You mend cracked wheel hubs, reset harness buckles, and patch spear cuts in leather. In a hidden axle box, wrapped in oilcloth, you find a field manual full of practical repairs for cloud-iron fittings. It is not a grand inheritance, but it is the kind of knowledge people kill to keep useful.",
     "choices": [
       {
-        "label": "Hide the manual in your pack and return to the village square",
-        "nextScene": "immortal_opportunity"
+        "label": "Search the axle box again for what the manual was hiding",
+        "nextScene": "roadside_search_after_lotus"
       }
     ]
   },
@@ -1411,11 +1569,170 @@
   {
     "id": "bandit_road_lotus_hairpin",
     "title": "A Name Not Given",
-    "body": "By dusk the girl's pulse no longer fights itself. She leaves before the village can ask questions, pausing only to press a pale lotus hairpin into your hand. I will remember this, she says. She does not give her name, which makes the promise heavier rather than lighter.",
+    "body": "By dusk the girl's pulse no longer fights itself. She leaves before the village can ask questions, pausing only to press a pale lotus hairpin into your hand.\n\n\"I will remember this.\"\n\nShe does not give her name, which makes the promise heavier rather than lighter.",
     "choices": [
       {
-        "label": "Return to the village square with the hairpin hidden away",
-        "nextScene": "immortal_opportunity"
+        "label": "Stay a little longer and search the abandoned road",
+        "nextScene": "roadside_search_after_lotus"
+      }
+    ]
+  },
+  {
+    "id": "roadside_search_after_lotus",
+    "title": "What The Dust Kept",
+    "body": "The road finally grows quiet enough to search properly. Under torn cart canvas and broken axle wood, you find a cracked pill bottle, two spirit stones wrapped in cloth, and a bronze token tied with black thread.\n\nThe token bears a cloud over a mountain. When you turn it north, it warms against your palm.\n\n\"This was not dropped by accident,\" you whisper.",
+    "choices": [
+      {
+        "label": "Return home and ask what the token symbol means",
+        "nextScene": "village_token_questions",
+        "effects": {
+          "addItems": ["azure_cloud_trial_token", "minor_qi_pill"],
+          "spiritStones": 2,
+          "addSkills": {
+            "careful_eye": 1
+          },
+          "setFlags": {
+            "found_azure_cloud_trial_token": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "village_token_questions",
+    "title": "The Token No One Wants To Touch",
+    "body": "Back in the village, the bronze token draws eyes and silence. No one wants to be the first to name it. Old Ren studies the thread. Aunt Lin sniffs the metal like medicine gone bad. Guo refuses to put it near the forge fire. Mei watches the cloud mark as if it is watching back.\n\n\"Someone in this village knows what this means,\" you say. \"Please. I need the truth before it finds me first.\"",
+    "choices": [
+      {
+        "label": "Ask Old Ren about the black thread",
+        "nextScene": "old_ren_token_clue",
+        "effects": {
+          "meetNpc": "old_ren",
+          "recordNpcConversation": {
+            "npcId": "old_ren",
+            "topic": "Studied the black-threaded token and said it looked like a travel claim for an immortal road."
+          },
+          "setFlags": {
+            "old_ren_read_trial_token": true
+          }
+        }
+      },
+      {
+        "label": "Ask Aunt Lin why the metal smells strange",
+        "nextScene": "aunt_lin_token_clue",
+        "effects": {
+          "meetNpc": "aunt_lin",
+          "recordNpcConversation": {
+            "npcId": "aunt_lin",
+            "topic": "Warned that the token carries clean qi and is not ordinary bandit loot."
+          },
+          "setFlags": {
+            "aunt_lin_read_trial_token": true
+          }
+        }
+      },
+      {
+        "label": "Ask Blacksmith Guo about the cloud-over-mountain mark",
+        "nextScene": "guo_token_clue",
+        "effects": {
+          "meetNpc": "blacksmith_guo",
+          "recordNpcConversation": {
+            "npcId": "blacksmith_guo",
+            "topic": "Recognized the cloud-over-mountain mark from old caravan hardware bound for the Azure Cloud Sect."
+          },
+          "setFlags": {
+            "guo_read_trial_token": true
+          }
+        }
+      },
+      {
+        "label": "Ask Shrine Keeper Mei why the token warms toward the north",
+        "nextScene": "mei_token_clue",
+        "effects": {
+          "meetNpc": "shrine_keeper_mei",
+          "recordNpcConversation": {
+            "npcId": "shrine_keeper_mei",
+            "topic": "Said the token is answering the mountain and that the Azure Cloud Sect may answer back."
+          },
+          "setFlags": {
+            "mei_read_trial_token": true
+          }
+        }
+      },
+      {
+        "label": "Wait with the token after gathering everyone's clues",
+        "nextScene": "immortal_senses_token",
+        "requires": {
+          "items": ["azure_cloud_trial_token"],
+          "flags": {
+            "old_ren_read_trial_token": true,
+            "aunt_lin_read_trial_token": true,
+            "guo_read_trial_token": true,
+            "mei_read_trial_token": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "old_ren_token_clue",
+    "title": "Old Ren Names The Thread",
+    "body": "Old Ren turns the token over with the tip of his cane instead of touching it.\n\n\"Black thread means a carried claim. Caravan folk used to say such tokens buy passage on roads mortals do not own. If bandits had this, someone gave them courage they did not earn.\"\n\n\"Can you read the symbol?\"\n\n\"No. But I have seen guards stand straighter when that cloud mark was painted on a sealed crate.\"",
+    "choices": [
+      {
+        "label": "Return to the village square with Old Ren's clue",
+        "nextScene": "village_token_questions"
+      }
+    ]
+  },
+  {
+    "id": "aunt_lin_token_clue",
+    "title": "Aunt Lin Smells Clean Qi",
+    "body": "Aunt Lin holds the token near a bowl of steeping herbs. The surface of the tea ripples before her hand moves.\n\n\"This is clean qi. Too clean for thieves. Too clean for anyone who still sweats for food.\"\n\n\"So it belongs to an immortal?\"\n\n\"Or to someone who wants an immortal to come looking.\"",
+    "choices": [
+      {
+        "label": "Return to the village square with Aunt Lin's clue",
+        "nextScene": "village_token_questions"
+      }
+    ]
+  },
+  {
+    "id": "guo_token_clue",
+    "title": "Guo Remembers The Mark",
+    "body": "Guo sketches the cloud-over-mountain mark in soot on the forge stone.\n\n\"Saw this once on a crate axle bound north. The merchant would not say the sect name, but his guard did after too much wine. Azure Cloud.\"\n\n\"The Azure Cloud Sect?\"\n\n\"If you have their token, either they lost something, or they are letting you carry it.\"",
+    "choices": [
+      {
+        "label": "Return to the village square with Guo's clue",
+        "nextScene": "village_token_questions"
+      }
+    ]
+  },
+  {
+    "id": "mei_token_clue",
+    "title": "Mei Watches The Token Breathe",
+    "body": "Mei lays the token beside the shrine incense. The smoke bends north without wind.\n\n\"It is answering the mountain. Quietly, but not weakly.\"\n\n\"Can the mountain answer back?\"\n\n\"If this belongs to the Azure Cloud Sect, it may already be listening.\"",
+    "choices": [
+      {
+        "label": "Return to the village square with Mei's clue",
+        "nextScene": "village_token_questions"
+      }
+    ]
+  },
+  {
+    "id": "immortal_senses_token",
+    "title": "The Immortal At The Door",
+    "body": "Three days pass. The token grows warmer each dawn.\n\nOn the fourth morning, the village dogs go silent. A blue-robed cultivator descends through the mist as if the road rose to meet his feet. He stops at your door and looks at the bronze token in your hand.\n\n\"So it chose a mortal after all. Fate is rarely polite. The Azure Cloud Sect opens its mountain gate in ten days. Bring the token. Climb if you dare.\"\n\nYou bow because your knees have already decided to bend.\n\n\"Why me?\"\n\nThe immortal's smile is almost kind.\n\n\"Ask the mountain if you reach it.\"",
+    "choices": [
+      {
+        "label": "Begin preparing for the Azure Cloud mountain gate",
+        "nextScene": "pre_exam_days",
+        "effects": {
+          "startQuest": "enter_azure_cloud_sect",
+          "setFlags": {
+            "learned_about_azure_cloud_exam": true,
+            "immortal_sensed_trial_token": true
+          }
+        }
       }
     ]
   },
@@ -2119,7 +2436,7 @@
   {
     "id": "discipline_clerk",
     "title": "The Clerk's Warning",
-    "body": "The clerk does not look up from the ledger. Do not steal pills, do not duel near the kitchens, do not insult inner disciples, and never mistake borrowed sect property for destiny. Then he pauses, marks your name neatly, and adds that listening is rarer than talent.",
+    "body": "The clerk does not look up from the ledger.\n\n\"Do not steal pills, do not duel near the kitchens, do not insult inner disciples, and never mistake borrowed sect property for destiny.\"\n\nThen he pauses and marks your name neatly.\n\n\"Listening is rarer than talent.\"",
     "choices": [
       {
         "label": "Return to the outer sect paths",
@@ -2161,7 +2478,7 @@
   {
     "id": "careful_garden_work",
     "title": "Roots Intact",
-    "body": "By sunset the senior sister inspects the row and gives a rare approving hum. She presses a minor qi pill into your palm and tells you that cultivation also means learning which roots should not be torn.",
+    "body": "By sunset the senior sister inspects the row and gives a rare approving hum. She presses a minor qi pill into your palm.\n\n\"Cultivation also means learning which roots should not be torn.\"",
     "choices": [
       {
         "label": "Return to the outer sect paths",

@@ -68,6 +68,10 @@ function mergePlayer(initialPlayer: Player, savedPlayer?: Partial<Player>): Play
       ...savedPlayer?.techniqueMastery,
     },
     quests: savedQuests ?? initialPlayer.quests,
+    npcJournal: {
+      ...initialPlayer.npcJournal,
+      ...savedPlayer?.npcJournal,
+    },
     flags: {
       ...initialPlayer.flags,
       ...savedPlayer?.flags,

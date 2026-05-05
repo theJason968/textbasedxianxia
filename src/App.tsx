@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Backpack, ListChecks, ScrollText, Workflow } from "lucide-react";
+import { Backpack, BookOpen, ListChecks, ScrollText, Workflow } from "lucide-react";
 import scenes from "./data/scenes.json";
 import items from "./data/items.json";
 import techniques from "./data/techniques.json";
@@ -7,6 +7,7 @@ import skills from "./data/skills.json";
 import constitutions from "./data/constitutions.json";
 import enemies from "./data/enemies.json";
 import quests from "./data/quests.json";
+import npcs from "./data/npcs.json";
 import { resolveCombatAction, type CombatAction } from "./engine/combatEngine";
 import { getAvailableChoices } from "./engine/conditionEngine";
 import {
@@ -27,12 +28,14 @@ import {
   formatSkillLevel,
   formatSkillPracticeProgress,
 } from "./engine/skillEngine";
-import type { Choice, Constitution, ElementalEssence, Player, Scene, Skill } from "./engine/types";
+import type { Choice, Constitution, ElementalEssence, Npc, Player, Quest, Scene, Skill } from "./engine/types";
 
 const sceneData = scenes as Scene[];
 const skillData = skills as Skill[];
 const constitutionData = constitutions as Constitution[];
-type CollectionTab = "inventory" | "techniques" | "skills" | "quests";
+const npcData = npcs as unknown as Npc[];
+const questData = quests as Quest[];
+type CollectionTab = "inventory" | "techniques" | "skills" | "quests" | "journal";
 type ItemData = {
   id: string;
   name: string;
@@ -80,6 +83,18 @@ const mortalVillageScenes = new Set([
   "village_shrine_incense",
   "road_packing",
   "village_teacher_circle",
+  "village_square_intro",
+  "old_ren_road_rumor",
+  "aunt_lin_road_rumor",
+  "guo_road_rumor",
+  "mei_road_rumor",
+  "roadside_search_after_lotus",
+  "village_token_questions",
+  "old_ren_token_clue",
+  "aunt_lin_token_clue",
+  "guo_token_clue",
+  "mei_token_clue",
+  "immortal_senses_token",
   "old_ren_stance_test",
   "old_ren_corrected_stance",
   "old_ren_foundation_drills",
@@ -227,12 +242,26 @@ function App() {
     () =>
       Object.entries(gameState.player.quests)
         .map(([questId, playerQuest]) => {
-          const quest = quests.find((candidate) => candidate.id === questId);
+          const quest = questData.find((candidate) => candidate.id === questId);
 
           return quest ? { ...quest, playerQuest } : null;
         })
         .filter((quest) => quest !== null),
     [gameState.player.quests],
+  );
+  const npcJournalEntries = useMemo(
+    () =>
+      Object.entries(gameState.player.npcJournal)
+        .map(([npcId, journalEntry]) => {
+          const npc = npcData.find((candidate) => candidate.id === npcId);
+
+          return npc && journalEntry.met ? { npc, journalEntry } : null;
+        })
+        .filter((entry) => entry !== null)
+        .sort((firstEntry, secondEntry) =>
+          firstEntry.npc.name.localeCompare(secondEntry.npc.name),
+        ),
+    [gameState.player.npcJournal],
   );
 
   useEffect(() => {
@@ -546,6 +575,16 @@ function App() {
               <ListChecks aria-hidden="true" size={16} />
               <span>Quests</span>
             </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeCollectionTab === "journal"}
+              aria-controls="journal-panel"
+              onClick={() => setActiveCollectionTab("journal")}
+            >
+              <BookOpen aria-hidden="true" size={16} />
+              <span>Journal</span>
+            </button>
           </div>
 
           {activeCollectionTab === "inventory" ? (
@@ -654,6 +693,49 @@ function App() {
                 </ul>
               ) : (
                 <p>No active quests</p>
+              )}
+            </div>
+          ) : null}
+
+          {activeCollectionTab === "journal" ? (
+            <div id="journal-panel" role="tabpanel" className="tab-panel">
+              <h2>Journal</h2>
+              {npcJournalEntries.length > 0 ? (
+                <ul className="journal-list">
+                  {npcJournalEntries.map(({ npc, journalEntry }) => {
+                    const relatedQuests = npc.associatedQuests
+                      ?.map((questId) => {
+                        const quest = questData.find((candidate) => candidate.id === questId);
+                        const playerQuest = gameState.player.quests[questId];
+
+                        return quest
+                          ? `${quest.name}: ${playerQuest?.status ?? "not started"}`
+                          : null;
+                      })
+                      .filter((questSummary) => questSummary !== null);
+
+                    return (
+                      <li key={npc.id}>
+                        <strong>
+                          {npc.name}: "{npc.description}"
+                        </strong>
+                        <span>{npc.title}</span>
+                        {journalEntry.conversations.length > 0 ? (
+                          <ul>
+                            {journalEntry.conversations.map((conversation) => (
+                              <li key={conversation}>{conversation}</li>
+                            ))}
+                          </ul>
+                        ) : null}
+                        {relatedQuests && relatedQuests.length > 0 ? (
+                          <small>{relatedQuests.join(" | ")}</small>
+                        ) : null}
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <p>No characters recorded yet</p>
               )}
             </div>
           ) : null}

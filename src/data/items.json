@@ -85,5 +85,14 @@
     "description": "A pale hairpin left by the injured immortal girl after you treated her wounds. A faint medicinal fragrance clings to it.",
     "icon": "/assets/items/silk_lotus_hairpin.png",
     "effects": {}
+  },
+  {
+    "id": "azure_cloud_trial_token",
+    "name": "Azure Cloud Trial Token",
+    "type": "quest",
+    "rarity": "low-grade",
+    "description": "A black-threaded bronze token marked with a cloud-over-mountain symbol. It hums faintly when turned toward the north.",
+    "icon": "/assets/items/azure_cloud_trial_token.png",
+    "effects": {}
   }
 ]

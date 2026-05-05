@@ -86,3 +86,18 @@ Ranks display as named skill levels:
   }
 }
 ```
+
+## Writing Memorable NPCs
+
+Recurring NPCs live in `src/data/npcs.json`. Use this file as the story bible
+for characters who should return later, remember the player, teach skills, or
+anchor quests. NPC `skills` use the same rank scale as player skills:
+
+1. Novice
+2. Intermediate
+3. Skilled
+4. Expert
+
+Reference scene ids in `firstSceneId`, quest ids in `associatedQuests`, and
+important player memory flags in `memoryFlags`. Use `returnHooks` for future
+story ideas that can bring the NPC back naturally.

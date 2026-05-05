@@ -214,6 +214,7 @@ function applyEffects(player: Player, effects?: ChoiceEffect): Player {
       player.techniqueMastery,
       effects.techniqueMastery,
     ),
+    npcJournal: updateNpcJournal(player.npcJournal, effects),
     flags: {
       ...player.flags,
       ...effects.setFlags,
@@ -251,6 +252,45 @@ function applyQuestEffects(player: Player, effects: NonNullable<Choice["effects"
 
 function mergeUnique(current: string[], additions: string[] = []): string[] {
   return [...new Set([...current, ...additions])];
+}
+
+function updateNpcJournal(
+  currentJournal: Player["npcJournal"],
+  effects: ChoiceEffect,
+): Player["npcJournal"] {
+  const npcIds = [
+    effects.meetNpc,
+    effects.recordNpcConversation?.npcId,
+  ].filter((npcId) => npcId !== undefined);
+
+  if (npcIds.length <= 0) {
+    return currentJournal;
+  }
+
+  const nextJournal = { ...currentJournal };
+
+  npcIds.forEach((npcId) => {
+    nextJournal[npcId] = nextJournal[npcId] ?? {
+      met: true,
+      conversations: [],
+    };
+    nextJournal[npcId] = {
+      ...nextJournal[npcId],
+      met: true,
+    };
+  });
+
+  if (effects.recordNpcConversation) {
+    const { npcId, topic } = effects.recordNpcConversation;
+    const conversations = nextJournal[npcId]?.conversations ?? [];
+
+    nextJournal[npcId] = {
+      met: true,
+      conversations: mergeUnique(conversations, [topic]),
+    };
+  }
+
+  return nextJournal;
 }
 
 function applySkillPractice(

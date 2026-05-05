@@ -31,6 +31,7 @@ export function createInitialGameState(): GameState {
       constitutions: [],
       techniqueMastery: {},
       quests: {},
+      npcJournal: {},
       flags: {},
     },
   };

@@ -1,0 +1,266 @@
+[
+  {
+    "id": "old_ren",
+    "name": "Old Ren",
+    "title": "Retired Caravan Guard",
+    "disposition": "mentor",
+    "faction": "Mortal Village",
+    "firstSceneId": "village_teacher_circle",
+    "description": "A cane-carrying former guard whose mortal fighting experience is plain, practical, and hard to impress.",
+    "personality": [
+      "blunt",
+      "watchful",
+      "dryly amused",
+      "protective without saying so"
+    ],
+    "relationshipToPlayer": "Tests the player's stance and may become the first person to seriously correct their martial foundation.",
+    "skills": {
+      "village_fist_forms": 4,
+      "staff_basics": 3,
+      "sparring_instinct": 4,
+      "corrected_stance": 4,
+      "careful_eye": 2,
+      "campcraft": 3
+    },
+    "teachesSkills": [
+      "village_fist_forms",
+      "sparring_instinct",
+      "corrected_stance"
+    ],
+    "associatedQuests": ["old_ren_stance_test"],
+    "memoryFlags": [
+      "heard_old_ren_road_rumor",
+      "old_ren_corrected_stance",
+      "old_ren_foundation_drills"
+    ],
+    "returnHooks": [
+      "Can return as a mortal witness when the player revisits the village.",
+      "Can recognize whether the player's cultivation has improved their basics or made them arrogant.",
+      "Can introduce caravan-road trouble tied to the wider mortal world."
+    ]
+  },
+  {
+    "id": "aunt_lin",
+    "name": "Aunt Lin",
+    "title": "Village Herbalist",
+    "disposition": "mentor",
+    "faction": "Mortal Village",
+    "firstSceneId": "village_teacher_circle",
+    "description": "A bitter-tongued herbalist who treats medicine as a debt the body must eventually answer.",
+    "personality": [
+      "sharp",
+      "practical",
+      "hard to fool",
+      "quietly compassionate"
+    ],
+    "relationshipToPlayer": "Teaches the player that alchemy starts with not poisoning anyone through haste or pride.",
+    "skills": {
+      "herb_recognition": 4,
+      "heat_control": 3,
+      "crude_elixir_refining": 2,
+      "impurity_awareness": 4,
+      "herbalist_apprentice": 4,
+      "plain_speech": 2
+    },
+    "teachesSkills": [
+      "herb_recognition",
+      "heat_control",
+      "impurity_awareness",
+      "herbalist_apprentice"
+    ],
+    "associatedQuests": ["aunt_lin_medicine_task"],
+    "memoryFlags": [
+      "heard_aunt_lin_road_rumor",
+      "aunt_lin_trusts_medicine_work",
+      "aunt_lin_scolded_bad_batch"
+    ],
+    "returnHooks": [
+      "Can ask the player to identify a strange immortal herb brought back to the village.",
+      "Can become a reason to visit medicine halls or learn safer pill refining.",
+      "Can challenge the player if their impurity rises from reckless cultivation."
+    ]
+  },
+  {
+    "id": "blacksmith_guo",
+    "name": "Blacksmith Guo",
+    "title": "Village Blacksmith",
+    "disposition": "mentor",
+    "faction": "Mortal Village",
+    "firstSceneId": "village_teacher_circle",
+    "description": "A quiet smith who trusts the sound of iron more than claims of talent.",
+    "personality": [
+      "reserved",
+      "honest",
+      "patient with work",
+      "impatient with excuses"
+    ],
+    "relationshipToPlayer": "Teaches the player that reliable tools and reliable bodies are both made through careful repair.",
+    "skills": {
+      "bellows_rhythm": 4,
+      "iron_sense": 4,
+      "tool_repair": 4,
+      "hammer_discipline": 3,
+      "forge_apprentice": 4,
+      "farmhand_strength": 2
+    },
+    "teachesSkills": [
+      "bellows_rhythm",
+      "iron_sense",
+      "tool_repair",
+      "forge_apprentice"
+    ],
+    "associatedQuests": ["guo_honest_iron"],
+    "memoryFlags": [
+      "heard_guo_road_rumor",
+      "guo_taught_honest_iron",
+      "guo_ruined_first_temper"
+    ],
+    "returnHooks": [
+      "Can repair or upgrade early mortal gear before a dangerous road arc.",
+      "Can notice strange properties in low-grade spirit metal.",
+      "Can contrast mortal craft with sect refining techniques later."
+    ]
+  },
+  {
+    "id": "shrine_keeper_mei",
+    "name": "Shrine Keeper Mei",
+    "title": "Village Shrine Keeper",
+    "disposition": "mentor",
+    "faction": "Mortal Village",
+    "firstSceneId": "village_teacher_circle",
+    "description": "A young shrine keeper with an old stillness, known for counting breath and reading fear before it speaks.",
+    "personality": [
+      "gentle",
+      "precise",
+      "observant",
+      "more mysterious than she admits"
+    ],
+    "relationshipToPlayer": "Teaches breath counting and gives the player's foundation a calmer shape before the mountain trial.",
+    "skills": {
+      "calm_breath": 4,
+      "shrine_breathing": 4,
+      "foundation_control": 2,
+      "careful_eye": 3,
+      "plain_speech": 2
+    },
+    "teachesSkills": [
+      "calm_breath",
+      "shrine_breathing",
+      "foundation_control"
+    ],
+    "associatedQuests": ["mei_three_breaths"],
+    "memoryFlags": [
+      "heard_mei_road_rumor",
+      "mei_taught_three_breaths",
+      "mei_started_breath_counting"
+    ],
+    "returnHooks": [
+      "Can sense when the player's breath has changed after sect training.",
+      "Can introduce shrine history connected to Cloud essence.",
+      "Can become a quiet anchor if the player returns home after violence."
+    ]
+  },
+  {
+    "id": "scripture_pavilion_clerk",
+    "name": "Unnamed Scripture Pavilion Clerk",
+    "title": "Grey-Robed Clerk",
+    "disposition": "neutral",
+    "faction": "Azure Cloud Sect",
+    "firstSceneId": "scripture_pavilion_threshold",
+    "description": "A ledger-keeping clerk who guards copied manuals with the bored patience of someone who has seen ambition embarrass itself.",
+    "personality": [
+      "dry",
+      "rule-bound",
+      "observant",
+      "quietly fair"
+    ],
+    "relationshipToPlayer": "Marks the player's name after they ask about rules instead of rushing for forbidden manuals.",
+    "skills": {
+      "careful_eye": 4,
+      "plain_speech": 3,
+      "foundation_control": 2,
+      "azure_cloud_breathing_roots": 2
+    },
+    "teachesSkills": [],
+    "associatedQuests": [],
+    "memoryFlags": [
+      "copied_scripture_notes",
+      "learned_outer_sect_rules"
+    ],
+    "returnHooks": [
+      "Can remember whether the player listened to sect rules.",
+      "Can gate future scripture access behind reputation or completed tasks.",
+      "Can become a low-key source of rumors from the pavilion ledger."
+    ]
+  },
+  {
+    "id": "medicine_garden_senior_sister",
+    "name": "Unnamed Medicine Garden Senior Sister",
+    "title": "Medicine Garden Senior Sister",
+    "disposition": "neutral",
+    "faction": "Azure Cloud Sect",
+    "firstSceneId": "medicine_garden_work",
+    "description": "A senior outer disciple who judges new disciples by whether they preserve roots while doing dirty work.",
+    "personality": [
+      "measured",
+      "demanding",
+      "soft-spoken",
+      "hard to impress"
+    ],
+    "relationshipToPlayer": "May notice careful work in the medicine garden and reward patience over speed.",
+    "skills": {
+      "herb_recognition": 4,
+      "heat_control": 3,
+      "impurity_awareness": 3,
+      "careful_eye": 3,
+      "azure_cloud_breathing_roots": 2
+    },
+    "teachesSkills": [
+      "herb_recognition",
+      "impurity_awareness"
+    ],
+    "associatedQuests": ["first_sect_task"],
+    "memoryFlags": [
+      "earned_garden_sisters_notice",
+      "completed_first_sect_task",
+      "sensed_hidden_herbs"
+    ],
+    "returnHooks": [
+      "Can offer medicine garden follow-up tasks.",
+      "Can become an alchemy contact if the player shows care with herbs.",
+      "Can judge the player's impurity and foundation stability later."
+    ]
+  },
+  {
+    "id": "pine_shadow_senior_disciple",
+    "name": "Unnamed Pine Shadow Senior Disciple",
+    "title": "Footwork Instructor",
+    "disposition": "neutral",
+    "faction": "Azure Cloud Sect",
+    "firstSceneId": "pine_shadow_lesson",
+    "description": "A senior outer disciple who marks footwork in dust and teaches movement as timing rather than display.",
+    "personality": [
+      "focused",
+      "direct",
+      "competitive",
+      "dismissive of flourishes"
+    ],
+    "relationshipToPlayer": "Introduces Pine Shadow Step and can become a practical martial benchmark.",
+    "skills": {
+      "staff_basics": 2,
+      "sparring_instinct": 3,
+      "careful_eye": 2,
+      "azure_cloud_breathing_roots": 3
+    },
+    "teachesSkills": [],
+    "associatedQuests": [],
+    "memoryFlags": [
+      "watched_arena_footwork"
+    ],
+    "returnHooks": [
+      "Can test Pine Shadow Step mastery in the arena.",
+      "Can become a friendly rival if the player keeps training footwork.",
+      "Can demonstrate the gap between new disciples and experienced outer disciples."
+    ]
+  }
+]

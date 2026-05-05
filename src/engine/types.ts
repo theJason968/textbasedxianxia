@@ -40,10 +40,16 @@ export type Player = {
   constitutions: string[];
   techniqueMastery: Record<string, number>;
   quests: Record<string, PlayerQuest>;
+  npcJournal: Record<string, PlayerNpcJournalEntry>;
   flags: Record<string, boolean | number | string>;
 };
 
 export type QuestStatus = "active" | "completed" | "failed";
+
+export type PlayerNpcJournalEntry = {
+  met: boolean;
+  conversations: string[];
+};
 
 export type PlayerQuest = {
   status: QuestStatus;
@@ -59,6 +65,30 @@ export type Quest = {
     items?: string[];
     spiritStones?: number;
   };
+};
+
+export type NpcDisposition =
+  | "mentor"
+  | "ally"
+  | "rival"
+  | "neutral"
+  | "antagonist";
+
+export type Npc = {
+  id: string;
+  name: string;
+  title: string;
+  disposition: NpcDisposition;
+  faction: string;
+  firstSceneId: string;
+  description: string;
+  personality: string[];
+  relationshipToPlayer: string;
+  skills: Record<string, number>;
+  teachesSkills?: string[];
+  associatedQuests?: string[];
+  memoryFlags?: string[];
+  returnHooks: string[];
 };
 
 export type Enemy = {
@@ -167,6 +197,11 @@ export type ChoiceEffect = Partial<
   };
   completeQuest?: string;
   failQuest?: string;
+  meetNpc?: string;
+  recordNpcConversation?: {
+    npcId: string;
+    topic: string;
+  };
   setFlags?: Record<string, boolean | number | string>;
   startCombat?: {
     enemyId: string;

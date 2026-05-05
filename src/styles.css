@@ -88,6 +88,7 @@ h3 {
   color: #ddd2c2;
   font-size: 1.08rem;
   line-height: 1.8;
+  white-space: pre-line;
 }
 
 .action-messages {
@@ -311,6 +312,55 @@ dd {
   margin: 0;
   color: #cfc4b3;
   font-size: 0.9rem;
+}
+
+.journal-list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.journal-list > li {
+  border: 1px solid rgba(231, 205, 157, 0.14);
+  border-radius: 6px;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.journal-list strong,
+.journal-list span,
+.journal-list small {
+  display: block;
+}
+
+.journal-list strong {
+  color: #efe5d4;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.journal-list span {
+  margin-top: 0.25rem;
+  color: #d7b56d;
+  font-size: 0.78rem;
+}
+
+.journal-list ul {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0.65rem 0 0;
+  padding-left: 1rem;
+  color: #cfc4b3;
+  font-size: 0.88rem;
+}
+
+.journal-list small {
+  margin-top: 0.65rem;
+  color: #b7ab99;
+  font-size: 0.78rem;
+  line-height: 1.4;
 }
 
 .save-controls {
