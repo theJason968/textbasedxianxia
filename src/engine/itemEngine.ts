@@ -1,13 +1,20 @@
-import type { GameState, Player } from "./types";
+import type { EquipmentEffects, EquipmentSlot, GameState, Player } from "./types";
 
 type UsableItem = {
   id: string;
   name: string;
+  equipmentSlot?: EquipmentSlot;
+  equipmentEffects?: EquipmentEffects;
   effects: Partial<
     Pick<
       Player,
       | "health"
       | "qi"
+      | "strength"
+      | "agility"
+      | "endurance"
+      | "intelligence"
+      | "perception"
       | "spiritualSense"
       | "physique"
       | "comprehension"
@@ -30,6 +37,11 @@ type ItemUseResult = {
 const effectKeys: Array<keyof UsableItem["effects"]> = [
   "health",
   "qi",
+  "strength",
+  "agility",
+  "endurance",
+  "intelligence",
+  "perception",
   "spiritualSense",
   "physique",
   "comprehension",
@@ -82,6 +94,64 @@ export function useItem(gameState: GameState, item: UsableItem): ItemUseResult {
       player: nextPlayer,
     },
     message: `Used ${item.name}.`,
+  };
+}
+
+export function equipItem(gameState: GameState, item: UsableItem): ItemUseResult {
+  if (!gameState.player.inventory.includes(item.id)) {
+    return {
+      gameState,
+      message: `${item.name} is not in your inventory.`,
+    };
+  }
+
+  if (!item.equipmentSlot) {
+    return {
+      gameState,
+      message: `${item.name} cannot be equipped.`,
+    };
+  }
+
+  return {
+    gameState: {
+      ...gameState,
+      player: {
+        ...gameState.player,
+        equipment: {
+          ...gameState.player.equipment,
+          [item.equipmentSlot]: item.id,
+        },
+      },
+    },
+    message: `Equipped ${item.name}.`,
+  };
+}
+
+export function unequipItem(
+  gameState: GameState,
+  slot: EquipmentSlot,
+): ItemUseResult {
+  const equippedItemId = gameState.player.equipment[slot];
+
+  if (!equippedItemId) {
+    return {
+      gameState,
+      message: `Nothing is equipped in ${slot}.`,
+    };
+  }
+
+  const nextEquipment = { ...gameState.player.equipment };
+  delete nextEquipment[slot];
+
+  return {
+    gameState: {
+      ...gameState,
+      player: {
+        ...gameState.player,
+        equipment: nextEquipment,
+      },
+    },
+    message: `Unequipped ${equippedItemId}.`,
   };
 }
 

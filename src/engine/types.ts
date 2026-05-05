@@ -21,6 +21,11 @@ export type Player = {
   maxHealth: number;
   qi: number;
   maxQi: number;
+  strength: number;
+  agility: number;
+  endurance: number;
+  intelligence: number;
+  perception: number;
   spiritualSense: number;
   physique: number;
   comprehension: number;
@@ -33,6 +38,7 @@ export type Player = {
   daysRemainingToExam: number;
   spiritStones: number;
   inventory: string[];
+  equipment: Partial<Record<EquipmentSlot, string>>;
   techniques: string[];
   skills: Record<string, number>;
   skillPractice: Record<string, number>;
@@ -42,6 +48,15 @@ export type Player = {
   quests: Record<string, PlayerQuest>;
   npcJournal: Record<string, PlayerNpcJournalEntry>;
   flags: Record<string, boolean | number | string>;
+};
+
+export type EquipmentSlot = "weapon" | "clothing" | "ring" | "accessory";
+
+export type EquipmentEffects = {
+  combatDamage?: number;
+  combatDefense?: number;
+  maxHealth?: number;
+  maxQi?: number;
 };
 
 export type QuestStatus = "active" | "completed" | "failed";
@@ -127,6 +142,11 @@ export type Skill = {
     Pick<
       Player,
       | "spiritualSense"
+      | "strength"
+      | "agility"
+      | "endurance"
+      | "intelligence"
+      | "perception"
       | "physique"
       | "comprehension"
       | "willpower"
@@ -169,6 +189,11 @@ export type ChoiceEffect = Partial<
     Player,
     | "health"
     | "qi"
+    | "strength"
+    | "agility"
+    | "endurance"
+    | "intelligence"
+    | "perception"
     | "spiritualSense"
     | "physique"
     | "comprehension"
@@ -185,6 +210,18 @@ export type ChoiceEffect = Partial<
   advanceDays?: number;
   deadlineScene?: string;
   addItems?: string[];
+  equipItem?: {
+    slot: EquipmentSlot;
+    itemId: string;
+  };
+  breakthrough?: {
+    realm?: Realm;
+    stage: RealmStage;
+    maxQiIncrease?: number;
+    maxHealthIncrease?: number;
+    spiritualSenseIncrease?: number;
+    foundationCost?: number;
+  };
   learnTechniques?: string[];
   addSkills?: Record<string, number>;
   addElements?: Partial<Record<ElementalEssence, number>>;
@@ -216,6 +253,11 @@ export type ChoiceRequirement = {
       Player,
       | "health"
       | "qi"
+      | "strength"
+      | "agility"
+      | "endurance"
+      | "intelligence"
+      | "perception"
       | "spiritualSense"
       | "physique"
       | "comprehension"

@@ -3,6 +3,7 @@
     "id": "minor_qi_pill",
     "name": "Minor Qi Pill",
     "type": "pill",
+    "category": "Elixir",
     "rarity": "low-grade",
     "description": "A cloudy pill used by outer disciples to gather a small amount of qi.",
     "icon": "/assets/items/minor_qi_pill.png",
@@ -15,6 +16,7 @@
     "id": "outer_disciple_token",
     "name": "Outer Disciple Token",
     "type": "quest",
+    "category": "Quest Item",
     "rarity": "mortal",
     "description": "A wooden token proving provisional acceptance into the Azure Cloud Sect.",
     "icon": "/assets/items/outer_disciple_token.png",
@@ -24,6 +26,7 @@
     "id": "mist_wolf_core",
     "name": "Mist Wolf Core",
     "type": "material",
+    "category": "Material",
     "rarity": "low-grade",
     "description": "A faint spirit core taken from a mist wolf. Useful for pills, formations, or sect contribution.",
     "icon": "/assets/items/mist_wolf_core.png",
@@ -33,6 +36,7 @@
     "id": "crude_qi_elixir",
     "name": "Crude Qi Elixir",
     "type": "pill",
+    "category": "Elixir",
     "rarity": "mortal",
     "description": "A rough village elixir. It helps stir qi, but its impurities make elders frown.",
     "icon": "/assets/items/crude_qi_elixir.png",
@@ -42,27 +46,53 @@
     }
   },
   {
+    "id": "bamboo_staff",
+    "name": "Bamboo Staff",
+    "type": "weapon",
+    "category": "Weapon",
+    "rarity": "mortal",
+    "description": "A plain bamboo pole cut for reach. It will not impress a cultivator, but it keeps desperate hands farther away.",
+    "icon": "/assets/items/bamboo_staff.png",
+    "equipmentSlot": "weapon",
+    "equipmentEffects": {
+      "combatDamage": 1
+    },
+    "effects": {}
+  },
+  {
     "id": "reinforced_walking_staff",
     "name": "Reinforced Walking Staff",
-    "type": "gear",
+    "type": "weapon",
+    "category": "Weapon",
     "rarity": "mortal",
     "description": "A plain staff strengthened with iron bands at the village forge. It is not an immortal weapon, but the mountain road is still a road.",
     "icon": "/assets/items/reinforced_walking_staff.png",
+    "equipmentSlot": "weapon",
+    "equipmentEffects": {
+      "combatDamage": 2,
+      "combatDefense": 1
+    },
     "effects": {}
   },
   {
     "id": "childs_cloud_jade",
     "name": "Child's Cloud Jade",
-    "type": "favor",
+    "type": "accessory",
+    "category": "Accessory",
     "rarity": "low-grade",
     "description": "A small jade pendant carried by the immortal child you rescued from the bandit road. Its cloud mark feels warmer than plain stone.",
     "icon": "/assets/items/childs_cloud_jade.png",
+    "equipmentSlot": "accessory",
+    "equipmentEffects": {
+      "combatDefense": 1
+    },
     "effects": {}
   },
   {
     "id": "roadside_whisper_notes",
     "name": "Roadside Whisper Notes",
     "type": "lore",
+    "category": "Lore",
     "rarity": "mortal",
     "description": "Scraps of merchant gossip about talismans, sect debts, and a black-thread token seen near the broken trade road.",
     "icon": "/assets/items/roadside_whisper_notes.png",
@@ -72,6 +102,7 @@
     "id": "cloud_iron_field_manual",
     "name": "Cloud-Iron Field Manual",
     "type": "manual",
+    "category": "Manual",
     "rarity": "low-grade",
     "description": "A stained repair manual for keeping carts, weapons, and simple spirit-worked fittings alive under road pressure.",
     "icon": "/assets/items/cloud_iron_field_manual.png",
@@ -80,16 +111,22 @@
   {
     "id": "silk_lotus_hairpin",
     "name": "Silk Lotus Hairpin",
-    "type": "keepsake",
+    "type": "accessory",
+    "category": "Accessory",
     "rarity": "low-grade",
     "description": "A pale hairpin left by the injured immortal girl after you treated her wounds. A faint medicinal fragrance clings to it.",
     "icon": "/assets/items/silk_lotus_hairpin.png",
+    "equipmentSlot": "accessory",
+    "equipmentEffects": {
+      "combatDefense": 1
+    },
     "effects": {}
   },
   {
     "id": "azure_cloud_trial_token",
     "name": "Azure Cloud Trial Token",
     "type": "quest",
+    "category": "Quest Item",
     "rarity": "low-grade",
     "description": "A black-threaded bronze token marked with a cloud-over-mountain symbol. It hums faintly when turned toward the north.",
     "icon": "/assets/items/azure_cloud_trial_token.png",

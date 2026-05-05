@@ -49,6 +49,10 @@ function mergePlayer(initialPlayer: Player, savedPlayer?: Partial<Player>): Play
     ...initialPlayer,
     ...savedPlayer,
     inventory: savedPlayer?.inventory ?? initialPlayer.inventory,
+    equipment: {
+      ...initialPlayer.equipment,
+      ...savedPlayer?.equipment,
+    },
     techniques: savedPlayer?.techniques ?? initialPlayer.techniques,
     skills: {
       ...initialPlayer.skills,

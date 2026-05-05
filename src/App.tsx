@@ -9,18 +9,14 @@ import enemies from "./data/enemies.json";
 import quests from "./data/quests.json";
 import npcs from "./data/npcs.json";
 import { resolveCombatAction, type CombatAction } from "./engine/combatEngine";
-import { getAvailableChoices } from "./engine/conditionEngine";
+import { canChoose } from "./engine/conditionEngine";
 import {
   applyChoiceWithResult,
   getPlayerChangeMessages,
 } from "./engine/consequenceEngine";
-import {
-  attemptBreakthrough,
-  canAttemptBreakthrough,
-  cultivate,
-} from "./engine/cultivationEngine";
+import { cultivate } from "./engine/cultivationEngine";
 import { createInitialGameState } from "./engine/gameState";
-import { useItem } from "./engine/itemEngine";
+import { equipItem, unequipItem, useItem } from "./engine/itemEngine";
 import { clearSavedGame, hasSavedGame, loadGame, saveGame } from "./engine/saveEngine";
 import { getSceneById } from "./engine/sceneEngine";
 import {
@@ -28,7 +24,18 @@ import {
   formatSkillLevel,
   formatSkillPracticeProgress,
 } from "./engine/skillEngine";
-import type { Choice, Constitution, ElementalEssence, Npc, Player, Quest, Scene, Skill } from "./engine/types";
+import type {
+  Choice,
+  Constitution,
+  ElementalEssence,
+  EquipmentEffects,
+  EquipmentSlot,
+  Npc,
+  Player,
+  Quest,
+  Scene,
+  Skill,
+} from "./engine/types";
 
 const sceneData = scenes as Scene[];
 const skillData = skills as Skill[];
@@ -39,11 +46,21 @@ type CollectionTab = "inventory" | "techniques" | "skills" | "quests" | "journal
 type ItemData = {
   id: string;
   name: string;
+  category?: string;
+  rarity?: string;
+  description?: string;
+  equipmentSlot?: EquipmentSlot;
+  equipmentEffects?: EquipmentEffects;
   effects: Partial<
     Pick<
       Player,
       | "health"
       | "qi"
+      | "strength"
+      | "agility"
+      | "endurance"
+      | "intelligence"
+      | "perception"
       | "spiritualSense"
       | "physique"
       | "comprehension"
@@ -58,8 +75,35 @@ type ItemData = {
   >;
 };
 const itemData = items as ItemData[];
+const equipmentSlotLabels: Record<EquipmentSlot, string> = {
+  weapon: "Weapon",
+  clothing: "Clothing",
+  ring: "Ring",
+  accessory: "Accessory",
+};
+const statRequirementLabels: Partial<Record<keyof Player, string>> = {
+  health: "Health",
+  qi: "Qi",
+  strength: "Strength",
+  agility: "Agility",
+  endurance: "Endurance",
+  intelligence: "Intelligence",
+  perception: "Perception",
+  spiritualSense: "Spiritual Sense",
+  physique: "Physique",
+  comprehension: "Comprehension",
+  willpower: "Willpower",
+  karma: "Karma",
+  foundationStability: "Foundation Stability",
+  trainingFatigue: "Training Fatigue",
+  impurity: "Impurity",
+  cultivationInsight: "Cultivation Insight",
+  daysRemainingToExam: "Days Remaining",
+  spiritStones: "Spirit Stones",
+};
 const mortalVillageScenes = new Set([
   "pre_exam_days",
+  "sect_exam_qi_warning",
   "river_stone_ford",
   "river_stone_training",
   "river_body_tempering_breakthrough",
@@ -110,12 +154,28 @@ const mortalVillageScenes = new Set([
 ]);
 const mountainTrialScenes = new Set([
   "mountain_gate",
+  "exam_registration",
+  "exam_waiting_ground",
+  "liu_zhen_intro",
+  "han_yue_intro",
+  "qiao_min_intro",
+  "exam_pressure_stair",
   "steady_climb",
   "staff_aided_climb",
   "reckless_climb",
   "first_platform",
+  "the_first_trial",
   "tablet_hidden_current",
   "tablet_test",
+  "exam_second_trial",
+  "cloud_mirror_clear",
+  "cloud_mirror_shaken",
+  "exam_third_trial",
+  "exam_hidden_trial",
+  "exam_mercy_choice",
+  "exam_honest_exit",
+  "exam_ambition_choice",
+  "exam_ranking",
   "first_teaching",
   "pine_breath_training",
   "outer_disciple_accepted",
@@ -141,6 +201,104 @@ function getSceneLocationTitle(sceneId: string): string {
   return "Outer Sect";
 }
 
+function getChoiceRequirementSummary(player: Player, choice: Choice): string[] {
+  const requirements = choice.requires;
+
+  if (!requirements) {
+    return [];
+  }
+
+  const messages: string[] = [];
+
+  if (requirements.realm && player.realm !== requirements.realm) {
+    messages.push(`${requirements.realm} realm`);
+  }
+
+  if (requirements.stage && player.stage !== requirements.stage) {
+    messages.push(`${requirements.stage} stage`);
+  }
+
+  Object.entries(requirements.stats ?? {}).forEach(([key, requiredValue]) => {
+    const statKey = key as keyof Player;
+    const currentValue = player[statKey];
+
+    if (typeof currentValue === "number" && currentValue < requiredValue) {
+      messages.push(
+        `${statRequirementLabels[statKey] ?? key} ${requiredValue} (${currentValue})`,
+      );
+    }
+  });
+
+  (requirements.items ?? [])
+    .filter((itemId) => !player.inventory.includes(itemId))
+    .forEach((itemId) => messages.push(getNamedRequirement(itemData, itemId)));
+
+  (requirements.techniques ?? [])
+    .filter((techniqueId) => !player.techniques.includes(techniqueId))
+    .forEach((techniqueId) => messages.push(getNamedRequirement(techniques, techniqueId)));
+
+  Object.entries(requirements.skills ?? {}).forEach(([skillId, requiredRank]) => {
+    const currentRank = player.skills[skillId] ?? 0;
+
+    if (currentRank < requiredRank) {
+      messages.push(
+        `${getNamedRequirement(skillData, skillId)} rank ${requiredRank} (${currentRank})`,
+      );
+    }
+  });
+
+  Object.entries(requirements.elements ?? {}).forEach(([element, requiredAmount]) => {
+    const currentAmount = player.elementalEssence[element as ElementalEssence] ?? 0;
+
+    if (currentAmount < requiredAmount) {
+      messages.push(`${element} essence ${requiredAmount} (${currentAmount})`);
+    }
+  });
+
+  (requirements.constitutions ?? [])
+    .filter((constitutionId) => !player.constitutions.includes(constitutionId))
+    .forEach((constitutionId) =>
+      messages.push(getNamedRequirement(constitutionData, constitutionId)),
+    );
+
+  Object.entries(requirements.flags ?? {}).forEach(([flag, requiredValue]) => {
+    if (player.flags[flag] !== requiredValue) {
+      messages.push(formatFlagRequirement(flag, requiredValue));
+    }
+  });
+
+  return messages;
+}
+
+function getNamedRequirement(
+  data: Array<{ id: string; name: string }>,
+  id: string,
+): string {
+  return data.find((candidate) => candidate.id === id)?.name ?? id;
+}
+
+function formatFlagRequirement(
+  flag: string,
+  requiredValue: boolean | number | string,
+): string {
+  const label = flag
+    .replaceAll("_", " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+
+  return typeof requiredValue === "boolean" ? label : `${label}: ${requiredValue}`;
+}
+
+function formatEquipmentEffects(effects: EquipmentEffects): string {
+  return [
+    effects.combatDamage ? `+${effects.combatDamage} damage` : null,
+    effects.combatDefense ? `+${effects.combatDefense} defense` : null,
+    effects.maxHealth ? `+${effects.maxHealth} max health` : null,
+    effects.maxQi ? `+${effects.maxQi} max qi` : null,
+  ]
+    .filter((effect) => effect !== null)
+    .join(", ");
+}
+
 function App() {
   const [gameState, setGameState] = useState(() => loadGame() ?? createInitialGameState());
   const [saveMessage, setSaveMessage] = useState(
@@ -156,10 +314,6 @@ function App() {
     () => getSceneById(sceneData, gameState.currentSceneId),
     [gameState.currentSceneId],
   );
-  const availableChoices = useMemo(
-    () => getAvailableChoices(gameState, currentScene.choices),
-    [currentScene.choices, gameState],
-  );
   const activeEnemy = useMemo(
     () =>
       gameState.combat
@@ -167,6 +321,15 @@ function App() {
         : undefined,
     [gameState.combat],
   );
+  const equippedWeapon = useMemo(
+    () =>
+      gameState.player.equipment.weapon
+        ? itemData.find((item) => item.id === gameState.player.equipment.weapon)
+        : undefined,
+    [gameState.player.equipment.weapon],
+  );
+  const canFocusQiInCombat =
+    gameState.player.realm !== "Mortal" || gameState.player.stage !== "Early";
   const ownedItems = useMemo(
     () =>
       gameState.player.inventory.map((itemId) => {
@@ -249,6 +412,30 @@ function App() {
         .filter((quest) => quest !== null),
     [gameState.player.quests],
   );
+  const groupedOwnedItems = useMemo(
+    () =>
+      ownedItems.reduce<Record<string, typeof ownedItems>>((groups, item) => {
+        const category = item.category ?? "Misc";
+
+        return {
+          ...groups,
+          [category]: [...(groups[category] ?? []), item],
+        };
+      }, {}),
+    [ownedItems],
+  );
+  const equippedItems = useMemo(
+    () =>
+      Object.entries(gameState.player.equipment).map(([slot, itemId]) => {
+        const item = itemData.find((candidate) => candidate.id === itemId);
+
+        return {
+          slot: slot as EquipmentSlot,
+          item,
+        };
+      }),
+    [gameState.player.equipment],
+  );
   const npcJournalEntries = useMemo(
     () =>
       Object.entries(gameState.player.npcJournal)
@@ -310,8 +497,8 @@ function App() {
     setSaveMessage("Autosaved.");
   }
 
-  function handleBreakthrough() {
-    const result = attemptBreakthrough(gameState);
+  function handleUseItem(item: ItemData) {
+    const result = useItem(gameState, item);
 
     setGameState(result.gameState);
     setActionMessages(getPlayerChangeMessages(gameState.player, result.gameState.player));
@@ -319,8 +506,17 @@ function App() {
     setSaveMessage("Autosaved.");
   }
 
-  function handleUseItem(item: ItemData) {
-    const result = useItem(gameState, item);
+  function handleEquipItem(item: ItemData) {
+    const result = equipItem(gameState, item);
+
+    setGameState(result.gameState);
+    setActionMessages(getPlayerChangeMessages(gameState.player, result.gameState.player));
+    setCultivationMessage(result.message);
+    setSaveMessage("Autosaved.");
+  }
+
+  function handleUnequipItem(slot: EquipmentSlot) {
+    const result = unequipItem(gameState, slot);
 
     setGameState(result.gameState);
     setActionMessages(getPlayerChangeMessages(gameState.player, result.gameState.player));
@@ -376,9 +572,20 @@ function App() {
               <button type="button" onClick={() => handleCombatAction("strike")}>
                 Strike with bare hands
               </button>
-              <button type="button" onClick={() => handleCombatAction("focus")}>
-                Focus qi into your strike
-              </button>
+              {equippedWeapon ? (
+                <button type="button" onClick={() => handleCombatAction("weapon")}>
+                  Strike with {equippedWeapon.name}
+                </button>
+              ) : null}
+              {canFocusQiInCombat ? (
+                <button
+                  type="button"
+                  onClick={() => handleCombatAction("focus")}
+                  disabled={gameState.player.qi < 2}
+                >
+                  Focus qi into your strike
+                </button>
+              ) : null}
               <button type="button" onClick={() => handleCombatAction("flee")}>
                 Retreat
               </button>
@@ -391,24 +598,36 @@ function App() {
           </div>
         ) : (
           <div className="choices">
-            {availableChoices.length > 0 ? (
-            availableChoices.map((choice) => (
-              <button
-                key={choice.label}
-                type="button"
-                onClick={() => handleChoice(choice)}
-              >
-                {choice.label}
+            {currentScene.choices.length > 0 ? (
+              currentScene.choices.map((choice) => {
+                const isAvailable = canChoose(gameState, choice);
+                const requirementSummary = getChoiceRequirementSummary(
+                  gameState.player,
+                  choice,
+                );
+
+                return (
+                  <div
+                    className={`choice-option${isAvailable ? "" : " choice-option-locked"}`}
+                    key={choice.label}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => handleChoice(choice)}
+                      disabled={!isAvailable}
+                    >
+                      {choice.label}
+                    </button>
+                    {!isAvailable && requirementSummary.length > 0 ? (
+                      <p>Requires {requirementSummary.join(", ")}</p>
+                    ) : null}
+                  </div>
+                );
+              })
+            ) : (
+              <button type="button" onClick={handleRestart}>
+                Begin again
               </button>
-            ))
-          ) : currentScene.choices.length > 0 ? (
-            <p className="locked-message">
-              No path opens to you with your current cultivation.
-            </p>
-          ) : (
-            <button type="button" onClick={handleRestart}>
-              Begin again
-            </button>
             )}
           </div>
         )}
@@ -434,6 +653,26 @@ function App() {
             <dd>
               {gameState.player.qi}/{gameState.player.maxQi}
             </dd>
+          </div>
+          <div>
+            <dt>Strength</dt>
+            <dd>{gameState.player.strength}</dd>
+          </div>
+          <div>
+            <dt>Agility</dt>
+            <dd>{gameState.player.agility}</dd>
+          </div>
+          <div>
+            <dt>Endurance</dt>
+            <dd>{gameState.player.endurance}</dd>
+          </div>
+          <div>
+            <dt>Intelligence</dt>
+            <dd>{gameState.player.intelligence}</dd>
+          </div>
+          <div>
+            <dt>Perception</dt>
+            <dd>{gameState.player.perception}</dd>
           </div>
           <div>
             <dt>Spiritual Sense</dt>
@@ -523,13 +762,6 @@ function App() {
           <button type="button" onClick={handleCultivate}>
             Cultivate
           </button>
-          <button
-            type="button"
-            onClick={handleBreakthrough}
-            disabled={!canAttemptBreakthrough(gameState.player)}
-          >
-            Breakthrough
-          </button>
         </div>
         <p className="cultivation-message">{cultivationMessage}</p>
 
@@ -591,18 +823,74 @@ function App() {
             <div id="inventory-panel" role="tabpanel" className="tab-panel">
               <h2>Inventory</h2>
               {ownedItems.length > 0 ? (
-                <ul className="compact-list">
-                  {ownedItems.map((item, index) => (
-                    <li key={`${item.id}-${index}`}>
-                      <span>{item.name}</span>
-                      {Object.keys(item.effects).length > 0 ? (
-                        <button type="button" onClick={() => handleUseItem(item)}>
-                          Use
-                        </button>
-                      ) : null}
-                    </li>
+                <div className="inventory-groups">
+                  {equippedItems.length > 0 ? (
+                    <section className="inventory-group">
+                      <h3>Equipped</h3>
+                      <ul className="compact-list">
+                        {equippedItems.map(({ slot, item }) => (
+                          <li key={slot}>
+                            <span>
+                              {equipmentSlotLabels[slot]}: {item?.name ?? "Unknown item"}
+                              {item?.equipmentEffects ? (
+                                <small className="effect-summary">
+                                  {formatEquipmentEffects(item.equipmentEffects)}
+                                </small>
+                              ) : null}
+                            </span>
+                            <button type="button" onClick={() => handleUnequipItem(slot)}>
+                              Unequip
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  ) : null}
+                  {Object.entries(groupedOwnedItems).map(([category, categoryItems]) => (
+                    <section key={category} className="inventory-group">
+                      <h3>{category}</h3>
+                      <ul className="compact-list">
+                        {categoryItems.map((item, index) => {
+                          const isEquipped =
+                            item.equipmentSlot &&
+                            gameState.player.equipment[item.equipmentSlot] === item.id;
+
+                          return (
+                            <li key={`${item.id}-${index}`}>
+                              <span>
+                                {item.name}
+                                {item.description ? (
+                                  <small className="effect-summary">
+                                    {item.description}
+                                  </small>
+                                ) : null}
+                                {item.equipmentEffects ? (
+                                  <small className="effect-summary">
+                                    {formatEquipmentEffects(item.equipmentEffects)}
+                                  </small>
+                                ) : null}
+                              </span>
+                              {Object.keys(item.effects).length > 0 ? (
+                                <button type="button" onClick={() => handleUseItem(item)}>
+                                  Use
+                                </button>
+                              ) : null}
+                              {item.equipmentSlot ? (
+                                <button
+                                  type="button"
+                                  onClick={() => handleEquipItem(item)}
+                                  disabled={isEquipped}
+                                >
+                                  {isEquipped ? "Equipped" : "Equip"}
+                                </button>
+                              ) : null}
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </section>
                   ))}
-                </ul>
+                </div>
               ) : (
                 <p>Empty</p>
               )}

@@ -43,7 +43,7 @@ export function cultivate(gameState: GameState): CultivationResult {
     },
     message:
       nextQi >= gameState.player.maxQi
-        ? "Your qi has reached its current limit. A breakthrough is possible."
+        ? "Your qi has reached its current limit. Find a safe place, special scene, or suitable item before attempting a breakthrough."
         : isOvertraining
           ? `You force another cycle and gather ${qiGain} qi, but fatigue strains your foundation.`
           : `You quietly circulate your method and gather ${qiGain} qi.`,

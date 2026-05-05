@@ -38,6 +38,11 @@ type ChoiceResult = {
 const numericEffectKeys: NumericPlayerStat[] = [
   "health",
   "qi",
+  "strength",
+  "agility",
+  "endurance",
+  "intelligence",
+  "perception",
   "spiritualSense",
   "physique",
   "comprehension",
@@ -60,6 +65,11 @@ const playerChangeKeys: Array<keyof Pick<
   | "maxHealth"
   | "qi"
   | "maxQi"
+  | "strength"
+  | "agility"
+  | "endurance"
+  | "intelligence"
+  | "perception"
   | "spiritualSense"
   | "physique"
   | "comprehension"
@@ -75,6 +85,11 @@ const playerChangeKeys: Array<keyof Pick<
   "maxHealth",
   "qi",
   "maxQi",
+  "strength",
+  "agility",
+  "endurance",
+  "intelligence",
+  "perception",
   "spiritualSense",
   "physique",
   "comprehension",
@@ -91,6 +106,11 @@ const playerStatLabels: Record<(typeof playerChangeKeys)[number], string> = {
   maxHealth: "Maximum Health",
   qi: "Qi",
   maxQi: "Maximum Qi",
+  strength: "Strength",
+  agility: "Agility",
+  endurance: "Endurance",
+  intelligence: "Intelligence",
+  perception: "Perception",
   spiritualSense: "Spiritual Sense",
   physique: "Physique",
   comprehension: "Comprehension",
@@ -203,6 +223,7 @@ function applyEffects(player: Player, effects?: ChoiceEffect): Player {
     ...player,
     ...statChanges,
     inventory: mergeUnique(player.inventory, effects.addItems),
+    equipment: equipRewardedItem(player.equipment, effects),
     techniques: mergeUnique(player.techniques, effects.learnTechniques),
     ...applySkillPractice(player, effects.addSkills),
     elementalEssence: mergeElementalEssence(
@@ -221,7 +242,37 @@ function applyEffects(player: Player, effects?: ChoiceEffect): Player {
     },
   };
 
-  return awakenEligibleConstitutions(applyQuestEffects(playerWithBasicEffects, effects));
+  return awakenEligibleConstitutions(
+    applyBreakthroughEffect(applyQuestEffects(playerWithBasicEffects, effects), effects),
+  );
+}
+
+function applyBreakthroughEffect(
+  player: Player,
+  effects: NonNullable<Choice["effects"]>,
+): Player {
+  if (!effects.breakthrough) {
+    return player;
+  }
+
+  const maxHealthIncrease = effects.breakthrough.maxHealthIncrease ?? 0;
+
+  return {
+    ...player,
+    realm: effects.breakthrough.realm ?? player.realm,
+    stage: effects.breakthrough.stage,
+    qi: 0,
+    maxQi: player.maxQi + (effects.breakthrough.maxQiIncrease ?? 0),
+    maxHealth: player.maxHealth + maxHealthIncrease,
+    health: Math.min(player.health + maxHealthIncrease, player.maxHealth + maxHealthIncrease),
+    spiritualSense:
+      player.spiritualSense + (effects.breakthrough.spiritualSenseIncrease ?? 0),
+    foundationStability: Math.max(
+      0,
+      player.foundationStability - (effects.breakthrough.foundationCost ?? 0),
+    ),
+    trainingFatigue: Math.max(0, player.trainingFatigue - 2),
+  };
 }
 
 function applyQuestEffects(player: Player, effects: NonNullable<Choice["effects"]>): Player {
@@ -252,6 +303,20 @@ function applyQuestEffects(player: Player, effects: NonNullable<Choice["effects"
 
 function mergeUnique(current: string[], additions: string[] = []): string[] {
   return [...new Set([...current, ...additions])];
+}
+
+function equipRewardedItem(
+  equipment: Player["equipment"],
+  effects: ChoiceEffect,
+): Player["equipment"] {
+  if (!effects.equipItem) {
+    return equipment;
+  }
+
+  return {
+    ...equipment,
+    [effects.equipItem.slot]: effects.equipItem.itemId,
+  };
 }
 
 function updateNpcJournal(
@@ -404,6 +469,18 @@ function getNumericStatMessages(previousPlayer: Player, nextPlayer: Player): str
       }
 
       const label = playerStatLabels[key];
+
+      if (
+        key === "qi" &&
+        change > 0 &&
+        !previousPlayer.techniques.includes("azure_cloud_breathing")
+      ) {
+        if (previousPlayer.qi <= 0) {
+          return `For the first time, rough qi warms the body. It does not gather like true cultivation; it tempers flesh, breath, and bone.`;
+        }
+
+        return `Character absorbed +${change} rough qi for body tempering.`;
+      }
 
       if (change > 0) {
         return `Character gained +${change} ${label}.`;

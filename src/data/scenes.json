@@ -18,6 +18,9 @@
         "nextScene": "ordinary_river_training",
         "effects": {
           "physique": 1,
+          "qi": 1,
+          "strength": 1,
+          "endurance": 1,
           "trainingFatigue": 1,
           "addSkills": {
             "river_endurance": 1
@@ -32,6 +35,9 @@
         "nextScene": "ordinary_forge_work",
         "effects": {
           "physique": 1,
+          "qi": 1,
+          "strength": 1,
+          "perception": 1,
           "meetNpc": "blacksmith_guo",
           "recordNpcConversation": {
             "npcId": "blacksmith_guo",
@@ -51,6 +57,8 @@
         "nextScene": "ordinary_herb_work",
         "effects": {
           "comprehension": 1,
+          "intelligence": 1,
+          "perception": 1,
           "meetNpc": "aunt_lin",
           "recordNpcConversation": {
             "npcId": "aunt_lin",
@@ -252,7 +260,12 @@
       },
       {
         "label": "Practice mortal martial arts in the abandoned threshing yard",
-        "nextScene": "abandoned_threshing_yard"
+        "nextScene": "abandoned_threshing_yard",
+        "requires": {
+          "flags": {
+            "learned_mortal_fighting_basics": true
+          }
+        }
       },
       {
         "label": "Study herbs and crude alchemy with the village herbalist",
@@ -273,9 +286,34 @@
       {
         "label": "Leave for the Azure Cloud mountain gate now",
         "nextScene": "mountain_gate",
+        "requires": {
+          "stats": {
+            "qi": 5
+          }
+        },
         "effects": {
           "daysRemainingToExam": -10
         }
+      },
+      {
+        "label": "Ask whether your current qi is enough for the sect exam",
+        "nextScene": "sect_exam_qi_warning",
+        "requires": {
+          "stats": {
+            "qi": 0
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "sect_exam_qi_warning",
+    "title": "Not Enough Qi",
+    "body": "The token warms when you think of the mountain, but your body answers with only a thin, uncertain heat. Mei watches your breathing. Aunt Lin watches your hands. Old Ren watches your stance.\n\n\"You can still go,\" Mei says, \"but do not mistake being chosen for being ready. The sect mountain is rich with qi. If your body has not been tempered enough to endure it, the first trial may do the tempering for you. Painfully.\"\n\nAunt Lin snorts.\n\n\"Get more rough qi in your bones before you run toward immortals.\"",
+    "choices": [
+      {
+        "label": "Return to preparation",
+        "nextScene": "pre_exam_days"
       }
     ]
   },
@@ -293,7 +331,10 @@
             "npcId": "old_ren",
             "topic": "Asked him to judge your martial stance before the sect exam."
           },
-          "startQuest": "old_ren_stance_test"
+          "startQuest": "old_ren_stance_test",
+          "setFlags": {
+            "learned_mortal_fighting_basics": true
+          }
         }
       },
       {
@@ -341,7 +382,7 @@
   {
     "id": "old_ren_stance_test",
     "title": "Old Ren's Cane",
-    "body": "Old Ren was only a caravan guard, not a cultivator, but half the village still walks around his yard when he is holding a cane. He looks at your feet first, then your shoulders, then the space your ribs forgot to protect.",
+    "body": "Old Ren was only a caravan guard, not a cultivator, but half the village still walks around his yard when he is holding a cane. He looks at your feet first, then your shoulders, then the space your ribs forgot to protect.\n\n\"Before you copy a fist form, learn why a body falls. Immortals call their power qi. Mortals meet it first as pressure, pain, heat, and breath. Temper the body badly, and qi will only find better places to break you.\"",
     "choices": [
       {
         "label": "Hold your stance while Old Ren tries to break it",
@@ -361,6 +402,8 @@
               "advanceDays": 1,
               "deadlineScene": "mountain_gate",
               "health": -1,
+              "qi": 1,
+              "endurance": 1,
               "trainingFatigue": 1,
               "willpower": 1,
               "addSkills": {
@@ -383,6 +426,8 @@
               "advanceDays": 1,
               "deadlineScene": "mountain_gate",
               "health": -2,
+              "qi": 1,
+              "endurance": 1,
               "trainingFatigue": 1,
               "addSkills": {
                 "village_fist_forms": 1
@@ -407,7 +452,7 @@
   {
     "id": "old_ren_corrected_stance",
     "title": "Correction By Cane",
-    "body": "Old Ren's cane taps your ankle, hip, ribs, and wrist. Each touch is humiliatingly small. Each one fixes a leak in your strength. When he finally swings for real, your body answers before your pride can flinch.",
+    "body": "Old Ren's cane taps your ankle, hip, ribs, and wrist. Each touch is humiliatingly small. Each one fixes a leak in your strength. When he finally swings for real, your body answers before your pride can flinch.\n\n\"That warmth in your bones is not cultivation,\" he says. \"It is your flesh learning not to waste what passes through it.\"",
     "choices": [
       {
         "label": "Return to the village square",
@@ -418,7 +463,7 @@
   {
     "id": "old_ren_foundation_drills",
     "title": "Ren's Foundation Drills",
-    "body": "Old Ren breaks your stance with one bored push. Then he makes you rebuild it from the feet up: heel, knee, hip, breath, guard. No glory. Just the parts you skipped.",
+    "body": "Old Ren breaks your stance with one bored push. Then he makes you rebuild it from the feet up: heel, knee, hip, breath, guard. No glory. Just the parts you skipped.\n\n\"Do not chase qi,\" he says. \"Let the body become something qi cannot immediately ruin.\"",
     "choices": [
       {
         "label": "Return after more practice",
@@ -747,6 +792,9 @@
               "deadlineScene": "mountain_gate",
               "physique": 1,
               "health": -1,
+              "qi": 2,
+              "strength": 1,
+              "endurance": 1,
               "trainingFatigue": 1,
               "addSkills": {
                 "river_endurance": 1,
@@ -768,6 +816,9 @@
               "deadlineScene": "mountain_gate",
               "physique": 1,
               "health": -2,
+              "qi": 1,
+              "strength": 1,
+              "endurance": 1,
               "trainingFatigue": 1,
               "addSkills": {
                 "river_endurance": 1,
@@ -792,6 +843,8 @@
           "deadlineScene": "mountain_gate",
           "willpower": 1,
           "health": -1,
+          "qi": 1,
+          "endurance": 1,
           "trainingFatigue": 1,
           "addSkills": {
             "skin_tempering": 1,
@@ -857,6 +910,9 @@
           "advanceDays": 1,
           "deadlineScene": "mountain_gate",
           "physique": 1,
+          "qi": 1,
+          "strength": 1,
+          "agility": 1,
           "trainingFatigue": 1,
           "addSkills": {
             "village_fist_forms": 1
@@ -885,6 +941,9 @@
               "deadlineScene": "mountain_gate",
               "physique": 1,
               "health": -2,
+              "qi": 2,
+              "strength": 1,
+              "agility": 1,
               "trainingFatigue": 2,
               "addSkills": {
                 "sparring_instinct": 1
@@ -900,6 +959,8 @@
               "advanceDays": 1,
               "deadlineScene": "mountain_gate",
               "health": -4,
+              "qi": 1,
+              "endurance": 1,
               "trainingFatigue": 2,
               "willpower": 1,
               "addSkills": {
@@ -919,7 +980,10 @@
           "advanceDays": 1,
           "deadlineScene": "mountain_gate",
           "physique": 1,
+          "qi": 1,
+          "agility": 1,
           "trainingFatigue": 1,
+          "addItems": ["bamboo_staff"],
           "addSkills": {
             "staff_basics": 1
           },
@@ -1110,7 +1174,7 @@
   {
     "id": "crude_elixir_clean_batch",
     "title": "A Clearer Crude Elixir",
-    "body": "The elixir is still crude by any sect standard, but the smoke thins at the right moment and the liquid settles without a sour edge. For one breath, you understand why mortals dream of pill furnaces.",
+    "body": "The elixir is still crude by any sect standard, but the smoke thins at the right moment and the liquid settles without a sour edge. When a drop touches your tongue, heat moves under your skin instead of into your thoughts.\n\nAunt Lin watches your hands stop trembling.\n\n\"Do not call that cultivation. You are not gathering qi. You are letting a little of it temper the body before the sect teaches you how to breathe it properly.\"",
     "choices": [
       {
         "label": "Return to the village square",
@@ -1121,7 +1185,7 @@
   {
     "id": "crude_elixir_smoky_batch",
     "title": "Smoke And Ambition",
-    "body": "The clay stove spits smoke, the herbs darken too quickly, and the finished elixir smells sharper than it should. It will help, probably. It will also leave something behind.",
+    "body": "The clay stove spits smoke, the herbs darken too quickly, and the finished elixir smells sharper than it should. When you taste it, heat claws through your muscles before settling into a rough, useful ache.\n\n\"That is why mortals should be careful with borrowed qi,\" Aunt Lin says. \"It can temper a body. It can also leave dirt behind.\"",
     "choices": [
       {
         "label": "Return to the village square",
@@ -1143,6 +1207,9 @@
           "physique": 1,
           "willpower": 1,
           "health": -1,
+          "qi": 1,
+          "strength": 1,
+          "endurance": 1,
           "trainingFatigue": 2,
           "addSkills": {
             "bellows_rhythm": 1,
@@ -1164,6 +1231,8 @@
           "advanceDays": 1,
           "deadlineScene": "mountain_gate",
           "comprehension": 1,
+          "intelligence": 1,
+          "perception": 1,
           "addSkills": {
             "iron_sense": 1,
             "careful_eye": 1
@@ -1188,6 +1257,8 @@
           "advanceDays": 1,
           "deadlineScene": "mountain_gate",
           "health": -1,
+          "qi": 1,
+          "strength": 1,
           "trainingFatigue": 1,
           "addItems": ["reinforced_walking_staff"],
           "addSkills": {
@@ -1352,6 +1423,11 @@
           "advanceDays": 1,
           "deadlineScene": "mountain_gate",
           "trainingFatigue": 1,
+          "addItems": ["bamboo_staff"],
+          "equipItem": {
+            "slot": "weapon",
+            "itemId": "bamboo_staff"
+          },
           "addSkills": {
             "village_fist_forms": 1,
             "staff_basics": 1
@@ -1756,7 +1832,135 @@
   {
     "id": "mountain_gate",
     "title": "The Mountain Gate",
-    "body": "Mist coils around the ten thousand jade steps of the Azure Cloud Sect. At their peak, elders watch the mortal hopefuls below. A bronze bell sounds once, and the trial begins.",
+    "body": "Mist coils around the ten thousand jade steps of the Azure Cloud Sect. Carriages crowd the lower road: lacquered clan wagons, merchant litters, hired guards holding parasols over children in silk. Your village pack suddenly feels louder than any boast.\n\nA bronze bell sounds once. The exam has not begun, but judgment already has.",
+    "choices": [
+      {
+        "label": "Join the registration line with your trial token",
+        "nextScene": "exam_registration",
+        "effects": {
+          "startQuest": "enter_azure_cloud_sect"
+        }
+      }
+    ]
+  },
+  {
+    "id": "exam_registration",
+    "title": "Names Before The Gate",
+    "body": "A grey-robed examiner sits behind a jade table and checks each token without looking impressed by any of them. Rich candidates announce family names that make nearby servants bow. When your turn comes, you place the Azure Cloud trial token on the table.\n\nThe examiner's brush pauses.\n\n\"Village origin?\"\n\n\"Yes.\"\n\nA boy in blue silk laughs softly behind you.\n\n\"The mountain is generous this year.\"",
+    "choices": [
+      {
+        "label": "Keep your head level and answer the examiner plainly",
+        "nextScene": "exam_waiting_ground",
+        "effects": {
+          "meetNpc": "examiner_su",
+          "recordNpcConversation": {
+            "npcId": "examiner_su",
+            "topic": "Registered for the Azure Cloud Sect exam with the trial token while richer candidates watched."
+          },
+          "setFlags": {
+            "registered_for_azure_exam": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "exam_waiting_ground",
+    "title": "Waiting Ground",
+    "body": "Candidates gather below the first stair. Some stretch in practiced silence. Some compare pills. Some pretend they are not afraid. The blue-silk boy keeps glancing at your patched cuffs as if poverty might spread by eye contact.\n\nRumors move through the crowd: the first trial crushes weak bodies, the second exposes shallow minds, the third has sent noble heirs home bleeding, and the elders keep a hidden score no one announces.",
+    "choices": [
+      {
+        "label": "Listen to the blue-silk heir mocking village candidates",
+        "nextScene": "liu_zhen_intro",
+        "effects": {
+          "meetNpc": "liu_zhen",
+          "recordNpcConversation": {
+            "npcId": "liu_zhen",
+            "topic": "He mocked your village origin before the first trial and treated the exam like inheritance."
+          },
+          "setFlags": {
+            "met_liu_zhen": true
+          }
+        }
+      },
+      {
+        "label": "Speak with the quiet commoner counting breaths",
+        "nextScene": "han_yue_intro",
+        "effects": {
+          "meetNpc": "han_yue",
+          "recordNpcConversation": {
+            "npcId": "han_yue",
+            "topic": "She warned that the first stair tests whether fear can disrupt breath."
+          },
+          "setFlags": {
+            "met_han_yue": true
+          }
+        }
+      },
+      {
+        "label": "Help the nervous merchant child secure his pack straps",
+        "nextScene": "qiao_min_intro",
+        "effects": {
+          "meetNpc": "qiao_min",
+          "recordNpcConversation": {
+            "npcId": "qiao_min",
+            "topic": "Helped him secure his pack before the exam; he whispered that candidates sometimes vanish during the third trial."
+          },
+          "karma": 1,
+          "setFlags": {
+            "helped_qiao_min": true
+          }
+        }
+      },
+      {
+        "label": "Step onto the first pressure stair",
+        "nextScene": "exam_pressure_stair",
+        "effects": {
+          "updateQuest": {
+            "questId": "enter_azure_cloud_sect",
+            "step": 1
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "liu_zhen_intro",
+    "title": "Silk And Teeth",
+    "body": "The blue-silk heir speaks loudly enough for half the waiting ground to hear.\n\n\"A village token. How rustic. Did the sect begin accepting lost farm tools as candidates?\"\n\nYou look at his polished boots, then at the stair disappearing into mist.\n\n\"If the mountain wanted boots tested, yours would be climbing alone.\"\n\nHis smile thins. Good. He has learned your face.",
+    "choices": [
+      {
+        "label": "Return to the waiting ground",
+        "nextScene": "exam_waiting_ground"
+      }
+    ]
+  },
+  {
+    "id": "han_yue_intro",
+    "title": "The Quiet Count",
+    "body": "The quiet girl breathes in sets of three. Her robe is plain, but the cloth is clean and patched with the same care Aunt Lin gives bandages.\n\n\"Do not let them set your pace,\" she says without opening her eyes. \"The stair listens to panic.\"\n\n\"You sound like someone who has failed it before.\"\n\n\"My brother did. I listened when he came home.\"",
+    "choices": [
+      {
+        "label": "Return to the waiting ground",
+        "nextScene": "exam_waiting_ground"
+      }
+    ]
+  },
+  {
+    "id": "qiao_min_intro",
+    "title": "Loose Straps",
+    "body": "The merchant child fumbles with a pack nearly as large as his chest. You tighten one strap and shift the weight higher.\n\n\"Thank you,\" he says, face pale. \"My father bought three advice scrolls. They all disagree.\"\n\n\"What do they agree on?\"\n\n\"That the third trial is where polite people stop being polite.\"",
+    "choices": [
+      {
+        "label": "Return to the waiting ground",
+        "nextScene": "exam_waiting_ground"
+      }
+    ]
+  },
+  {
+    "id": "exam_pressure_stair",
+    "title": "The First Trial Begins",
+    "body": "The examiner raises one hand. The jade steps answer with a pressure that rolls down the mountain like invisible rain. Some candidates gasp. Liu Zhen laughs too quickly. Han Yue lowers her shoulders and breathes.\n\nThe first trial is not a race. That does not stop half the crowd from trying to make it one.",
     "choices": [
       {
         "label": "Climb steadily and conserve your breath",
@@ -1842,12 +2046,14 @@
         "nextScene": "tablet_hidden_current",
         "requires": {
           "stats": {
-            "spiritualSense": 2
+            "spiritualSense": 2,
+            "perception": 2
           }
         },
         "effects": {
           "qi": 3,
           "comprehension": 1,
+          "perception": 1,
           "setFlags": {
             "readTabletCurrent": true
           }
@@ -1855,7 +2061,7 @@
       },
       {
         "label": "Place your palm on the tablet",
-        "nextScene": "tablet_test",
+        "nextScene": "the_first_trial",
         "effects": {
           "updateQuest": {
             "questId": "enter_azure_cloud_sect",
@@ -1872,7 +2078,7 @@
     "choices": [
       {
         "label": "Place your palm on the tablet",
-        "nextScene": "tablet_test",
+        "nextScene": "the_first_trial",
         "effects": {
           "updateQuest": {
             "questId": "enter_azure_cloud_sect",
@@ -1883,27 +2089,149 @@
     ]
   },
   {
-    "id": "tablet_test",
-    "title": "The Tablet Stirs",
-    "body": "Cold light seeps into your palm. Somewhere above, an elder leans forward. The mountain has noticed you.",
+    "id": "the_first_trial",
+    "title": "The First Trial",
+    "body": "The tablet does not teach gently. The qi of the Azure Cloud mountain pours through the stone and into your arms like cold rain forced through cracked earth. This is not the thin warmth of village elixirs. This is abundance, heavy enough to bruise.\n\nYour mortal body panics first. Breath catches. Knees shake. Every careless day of training becomes a gap the mountain tries to split open.\n\nThen Old Ren's stance holds your bones in line. Aunt Lin's warnings keep you from swallowing the power whole. Mei's breath count gives the storm a rhythm. Guo's lessons remind you that pressure can either break a flaw or close it.\n\nSomething in your flesh gives way. Something stronger answers.\n\nYou break through to Mortal Middle.",
     "choices": [
       {
-        "label": "Accept the tablet's first teaching",
-        "nextScene": "first_teaching",
+        "label": "Endure the breakthrough and let the tablet finish judging you",
+        "nextScene": "tablet_test",
         "effects": {
-          "qi": 5,
-          "addItems": ["outer_disciple_token"],
-          "learnTechniques": ["azure_cloud_breathing"],
-          "addElements": {
-            "Cloud": 1,
-            "Wind": 1
+          "breakthrough": {
+            "stage": "Middle",
+            "maxQiIncrease": 5,
+            "maxHealthIncrease": 3,
+            "foundationCost": 2
           },
+          "foundationStability": 1,
+          "setFlags": {
+            "first_trial_breakthrough": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "tablet_test",
+    "title": "After The First Trial",
+    "body": "Cold light fades from the tablet. You are still standing. Several candidates are not.\n\nLiu Zhen stares at you as if your breakthrough insulted him personally.\n\n\"Luck,\" he says.\n\nHan Yue gives you the smallest nod.\n\nAbove the platform, Examiner Su marks your name with a second stroke instead of one.\n\n\"Mortal Middle during the first trial,\" he says. \"Crude foundation. Unusual endurance. Continue.\"",
+    "choices": [
+      {
+        "label": "Walk toward the second trial mirrors",
+        "nextScene": "exam_second_trial",
+        "effects": {
           "updateQuest": {
             "questId": "enter_azure_cloud_sect",
             "step": 2
           },
           "setFlags": {
-            "mountainNoticedPlayer": true
+            "mountainNoticedPlayer": true,
+            "public_first_trial_breakthrough": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "exam_second_trial",
+    "title": "Second Trial: Cloud Mirror",
+    "body": "The next platform holds seven bronze mirrors filled with slow white cloud. Candidates step before them and see different things: family banners, dead parents, piles of pills, empty hands.\n\nExaminer Su's voice carries over the platform.\n\n\"The mirror does not ask what you want. It asks whether you can see clearly while wanting it.\"",
+    "choices": [
+      {
+        "label": "Study the smallest flaw in the mirror's cloud pattern",
+        "nextScene": "cloud_mirror_clear",
+        "outcomes": [
+          {
+            "nextScene": "cloud_mirror_clear",
+            "requires": {
+              "skills": {
+                "careful_eye": 1
+              },
+              "stats": {
+                "comprehension": 2,
+                "intelligence": 2,
+                "perception": 2
+              }
+            },
+            "effects": {
+              "comprehension": 1,
+              "spiritualSense": 1,
+              "intelligence": 1,
+              "perception": 1,
+              "addElements": {
+                "Cloud": 1
+              },
+              "setFlags": {
+                "passed_cloud_mirror_cleanly": true
+              }
+            }
+          },
+          {
+            "nextScene": "cloud_mirror_shaken",
+            "effects": {
+              "willpower": 1,
+              "perception": 1,
+              "trainingFatigue": 1,
+              "setFlags": {
+                "passed_cloud_mirror_by_grit": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Anchor your breath and refuse the images",
+        "nextScene": "cloud_mirror_shaken",
+        "effects": {
+          "willpower": 1,
+          "intelligence": 1,
+          "foundationStability": 1,
+          "trainingFatigue": 1,
+          "setFlags": {
+            "passed_cloud_mirror_by_breath": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "cloud_mirror_clear",
+    "title": "Clear Cloud",
+    "body": "The mirror shows your village smaller than a thumbprint beneath the mountain. For a breath, shame tries to make it tiny. Then Guo's hammer, Aunt Lin's bitter table, Mei's ash line, and Old Ren's cane sharpen in your memory.\n\nSmall is not worthless. Small is where roots begin.\n\nThe cloud parts.",
+    "choices": [
+      {
+        "label": "Proceed to the survival ground",
+        "nextScene": "exam_third_trial"
+      }
+    ]
+  },
+  {
+    "id": "cloud_mirror_shaken",
+    "title": "Cloud In The Lungs",
+    "body": "The mirror catches you with images of silk robes, laughing heirs, and your own hands empty at the village gate. Your breath stumbles. Then it returns, rough but yours.\n\nThe mirror does not open kindly, but it opens.",
+    "choices": [
+      {
+        "label": "Proceed to the survival ground",
+        "nextScene": "exam_third_trial"
+      }
+    ]
+  },
+  {
+    "id": "exam_third_trial",
+    "title": "Third Trial: Mistwood Ground",
+    "body": "The third platform is not a platform at all. It is a mist-filled grove sealed by formation light. Examiner Su gestures toward the trees.\n\n\"Each candidate faces what the formation draws to them. Survive, retreat, or be carried out. Rank is not given to clean robes.\"\n\nSomewhere in the fog, something growls.",
+    "choices": [
+      {
+        "label": "Enter the mistwood with your guard raised",
+        "nextScene": "mist_wolf_ambush",
+        "effects": {
+          "startCombat": {
+            "enemyId": "mist_wolf",
+            "victorySceneId": "mist_wolf_defeated",
+            "defeatSceneId": "mist_wolf_escape"
+          },
+          "setFlags": {
+            "entered_mistwood_trial": true
           }
         }
       }
@@ -1967,18 +2295,11 @@
   {
     "id": "outer_disciple_accepted",
     "title": "Outer Disciple",
-    "body": "The watching elder gives the smallest nod. A path opens through the mist toward the outer sect courtyard. Your cultivation road has begun.",
+    "body": "The watching elder gives the smallest nod. A path opens through the mist toward the outer sect courtyard. Behind you, the exam grounds continue judging the hopeful and the broken. Ahead, dormitories, rules, missions, rivals, and real cultivation wait.\n\nYour village road has ended. Your sect road has begun.",
     "choices": [
       {
         "label": "Follow the misty path toward the outer sect courtyard",
-        "nextScene": "mist_wolf_ambush",
-        "effects": {
-          "startCombat": {
-            "enemyId": "mist_wolf",
-            "victorySceneId": "mist_wolf_defeated",
-            "defeatSceneId": "mist_wolf_escape"
-          }
-        }
+        "nextScene": "outer_sect_courtyard"
       }
     ]
   },
@@ -2018,8 +2339,8 @@
   },
   {
     "id": "mist_wolf_defeated",
-    "title": "First Hunt",
-    "body": "The mist wolf collapses into the wet grass. Its spirit core flickers once in your palm before going still. Somewhere beyond the trees, the outer sect bell rings again.",
+    "title": "Third Trial Blood",
+    "body": "The mist wolf collapses into the wet grass. Its spirit core flickers once in your palm before going still. Somewhere beyond the trees, the exam bell rings again.\n\nYou are bruised, breathing hard, and no longer able to pretend the sect tests are symbolic.",
     "choices": [
       {
         "label": "Study the spirit core and steady your breath",
@@ -2033,7 +2354,6 @@
             "Water": 1,
             "Wind": 1
           },
-          "completeQuest": "enter_azure_cloud_sect",
           "setFlags": {
             "prepared_first_breakthrough": true
           }
@@ -2044,11 +2364,116 @@
   {
     "id": "spirit_core_study",
     "title": "Preparing The First Bottleneck",
-    "body": "The mist wolf core is too weak to force a realm breakthrough, but its fading qi teaches you how unstable power disperses. You mark that lesson in your heart for the day you challenge a true boundary.",
+    "body": "The mist wolf core is too weak to force a realm breakthrough, but its fading qi teaches you how unstable power disperses. You mark that lesson in your heart for the day you challenge a true boundary.\n\nAt the edge of the grove, someone groans beneath a fallen branch. It is Qiao Min, the nervous merchant child, one arm pinned and his token just out of reach.",
     "choices": [
       {
-        "label": "Enter the outer sect courtyard",
-        "nextScene": "outer_sect_courtyard"
+        "label": "Approach the hidden trial at the grove edge",
+        "nextScene": "exam_hidden_trial"
+      }
+    ]
+  },
+  {
+    "id": "exam_hidden_trial",
+    "title": "Hidden Trial: The Pinned Candidate",
+    "body": "Formation mist curls around Qiao Min's trapped arm. Liu Zhen appears between the trees, robe torn but pride intact. He sees the fallen token and smiles.\n\n\"Leave him. The bell is nearly done. Help me reach the exit first and my family will remember your sense.\"\n\nQiao Min tries not to beg. That makes it worse.",
+    "choices": [
+      {
+        "label": "Free Qiao Min even if it costs your ranking",
+        "nextScene": "exam_mercy_choice",
+        "effects": {
+          "karma": 2,
+          "health": -1,
+          "meetNpc": "qiao_min",
+          "recordNpcConversation": {
+            "npcId": "qiao_min",
+            "topic": "Freed him during the hidden character trial instead of chasing rank."
+          },
+          "setFlags": {
+            "helped_candidate_hidden_trial": true
+          }
+        }
+      },
+      {
+        "label": "Reject Liu Zhen but take the fastest safe path out",
+        "nextScene": "exam_honest_exit",
+        "effects": {
+          "willpower": 1,
+          "setFlags": {
+            "refused_liu_zhen_bribe": true
+          }
+        }
+      },
+      {
+        "label": "Accept Liu Zhen's offer and hurry for rank",
+        "nextScene": "exam_ambition_choice",
+        "effects": {
+          "karma": -2,
+          "spiritStones": 2,
+          "recordNpcConversation": {
+            "npcId": "liu_zhen",
+            "topic": "Accepted his offer during the hidden trial, gaining advantage at a moral cost."
+          },
+          "setFlags": {
+            "accepted_liu_zhen_bribe": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "exam_mercy_choice",
+    "title": "A Hand Under The Branch",
+    "body": "The branch shifts one finger-width at a time. Qiao Min bites through a cry. When he finally pulls free, the formation bell is already ringing the last count.\n\nExaminer Su is waiting at the exit.\n\n\"Late,\" he says.\n\nThen his gaze flicks to Qiao Min walking beside you.\n\n\"Noted.\"",
+    "choices": [
+      {
+        "label": "Stand before the ranking stone",
+        "nextScene": "exam_ranking"
+      }
+    ]
+  },
+  {
+    "id": "exam_honest_exit",
+    "title": "No Bought Path",
+    "body": "You do not take Liu Zhen's bargain. You also do not throw your life away trying to solve every wound in the mist. The exit opens under your hand with seconds to spare.\n\nLiu Zhen arrives after you, face pale with fury.\n\n\"Village luck again,\" he says.\n\n\"You should buy better luck.\"",
+    "choices": [
+      {
+        "label": "Stand before the ranking stone",
+        "nextScene": "exam_ranking"
+      }
+    ]
+  },
+  {
+    "id": "exam_ambition_choice",
+    "title": "A Clean Robe, A Dirty Hand",
+    "body": "Liu Zhen's shortcut works. You reach the exit early, but the mist clings to your sleeves with a cold that does not fade.\n\nExaminer Su looks at you for one heartbeat too long.\n\n\"Efficient,\" he says.\n\nIt does not sound like praise.",
+    "choices": [
+      {
+        "label": "Stand before the ranking stone",
+        "nextScene": "exam_ranking"
+      }
+    ]
+  },
+  {
+    "id": "exam_ranking",
+    "title": "Ranking Stone",
+    "body": "Names flare across the ranking stone in cloud-white light. Noble heirs search for their places first. Servants whisper. Failed candidates are led away with blank faces.\n\nYour name appears lower than Liu Zhen's and higher than half the crowd expected. Beside it, a second mark blooms: First Trial Breakthrough.\n\nExaminer Su reads the result aloud.\n\n\"Accepted as an outer disciple. Foundation rough. Endurance notable. Character under observation.\"\n\nFrom somewhere near the elder seats, you feel attention settle on you like a hand between the shoulders.",
+    "choices": [
+      {
+        "label": "Receive the outer disciple token and first breathing method",
+        "nextScene": "first_teaching",
+        "effects": {
+          "qi": 5,
+          "addItems": ["outer_disciple_token"],
+          "learnTechniques": ["azure_cloud_breathing"],
+          "addElements": {
+            "Cloud": 1,
+            "Wind": 1
+          },
+          "completeQuest": "enter_azure_cloud_sect",
+          "setFlags": {
+            "accepted_outer_disciple_after_exam": true
+          }
+        }
       }
     ]
   },

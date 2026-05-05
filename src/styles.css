@@ -130,6 +130,34 @@ h3 {
   background: rgba(111, 77, 36, 0.72);
 }
 
+.choices button:disabled {
+  border-color: rgba(231, 205, 157, 0.16);
+  color: #8e8376;
+  background: rgba(255, 255, 255, 0.035);
+  cursor: not-allowed;
+}
+
+.choices button:disabled:hover {
+  border-color: rgba(231, 205, 157, 0.16);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.choice-option {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.choice-option p {
+  margin: 0;
+  color: #b7ab99;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.choice-option-locked p {
+  color: #9f9384;
+}
+
 .locked-message {
   border: 1px solid rgba(231, 205, 157, 0.14);
   border-radius: 6px;
@@ -265,6 +293,21 @@ dd {
 .compact-list button:hover {
   border-color: rgba(245, 209, 134, 0.72);
   background: rgba(111, 77, 36, 0.45);
+}
+
+.compact-list button:disabled {
+  color: #8e8376;
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.inventory-groups {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.inventory-group .compact-list {
+  margin-bottom: 0;
 }
 
 .skill-tree-list {
@@ -409,7 +452,7 @@ dd {
 
 .cultivation-controls {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 0.45rem;
 }
 

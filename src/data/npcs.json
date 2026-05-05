@@ -161,6 +161,141 @@
     ]
   },
   {
+    "id": "examiner_su",
+    "name": "Examiner Su",
+    "title": "Azure Cloud Exam Steward",
+    "disposition": "neutral",
+    "faction": "Azure Cloud Sect",
+    "firstSceneId": "exam_registration",
+    "description": "A grey-robed examiner whose brush pauses only when a candidate is unusual enough to deserve a second mark.",
+    "personality": [
+      "precise",
+      "reserved",
+      "fair but unsentimental",
+      "not easily impressed"
+    ],
+    "relationshipToPlayer": "Registers the player for the Azure Cloud exam and later marks the first-trial breakthrough as unusual.",
+    "skills": {
+      "careful_eye": 5,
+      "foundation_control": 4,
+      "plain_speech": 4,
+      "azure_cloud_breathing_roots": 3
+    },
+    "teachesSkills": [],
+    "associatedQuests": ["enter_azure_cloud_sect"],
+    "memoryFlags": [
+      "registered_for_azure_exam",
+      "public_first_trial_breakthrough",
+      "accepted_outer_disciple_after_exam"
+    ],
+    "returnHooks": [
+      "Can remember whether the player passed by endurance, clarity, or character.",
+      "Can appear as a bureaucratic gatekeeper for future sect tests.",
+      "Can quietly warn the player when elder attention becomes dangerous."
+    ]
+  },
+  {
+    "id": "liu_zhen",
+    "name": "Liu Zhen",
+    "title": "Blue-Silk Liu Clan Heir",
+    "disposition": "rival",
+    "faction": "Liu Clan / Azure Cloud Candidates",
+    "firstSceneId": "liu_zhen_intro",
+    "description": "A polished noble candidate who treats the sect exam like a family entitlement and poverty like a personal insult.",
+    "personality": [
+      "arrogant",
+      "performative",
+      "status-obsessed",
+      "dangerous when embarrassed"
+    ],
+    "relationshipToPlayer": "Mocks the player's village origin, then becomes personally offended when the player survives the first trial and breakthrough.",
+    "skills": {
+      "azure_cloud_breathing_roots": 2,
+      "sparring_instinct": 3,
+      "plain_speech": 1,
+      "careful_eye": 2
+    },
+    "teachesSkills": [],
+    "associatedQuests": ["enter_azure_cloud_sect"],
+    "memoryFlags": [
+      "met_liu_zhen",
+      "refused_liu_zhen_bribe",
+      "accepted_liu_zhen_bribe"
+    ],
+    "returnHooks": [
+      "Can become the first recurring sect rival.",
+      "Can use clan influence to make outer sect tasks harder.",
+      "Can be forced into grudging respect if repeatedly defeated without cheating."
+    ]
+  },
+  {
+    "id": "han_yue",
+    "name": "Han Yue",
+    "title": "Quiet Commoner Candidate",
+    "disposition": "friendly rival",
+    "faction": "Azure Cloud Candidates",
+    "firstSceneId": "han_yue_intro",
+    "description": "A plain-robed candidate who learned from her brother's failed exam and trusts breath more than bravado.",
+    "personality": [
+      "quiet",
+      "observant",
+      "disciplined",
+      "honest about fear"
+    ],
+    "relationshipToPlayer": "Warns the player not to let other candidates set their pace before the first trial.",
+    "skills": {
+      "calm_breath": 4,
+      "foundation_control": 3,
+      "careful_eye": 3,
+      "willpower": 3
+    },
+    "teachesSkills": [],
+    "associatedQuests": ["enter_azure_cloud_sect"],
+    "memoryFlags": [
+      "met_han_yue",
+      "passed_cloud_mirror_by_breath",
+      "passed_cloud_mirror_cleanly"
+    ],
+    "returnHooks": [
+      "Can become a grounded friend in the outer sect.",
+      "Can compare trial results with the player after acceptance.",
+      "Can ask for help uncovering what happened during her brother's failed exam."
+    ]
+  },
+  {
+    "id": "qiao_min",
+    "name": "Qiao Min",
+    "title": "Nervous Merchant Candidate",
+    "disposition": "ally",
+    "faction": "Azure Cloud Candidates",
+    "firstSceneId": "qiao_min_intro",
+    "description": "A frightened merchant child with too much purchased advice and not enough confidence in his own feet.",
+    "personality": [
+      "anxious",
+      "grateful",
+      "talkative when scared",
+      "more observant than he seems"
+    ],
+    "relationshipToPlayer": "Receives help before the exam and may become proof that character matters during the hidden trial.",
+    "skills": {
+      "careful_eye": 2,
+      "plain_speech": 3,
+      "herb_recognition": 1,
+      "campcraft": 1
+    },
+    "teachesSkills": [],
+    "associatedQuests": ["enter_azure_cloud_sect"],
+    "memoryFlags": [
+      "helped_qiao_min",
+      "helped_candidate_hidden_trial"
+    ],
+    "returnHooks": [
+      "Can become an information source through merchant family letters.",
+      "Can repay kindness with supplies or warnings.",
+      "Can show how weaker disciples survive through alliances."
+    ]
+  },
+  {
     "id": "scripture_pavilion_clerk",
     "name": "Unnamed Scripture Pavilion Clerk",
     "title": "Grey-Robed Clerk",
