@@ -1,0 +1,56 @@
+[
+  {
+    "id": "river_marrow_body",
+    "name": "River-Marrow Body",
+    "description": "Water and earth have settled into your bones, letting your body endure pressure like a stone beneath a current.",
+    "requiredElements": {
+      "Water": 4,
+      "Earth": 2
+    }
+  },
+  {
+    "id": "ironbone_constitution",
+    "name": "Ironbone Constitution",
+    "description": "Metal essence has found the hard places inside you. Your frame remembers the forge even after the fire dies.",
+    "requiredElements": {
+      "Metal": 4,
+      "Earth": 1
+    }
+  },
+  {
+    "id": "ember_vessel_body",
+    "name": "Ember Vessel Body",
+    "description": "Fire essence lingers in your blood, eager to turn strain into heat and heat into force.",
+    "requiredElements": {
+      "Fire": 4,
+      "Wood": 1
+    }
+  },
+  {
+    "id": "verdant_root_body",
+    "name": "Verdant Root Body",
+    "description": "Wood essence gathers quietly in your flesh, favoring patience, recovery, and stubborn growth.",
+    "requiredElements": {
+      "Wood": 4,
+      "Water": 1
+    }
+  },
+  {
+    "id": "cloudbreath_constitution",
+    "name": "Cloudbreath Constitution",
+    "description": "Cloud and wind essence make your breath feel larger than your chest, as if the sky has left a small door open.",
+    "requiredElements": {
+      "Cloud": 3,
+      "Wind": 2
+    }
+  },
+  {
+    "id": "frostthread_meridians",
+    "name": "Frostthread Meridians",
+    "description": "Ice essence traces cool lines through your meridians, slowing panic and sharpening sensation.",
+    "requiredElements": {
+      "Ice": 3,
+      "Water": 2
+    }
+  }
+]

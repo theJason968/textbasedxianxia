@@ -1,0 +1,277 @@
+[
+  {
+    "id": "river_endurance",
+    "name": "River Endurance",
+    "tree": "Mortal Foundation",
+    "tier": 1,
+    "maxRank": 3,
+    "effects": {
+      "combatDefense": 1
+    },
+    "description": "Cold water and heavy stones have taught your body how to continue."
+  },
+  {
+    "id": "farmhand_strength",
+    "name": "Farmhand Strength",
+    "tree": "Mortal Foundation",
+    "tier": 1,
+    "maxRank": 3,
+    "effects": {
+      "combatDamage": 1
+    },
+    "description": "Labor has made your strength plain, practical, and stubborn."
+  },
+  {
+    "id": "village_fist_forms",
+    "name": "Village Fist Forms",
+    "tree": "Martial Arts",
+    "tier": 1,
+    "maxRank": 3,
+    "effects": {
+      "combatDamage": 1,
+      "combatDefense": 1
+    },
+    "description": "A plain mortal boxing set built for balance, guard, and honest bruises."
+  },
+  {
+    "id": "staff_basics",
+    "name": "Staff Basics",
+    "tree": "Martial Arts",
+    "tier": 1,
+    "maxRank": 3,
+    "effects": {
+      "combatDamage": 1,
+      "combatDefense": 1
+    },
+    "description": "You know how to keep distance with a staff and make simple strikes land."
+  },
+  {
+    "id": "sparring_instinct",
+    "name": "Sparring Instinct",
+    "tree": "Martial Arts",
+    "tier": 2,
+    "maxRank": 3,
+    "requiresSkills": {
+      "village_fist_forms": 1
+    },
+    "effects": {
+      "combatDefense": 1
+    },
+    "description": "Practice against moving people has taught you not to freeze when struck."
+  },
+  {
+    "id": "corrected_stance",
+    "name": "Corrected Stance",
+    "tree": "Martial Arts",
+    "tier": 2,
+    "maxRank": 3,
+    "requiresSkills": {
+      "village_fist_forms": 1
+    },
+    "effects": {
+      "combatDamage": 1,
+      "combatDefense": 1
+    },
+    "description": "A teacher has corrected the small mistakes that wasted force and exposed your ribs."
+  },
+  {
+    "id": "skin_tempering",
+    "name": "Skin Tempering",
+    "tree": "Body Tempering",
+    "tier": 1,
+    "maxRank": 3,
+    "effects": {
+      "combatDefense": 1
+    },
+    "description": "Cold, impact, and repetition have made pain less persuasive."
+  },
+  {
+    "id": "sinew_tempering",
+    "name": "Sinew Tempering",
+    "tree": "Body Tempering",
+    "tier": 2,
+    "maxRank": 3,
+    "requiresSkills": {
+      "skin_tempering": 1
+    },
+    "effects": {
+      "combatDamage": 1,
+      "combatDefense": 1
+    },
+    "description": "Your strength is beginning to settle into tendons instead of only muscles."
+  },
+  {
+    "id": "careful_eye",
+    "name": "Careful Eye",
+    "tree": "Mind And Perception",
+    "tier": 1,
+    "maxRank": 3,
+    "description": "You notice small details before they become large problems."
+  },
+  {
+    "id": "calm_breath",
+    "name": "Calm Breath",
+    "tree": "Mind And Perception",
+    "tier": 1,
+    "maxRank": 3,
+    "description": "You can slow fear into something almost useful."
+  },
+  {
+    "id": "plain_speech",
+    "name": "Plain Speech",
+    "tree": "Social Bearing",
+    "tier": 1,
+    "maxRank": 3,
+    "description": "You speak like a mortal among mortals, which can be rarer than talent."
+  },
+  {
+    "id": "campcraft",
+    "name": "Campcraft",
+    "tree": "Survival",
+    "tier": 1,
+    "maxRank": 3,
+    "description": "You know how to keep warm, dry, fed, and moving on a bad road."
+  },
+  {
+    "id": "herb_recognition",
+    "name": "Herb Recognition",
+    "tree": "Alchemy",
+    "tier": 1,
+    "maxRank": 3,
+    "description": "You can tell useful leaves from pretty poison and wasted effort."
+  },
+  {
+    "id": "heat_control",
+    "name": "Heat Control",
+    "tree": "Alchemy",
+    "tier": 1,
+    "maxRank": 3,
+    "description": "You know when a brew needs patience and when the fire should bite."
+  },
+  {
+    "id": "crude_elixir_refining",
+    "name": "Crude Elixir Refining",
+    "tree": "Alchemy",
+    "tier": 2,
+    "maxRank": 3,
+    "requiresSkills": {
+      "herb_recognition": 1
+    },
+    "description": "You can make mortal tools imitate the outer edge of pill refining."
+  },
+  {
+    "id": "impurity_awareness",
+    "name": "Impurity Awareness",
+    "tree": "Alchemy",
+    "tier": 2,
+    "maxRank": 3,
+    "requiresSkills": {
+      "herb_recognition": 1
+    },
+    "description": "Your nose and instincts warn you when medicine will leave a debt."
+  },
+  {
+    "id": "herbalist_apprentice",
+    "name": "Herbalist Apprentice",
+    "tree": "Alchemy",
+    "tier": 2,
+    "maxRank": 3,
+    "requiresSkills": {
+      "herb_recognition": 1
+    },
+    "description": "A mortal herbalist trusts you with preparation work that can help or harm a body."
+  },
+  {
+    "id": "bellows_rhythm",
+    "name": "Bellows Rhythm",
+    "tree": "Blacksmithing",
+    "tier": 1,
+    "maxRank": 3,
+    "description": "You can feed a forge without letting the fire rule you."
+  },
+  {
+    "id": "iron_sense",
+    "name": "Iron Sense",
+    "tree": "Blacksmithing",
+    "tier": 1,
+    "maxRank": 3,
+    "description": "Flaws in plain metal catch your eye before they break under strain."
+  },
+  {
+    "id": "tool_repair",
+    "name": "Tool Repair",
+    "tree": "Blacksmithing",
+    "tier": 2,
+    "maxRank": 3,
+    "requiresSkills": {
+      "iron_sense": 1
+    },
+    "effects": {
+      "combatDefense": 1
+    },
+    "description": "You can keep knives, staffs, buckles, and road gear alive another day."
+  },
+  {
+    "id": "hammer_discipline",
+    "name": "Hammer Discipline",
+    "tree": "Blacksmithing",
+    "tier": 2,
+    "maxRank": 3,
+    "requiresSkills": {
+      "bellows_rhythm": 1
+    },
+    "effects": {
+      "combatDamage": 1
+    },
+    "description": "Repeated blows teach strength to become accurate."
+  },
+  {
+    "id": "forge_apprentice",
+    "name": "Forge Apprentice",
+    "tree": "Blacksmithing",
+    "tier": 2,
+    "maxRank": 3,
+    "requiresSkills": {
+      "iron_sense": 1
+    },
+    "effects": {
+      "combatDefense": 1
+    },
+    "description": "Blacksmith Guo has taught you how honest repairs keep gear and bones from failing."
+  },
+  {
+    "id": "untrained_circulation",
+    "name": "Untrained Circulation",
+    "tree": "Cultivation Foundation",
+    "tier": 1,
+    "maxRank": 3,
+    "description": "You can stir qi by instinct, though instinct is not the same as safety."
+  },
+  {
+    "id": "foundation_control",
+    "name": "Foundation Control",
+    "tree": "Cultivation Foundation",
+    "tier": 2,
+    "maxRank": 3,
+    "requiresSkills": {
+      "calm_breath": 1
+    },
+    "description": "You are beginning to value stability as much as speed."
+  },
+  {
+    "id": "shrine_breathing",
+    "name": "Shrine Breathing",
+    "tree": "Cultivation Foundation",
+    "tier": 1,
+    "maxRank": 3,
+    "description": "A shrine keeper's counting method steadies breath before it becomes true cultivation."
+  },
+  {
+    "id": "azure_cloud_breathing_roots",
+    "name": "Azure Cloud Breathing Roots",
+    "tree": "Azure Cloud Methods",
+    "tier": 1,
+    "maxRank": 3,
+    "description": "The sect method has begun to settle into your body instead of only your memory."
+  }
+]

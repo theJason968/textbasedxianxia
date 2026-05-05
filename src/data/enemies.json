@@ -1,0 +1,12 @@
+[
+  {
+    "id": "mist_wolf",
+    "name": "Mist Wolf",
+    "description": "A lean spirit beast with pale fur and eyes like wet jade.",
+    "maxHealth": 18,
+    "attack": 4,
+    "defense": 1,
+    "qiReward": 4,
+    "itemRewards": ["mist_wolf_core"]
+  }
+]

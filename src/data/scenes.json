@@ -1,0 +1,1972 @@
+[
+  {
+    "id": "pre_exam_days",
+    "title": "Ten Days Before The Exam",
+    "body": "The Azure Cloud Sect will open its mountain gate in ten days. Your village is mortal soil: smoke from cookfires, cold river stones, patched sleeves, iron tools, bitter herbs, and people trying not to say goodbye too early. If you mean to climb toward immortals, you have a little time to make your mortal foundation worth something.",
+    "choices": [
+      {
+        "label": "Train your body at the river stone ford",
+        "nextScene": "river_stone_ford"
+      },
+      {
+        "label": "Practice mortal martial arts in the abandoned threshing yard",
+        "nextScene": "abandoned_threshing_yard"
+      },
+      {
+        "label": "Study herbs and crude alchemy with the village herbalist",
+        "nextScene": "village_herbalist_hut"
+      },
+      {
+        "label": "Work the village forge and prepare road gear",
+        "nextScene": "village_forge_yard"
+      },
+      {
+        "label": "Spend a quiet day with family, shrine, and road preparations",
+        "nextScene": "family_courtyard"
+      },
+      {
+        "label": "Seek guidance from the village teachers",
+        "nextScene": "village_teacher_circle"
+      },
+      {
+        "label": "Leave for the Azure Cloud mountain gate now",
+        "nextScene": "mountain_gate",
+        "effects": {
+          "daysRemainingToExam": -10
+        }
+      }
+    ]
+  },
+  {
+    "id": "village_teacher_circle",
+    "title": "Village Teachers",
+    "body": "The village has no immortals, but it has people who know what breaks mortals. Old Ren watches the practice yard with a cane across his knees. Aunt Lin sorts bitter roots in the shade. Blacksmith Guo hammers iron by sound. Shrine Keeper Mei sweeps ash from a cracked altar and counts every breath.",
+    "choices": [
+      {
+        "label": "Ask Old Ren to judge your martial stance",
+        "nextScene": "old_ren_stance_test",
+        "effects": {
+          "startQuest": "old_ren_stance_test"
+        }
+      },
+      {
+        "label": "Help Aunt Lin prepare exam medicine",
+        "nextScene": "aunt_lin_medicine_task",
+        "effects": {
+          "startQuest": "aunt_lin_medicine_task"
+        }
+      },
+      {
+        "label": "Ask Blacksmith Guo for an honest forge lesson",
+        "nextScene": "guo_honest_iron",
+        "effects": {
+          "startQuest": "guo_honest_iron"
+        }
+      },
+      {
+        "label": "Ask Shrine Keeper Mei to teach you breath counting",
+        "nextScene": "mei_three_breaths",
+        "effects": {
+          "startQuest": "mei_three_breaths"
+        }
+      },
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "old_ren_stance_test",
+    "title": "Old Ren's Cane",
+    "body": "Old Ren was only a caravan guard, not a cultivator, but half the village still walks around his yard when he is holding a cane. He looks at your feet first, then your shoulders, then the space your ribs forgot to protect.",
+    "choices": [
+      {
+        "label": "Hold your stance while Old Ren tries to break it",
+        "nextScene": "old_ren_foundation_drills",
+        "outcomes": [
+          {
+            "nextScene": "old_ren_corrected_stance",
+            "requires": {
+              "skills": {
+                "village_fist_forms": 1
+              },
+              "stats": {
+                "physique": 2
+              }
+            },
+            "effects": {
+              "advanceDays": 1,
+              "deadlineScene": "mountain_gate",
+              "health": -1,
+              "trainingFatigue": 1,
+              "willpower": 1,
+              "addSkills": {
+                "corrected_stance": 1,
+                "sparring_instinct": 1
+              },
+              "updateQuest": {
+                "questId": "old_ren_stance_test",
+                "step": 2
+              },
+              "completeQuest": "old_ren_stance_test",
+              "setFlags": {
+                "old_ren_corrected_stance": true
+              }
+            }
+          },
+          {
+            "nextScene": "old_ren_foundation_drills",
+            "effects": {
+              "advanceDays": 1,
+              "deadlineScene": "mountain_gate",
+              "health": -2,
+              "trainingFatigue": 1,
+              "addSkills": {
+                "village_fist_forms": 1
+              },
+              "updateQuest": {
+                "questId": "old_ren_stance_test",
+                "step": 1
+              },
+              "setFlags": {
+                "old_ren_foundation_drills": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Return to the village teachers",
+        "nextScene": "village_teacher_circle"
+      }
+    ]
+  },
+  {
+    "id": "old_ren_corrected_stance",
+    "title": "Correction By Cane",
+    "body": "Old Ren's cane taps your ankle, hip, ribs, and wrist. Each touch is humiliatingly small. Each one fixes a leak in your strength. When he finally swings for real, your body answers before your pride can flinch.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "old_ren_foundation_drills",
+    "title": "Ren's Foundation Drills",
+    "body": "Old Ren breaks your stance with one bored push. Then he makes you rebuild it from the feet up: heel, knee, hip, breath, guard. No glory. Just the parts you skipped.",
+    "choices": [
+      {
+        "label": "Return after more practice",
+        "nextScene": "old_ren_stance_test"
+      },
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "aunt_lin_medicine_task",
+    "title": "Aunt Lin's Bitter Table",
+    "body": "Aunt Lin does not ask whether you want to become immortal. She asks whether you can tell fever leaf from throatbane after both have dried brown. Her table is covered in roots, powders, and consequences.",
+    "choices": [
+      {
+        "label": "Prepare a stable fever powder under Aunt Lin's eye",
+        "nextScene": "aunt_lin_smoke_and_scolding",
+        "outcomes": [
+          {
+            "nextScene": "aunt_lin_clean_medicine",
+            "requires": {
+              "skills": {
+                "herb_recognition": 1,
+                "heat_control": 1
+              }
+            },
+            "effects": {
+              "advanceDays": 1,
+              "deadlineScene": "mountain_gate",
+              "comprehension": 1,
+              "addItems": ["crude_qi_elixir"],
+              "addSkills": {
+                "herbalist_apprentice": 1,
+                "impurity_awareness": 1
+              },
+              "addElements": {
+                "Wood": 1,
+                "Fire": 1
+              },
+              "updateQuest": {
+                "questId": "aunt_lin_medicine_task",
+                "step": 2
+              },
+              "completeQuest": "aunt_lin_medicine_task",
+              "setFlags": {
+                "aunt_lin_trusts_medicine_work": true
+              }
+            }
+          },
+          {
+            "nextScene": "aunt_lin_smoke_and_scolding",
+            "effects": {
+              "advanceDays": 1,
+              "deadlineScene": "mountain_gate",
+              "impurity": 1,
+              "addSkills": {
+                "herb_recognition": 1,
+                "heat_control": 1
+              },
+              "addElements": {
+                "Wood": 1
+              },
+              "updateQuest": {
+                "questId": "aunt_lin_medicine_task",
+                "step": 1
+              },
+              "setFlags": {
+                "aunt_lin_scolded_bad_batch": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Return to the village teachers",
+        "nextScene": "village_teacher_circle"
+      }
+    ]
+  },
+  {
+    "id": "aunt_lin_clean_medicine",
+    "title": "Medicine That Leaves Less Debt",
+    "body": "The powder settles pale and even. Aunt Lin sniffs it, says nothing for a very long moment, then slides a crude qi elixir toward you. Good medicine, she says, is what helps without asking too much back.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "aunt_lin_smoke_and_scolding",
+    "title": "Smoke And Scolding",
+    "body": "The batch smokes, then clumps, then earns a sound from Aunt Lin that is somehow worse than shouting. She makes you start again with easier herbs and explains exactly how impatience becomes poison.",
+    "choices": [
+      {
+        "label": "Return after studying herbs and heat",
+        "nextScene": "aunt_lin_medicine_task"
+      },
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "guo_honest_iron",
+    "title": "Guo's Honest Iron",
+    "body": "Blacksmith Guo listens to metal more than people. He hands you a cracked sickle and says immortal swords can wait until you stop ruining mortal tools.",
+    "choices": [
+      {
+        "label": "Temper the cracked sickle without hiding the flaw",
+        "nextScene": "guo_ruined_temper",
+        "outcomes": [
+          {
+            "nextScene": "guo_clean_temper",
+            "requires": {
+              "skills": {
+                "iron_sense": 1,
+                "bellows_rhythm": 1
+              }
+            },
+            "effects": {
+              "advanceDays": 1,
+              "deadlineScene": "mountain_gate",
+              "physique": 1,
+              "trainingFatigue": 1,
+              "addItems": ["reinforced_walking_staff"],
+              "addSkills": {
+                "forge_apprentice": 1,
+                "tool_repair": 1
+              },
+              "addElements": {
+                "Metal": 2,
+                "Fire": 1
+              },
+              "updateQuest": {
+                "questId": "guo_honest_iron",
+                "step": 2
+              },
+              "completeQuest": "guo_honest_iron",
+              "setFlags": {
+                "guo_taught_honest_iron": true
+              }
+            }
+          },
+          {
+            "nextScene": "guo_ruined_temper",
+            "effects": {
+              "advanceDays": 1,
+              "deadlineScene": "mountain_gate",
+              "trainingFatigue": 1,
+              "addSkills": {
+                "bellows_rhythm": 1,
+                "iron_sense": 1
+              },
+              "addElements": {
+                "Fire": 1,
+                "Metal": 1
+              },
+              "updateQuest": {
+                "questId": "guo_honest_iron",
+                "step": 1
+              },
+              "setFlags": {
+                "guo_ruined_first_temper": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Return to the village teachers",
+        "nextScene": "village_teacher_circle"
+      }
+    ]
+  },
+  {
+    "id": "guo_clean_temper",
+    "title": "The Ring Of Good Iron",
+    "body": "The sickle rings dull but steady when Guo tests it. He nods once, which from him is nearly applause, and shows you how the same care can bind iron around a walking staff.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "guo_ruined_temper",
+    "title": "A Crack Made Worse",
+    "body": "You heat the sickle too eagerly. The crack widens with a tiny, accusing sound. Guo takes it back, breaks it clean, and makes you study the grain of the failure.",
+    "choices": [
+      {
+        "label": "Return after learning the forge rhythm",
+        "nextScene": "guo_honest_iron"
+      },
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "mei_three_breaths",
+    "title": "Mei's Three Breaths",
+    "body": "Shrine Keeper Mei is younger than the title sounds and older than her face suggests. She sweeps ash into a neat line and tells you the first immortal test is usually whether a mortal can stop performing long enough to breathe.",
+    "choices": [
+      {
+        "label": "Match three breaths to the incense smoke",
+        "nextScene": "mei_unsteady_smoke",
+        "outcomes": [
+          {
+            "nextScene": "mei_still_smoke",
+            "requires": {
+              "skills": {
+                "calm_breath": 1
+              },
+              "stats": {
+                "willpower": 2
+              }
+            },
+            "effects": {
+              "advanceDays": 1,
+              "deadlineScene": "mountain_gate",
+              "foundationStability": 2,
+              "trainingFatigue": -1,
+              "addSkills": {
+                "shrine_breathing": 1,
+                "foundation_control": 1
+              },
+              "addElements": {
+                "Cloud": 2
+              },
+              "updateQuest": {
+                "questId": "mei_three_breaths",
+                "step": 2
+              },
+              "completeQuest": "mei_three_breaths",
+              "setFlags": {
+                "mei_taught_three_breaths": true
+              }
+            }
+          },
+          {
+            "nextScene": "mei_unsteady_smoke",
+            "effects": {
+              "advanceDays": 1,
+              "deadlineScene": "mountain_gate",
+              "willpower": 1,
+              "foundationStability": 1,
+              "addSkills": {
+                "calm_breath": 1,
+                "shrine_breathing": 1
+              },
+              "addElements": {
+                "Cloud": 1
+              },
+              "updateQuest": {
+                "questId": "mei_three_breaths",
+                "step": 1
+              },
+              "setFlags": {
+                "mei_started_breath_counting": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Return to the village teachers",
+        "nextScene": "village_teacher_circle"
+      }
+    ]
+  },
+  {
+    "id": "mei_still_smoke",
+    "title": "Smoke Without Trembling",
+    "body": "The incense smoke rises straight. Your breath follows without chasing it. Mei smiles like someone watching a door unlock from the inside.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "mei_unsteady_smoke",
+    "title": "Smoke That Shivers",
+    "body": "Your breath keeps trying to impress the shrine instead of match it. Mei lets you fail three times before speaking. Better here, she says, than on the mountain steps.",
+    "choices": [
+      {
+        "label": "Return after steadying your breath",
+        "nextScene": "mei_three_breaths"
+      },
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "river_stone_ford",
+    "title": "River Stone Ford",
+    "body": "The village river has no spiritual pressure, no immortal formation, and no mercy. It is winter-cold around the knees and strong enough to drag a careless body downstream. The older youths trained here before they failed the sect exam. Their footprints are gone, but the stones remain.",
+    "choices": [
+      {
+        "label": "Carry river stones against the current",
+        "nextScene": "river_stone_training",
+        "outcomes": [
+          {
+            "nextScene": "river_body_tempering_breakthrough",
+            "requires": {
+              "skills": {
+                "river_endurance": 2,
+                "skin_tempering": 1
+              },
+              "stats": {
+                "physique": 3
+              }
+            },
+            "effects": {
+              "advanceDays": 1,
+              "deadlineScene": "mountain_gate",
+              "physique": 1,
+              "health": -1,
+              "trainingFatigue": 1,
+              "addSkills": {
+                "river_endurance": 1,
+                "sinew_tempering": 1
+              },
+              "addElements": {
+                "Water": 2,
+                "Earth": 1
+              },
+              "setFlags": {
+                "tempered_sinews_at_river": true
+              }
+            }
+          },
+          {
+            "nextScene": "river_stone_training",
+            "effects": {
+              "advanceDays": 1,
+              "deadlineScene": "mountain_gate",
+              "physique": 1,
+              "health": -2,
+              "trainingFatigue": 1,
+              "addSkills": {
+                "river_endurance": 1,
+                "skin_tempering": 1
+              },
+              "addElements": {
+                "Water": 1,
+                "Earth": 1
+              },
+              "setFlags": {
+                "trained_before_exam": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Hold horse stance beneath the little falls",
+        "nextScene": "waterfall_stance",
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "willpower": 1,
+          "health": -1,
+          "trainingFatigue": 1,
+          "addSkills": {
+            "skin_tempering": 1,
+            "calm_breath": 1
+          },
+          "addElements": {
+            "Water": 1,
+            "Ice": 1
+          },
+          "setFlags": {
+            "trained_waterfall_stance": true
+          }
+        }
+      },
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "river_stone_training",
+    "title": "Cold Stone, Mortal Bone",
+    "body": "You carry stones until your arms tremble and the current begins to feel like an opponent. Nothing mystical answers you. That is the point. Your body learns to continue without applause.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "river_body_tempering_breakthrough",
+    "title": "Sinews Like Wet Rope",
+    "body": "Halfway across the ford your legs almost fold, then something changes. Your breath drops lower, your tendons stop screaming separately, and the river becomes one pressure instead of a hundred little pains.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "waterfall_stance",
+    "title": "Under The Little Falls",
+    "body": "The falling water hammers your shoulders flat and steals heat from your skin. You stay in stance long enough for anger, fear, and ambition to become only breath.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "abandoned_threshing_yard",
+    "title": "Abandoned Threshing Yard",
+    "body": "Dry grass grows through cracks in the old threshing yard. Children use it for dares, farmers use it to cut across the fields, and you use it because no one important comes here to laugh at mortal punches.",
+    "choices": [
+      {
+        "label": "Drill the village fist forms until dusk",
+        "nextScene": "village_fist_drills",
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "physique": 1,
+          "trainingFatigue": 1,
+          "addSkills": {
+            "village_fist_forms": 1
+          },
+          "setFlags": {
+            "trained_village_fists": true
+          }
+        }
+      },
+      {
+        "label": "Spar with the miller's sons",
+        "nextScene": "mortal_sparring_bruises",
+        "outcomes": [
+          {
+            "nextScene": "mortal_sparring_success",
+            "requires": {
+              "skills": {
+                "village_fist_forms": 1
+              },
+              "stats": {
+                "physique": 2
+              }
+            },
+            "effects": {
+              "advanceDays": 1,
+              "deadlineScene": "mountain_gate",
+              "physique": 1,
+              "health": -2,
+              "trainingFatigue": 2,
+              "addSkills": {
+                "sparring_instinct": 1
+              },
+              "setFlags": {
+                "won_mortal_sparring": true
+              }
+            }
+          },
+          {
+            "nextScene": "mortal_sparring_bruises",
+            "effects": {
+              "advanceDays": 1,
+              "deadlineScene": "mountain_gate",
+              "health": -4,
+              "trainingFatigue": 2,
+              "willpower": 1,
+              "addSkills": {
+                "village_fist_forms": 1
+              },
+              "setFlags": {
+                "bruised_in_mortal_sparring": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Practice staff basics with a bamboo pole",
+        "nextScene": "bamboo_staff_practice",
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "physique": 1,
+          "trainingFatigue": 1,
+          "addSkills": {
+            "staff_basics": 1
+          },
+          "setFlags": {
+            "trained_staff_basics": true
+          }
+        }
+      },
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "village_fist_drills",
+    "title": "Plain Fists",
+    "body": "The forms are not beautiful. Step, guard, turn the hip, strike. Again. Again. By dusk the motions have less hesitation in them, and your knuckles remember the order better than your thoughts do.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "mortal_sparring_success",
+    "title": "Bruises Given And Taken",
+    "body": "The miller's sons come at you laughing, then stop laughing when your guard holds. You still take hits, but you answer them. Mortal courage is not enough for immortals, perhaps, but it is not nothing.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "mortal_sparring_bruises",
+    "title": "A Lesson In Bruises",
+    "body": "You learn quickly that knowing a stance and keeping it while someone swings at your face are different skills. The yard sends you home sore, embarrassed, and slightly wiser.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "bamboo_staff_practice",
+    "title": "Bamboo Distance",
+    "body": "The bamboo pole flexes with every strike. You learn the comfort of distance: how a simple staff can make a stronger opponent spend one more breath reaching you.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "village_herbalist_hut",
+    "title": "Village Herbalist's Hut",
+    "body": "The herbalist's hut smells of bitter roots, drying leaves, and smoke trapped in the rafters. There are no true immortal pills here, only mortal remedies, secondhand warnings, and a clay stove that cracks if treated like a sect furnace.",
+    "choices": [
+      {
+        "label": "Sort drying herbs by scent and vein",
+        "nextScene": "herb_sorting_lesson",
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "comprehension": 1,
+          "addSkills": {
+            "herb_recognition": 1,
+            "careful_eye": 1
+          },
+          "addElements": {
+            "Wood": 1
+          },
+          "setFlags": {
+            "studied_mortal_herbs": true
+          }
+        }
+      },
+      {
+        "label": "Boil a bitter road tonic without scorching it",
+        "nextScene": "road_tonic_lesson",
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "health": 3,
+          "trainingFatigue": -1,
+          "addSkills": {
+            "heat_control": 1,
+            "impurity_awareness": 1
+          },
+          "addElements": {
+            "Wood": 1,
+            "Fire": 1
+          },
+          "setFlags": {
+            "brewed_road_tonic": true
+          }
+        }
+      },
+      {
+        "label": "Attempt a crude qi elixir with mortal tools",
+        "nextScene": "crude_elixir_smoky_batch",
+        "outcomes": [
+          {
+            "nextScene": "crude_elixir_clean_batch",
+            "requires": {
+              "skills": {
+                "herb_recognition": 1,
+                "heat_control": 1
+              }
+            },
+            "effects": {
+              "advanceDays": 1,
+              "deadlineScene": "mountain_gate",
+              "addItems": ["crude_qi_elixir"],
+              "qi": 3,
+              "cultivationInsight": 1,
+              "addSkills": {
+                "crude_elixir_refining": 1,
+                "impurity_awareness": 1
+              },
+              "addElements": {
+                "Wood": 1,
+                "Fire": 1
+              },
+              "setFlags": {
+                "refined_before_exam": true,
+                "refined_clean_mortal_elixir": true
+              }
+            }
+          },
+          {
+            "nextScene": "crude_elixir_smoky_batch",
+            "effects": {
+              "advanceDays": 1,
+              "deadlineScene": "mountain_gate",
+              "addItems": ["crude_qi_elixir"],
+              "qi": 2,
+              "impurity": 1,
+              "cultivationInsight": 1,
+              "addSkills": {
+                "herb_recognition": 1,
+                "crude_elixir_refining": 1
+              },
+              "addElements": {
+                "Wood": 1,
+                "Fire": 1
+              },
+              "setFlags": {
+                "refined_before_exam": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "herb_sorting_lesson",
+    "title": "Leaves That Look Alike",
+    "body": "By afternoon your fingers are stained green and the herbalist has corrected you six times. The seventh time, you catch the mistake before she does. Her grunt of approval is almost a blessing.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "road_tonic_lesson",
+    "title": "Bitter Strength",
+    "body": "The tonic tastes like boiled bark and regret, but it steadies your hands and warms your stomach. Mortal medicine will not open meridians, but it can keep a mortal body from failing early.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "crude_elixir_clean_batch",
+    "title": "A Clearer Crude Elixir",
+    "body": "The elixir is still crude by any sect standard, but the smoke thins at the right moment and the liquid settles without a sour edge. For one breath, you understand why mortals dream of pill furnaces.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "crude_elixir_smoky_batch",
+    "title": "Smoke And Ambition",
+    "body": "The clay stove spits smoke, the herbs darken too quickly, and the finished elixir smells sharper than it should. It will help, probably. It will also leave something behind.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "village_forge_yard",
+    "title": "Village Forge Yard",
+    "body": "The blacksmith cannot make flying swords. He can make hinges, ploughshares, nails, knives, and a staff that will not split on the first bad stone. The forge is mortal fire, but mortal fire still teaches discipline.",
+    "choices": [
+      {
+        "label": "Pump the bellows until your arms shake",
+        "nextScene": "bellows_work",
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "physique": 1,
+          "willpower": 1,
+          "health": -1,
+          "trainingFatigue": 2,
+          "addSkills": {
+            "bellows_rhythm": 1,
+            "farmhand_strength": 1
+          },
+          "addElements": {
+            "Fire": 1,
+            "Metal": 1
+          },
+          "setFlags": {
+            "worked_forge_before_exam": true
+          }
+        }
+      },
+      {
+        "label": "Learn to read flaws in scrap iron",
+        "nextScene": "scrap_iron_lesson",
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "comprehension": 1,
+          "addSkills": {
+            "iron_sense": 1,
+            "careful_eye": 1
+          },
+          "addElements": {
+            "Metal": 1
+          },
+          "setFlags": {
+            "studied_scrap_iron": true
+          }
+        }
+      },
+      {
+        "label": "Reinforce a walking staff with iron bands",
+        "nextScene": "staff_reinforcement",
+        "requires": {
+          "skills": {
+            "iron_sense": 1
+          }
+        },
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "health": -1,
+          "trainingFatigue": 1,
+          "addItems": ["reinforced_walking_staff"],
+          "addSkills": {
+            "tool_repair": 1,
+            "hammer_discipline": 1
+          },
+          "addElements": {
+            "Metal": 2,
+            "Fire": 1
+          },
+          "setFlags": {
+            "worked_forge_before_exam": true
+          }
+        }
+      },
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "bellows_work",
+    "title": "Breath For The Forge",
+    "body": "The bellows breathe through your arms. Too fast and the fire snaps wild; too slow and it sulks. By evening your shoulders ache, but you understand rhythm in a way lectures never taught.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "scrap_iron_lesson",
+    "title": "Fault Lines",
+    "body": "The blacksmith shows you where iron lies: dull color, wrong ring, a hairline crack waiting for strain. You begin to wonder how many people carry the same signs before they break.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "staff_reinforcement",
+    "title": "Iron-Banded Staff",
+    "body": "The staff remains plain wood, but iron bands now guard the places most likely to split. The blacksmith tests it against the anvil, nods once, and tells you not to trust anything that looks too fine for honest use.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "family_courtyard",
+    "title": "Family Courtyard",
+    "body": "The courtyard is swept clean, though dust keeps finding its way back. Your family understands rain, debt, harvest, sickness, and hunger. They do not understand sects, except that people leave for them and return changed, if they return.",
+    "choices": [
+      {
+        "label": "Share a last ordinary meal and listen instead of boasting",
+        "nextScene": "last_ordinary_meal",
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "health": 4,
+          "foundationStability": 2,
+          "karma": 1,
+          "trainingFatigue": -2,
+          "addSkills": {
+            "plain_speech": 1
+          },
+          "setFlags": {
+            "shared_last_village_meal": true
+          }
+        }
+      },
+      {
+        "label": "Burn incense at the village shrine",
+        "nextScene": "village_shrine_incense",
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "willpower": 1,
+          "foundationStability": 2,
+          "trainingFatigue": -1,
+          "addSkills": {
+            "calm_breath": 1
+          },
+          "addElements": {
+            "Cloud": 1
+          },
+          "setFlags": {
+            "prayed_before_exam": true
+          }
+        }
+      },
+      {
+        "label": "Pack for the road and sleep early",
+        "nextScene": "road_packing",
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "health": 3,
+          "trainingFatigue": -3,
+          "addSkills": {
+            "campcraft": 1
+          },
+          "setFlags": {
+            "packed_carefully_for_road": true
+          }
+        }
+      },
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "last_ordinary_meal",
+    "title": "Last Ordinary Meal",
+    "body": "The meal is simple enough to hurt: rice stretched with greens, pickled roots, tea poured twice from the same leaves. No one says that immortality begins by leaving mortal hands behind.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "village_shrine_incense",
+    "title": "Smoke At The Shrine",
+    "body": "The shrine statue is cracked, rain-worn, and probably nothing like a true immortal. Still, the incense smoke rises straight for a moment, and your breathing follows it.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "road_packing",
+    "title": "A Mortal Pack",
+    "body": "You pack cloth wraps, dried grain, a needle, spare cord, and more humility than you expected. None of it looks heroic. All of it may matter before the mountain is done with you.",
+    "choices": [
+      {
+        "label": "Return to the village square",
+        "nextScene": "pre_exam_days"
+      }
+    ]
+  },
+  {
+    "id": "mountain_gate",
+    "title": "The Mountain Gate",
+    "body": "Mist coils around the ten thousand jade steps of the Azure Cloud Sect. At their peak, elders watch the mortal hopefuls below. A bronze bell sounds once, and the trial begins.",
+    "choices": [
+      {
+        "label": "Climb steadily and conserve your breath",
+        "nextScene": "steady_climb",
+        "outcomes": [
+          {
+            "nextScene": "staff_aided_climb",
+            "requires": {
+              "items": ["reinforced_walking_staff"],
+              "skills": {
+                "iron_sense": 1
+              }
+            },
+            "effects": {
+              "willpower": 1,
+              "foundationStability": 1,
+              "startQuest": "enter_azure_cloud_sect",
+              "setFlags": {
+                "used_forge_staff_on_climb": true
+              }
+            }
+          },
+          {
+            "nextScene": "steady_climb",
+            "effects": {
+              "willpower": 1,
+              "startQuest": "enter_azure_cloud_sect"
+            }
+          }
+        ]
+      },
+      {
+        "label": "Rush ahead before the crowd can react",
+        "nextScene": "reckless_climb",
+        "effects": {
+          "health": -5,
+          "spiritualSense": 1,
+          "startQuest": "enter_azure_cloud_sect"
+        }
+      }
+    ]
+  },
+  {
+    "id": "steady_climb",
+    "title": "A Measured Ascent",
+    "body": "You climb slowly, counting each breath. The pressure of the mountain presses against your bones, but your heart remains calm.",
+    "choices": [
+      {
+        "label": "Continue toward the first trial platform",
+        "nextScene": "first_platform"
+      }
+    ]
+  },
+  {
+    "id": "staff_aided_climb",
+    "title": "Iron On The Steps",
+    "body": "The reinforced staff bites against wet stone whenever your balance falters. It is only mortal iron and village workmanship, but under the mountain pressure that small certainty keeps your breathing even.",
+    "choices": [
+      {
+        "label": "Continue toward the first trial platform",
+        "nextScene": "first_platform"
+      }
+    ]
+  },
+  {
+    "id": "reckless_climb",
+    "title": "A Reckless Ascent",
+    "body": "You surge upward, earning surprised looks from the other hopefuls. The mountain pressure bites into your lungs, but for one bright moment you feel a thread of qi answer your ambition.",
+    "choices": [
+      {
+        "label": "Force yourself toward the first trial platform",
+        "nextScene": "first_platform"
+      }
+    ]
+  },
+  {
+    "id": "first_platform",
+    "title": "The First Platform",
+    "body": "A stone tablet waits beneath a bent pine. Its carved words shimmer faintly: To seek the Dao, first know the weight of desire.",
+    "choices": [
+      {
+        "label": "Trace the hidden qi current in the carved words",
+        "nextScene": "tablet_hidden_current",
+        "requires": {
+          "stats": {
+            "spiritualSense": 2
+          }
+        },
+        "effects": {
+          "qi": 3,
+          "comprehension": 1,
+          "setFlags": {
+            "readTabletCurrent": true
+          }
+        }
+      },
+      {
+        "label": "Place your palm on the tablet",
+        "nextScene": "tablet_test",
+        "effects": {
+          "updateQuest": {
+            "questId": "enter_azure_cloud_sect",
+            "step": 1
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "tablet_hidden_current",
+    "title": "A Hidden Current",
+    "body": "The tablet's surface is cold, but beneath the characters you sense a patient current of qi circling like mist around a peak. You follow it for one breath and understand a fraction more than the others.",
+    "choices": [
+      {
+        "label": "Place your palm on the tablet",
+        "nextScene": "tablet_test",
+        "effects": {
+          "updateQuest": {
+            "questId": "enter_azure_cloud_sect",
+            "step": 1
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "tablet_test",
+    "title": "The Tablet Stirs",
+    "body": "Cold light seeps into your palm. Somewhere above, an elder leans forward. The mountain has noticed you.",
+    "choices": [
+      {
+        "label": "Accept the tablet's first teaching",
+        "nextScene": "first_teaching",
+        "effects": {
+          "qi": 5,
+          "addItems": ["outer_disciple_token"],
+          "learnTechniques": ["azure_cloud_breathing"],
+          "addElements": {
+            "Cloud": 1,
+            "Wind": 1
+          },
+          "updateQuest": {
+            "questId": "enter_azure_cloud_sect",
+            "step": 2
+          },
+          "setFlags": {
+            "mountainNoticedPlayer": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "first_teaching",
+    "title": "First Breath Of The Dao",
+    "body": "A thread of qi settles inside your meridians. When the light fades, a wooden token rests in your palm, and the first layer of the Azure Cloud Breathing Method echoes in your mind.",
+    "choices": [
+      {
+        "label": "Train the Azure Cloud Breathing Method under the pine",
+        "nextScene": "pine_breath_training",
+        "effects": {
+          "qi": 8,
+          "cultivationInsight": 1,
+          "trainingFatigue": -1,
+          "techniqueMastery": {
+            "azure_cloud_breathing": 1
+          },
+          "addElements": {
+            "Cloud": 1
+          },
+          "setFlags": {
+            "completed_first_story_training": true
+          },
+          "updateQuest": {
+            "questId": "enter_azure_cloud_sect",
+            "step": 3
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "pine_breath_training",
+    "title": "Breath Beneath The Pine",
+    "body": "You kneel beneath the bent pine and follow the manual's first circulation route. The mountain pressure no longer feels like a wall. It feels like a teacher pressing one finger against your chest.",
+    "choices": [
+      {
+        "label": "Stand and present your circulation to the elders",
+        "nextScene": "outer_disciple_accepted",
+        "requires": {
+          "items": ["outer_disciple_token"],
+          "techniques": ["azure_cloud_breathing"],
+          "flags": {
+            "completed_first_story_training": true
+          }
+        },
+        "effects": {
+          "willpower": 1,
+          "qi": 2,
+          "updateQuest": {
+            "questId": "enter_azure_cloud_sect",
+            "step": 4
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "outer_disciple_accepted",
+    "title": "Outer Disciple",
+    "body": "The watching elder gives the smallest nod. A path opens through the mist toward the outer sect courtyard. Your cultivation road has begun.",
+    "choices": [
+      {
+        "label": "Follow the misty path toward the outer sect courtyard",
+        "nextScene": "mist_wolf_ambush",
+        "effects": {
+          "startCombat": {
+            "enemyId": "mist_wolf",
+            "victorySceneId": "mist_wolf_defeated",
+            "defeatSceneId": "mist_wolf_escape"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "mist_wolf_ambush",
+    "title": "Mist Wolf Ambush",
+    "body": "The path narrows between old pines. A low growl rolls through the fog, and a pale spirit wolf steps from the roots with its hackles raised.",
+    "combatNarration": {
+      "opening": [
+        "Fog curls between the old pines as {enemy} lowers its head and claims the path.",
+        "Wet needles shift underfoot while {enemy} circles through the white mist."
+      ],
+      "strike": [
+        "You drive forward over slick roots and strike {enemy} for {damage} damage.",
+        "Your blow cuts through drifting fog and catches {enemy} for {damage} damage.",
+        "You use a pine trunk to steady your footing, then hit {enemy} for {damage} damage."
+      ],
+      "focus": [
+        "You pull qi through your breath until the mist trembles, then strike {enemy} for {damage} damage.",
+        "Cold fog beads on your sleeves as qi gathers in your arm and lands for {damage} damage.",
+        "The mountain pressure tightens around your ribs, but you force qi into the blow and deal {damage} damage."
+      ],
+      "enemyAttack": [
+        "{enemy} springs from the fog and rakes across your guard for {damage} damage.",
+        "A pale shape flashes between the roots; {enemy} bites in for {damage} damage.",
+        "{enemy} vanishes behind a pine, then crashes into your side for {damage} damage."
+      ],
+      "victory": [
+        "{enemy} stumbles in the wet grass, its growl fading into the fog.",
+        "The old pines fall silent as {enemy} collapses beneath the mist."
+      ],
+      "defeat": [
+        "The fog swallows the path as {enemy} drives you back toward the trial stones."
+      ]
+    },
+    "choices": []
+  },
+  {
+    "id": "mist_wolf_defeated",
+    "title": "First Hunt",
+    "body": "The mist wolf collapses into the wet grass. Its spirit core flickers once in your palm before going still. Somewhere beyond the trees, the outer sect bell rings again.",
+    "choices": [
+      {
+        "label": "Study the spirit core and steady your breath",
+        "nextScene": "spirit_core_study",
+        "effects": {
+          "cultivationInsight": 1,
+          "trainingFatigue": -2,
+          "foundationStability": 1,
+          "spiritStones": 3,
+          "addElements": {
+            "Water": 1,
+            "Wind": 1
+          },
+          "completeQuest": "enter_azure_cloud_sect",
+          "setFlags": {
+            "prepared_first_breakthrough": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "spirit_core_study",
+    "title": "Preparing The First Bottleneck",
+    "body": "The mist wolf core is too weak to force a realm breakthrough, but its fading qi teaches you how unstable power disperses. You mark that lesson in your heart for the day you challenge a true boundary.",
+    "choices": [
+      {
+        "label": "Enter the outer sect courtyard",
+        "nextScene": "outer_sect_courtyard"
+      }
+    ]
+  },
+  {
+    "id": "outer_sect_courtyard",
+    "title": "Outer Sect Courtyard",
+    "body": "Morning mist drifts between dormitories, training platforms, and the assignment hall. Outer disciples hurry past with manuals under one arm and sect task slips in the other. For the first time, the day is yours to spend.",
+    "choices": [
+      {
+        "label": "Train the Azure Cloud Breathing Method at the morning platform",
+        "nextScene": "morning_breathing_platform",
+        "requires": {
+          "techniques": ["azure_cloud_breathing"]
+        },
+        "effects": {
+          "qi": 3,
+          "cultivationInsight": 1,
+          "trainingFatigue": 1,
+          "techniqueMastery": {
+            "azure_cloud_breathing": 1
+          },
+          "addElements": {
+            "Cloud": 1
+          }
+        }
+      },
+      {
+        "label": "Study Pine Shadow Step with the footwork disciples",
+        "nextScene": "pine_shadow_lesson",
+        "effects": {
+          "learnTechniques": ["pine_shadow_step"],
+          "physique": 1,
+          "trainingFatigue": 2,
+          "techniqueMastery": {
+            "pine_shadow_step": 1
+          },
+          "addElements": {
+            "Wind": 1
+          }
+        }
+      },
+      {
+        "label": "Take a herb gathering task from the assignment hall",
+        "nextScene": "assignment_hall",
+        "effects": {
+          "startQuest": "first_sect_task"
+        }
+      },
+      {
+        "label": "Rest in the outer disciple dormitory",
+        "nextScene": "outer_dormitory_rest",
+        "effects": {
+          "health": 8,
+          "trainingFatigue": -4,
+          "foundationStability": 2
+        }
+      },
+      {
+        "label": "Spend a free hour around the outer sect paths",
+        "nextScene": "outer_sect_paths"
+      },
+      {
+        "label": "Ask an elder about your first real bottleneck",
+        "nextScene": "first_bottleneck_guidance",
+        "requires": {
+          "flags": {
+            "prepared_first_breakthrough": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "morning_breathing_platform",
+    "title": "Morning Breathing Platform",
+    "body": "You sit among rows of new disciples and follow the Azure Cloud circulation route. Each breath draws a little more mountain qi into your meridians, though the effort leaves your body warm and heavy.",
+    "choices": [
+      {
+        "label": "Return to the courtyard",
+        "nextScene": "outer_sect_courtyard"
+      }
+    ]
+  },
+  {
+    "id": "pine_shadow_lesson",
+    "title": "Pine Shadow Lesson",
+    "body": "A senior outer disciple marks footwork patterns in the dust. Your first attempts are clumsy, but by dusk your steps begin to turn with the wind instead of against it.",
+    "choices": [
+      {
+        "label": "Return to the courtyard",
+        "nextScene": "outer_sect_courtyard"
+      }
+    ]
+  },
+  {
+    "id": "assignment_hall",
+    "title": "Assignment Hall",
+    "body": "The assignment hall smells of ink, wet wood, and ambition. A steward slides you a thin bamboo slip: gather frost-vein herbs from the lower grove before another disciple claims the task.",
+    "choices": [
+      {
+        "label": "Search the lower grove carefully",
+        "nextScene": "lower_grove_success",
+        "outcomes": [
+          {
+            "nextScene": "lower_grove_hidden_cache",
+            "requires": {
+              "skills": {
+                "herb_recognition": 1
+              },
+              "stats": {
+                "spiritualSense": 2
+              }
+            },
+            "effects": {
+              "trainingFatigue": 1,
+              "spiritStones": 3,
+              "addItems": ["minor_qi_pill"],
+              "cultivationInsight": 1,
+              "addSkills": {
+                "careful_eye": 1,
+                "impurity_awareness": 1
+              },
+              "updateQuest": {
+                "questId": "first_sect_task",
+                "step": 1
+              },
+              "completeQuest": "first_sect_task",
+              "setFlags": {
+                "completed_first_sect_task": true,
+                "sensed_hidden_herbs": true
+              }
+            }
+          },
+          {
+            "nextScene": "lower_grove_success",
+            "requires": {
+              "stats": {
+                "comprehension": 2
+              }
+            },
+            "effects": {
+              "health": -1,
+              "trainingFatigue": 1,
+              "spiritStones": 2,
+              "addItems": ["minor_qi_pill"],
+              "foundationStability": 1,
+              "addSkills": {
+                "careful_eye": 1
+              },
+              "updateQuest": {
+                "questId": "first_sect_task",
+                "step": 1
+              },
+              "completeQuest": "first_sect_task",
+              "setFlags": {
+                "completed_first_sect_task": true,
+                "completed_careful_herb_search": true
+              }
+            }
+          },
+          {
+            "nextScene": "lower_grove_thorn_snare",
+            "effects": {
+              "health": -4,
+              "trainingFatigue": 2,
+              "spiritStones": 1,
+              "addSkills": {
+                "careful_eye": 1
+              },
+              "updateQuest": {
+                "questId": "first_sect_task",
+                "step": 1
+              },
+              "completeQuest": "first_sect_task",
+              "setFlags": {
+                "completed_first_sect_task": true,
+                "snared_by_lower_grove_thorns": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Rush the task before sunset",
+        "nextScene": "lower_grove_rushed",
+        "outcomes": [
+          {
+            "nextScene": "lower_grove_fast_success",
+            "requires": {
+              "skills": {
+                "river_endurance": 1
+              },
+              "stats": {
+                "physique": 2,
+                "willpower": 2
+              }
+            },
+            "effects": {
+              "health": -2,
+              "trainingFatigue": 2,
+              "spiritStones": 2,
+              "physique": 1,
+              "addSkills": {
+                "campcraft": 1
+              },
+              "updateQuest": {
+                "questId": "first_sect_task",
+                "step": 1
+              },
+              "completeQuest": "first_sect_task",
+              "setFlags": {
+                "completed_first_sect_task": true,
+                "finished_herb_task_quickly": true
+              }
+            }
+          },
+          {
+            "nextScene": "lower_grove_rushed",
+            "effects": {
+              "health": -5,
+              "trainingFatigue": 2,
+              "spiritStones": 1,
+              "updateQuest": {
+                "questId": "first_sect_task",
+                "step": 1
+              },
+              "completeQuest": "first_sect_task",
+              "setFlags": {
+                "completed_first_sect_task": true,
+                "rushed_first_herb_task": true
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "lower_grove_hidden_cache",
+    "title": "A Thread Beneath The Frost",
+    "body": "You slow your breathing until the grove's cold qi separates into faint threads. One thread bends beneath a fallen root, revealing a second cluster of frost-vein herbs and an old pill bottle wrapped in oilcloth. The steward's eyes sharpen when you return with more than he expected.",
+    "choices": [
+      {
+        "label": "Return to the courtyard",
+        "nextScene": "outer_sect_courtyard"
+      }
+    ]
+  },
+  {
+    "id": "lower_grove_success",
+    "title": "Frost-Vein Herbs",
+    "body": "You kneel beside a shaded stream and find the pale herbs where the steward said they would grow. The hall pays a modest reward, and someone has tucked a minor qi pill into the bundle.",
+    "choices": [
+      {
+        "label": "Return to the courtyard",
+        "nextScene": "outer_sect_courtyard"
+      }
+    ]
+  },
+  {
+    "id": "lower_grove_thorn_snare",
+    "title": "Thorns Under Frost",
+    "body": "Careful intent is not the same as trained eyes. You mistake pale thorns for herb stems and only notice when they tighten around your wrist. You return with enough herbs to pass the task, but the grove takes blood for the lesson.",
+    "choices": [
+      {
+        "label": "Return to the courtyard",
+        "nextScene": "outer_sect_courtyard"
+      }
+    ]
+  },
+  {
+    "id": "lower_grove_fast_success",
+    "title": "Before The Bell",
+    "body": "You move hard and clean through the lower grove, trusting your legs where another disciple might trust caution. By sunset your robe is torn and your lungs burn, but the steward cannot argue with a full bundle delivered before the bell.",
+    "choices": [
+      {
+        "label": "Return to the courtyard",
+        "nextScene": "outer_sect_courtyard"
+      }
+    ]
+  },
+  {
+    "id": "lower_grove_rushed",
+    "title": "A Hasty Task",
+    "body": "You return scratched, tired, and holding a smaller bundle than expected. The steward pays you anyway, but his raised eyebrow says the sect remembers careless work.",
+    "choices": [
+      {
+        "label": "Return to the courtyard",
+        "nextScene": "outer_sect_courtyard"
+      }
+    ]
+  },
+  {
+    "id": "outer_dormitory_rest",
+    "title": "Outer Disciple Dormitory",
+    "body": "Your assigned room is narrow, plain, and blessedly quiet. By morning your breathing has steadied and some of the strain has left your bones.",
+    "choices": [
+      {
+        "label": "Return to the courtyard",
+        "nextScene": "outer_sect_courtyard"
+      }
+    ]
+  },
+  {
+    "id": "outer_sect_paths",
+    "title": "Outer Sect Paths",
+    "body": "The outer sect is larger than the courtyard first promised. Stone paths wind between lecture halls, work yards, medicine plots, and quiet cliffs where new disciples pretend not to be homesick.",
+    "choices": [
+      {
+        "label": "Visit the scripture pavilion threshold",
+        "nextScene": "scripture_pavilion_threshold",
+        "requires": {
+          "items": ["outer_disciple_token"]
+        }
+      },
+      {
+        "label": "Help weed the medicine garden",
+        "nextScene": "medicine_garden_work",
+        "effects": {
+          "trainingFatigue": 1,
+          "spiritStones": 1,
+          "setFlags": {
+            "worked_medicine_garden": true
+          }
+        }
+      },
+      {
+        "label": "Watch sparring at the blade-scarred arena",
+        "nextScene": "arena_watch"
+      },
+      {
+        "label": "Walk to the cloud edge overlook",
+        "nextScene": "cloud_edge_overlook"
+      },
+      {
+        "label": "Return to the main courtyard",
+        "nextScene": "outer_sect_courtyard"
+      }
+    ]
+  },
+  {
+    "id": "scripture_pavilion_threshold",
+    "title": "Scripture Pavilion Threshold",
+    "body": "A grey-robed clerk guards the pavilion doors with a brush, a ledger, and the bored patience of someone who has refused a thousand ambitious disciples before breakfast. The open shelves near the entrance hold only copied fragments, but even fragments can cut open a mind.",
+    "choices": [
+      {
+        "label": "Copy breathing annotations from a worn manual",
+        "nextScene": "scripture_copying",
+        "effects": {
+          "comprehension": 1,
+          "cultivationInsight": 1,
+          "trainingFatigue": 1,
+          "setFlags": {
+            "copied_scripture_notes": true
+          }
+        }
+      },
+      {
+        "label": "Ask the clerk which rules new disciples break first",
+        "nextScene": "discipline_clerk",
+        "effects": {
+          "karma": 1,
+          "setFlags": {
+            "learned_outer_sect_rules": true
+          }
+        }
+      },
+      {
+        "label": "Step back from the pavilion",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "scripture_copying",
+    "title": "Borrowed Ink",
+    "body": "You copy until your wrist aches. Most of the notes are mundane reminders about posture and breath, but one line describes qi as weather inside the bones. The phrase follows you long after the ink dries.",
+    "choices": [
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "discipline_clerk",
+    "title": "The Clerk's Warning",
+    "body": "The clerk does not look up from the ledger. Do not steal pills, do not duel near the kitchens, do not insult inner disciples, and never mistake borrowed sect property for destiny. Then he pauses, marks your name neatly, and adds that listening is rarer than talent.",
+    "choices": [
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "medicine_garden_work",
+    "title": "Medicine Garden Work",
+    "body": "The medicine garden smells of wet soil and sharp green leaves. A senior sister points you toward a row of stubborn spirit weeds whose roots cling like little fists around the frost-vein herbs.",
+    "choices": [
+      {
+        "label": "Pull each weed slowly and preserve the roots",
+        "nextScene": "careful_garden_work",
+        "effects": {
+          "foundationStability": 1,
+          "addItems": ["minor_qi_pill"],
+          "setFlags": {
+            "earned_garden_sisters_notice": true
+          }
+        }
+      },
+      {
+        "label": "Finish quickly before your back gives out",
+        "nextScene": "hurried_garden_work",
+        "effects": {
+          "health": -2,
+          "trainingFatigue": 1,
+          "spiritStones": 1
+        }
+      },
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "careful_garden_work",
+    "title": "Roots Intact",
+    "body": "By sunset the senior sister inspects the row and gives a rare approving hum. She presses a minor qi pill into your palm and tells you that cultivation also means learning which roots should not be torn.",
+    "choices": [
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "hurried_garden_work",
+    "title": "Dirt Under The Nails",
+    "body": "You finish the row, but several frost-vein leaves droop in the aftermath. The senior sister pays the token stone for your labor and says nothing, which somehow weighs more than a scolding.",
+    "choices": [
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "arena_watch",
+    "title": "Blade-Scarred Arena",
+    "body": "At the arena, older outer disciples trade blows on stone scored by years of practice weapons. Each exchange is quick, ugly, and practical. No one here moves like the songs say heroes move.",
+    "choices": [
+      {
+        "label": "Study how Pine Shadow Step is used under pressure",
+        "nextScene": "pine_shadow_under_pressure",
+        "requires": {
+          "techniques": ["pine_shadow_step"]
+        },
+        "effects": {
+          "physique": 1,
+          "techniqueMastery": {
+            "pine_shadow_step": 1
+          },
+          "setFlags": {
+            "watched_arena_footwork": true
+          }
+        }
+      },
+      {
+        "label": "Focus on how the losers recover their guard",
+        "nextScene": "arena_guard_lesson",
+        "effects": {
+          "willpower": 1,
+          "health": 2,
+          "setFlags": {
+            "learned_arena_guard": true
+          }
+        }
+      },
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "pine_shadow_under_pressure",
+    "title": "Footwork In The Dust",
+    "body": "The lesson is not in the winning strike. It is in the half-step before it, when one disciple lets the opponent's force pass through empty air. Your own feet remember the pattern before your mind can name it.",
+    "choices": [
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "arena_guard_lesson",
+    "title": "After The Hit",
+    "body": "A disciple takes a practice blade to the ribs, staggers, and still raises his guard before breathing again. The watching crowd laughs, but you understand the hidden lesson: survival often begins after pride has already lost.",
+    "choices": [
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "cloud_edge_overlook",
+    "title": "Cloud Edge Overlook",
+    "body": "Beyond the last pine, the mountain falls away into a white sea of cloud. The sect sounds grow distant here: bells softened by mist, training shouts reduced to memory, your own breath louder than either.",
+    "choices": [
+      {
+        "label": "Meditate until the clouds stop feeling separate from you",
+        "nextScene": "cloud_edge_meditation",
+        "effects": {
+          "qi": 2,
+          "spiritualSense": 1,
+          "foundationStability": 1,
+          "addElements": {
+            "Cloud": 2,
+            "Wind": 1
+          },
+          "setFlags": {
+            "meditated_at_cloud_edge": true
+          }
+        }
+      },
+      {
+        "label": "Watch the paths below for useful patterns",
+        "nextScene": "cloud_edge_observation",
+        "effects": {
+          "comprehension": 1,
+          "addElements": {
+            "Wind": 1
+          },
+          "setFlags": {
+            "mapped_outer_paths": true
+          }
+        }
+      },
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "cloud_edge_meditation",
+    "title": "Mist In The Meridians",
+    "body": "You breathe with the slow movement of the cloud sea. For a few precious moments, your meridians loosen and the sect no longer feels like a place you must conquer. It feels like weather you might learn to survive.",
+    "choices": [
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "cloud_edge_observation",
+    "title": "Paths Beneath The Cloud",
+    "body": "From above, the outer sect reveals its habits. Couriers avoid the kitchens at noon, senior disciples cut through the west arcade, and the quietest path to the assignment hall runs behind the medicine sheds.",
+    "choices": [
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "first_bottleneck_guidance",
+    "title": "Words Before The Bottleneck",
+    "body": "The elder listens to your report and taps the mist wolf core with one finger. Minor stage breakthroughs may be forced with enough qi, but true realm bottlenecks demand timing, resources, and a foundation that will not crack under pressure.",
+    "choices": [
+      {
+        "label": "Return to the courtyard and keep preparing",
+        "nextScene": "outer_sect_courtyard"
+      }
+    ]
+  },
+  {
+    "id": "mist_wolf_escape",
+    "title": "Forced Back",
+    "body": "You stagger away from the mist wolf and retreat to the tablet platform, wounded but alive. The mountain has shown you that cultivation is not only meditation.",
+    "choices": [
+      {
+        "label": "Return to the mountain gate and begin again",
+        "nextScene": "mountain_gate",
+        "effects": {
+          "failQuest": "enter_azure_cloud_sect"
+        }
+      }
+    ]
+  }
+]

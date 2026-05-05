@@ -1,0 +1,80 @@
+[
+  {
+    "id": "enter_azure_cloud_sect",
+    "name": "Enter the Azure Cloud Sect",
+    "description": "Pass the outer disciple trial and reach the safety of the outer sect path.",
+    "steps": [
+      "Reach the Azure Cloud mountain gate.",
+      "Survive the stone tablet trial.",
+      "Learn the Azure Cloud Breathing Method.",
+      "Complete your first guided training.",
+      "Face the mist wolf on the outer path.",
+      "Prepare for the first real bottleneck."
+    ],
+    "rewards": {
+      "spiritStones": 3
+    }
+  },
+  {
+    "id": "first_sect_task",
+    "name": "First Sect Task",
+    "description": "Complete a simple assignment from the outer sect hall.",
+    "steps": [
+      "Accept a task from the assignment hall.",
+      "Gather frost-vein herbs from the lower grove."
+    ],
+    "rewards": {
+      "items": ["minor_qi_pill"],
+      "spiritStones": 2
+    }
+  },
+  {
+    "id": "old_ren_stance_test",
+    "name": "Old Ren's Stance Test",
+    "description": "Earn a retired caravan guard's correction before the sect exam.",
+    "steps": [
+      "Ask Old Ren to judge your mortal forms.",
+      "Hold your stance under pressure.",
+      "Receive Old Ren's correction."
+    ],
+    "rewards": {
+      "spiritStones": 1
+    }
+  },
+  {
+    "id": "aunt_lin_medicine_task",
+    "name": "Aunt Lin's Medicine Task",
+    "description": "Help the herbalist prepare medicine without poisoning anyone through pride.",
+    "steps": [
+      "Offer help at Aunt Lin's herb table.",
+      "Prepare a stable mortal medicine.",
+      "Learn how medicine leaves traces in the body."
+    ],
+    "rewards": {
+      "items": ["crude_qi_elixir"]
+    }
+  },
+  {
+    "id": "guo_honest_iron",
+    "name": "Guo's Honest Iron",
+    "description": "Prove you can repair something plain before dreaming of immortal weapons.",
+    "steps": [
+      "Ask Blacksmith Guo for a forge lesson.",
+      "Temper flawed iron without ruining it.",
+      "Learn what honest work can teach the body."
+    ],
+    "rewards": {
+      "items": ["reinforced_walking_staff"]
+    }
+  },
+  {
+    "id": "mei_three_breaths",
+    "name": "Mei's Three Breaths",
+    "description": "Learn the shrine keeper's breathing count before the mountain tests your heart.",
+    "steps": [
+      "Visit Shrine Keeper Mei.",
+      "Match breath to incense smoke.",
+      "Carry a steadier breath toward the sect road."
+    ]
+  }
+]

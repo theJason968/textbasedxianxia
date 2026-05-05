@@ -1,0 +1,235 @@
+export type Realm = "Mortal" | "Qi Condensation" | "Foundation Establishment";
+
+export type RealmStage = "Early" | "Middle" | "Late" | "Peak";
+
+export type ElementalEssence =
+  | "Water"
+  | "Wood"
+  | "Fire"
+  | "Earth"
+  | "Metal"
+  | "Wind"
+  | "Cloud"
+  | "Ice"
+  | "Lightning";
+
+export type Player = {
+  name: string;
+  realm: Realm;
+  stage: RealmStage;
+  health: number;
+  maxHealth: number;
+  qi: number;
+  maxQi: number;
+  spiritualSense: number;
+  physique: number;
+  comprehension: number;
+  willpower: number;
+  karma: number;
+  foundationStability: number;
+  trainingFatigue: number;
+  impurity: number;
+  cultivationInsight: number;
+  daysRemainingToExam: number;
+  spiritStones: number;
+  inventory: string[];
+  techniques: string[];
+  skills: Record<string, number>;
+  elementalEssence: Partial<Record<ElementalEssence, number>>;
+  constitutions: string[];
+  techniqueMastery: Record<string, number>;
+  quests: Record<string, PlayerQuest>;
+  flags: Record<string, boolean | number | string>;
+};
+
+export type QuestStatus = "active" | "completed" | "failed";
+
+export type PlayerQuest = {
+  status: QuestStatus;
+  step: number;
+};
+
+export type Quest = {
+  id: string;
+  name: string;
+  description: string;
+  steps: string[];
+  rewards?: {
+    items?: string[];
+    spiritStones?: number;
+  };
+};
+
+export type Enemy = {
+  id: string;
+  name: string;
+  description: string;
+  maxHealth: number;
+  attack: number;
+  defense: number;
+  qiReward: number;
+  itemRewards?: string[];
+};
+
+export type SkillTree =
+  | "Mortal Foundation"
+  | "Martial Arts"
+  | "Body Tempering"
+  | "Mind And Perception"
+  | "Social Bearing"
+  | "Survival"
+  | "Alchemy"
+  | "Blacksmithing"
+  | "Cultivation Foundation"
+  | "Azure Cloud Methods";
+
+export type Skill = {
+  id: string;
+  name: string;
+  tree: SkillTree;
+  tier: number;
+  maxRank: number;
+  description: string;
+  effects?: SkillEffects;
+  requiresSkills?: Record<string, number>;
+  requiresStats?: Partial<
+    Pick<
+      Player,
+      | "spiritualSense"
+      | "physique"
+      | "comprehension"
+      | "willpower"
+      | "karma"
+      | "foundationStability"
+      | "cultivationInsight"
+    >
+  >;
+};
+
+export type SkillEffects = {
+  combatDamage?: number;
+  combatDefense?: number;
+};
+
+export type Constitution = {
+  id: string;
+  name: string;
+  description: string;
+  requiredElements: Partial<Record<ElementalEssence, number>>;
+};
+
+export type CombatState = {
+  enemyId: string;
+  enemyHealth: number;
+  turn: number;
+  victorySceneId: string;
+  defeatSceneId: string;
+  log: string[];
+};
+
+export type GameState = {
+  currentSceneId: string;
+  player: Player;
+  combat: CombatState | null;
+};
+
+export type ChoiceEffect = Partial<
+  Pick<
+    Player,
+    | "health"
+    | "qi"
+    | "spiritualSense"
+    | "physique"
+    | "comprehension"
+    | "willpower"
+    | "karma"
+    | "foundationStability"
+    | "trainingFatigue"
+    | "impurity"
+    | "cultivationInsight"
+    | "daysRemainingToExam"
+    | "spiritStones"
+  >
+> & {
+  advanceDays?: number;
+  deadlineScene?: string;
+  addItems?: string[];
+  learnTechniques?: string[];
+  addSkills?: Record<string, number>;
+  addElements?: Partial<Record<ElementalEssence, number>>;
+  awakenConstitutions?: string[];
+  techniqueMastery?: Record<string, number>;
+  startQuest?: string;
+  updateQuest?: {
+    questId: string;
+    step: number;
+  };
+  completeQuest?: string;
+  failQuest?: string;
+  setFlags?: Record<string, boolean | number | string>;
+  startCombat?: {
+    enemyId: string;
+    victorySceneId: string;
+    defeatSceneId: string;
+  };
+};
+
+export type ChoiceRequirement = {
+  stats?: Partial<
+    Pick<
+      Player,
+      | "health"
+      | "qi"
+      | "spiritualSense"
+      | "physique"
+      | "comprehension"
+      | "willpower"
+      | "karma"
+      | "foundationStability"
+      | "trainingFatigue"
+      | "impurity"
+      | "cultivationInsight"
+      | "daysRemainingToExam"
+      | "spiritStones"
+    >
+  >;
+  realm?: Realm;
+  stage?: RealmStage;
+  items?: string[];
+  techniques?: string[];
+  skills?: Record<string, number>;
+  elements?: Partial<Record<ElementalEssence, number>>;
+  constitutions?: string[];
+  flags?: Record<string, boolean | number | string>;
+};
+
+export type Choice = {
+  label: string;
+  nextScene: string;
+  requires?: ChoiceRequirement;
+  effects?: ChoiceEffect;
+  outcomes?: ChoiceOutcome[];
+};
+
+export type ChoiceOutcome = {
+  nextScene: string;
+  requires?: ChoiceRequirement;
+  effects?: ChoiceEffect;
+};
+
+export type CombatNarration = {
+  opening?: string[];
+  strike?: string[];
+  focus?: string[];
+  enemyAttack?: string[];
+  victory?: string[];
+  defeat?: string[];
+};
+
+export type Scene = {
+  id: string;
+  title: string;
+  body: string;
+  combatNarration?: CombatNarration;
+  choices: Choice[];
+};

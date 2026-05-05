@@ -1,0 +1,53 @@
+[
+  {
+    "id": "minor_qi_pill",
+    "name": "Minor Qi Pill",
+    "type": "pill",
+    "rarity": "low-grade",
+    "description": "A cloudy pill used by outer disciples to gather a small amount of qi.",
+    "icon": "/assets/items/minor_qi_pill.png",
+    "effects": {
+      "qi": 10,
+      "impurity": 2
+    }
+  },
+  {
+    "id": "outer_disciple_token",
+    "name": "Outer Disciple Token",
+    "type": "quest",
+    "rarity": "mortal",
+    "description": "A wooden token proving provisional acceptance into the Azure Cloud Sect.",
+    "icon": "/assets/items/outer_disciple_token.png",
+    "effects": {}
+  },
+  {
+    "id": "mist_wolf_core",
+    "name": "Mist Wolf Core",
+    "type": "material",
+    "rarity": "low-grade",
+    "description": "A faint spirit core taken from a mist wolf. Useful for pills, formations, or sect contribution.",
+    "icon": "/assets/items/mist_wolf_core.png",
+    "effects": {}
+  },
+  {
+    "id": "crude_qi_elixir",
+    "name": "Crude Qi Elixir",
+    "type": "pill",
+    "rarity": "mortal",
+    "description": "A rough village elixir. It helps stir qi, but its impurities make elders frown.",
+    "icon": "/assets/items/crude_qi_elixir.png",
+    "effects": {
+      "qi": 4,
+      "impurity": 1
+    }
+  },
+  {
+    "id": "reinforced_walking_staff",
+    "name": "Reinforced Walking Staff",
+    "type": "gear",
+    "rarity": "mortal",
+    "description": "A plain staff strengthened with iron bands at the village forge. It is not an immortal weapon, but the mountain road is still a road.",
+    "icon": "/assets/items/reinforced_walking_staff.png",
+    "effects": {}
+  }
+]
