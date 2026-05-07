@@ -3,6 +3,7 @@
     "id": "cooling_herb_salve",
     "name": "Cooling Herb Salve",
     "category": "Medicine",
+    "tier": "mortal",
     "description": "A simple field medicine made from frost-vein herbs and cloud moss. Useful for treating cuts, burns, and road wounds.",
     "ingredients": {
       "frost_vein_herb": 1,
@@ -18,6 +19,7 @@
     "id": "bone_reinforced_staff",
     "name": "Bone-Reinforced Staff",
     "category": "Weapon",
+    "tier": "low_grade_spirit",
     "description": "A crude but reliable fighting staff reinforced with spirit beast bone and careful binding.",
     "ingredients": {
       "bamboo_staff": 1,
@@ -35,6 +37,7 @@
     "id": "mist_core_qi_draught",
     "name": "Mist-Core Qi Draught",
     "category": "Elixir",
+    "tier": "low_grade_spirit",
     "description": "A rough draught that draws faint qi out of a mist wolf core. Effective, but not clean.",
     "ingredients": {
       "mist_wolf_core": 1,

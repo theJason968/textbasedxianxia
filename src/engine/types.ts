@@ -15,6 +15,18 @@ export type ElementalEssence =
 
 export type CharacterGender = "female" | "male";
 
+export type ItemTier =
+  | "mortal"
+  | "low_grade_spirit"
+  | "mid_grade_spirit"
+  | "high_grade_spirit"
+  | "earth"
+  | "heaven"
+  | "profound"
+  | "saint"
+  | "immortal"
+  | "dao";
+
 export type Player = {
   name: string;
   gender: CharacterGender;
@@ -331,6 +343,12 @@ export type SceneImage = {
   caption?: string;
 };
 
+export type SceneArea = {
+  id: string;
+  name: string;
+  image?: SceneImage;
+};
+
 export type SceneStatus = {
   label: string;
   value: number;
@@ -339,6 +357,7 @@ export type SceneStatus = {
 
 export type Scene = {
   id: string;
+  areaId?: string;
   title: string;
   body: string;
   image?: SceneImage;

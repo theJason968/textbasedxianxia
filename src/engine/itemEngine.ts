@@ -25,6 +25,7 @@ type UsableItem = {
       | "impurity"
       | "cultivationInsight"
       | "spiritStones"
+      | "corruption"
     >
   >;
 };
@@ -52,6 +53,7 @@ const effectKeys: Array<keyof UsableItem["effects"]> = [
   "impurity",
   "cultivationInsight",
   "spiritStones",
+  "corruption",
 ];
 
 export function useItem(gameState: GameState, item: UsableItem): ItemUseResult {
@@ -182,6 +184,10 @@ function clampPlayerStat(
 
   if (key === "foundationStability") {
     return Math.min(100, lowerBoundedValue);
+  }
+
+  if (key === "trainingFatigue" || key === "impurity" || key === "corruption") {
+    return lowerBoundedValue;
   }
 
   return lowerBoundedValue;

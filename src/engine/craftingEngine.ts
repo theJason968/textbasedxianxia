@@ -1,9 +1,10 @@
-import type { GameState, Player } from "./types";
+import type { GameState, ItemTier, Player } from "./types";
 
 export type CraftingRecipe = {
   id: string;
   name: string;
   category: string;
+  tier: ItemTier;
   description: string;
   ingredients: Record<string, number>;
   resultItem: string;

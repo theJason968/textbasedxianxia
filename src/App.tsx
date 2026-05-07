@@ -9,6 +9,7 @@ import enemies from "./data/enemies.json";
 import quests from "./data/quests.json";
 import npcs from "./data/npcs.json";
 import craftingRecipes from "./data/craftingRecipes.json";
+import sceneAreas from "./data/sceneAreas.json";
 import { resolveCombatAction, type CombatAction } from "./engine/combatEngine";
 import { canChoose } from "./engine/conditionEngine";
 import {
@@ -41,7 +42,11 @@ import {
   registerProfile,
   type ProfileSession,
 } from "./engine/profileEngine";
-import { getSceneById } from "./engine/sceneEngine";
+import {
+  getResolvedSceneImage,
+  getSceneAreaById,
+  getSceneById,
+} from "./engine/sceneEngine";
 import {
   formatSkillEffectSummary,
   formatSkillLevel,
@@ -53,10 +58,12 @@ import type {
   ElementalEssence,
   EquipmentEffects,
   EquipmentSlot,
+  ItemTier,
   Npc,
   Player,
   Quest,
   Scene,
+  SceneArea,
   Skill,
 } from "./engine/types";
 
@@ -66,6 +73,7 @@ const constitutionData = constitutions as Constitution[];
 const npcData = npcs as unknown as Npc[];
 const questData = quests as Quest[];
 const recipeData = craftingRecipes as unknown as CraftingRecipe[];
+const sceneAreaData = sceneAreas as SceneArea[];
 type CollectionTab =
   | "inventory"
   | "crafting"
@@ -80,6 +88,7 @@ type ItemData = {
   name: string;
   category?: string;
   rarity?: string;
+  tier?: ItemTier;
   description?: string;
   icon?: string;
   equipmentSlot?: EquipmentSlot;
@@ -136,6 +145,18 @@ const statRequirementLabels: Partial<Record<keyof Player, string>> = {
   daysRemainingToExam: "Days Remaining",
   spiritStones: "Spirit Stones",
   corruption: "Corruption",
+};
+const itemTierLabels: Record<ItemTier, string> = {
+  mortal: "Mortal",
+  low_grade_spirit: "Low-Grade Spirit",
+  mid_grade_spirit: "Mid-Grade Spirit",
+  high_grade_spirit: "High-Grade Spirit",
+  earth: "Earth",
+  heaven: "Heaven",
+  profound: "Profound",
+  saint: "Saint",
+  immortal: "Immortal",
+  dao: "Dao",
 };
 const mortalVillageScenes = new Set([
   "pre_exam_days",
@@ -245,6 +266,58 @@ function getSceneLocationTitle(sceneId: string): string {
   }
 
   return "Outer Sect";
+}
+
+function getFallbackSceneAreaId(sceneId: string): string {
+  if (
+    sceneId === "exam_registration" ||
+    sceneId === "elder_selection_courtyard" ||
+    sceneId === "martial_hall_elder_notice" ||
+    sceneId === "medicine_hall_elder_notice" ||
+    sceneId === "craft_hall_elder_notice" ||
+    sceneId === "senior_disciple_mountain_tour"
+  ) {
+    return "azure_cloud_registration";
+  }
+
+  if (sceneId.startsWith("lower_grove") || sceneId.includes("mist_wolf")) {
+    return "lower_grove";
+  }
+
+  if (sceneId.includes("scripture")) {
+    return "scripture_pavilion";
+  }
+
+  if (sceneId.includes("medicine_garden") || sceneId.includes("garden_work")) {
+    return "medicine_garden";
+  }
+
+  if (sceneId.includes("arena")) {
+    return "arena";
+  }
+
+  if (sceneId.includes("cloud_edge")) {
+    return "cloud_edge";
+  }
+
+  if (
+    sceneId.startsWith("outer_") ||
+    sceneId.includes("breathing_platform") ||
+    sceneId.includes("pine_shadow") ||
+    sceneId.includes("assignment_hall")
+  ) {
+    return "outer_sect";
+  }
+
+  if (mortalVillageScenes.has(sceneId)) {
+    return "mortal_village";
+  }
+
+  if (mountainTrialScenes.has(sceneId)) {
+    return "azure_cloud_mountain";
+  }
+
+  return "outer_sect";
 }
 
 function getChoiceRequirementSummary(player: Player, choice: Choice): string[] {
@@ -429,6 +502,29 @@ function formatEquipmentEffects(effects: EquipmentEffects): string {
     .join(", ");
 }
 
+function formatItemEffects(
+  effects: ItemData["effects"],
+  variant: "short" | "sentence" = "short",
+): string {
+  const effectEntries = Object.entries(effects)
+    .filter(([, value]) => typeof value === "number" && value !== 0)
+    .map(([key, value]) => {
+      const statKey = key as keyof Player;
+      const label = statRequirementLabels[statKey] ?? formatScoreLabel(key);
+      const signedValue = value > 0 ? `+${value}` : `${value}`;
+
+      return `${signedValue} ${label}`;
+    });
+
+  if (effectEntries.length <= 0) {
+    return "";
+  }
+
+  return variant === "sentence"
+    ? `Use effect: ${effectEntries.join(", ")}`
+    : effectEntries.join(", ");
+}
+
 function getRecipeRequirementSummary(
   player: Player,
   recipe: CraftingRecipe,
@@ -460,6 +556,10 @@ function formatRecipeIngredients(recipe: CraftingRecipe): string {
       return `${count} ${itemName}`;
     })
     .join(", ");
+}
+
+function formatItemTier(tier?: ItemTier): string {
+  return tier ? itemTierLabels[tier] : "Untiered";
 }
 
 function createCharacterState(name: string, gender: CharacterGender) {
@@ -520,6 +620,19 @@ function App() {
     () => getSceneById(sceneData, gameState.currentSceneId),
     [gameState.currentSceneId],
   );
+  const currentArea = useMemo(
+    () =>
+      getSceneAreaById(
+        sceneAreaData,
+        currentScene.areaId ?? getFallbackSceneAreaId(currentScene.id),
+      ),
+    [currentScene],
+  );
+  const currentSceneImage = useMemo(
+    () => getResolvedSceneImage(currentScene, currentArea),
+    [currentArea, currentScene],
+  );
+  const currentLocationTitle = currentArea?.name ?? getSceneLocationTitle(currentScene.id);
   const activeEnemy = useMemo(
     () =>
       gameState.combat
@@ -711,6 +824,18 @@ function App() {
         ),
     [gameState.player.npcJournal],
   );
+  const mountainGateLabel = hasLearnedAboutMountainGate(gameState.player)
+    ? gameState.player.daysRemainingToExam > 0
+      ? `${gameState.player.daysRemainingToExam} days to exam`
+      : "Exam day"
+    : "Ordinary morning";
+  const sectLabel =
+    gameState.player.reputation["Azure Cloud Sect"] > 0 ||
+    gameState.player.flags.accepted_outer_disciple_after_exam
+      ? "Azure Clouds"
+      : "Unaffiliated";
+  const quickTechniqueSlots = learnedTechniques.slice(0, 4);
+  const quickSkillSlots = visibleSkills.slice(0, 2);
 
   function handleAuthSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -816,7 +941,10 @@ function App() {
     const result = useItem(gameState, item);
 
     setGameState(result.gameState);
-    setActionMessages(getPlayerChangeMessages(gameState.player, result.gameState.player));
+    setActionMessages([
+      ...getPlayerChangeMessages(gameState.player, result.gameState.player),
+      result.message,
+    ]);
     setCultivationMessage(result.message);
     setSaveMessage("Unsaved changes.");
   }
@@ -966,17 +1094,19 @@ function App() {
 
   return (
     <main className="app-shell">
+      <header className="top-status-bar" aria-label="Journey status">
+        <span>Name: {gameState.player.name}</span>
+        <span>Sect: {sectLabel}</span>
+        <span>
+          Realm: {gameState.player.realm} {gameState.player.stage}
+        </span>
+        <span>Spirit Stones: {gameState.player.spiritStones}</span>
+        <span>{mountainGateLabel}</span>
+      </header>
+
       <section className="story-panel">
-        <p className="eyebrow">{getSceneLocationTitle(currentScene.id)}</p>
-        <h1>{currentScene.title}</h1>
-        {currentScene.image ? (
-          <figure className="scene-image-frame">
-            <img src={currentScene.image.src} alt={currentScene.image.alt} />
-            {currentScene.image.caption ? (
-              <figcaption>{currentScene.image.caption}</figcaption>
-            ) : null}
-          </figure>
-        ) : null}
+        <h1>{currentLocationTitle}</h1>
+        <h2 className="scene-title">{currentScene.title}</h2>
         {currentScene.status ? (
           <div className="scene-status" aria-label={currentScene.status.label}>
             <div>
@@ -1005,6 +1135,22 @@ function App() {
             ))}
           </ul>
         ) : null}
+      </section>
+
+      <section className="scene-window-panel" aria-label="Scene art">
+        {currentSceneImage ? (
+          <figure className="scene-image-frame">
+            <img src={currentSceneImage.src} alt={currentSceneImage.alt} />
+            {currentSceneImage.caption ? (
+              <figcaption>{currentSceneImage.caption}</figcaption>
+            ) : null}
+          </figure>
+        ) : (
+          <div className="scene-image-placeholder">
+            <span>{currentLocationTitle}</span>
+            <strong>{currentScene.title}</strong>
+          </div>
+        )}
         {gameState.combat && activeEnemy ? (
           <div className="combat-panel">
             <div>
@@ -1089,7 +1235,126 @@ function App() {
         )}
       </section>
 
-      <aside className="side-panel">
+      <aside className="character-sheet-panel" aria-label="Character stats">
+        <h2 className="ornate-panel-title">Character Stats</h2>
+        <div className="character-identity-card">
+          <div className="portrait-frame" aria-label="Character portrait">
+            <span>{gameState.player.name.slice(0, 1).toUpperCase()}</span>
+            <small>{gameState.player.gender === "female" ? "Female" : "Male"}</small>
+          </div>
+          <div className="vital-stack">
+            <div className="vital-row">
+              <span>Health</span>
+              <strong>
+                {gameState.player.health}/{gameState.player.maxHealth}
+              </strong>
+            </div>
+            <div className="status-meter health-meter">
+              <span
+                style={{
+                  width: `${
+                    (gameState.player.health / gameState.player.maxHealth) * 100
+                  }%`,
+                }}
+              />
+            </div>
+            <div className="vital-row">
+              <span>Spirit Qi</span>
+              <strong>
+                {gameState.player.qi}/{gameState.player.maxQi}
+              </strong>
+            </div>
+            <div className="status-meter qi-meter">
+              <span
+                style={{
+                  width: `${(gameState.player.qi / gameState.player.maxQi) * 100}%`,
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        <dl className="hero-stat-list">
+          <div>
+            <dt>Attack</dt>
+            <dd>{gameState.player.strength}</dd>
+          </div>
+          <div>
+            <dt>Defense</dt>
+            <dd>{gameState.player.endurance}</dd>
+          </div>
+          <div>
+            <dt>Agility</dt>
+            <dd>{gameState.player.agility}</dd>
+          </div>
+          <div>
+            <dt>Intelligence</dt>
+            <dd>{gameState.player.intelligence}</dd>
+          </div>
+        </dl>
+
+        <section className="cultivation-snapshot">
+          <div className="vital-row">
+            <span>Cultivation Progress</span>
+            <strong>
+              {gameState.player.qi}/{gameState.player.maxQi}
+            </strong>
+          </div>
+          <div className="status-meter progress-meter">
+            <span
+              style={{
+                width: `${(gameState.player.qi / gameState.player.maxQi) * 100}%`,
+              }}
+            />
+          </div>
+        </section>
+
+        <section className="quick-ability-section">
+          <h2 className="ornate-panel-title compact-title">Skills / Techniques</h2>
+          <div className="quick-slot-grid">
+            {[...quickTechniqueSlots, ...quickSkillSlots].map((entry) => (
+              <div className="quick-slot filled-slot" key={entry.id} title={entry.description}>
+                <span className="slot-icon">{entry.name.slice(0, 1)}</span>
+                <strong>{entry.name}</strong>
+              </div>
+            ))}
+            {Array.from({
+              length: Math.max(0, 6 - quickTechniqueSlots.length - quickSkillSlots.length),
+            }).map((_, index) => (
+              <div className="quick-slot empty-slot" key={`empty-quick-${index}`}>
+                <span className="slot-icon">+</span>
+              </div>
+            ))}
+          </div>
+        </section>
+        <div className="character-panel-actions">
+          <button type="button" onClick={() => setActiveSidebarPanel("collections")}>
+            Inventory
+          </button>
+          <button type="button" onClick={() => setActiveSidebarPanel("cultivation")}>
+            Cultivation
+          </button>
+          <button type="button" onClick={() => setActiveSidebarPanel("save")}>
+            Save
+          </button>
+        </div>
+      </aside>
+
+      <aside className={`side-panel${activeSidebarPanel ? " panel-open" : ""}`}>
+        <div className="overlay-panel-header">
+          <strong>
+            {activeSidebarPanel === "collections"
+              ? "Inventory"
+              : activeSidebarPanel === "cultivation"
+                ? "Cultivation"
+                : activeSidebarPanel === "save"
+                  ? "Save"
+                  : "Stats"}
+          </strong>
+          <button type="button" onClick={() => setActiveSidebarPanel(null)}>
+            Close
+          </button>
+        </div>
         <section className="disciple-summary" aria-label="Disciple summary">
           <h2>Disciple</h2>
           <dl>
@@ -1435,6 +1700,7 @@ function App() {
                             title={
                               [
                                 item.name,
+                                formatItemTier(item.tier),
                                 item.description,
                                 item.equipmentEffects
                                   ? formatEquipmentEffects(item.equipmentEffects)
@@ -1466,10 +1732,14 @@ function App() {
                         const isEquipped =
                           item.equipmentSlot &&
                           gameState.player.equipment[item.equipmentSlot] === item.id;
+                        const itemEffectSummary = formatItemEffects(item.effects);
+                        const isUsableItem = itemEffectSummary.length > 0;
 
                         const slotTitle = [
                           item.name,
+                          formatItemTier(item.tier),
                           item.description,
+                          isUsableItem ? formatItemEffects(item.effects, "sentence") : null,
                           item.equipmentEffects
                             ? formatEquipmentEffects(item.equipmentEffects)
                             : null,
@@ -1477,6 +1747,8 @@ function App() {
                             ? isEquipped
                               ? "Equipped. Click to unequip."
                               : "Click to equip."
+                            : isUsableItem
+                              ? "Click to use."
                             : null,
                         ]
                           .filter((line) => line)
@@ -1496,10 +1768,25 @@ function App() {
                           >
                             {renderSlotIcon(item.icon, item.name)}
                             <strong>{item.name}</strong>
+                            <small>{formatItemTier(item.tier)}</small>
                             <small>{item.category ?? "Misc"}</small>
                             {item.equipmentEffects ? (
                               <small>{formatEquipmentEffects(item.equipmentEffects)}</small>
                             ) : null}
+                          </button>
+                        ) : isUsableItem ? (
+                          <button
+                            type="button"
+                            className="inventory-slot filled-slot"
+                            key={`${item.id}-${index}`}
+                            onClick={() => handleUseItem(item)}
+                            title={slotTitle}
+                          >
+                            {renderSlotIcon(item.icon, item.name)}
+                            <strong>{item.name}</strong>
+                            <small>{formatItemTier(item.tier)}</small>
+                            <small>{item.category ?? "Misc"}</small>
+                            <small>{itemEffectSummary}</small>
                           </button>
                         ) : (
                           <div
@@ -1509,14 +1796,9 @@ function App() {
                           >
                             {renderSlotIcon(item.icon, item.name)}
                             <strong>{item.name}</strong>
+                            <small>{formatItemTier(item.tier)}</small>
                             <small>{item.category ?? "Misc"}</small>
-                            <div className="slot-actions">
-                              {Object.keys(item.effects).length > 0 ? (
-                                <button type="button" onClick={() => handleUseItem(item)}>
-                                  Use
-                                </button>
-                              ) : null}
-                            </div>
+                            {itemEffectSummary ? <small>{itemEffectSummary}</small> : null}
                           </div>
                         );
                       })}
@@ -1559,11 +1841,16 @@ function App() {
                     <li key={recipe.id}>
                       <div>
                         <strong>{recipe.name}</strong>
-                        <span>{recipe.category}</span>
+                        <span>
+                          {formatItemTier(recipe.tier)} {recipe.category}
+                        </span>
                         <p>{recipe.description}</p>
                         <small>Needs {formatRecipeIngredients(recipe)}</small>
                         {resultItem ? (
-                          <small>Creates {recipe.quantity} {resultItem.name}</small>
+                          <small>
+                            Creates {recipe.quantity} {formatItemTier(resultItem.tier)}{" "}
+                            {resultItem.name}
+                          </small>
                         ) : null}
                         {!canCraft && missingRequirements.length > 0 ? (
                           <small>Missing {missingRequirements.join(", ")}</small>

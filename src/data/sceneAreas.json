@@ -1,0 +1,53 @@
+[
+  {
+    "id": "mortal_village",
+    "name": "Mortal Village",
+    "image": {
+      "src": "/assets/locations/mortal_village.png",
+      "alt": "A mountain village with herbalist tables, wooden houses, and misty cliffs",
+      "caption": "The mortal village is small, but every path here taught your body how to survive."
+    }
+  },
+  {
+    "id": "azure_cloud_mountain",
+    "name": "Azure Cloud Mountain",
+    "image": {
+      "src": "/assets/locations/azure_cloud_mountain_gate.jpg",
+      "alt": "A steep mountain path rising toward the Azure Cloud Sect gate",
+      "caption": "The Azure Cloud Sect waits above the jade steps."
+    }
+  },
+  {
+    "id": "azure_cloud_registration",
+    "name": "Azure Cloud Registration Gate",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "Names are written before the gate, and every robe in the crowd seems to weigh more than yours."
+    }
+  },
+  {
+    "id": "outer_sect",
+    "name": "Azure Cloud Outer Sect"
+  },
+  {
+    "id": "lower_grove",
+    "name": "Lower Grove"
+  },
+  {
+    "id": "scripture_pavilion",
+    "name": "Scripture Pavilion"
+  },
+  {
+    "id": "medicine_garden",
+    "name": "Medicine Garden"
+  },
+  {
+    "id": "arena",
+    "name": "Blade-Scarred Arena"
+  },
+  {
+    "id": "cloud_edge",
+    "name": "Cloud Edge Overlook"
+  }
+]

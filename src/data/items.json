@@ -5,6 +5,7 @@
     "type": "pill",
     "category": "Elixir",
     "rarity": "low-grade",
+    "tier": "low_grade_spirit",
     "description": "A cloudy pill used by outer disciples to gather a small amount of qi.",
     "icon": "/assets/items/elixirs/elixir_uncommon.png",
     "effects": {
@@ -18,6 +19,7 @@
     "type": "quest",
     "category": "Quest Item",
     "rarity": "mortal",
+    "tier": "mortal",
     "description": "A wooden token proving provisional acceptance into the Azure Cloud Sect.",
     "icon": "/assets/items/outer_disciple_token.png",
     "effects": {}
@@ -28,6 +30,7 @@
     "type": "material",
     "category": "Material",
     "rarity": "low-grade",
+    "tier": "low_grade_spirit",
     "description": "A faint spirit core taken from a mist wolf. Useful for pills, formations, or sect contribution.",
     "icon": "/assets/items/mist_wolf_core.png",
     "effects": {}
@@ -38,6 +41,7 @@
     "type": "pill",
     "category": "Elixir",
     "rarity": "mortal",
+    "tier": "mortal",
     "description": "A rough village elixir. It helps stir qi, but its impurities make elders frown.",
     "icon": "/assets/items/elixirs/elixir_common.png",
     "effects": {
@@ -51,6 +55,7 @@
     "type": "weapon",
     "category": "Weapon",
     "rarity": "mortal",
+    "tier": "mortal",
     "description": "A plain bamboo pole cut for reach. It will not impress a cultivator, but it keeps desperate hands farther away.",
     "icon": "/assets/items/weapon_sheet/weapon_sheet_r4c3.png",
     "equipmentSlot": "weapon",
@@ -65,6 +70,7 @@
     "type": "weapon",
     "category": "Weapon",
     "rarity": "mortal",
+    "tier": "mortal",
     "description": "A plain staff strengthened with iron bands at the village forge. It is not an immortal weapon, but the mountain road is still a road.",
     "icon": "/assets/items/weapon_sheet/weapon_sheet_r4c4.png",
     "equipmentSlot": "weapon",
@@ -80,6 +86,7 @@
     "type": "accessory",
     "category": "Accessory",
     "rarity": "low-grade",
+    "tier": "low_grade_spirit",
     "description": "A small jade pendant carried by the immortal child you rescued from the bandit road. Its cloud mark feels warmer than plain stone.",
     "icon": "/assets/items/weapon_sheet/weapon_sheet_r4c5.png",
     "equipmentSlot": "accessory",
@@ -94,6 +101,7 @@
     "type": "lore",
     "category": "Lore",
     "rarity": "mortal",
+    "tier": "mortal",
     "description": "Scraps of merchant gossip about talismans, sect debts, and a black-thread token seen near the broken trade road.",
     "icon": "/assets/items/roadside_whisper_notes.png",
     "effects": {}
@@ -104,6 +112,7 @@
     "type": "manual",
     "category": "Manual",
     "rarity": "low-grade",
+    "tier": "low_grade_spirit",
     "description": "A stained repair manual for keeping carts, weapons, and simple spirit-worked fittings alive under road pressure.",
     "icon": "/assets/items/cloud_iron_field_manual.png",
     "effects": {}
@@ -114,8 +123,9 @@
     "type": "accessory",
     "category": "Accessory",
     "rarity": "low-grade",
+    "tier": "low_grade_spirit",
     "description": "A pale hairpin left by the injured immortal girl after you treated her wounds. A faint medicinal fragrance clings to it.",
-    "icon": "/assets/items/weapon_sheet/weapon_sheet_r2c5.png",
+    "icon": "/assets/items/silk_lotus_hairpin.png",
     "equipmentSlot": "accessory",
     "equipmentEffects": {
       "combatDefense": 1
@@ -128,6 +138,7 @@
     "type": "quest",
     "category": "Quest Item",
     "rarity": "low-grade",
+    "tier": "low_grade_spirit",
     "description": "A black-threaded bronze token marked with a cloud-over-mountain symbol. It hums faintly when turned toward the north.",
     "icon": "/assets/items/azure_cloud_trial_token.png",
     "effects": {}
@@ -138,6 +149,7 @@
     "type": "material",
     "category": "Material",
     "rarity": "low-grade",
+    "tier": "low_grade_spirit",
     "description": "A pale spirit herb that grows near cold streams in the lower grove. Medicine disciples use it for simple qi-soothing brews.",
     "effects": {}
   },
@@ -147,6 +159,7 @@
     "type": "material",
     "category": "Material",
     "rarity": "mortal",
+    "tier": "mortal",
     "description": "Soft silver-green moss that gathers around damp stones touched by thin mountain qi.",
     "effects": {}
   },
@@ -156,6 +169,7 @@
     "type": "material",
     "category": "Material",
     "rarity": "low-grade",
+    "tier": "low_grade_spirit",
     "description": "A small spirit beast bone left in the brush. It can be traded, studied, or used in crude crafting later.",
     "effects": {}
   },
@@ -165,6 +179,7 @@
     "type": "medicine",
     "category": "Medicine",
     "rarity": "mortal",
+    "tier": "mortal",
     "description": "A clean herbal salve for cuts, burns, and road wounds. It restores a modest amount of health.",
     "icon": "/assets/items/elixirs/elixir_common.png",
     "effects": {
@@ -177,6 +192,7 @@
     "type": "weapon",
     "category": "Weapon",
     "rarity": "low-grade",
+    "tier": "low_grade_spirit",
     "description": "A staff strengthened with low-grade beast bone. Still crude, but much more dangerous in trained hands.",
     "icon": "/assets/items/weapon_sheet/weapon_sheet_r4c1.png",
     "equipmentSlot": "weapon",
@@ -192,6 +208,7 @@
     "type": "elixir",
     "category": "Elixir",
     "rarity": "low-grade",
+    "tier": "low_grade_spirit",
     "description": "A rough qi draught refined from a mist wolf core. It grants qi, but leaves impurity behind.",
     "icon": "/assets/items/elixirs/elixir_rare.png",
     "effects": {

@@ -2010,6 +2010,7 @@
   },
   {
     "id": "mountain_gate",
+    "areaId": "azure_cloud_mountain",
     "title": "The Mountain Gate",
     "image": {
       "src": "/assets/locations/azure_cloud_mountain_gate.jpg",
@@ -2029,6 +2030,7 @@
   },
   {
     "id": "exam_registration",
+    "areaId": "azure_cloud_registration",
     "title": "Names Before The Gate",
     "image": {
       "src": "/assets/locations/azure_cloud_registration.png",
@@ -2064,6 +2066,7 @@
   },
   {
     "id": "elder_selection_courtyard",
+    "areaId": "azure_cloud_registration",
     "title": "The Elders Look Down",
     "image": {
       "src": "/assets/locations/azure_cloud_registration.png",
