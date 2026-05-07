@@ -56,6 +56,29 @@ export function meetsRequirements(
     return false;
   }
 
+  if (!hasRequiredScores(player.relationships, requirements.relationships)) {
+    return false;
+  }
+
+  if (!hasRequiredScores(player.reputation, requirements.reputation)) {
+    return false;
+  }
+
+  if (!hasRequiredScores(player.morality, requirements.morality)) {
+    return false;
+  }
+
+  if (!hasRequiredScores(player.sectContribution, requirements.sectContribution)) {
+    return false;
+  }
+
+  if (
+    typeof requirements.corruption === "number" &&
+    player.corruption < requirements.corruption
+  ) {
+    return false;
+  }
+
   if (!hasMatchingFlags(player.flags, requirements.flags)) {
     return false;
   }
@@ -93,6 +116,15 @@ function hasRequiredElementalEssence(
 ): boolean {
   return Object.entries(requiredElements).every(
     ([element, requiredAmount]) => (currentElements[element as keyof typeof currentElements] ?? 0) >= requiredAmount,
+  );
+}
+
+function hasRequiredScores(
+  currentScores: Player["relationships"],
+  requiredScores: Player["relationships"] = {},
+): boolean {
+  return Object.entries(requiredScores).every(
+    ([scoreId, requiredScore]) => (currentScores[scoreId] ?? 0) >= requiredScore,
   );
 }
 

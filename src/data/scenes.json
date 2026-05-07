@@ -8,6 +8,9 @@
         "label": "Walk through the village square and greet the people already awake",
         "nextScene": "village_square_intro",
         "effects": {
+          "reputation": {
+            "mortal_village": 1
+          },
           "setFlags": {
             "visited_village_square": true
           }
@@ -43,6 +46,12 @@
             "npcId": "blacksmith_guo",
             "topic": "Helped him mend farm tools and learned that bad iron complains before it fails."
           },
+          "relationships": {
+            "blacksmith_guo": 2
+          },
+          "reputation": {
+            "mortal_village": 1
+          },
           "addSkills": {
             "bellows_rhythm": 1,
             "iron_sense": 1
@@ -63,6 +72,12 @@
           "recordNpcConversation": {
             "npcId": "aunt_lin",
             "topic": "Sorted bitter herbs for her and learned that medicine and poison can look nearly identical."
+          },
+          "relationships": {
+            "aunt_lin": 2
+          },
+          "morality": {
+            "helpful": 1
           },
           "addSkills": {
             "herb_recognition": 1
@@ -1414,7 +1429,7 @@
   {
     "id": "bandit_road_crossing",
     "title": "The Broken Trade Road",
-    "body": "The south road should smell of mule sweat, tea bundles, and dust. Today it smells of split axles, cold ash, and fear. Merchants whisper about bandits, but their eyes keep sliding toward the hills as if the real danger is not standing on the road at all. A black thread is tied around one broken wagon spoke.",
+    "body": "The south road should smell of mule sweat, tea bundles, and dust. Today it smells of split axles, cold ash, and fear. Merchants whisper about bandits, but their eyes keep sliding toward the hills as if the real danger is not standing on the road at all. A black thread is tied around one broken wagon spoke.\n\nYou stop at the edge of the wreckage and feel the road waiting for an answer. This is not just another errand. The way you step forward here will shape what kind of cultivator you become: blade, healer, investigator, or maker.\n\n\"Choose carefully,\" you tell yourself. \"This road is going to remember.\"",
     "choices": [
       {
         "label": "Take up a staff and confront the bandits",
@@ -1422,6 +1437,8 @@
         "effects": {
           "advanceDays": 1,
           "deadlineScene": "mountain_gate",
+          "strength": 10,
+          "agility": 5,
           "trainingFatigue": 1,
           "addItems": ["bamboo_staff"],
           "equipItem": {
@@ -1429,13 +1446,24 @@
             "itemId": "bamboo_staff"
           },
           "addSkills": {
-            "village_fist_forms": 1,
-            "staff_basics": 1
+            "village_fist_forms": 4,
+            "staff_basics": 4,
+            "sparring_instinct": 4
+          },
+          "morality": {
+            "courage": 2,
+            "protective": 1
+          },
+          "reputation": {
+            "road_travelers": 2
           },
           "startCombat": {
             "enemyId": "road_bandits",
             "victorySceneId": "bandit_child_rescue",
             "defeatSceneId": "bandit_road_forced_retreat"
+          },
+          "setFlags": {
+            "road_specialty": "martial_defender"
           }
         }
       },
@@ -1445,12 +1473,21 @@
         "effects": {
           "advanceDays": 1,
           "deadlineScene": "mountain_gate",
+          "intelligence": 5,
+          "perception": 10,
           "comprehension": 1,
           "karma": 1,
           "addItems": ["roadside_whisper_notes"],
           "addSkills": {
-            "plain_speech": 1,
-            "careful_eye": 1
+            "plain_speech": 4,
+            "careful_eye": 4,
+            "campcraft": 4
+          },
+          "morality": {
+            "cautious": 2
+          },
+          "reputation": {
+            "road_travelers": 1
           },
           "updateQuest": {
             "questId": "broken_trade_route",
@@ -1459,7 +1496,8 @@
           "completeQuest": "broken_trade_route",
           "setFlags": {
             "learned_bandit_patron_hint": true,
-            "saw_black_thread_token": true
+            "saw_black_thread_token": true,
+            "road_specialty": "road_investigator"
           }
         }
       },
@@ -1469,12 +1507,23 @@
         "effects": {
           "advanceDays": 1,
           "deadlineScene": "mountain_gate",
+          "strength": 5,
+          "intelligence": 5,
+          "perception": 10,
           "physique": 1,
           "addItems": ["cloud_iron_field_manual"],
           "addSkills": {
-            "tool_repair": 1,
-            "iron_sense": 1,
-            "campcraft": 1
+            "tool_repair": 4,
+            "iron_sense": 4,
+            "bellows_rhythm": 4,
+            "campcraft": 4
+          },
+          "morality": {
+            "practical": 2
+          },
+          "reputation": {
+            "road_travelers": 1,
+            "craftsmen": 1
           },
           "updateQuest": {
             "questId": "broken_trade_route",
@@ -1483,7 +1532,8 @@
           "completeQuest": "broken_trade_route",
           "setFlags": {
             "found_cloud_iron_manual": true,
-            "saw_black_thread_token": true
+            "saw_black_thread_token": true,
+            "road_specialty": "field_artificer"
           }
         }
       },
@@ -1493,26 +1543,36 @@
         "effects": {
           "advanceDays": 1,
           "deadlineScene": "mountain_gate",
+          "intelligence": 10,
+          "perception": 5,
           "willpower": 1,
           "karma": 1,
-          "addItems": ["silk_lotus_hairpin"],
           "addSkills": {
-            "herb_recognition": 1,
-            "heat_control": 1,
-            "impurity_awareness": 1
+            "herb_recognition": 4,
+            "heat_control": 4,
+            "impurity_awareness": 4,
+            "crude_elixir_refining": 4,
+            "herbalist_apprentice": 4
           },
           "addElements": {
             "Wood": 1,
             "Water": 1
           },
+          "morality": {
+            "mercy": 2,
+            "protective": 1
+          },
+          "reputation": {
+            "road_travelers": 1,
+            "healers": 1
+          },
           "updateQuest": {
             "questId": "broken_trade_route",
-            "step": 2
+            "step": 1
           },
-          "completeQuest": "broken_trade_route",
           "setFlags": {
-            "saved_injured_immortal_girl": true,
-            "saw_black_thread_token": true
+            "started_healing_injured_immortal_girl": true,
+            "road_specialty": "mercy_alchemist"
           }
         }
       },
@@ -1634,22 +1694,141 @@
   {
     "id": "bandit_road_injured_immortal_girl",
     "title": "The Girl With Splintered Breath",
+    "status": {
+      "label": "Girl's Health",
+      "value": 20,
+      "max": 100
+    },
     "body": "The wounded girl is hidden under reeds beside the ditch, her silk sleeve dark with blood and her breathing uneven in a way you do not understand. She tries to tell you she is only a merchant's niece, then fails to hide the pale light moving under her skin. Your village medicine should not matter to someone like this, but pain has made her human enough.",
     "choices": [
       {
-        "label": "Steady her qi with herbs, water, and patient hands",
-        "nextScene": "bandit_road_lotus_hairpin"
+        "label": "Scavenge the wreckage for clean cloth, water, and useful herbs",
+        "nextScene": "bandit_road_healing_supplies",
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "trainingFatigue": 1,
+          "addItems": ["cloud_moss"],
+          "addSkills": {
+            "careful_eye": 1,
+            "herb_recognition": 1
+          },
+          "setFlags": {
+            "scavenged_roadside_healing_supplies": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "bandit_road_healing_supplies",
+    "title": "Medicine From A Broken Road",
+    "status": {
+      "label": "Girl's Health",
+      "value": 45,
+      "max": 100
+    },
+    "body": "You search under cart canvas, beside spilled grain, and between stones still warm from strange fire. Most of what you find is useless. A strip of clean inner lining becomes bandage. A cracked water jar gives enough to wash blood away. Near the ditch, cloud moss clings to shaded stones.\n\nAunt Lin would complain about the dirt, the wind, your knife, and your breathing. You hear her anyway.\n\n\"Medicine and poison can look nearly identical,\" you mutter, sorting leaves with shaking fingers.",
+    "choices": [
+      {
+        "label": "Prepare a cooling remedy with your herbalist training",
+        "nextScene": "bandit_road_cooling_remedy",
+        "requires": {
+          "skills": {
+            "herb_recognition": 1,
+            "heat_control": 1
+          }
+        },
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "intelligence": 1,
+          "trainingFatigue": 1,
+          "addSkills": {
+            "heat_control": 1,
+            "impurity_awareness": 1
+          },
+          "addElements": {
+            "Wood": 1,
+            "Water": 1
+          },
+          "setFlags": {
+            "prepared_roadside_cooling_remedy": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "bandit_road_cooling_remedy",
+    "title": "A Pulse That Stops Fighting",
+    "status": {
+      "label": "Girl's Health",
+      "value": 75,
+      "max": 100
+    },
+    "body": "The remedy is crude, bitter, and made in a road ditch with a cracked bowl. Somehow, it works.\n\nThe pale light beneath her skin stops lashing against itself. Her breath still catches, but it catches like a hurt person now, not like a spirit lamp about to shatter.\n\nShe opens her eyes near midnight.\n\n\"You should have left,\" she whispers.\n\n\"I considered it. Briefly. Then you looked expensive to bury.\"",
+    "choices": [
+      {
+        "label": "Keep watch through the second night and change the bandages",
+        "nextScene": "bandit_road_lotus_hairpin",
+        "effects": {
+          "advanceDays": 1,
+          "deadlineScene": "mountain_gate",
+          "willpower": 1,
+          "karma": 1,
+          "addSkills": {
+            "herbalist_apprentice": 1,
+            "impurity_awareness": 1
+          },
+          "morality": {
+            "mercy": 1,
+            "protective": 1
+          },
+          "setFlags": {
+            "kept_watch_over_injured_immortal_girl": true
+          }
+        }
       }
     ]
   },
   {
     "id": "bandit_road_lotus_hairpin",
-    "title": "A Name Not Given",
-    "body": "By dusk the girl's pulse no longer fights itself. She leaves before the village can ask questions, pausing only to press a pale lotus hairpin into your hand.\n\n\"I will remember this.\"\n\nShe does not give her name, which makes the promise heavier rather than lighter.",
+    "title": "Gao Xue's Promise",
+    "status": {
+      "label": "Girl's Health",
+      "value": 100,
+      "max": 100
+    },
+    "body": "By the third morning, the girl's pulse finally steadies. She sits against a broken wheel with your bandages wrapped under silk that was never meant to touch road dust.\n\n\"My name is Gao Xue,\" she says. The name lands carefully, like something dangerous being set on a table. \"I cannot explain who wanted me taken. Not yet. But I know what you spent to keep me alive.\"\n\nShe presses a pale lotus hairpin into your hand. The metal is cool, but the carved petals hold a faint medicinal fragrance.\n\n\"When I can repay this, I will. If anyone asks, you found no one here. Especially not me.\"\n\nThen she walks into the morning mist, slower than pride would like, but alive.",
     "choices": [
       {
         "label": "Stay a little longer and search the abandoned road",
-        "nextScene": "roadside_search_after_lotus"
+        "nextScene": "roadside_search_after_lotus",
+        "effects": {
+          "addItems": ["silk_lotus_hairpin"],
+          "meetNpc": "gao_xue",
+          "recordNpcConversation": {
+            "npcId": "gao_xue",
+            "topic": "Healed her over three days on the broken trade road. She gave her name and promised to repay the debt someday."
+          },
+          "relationships": {
+            "gao_xue": 3
+          },
+          "reputation": {
+            "healers": 2
+          },
+          "updateQuest": {
+            "questId": "broken_trade_route",
+            "step": 2
+          },
+          "completeQuest": "broken_trade_route",
+          "setFlags": {
+            "saved_injured_immortal_girl": true,
+            "learned_gao_xue_name": true,
+            "saw_black_thread_token": true
+          }
+        }
       }
     ]
   },
@@ -1832,6 +2011,11 @@
   {
     "id": "mountain_gate",
     "title": "The Mountain Gate",
+    "image": {
+      "src": "/assets/locations/azure_cloud_mountain_gate.jpg",
+      "alt": "A steep mountain path rising toward the Azure Cloud Sect gate",
+      "caption": "The Azure Cloud Sect waits above the jade steps."
+    },
     "body": "Mist coils around the ten thousand jade steps of the Azure Cloud Sect. Carriages crowd the lower road: lacquered clan wagons, merchant litters, hired guards holding parasols over children in silk. Your village pack suddenly feels louder than any boast.\n\nA bronze bell sounds once. The exam has not begun, but judgment already has.",
     "choices": [
       {
@@ -1846,19 +2030,222 @@
   {
     "id": "exam_registration",
     "title": "Names Before The Gate",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "Names are written before the gate, and every robe in the crowd seems to weigh more than yours."
+    },
     "body": "A grey-robed examiner sits behind a jade table and checks each token without looking impressed by any of them. Rich candidates announce family names that make nearby servants bow. When your turn comes, you place the Azure Cloud trial token on the table.\n\nThe examiner's brush pauses.\n\n\"Village origin?\"\n\n\"Yes.\"\n\nA boy in blue silk laughs softly behind you.\n\n\"The mountain is generous this year.\"",
     "choices": [
       {
         "label": "Keep your head level and answer the examiner plainly",
-        "nextScene": "exam_waiting_ground",
+        "nextScene": "elder_selection_courtyard",
         "effects": {
           "meetNpc": "examiner_su",
           "recordNpcConversation": {
             "npcId": "examiner_su",
             "topic": "Registered for the Azure Cloud Sect exam with the trial token while richer candidates watched."
           },
+          "relationships": {
+            "examiner_su": 1
+          },
+          "reputation": {
+            "azure_cloud_sect": 1
+          },
+          "morality": {
+            "steady": 1
+          },
           "setFlags": {
             "registered_for_azure_exam": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "elder_selection_courtyard",
+    "title": "The Elders Look Down",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "Azure Cloud elders and candidates gathered before the sect gate",
+      "caption": "Before the first trial, some candidates are measured by eyes older than the mountain road."
+    },
+    "body": "Registration does not end with ink. Above the gate, several elders sit behind hanging veils of cloud, their sleeves still as stone. A few candidates are called forward immediately: clan heirs with polished foundations, medicine apprentices with scented sleeves, weapon children whose palms already know calluses.\n\nYou stand among the unclaimed names and feel every village bruise, every river stone, every bitter root and forge spark press quietly beneath your skin.\n\nA senior disciple raises his voice.\n\n\"Those who have already tempered a path may step forward. Those who have not will follow me up the mountain. Listen well. The sect rewards talent, but it punishes ignorance faster.\"",
+    "choices": [
+      {
+        "label": "Step forward when the Martial Hall elder asks for tempered bodies",
+        "nextScene": "martial_hall_elder_notice",
+        "requires": {
+          "realm": "Mortal",
+          "stage": "Middle",
+          "stats": {
+            "strength": 12,
+            "endurance": 8
+          },
+          "skills": {
+            "village_fist_forms": 2,
+            "staff_basics": 2
+          }
+        },
+        "effects": {
+          "relationships": {
+            "martial_hall_elder": 1
+          },
+          "reputation": {
+            "azure_cloud_sect": 2,
+            "martial_hall": 3
+          },
+          "sectContribution": {
+            "azure_cloud_sect": 5
+          },
+          "morality": {
+            "disciplined": 1
+          },
+          "setFlags": {
+            "noticed_by_martial_hall": true,
+            "early_elder_recruitment": "martial_hall"
+          }
+        }
+      },
+      {
+        "label": "Present your herb work when the Medicine Hall elder asks for steady hands",
+        "nextScene": "medicine_hall_elder_notice",
+        "requires": {
+          "realm": "Mortal",
+          "stage": "Middle",
+          "stats": {
+            "intelligence": 12,
+            "perception": 8
+          },
+          "skills": {
+            "herb_recognition": 2,
+            "impurity_awareness": 1
+          }
+        },
+        "effects": {
+          "relationships": {
+            "medicine_hall_elder": 1
+          },
+          "reputation": {
+            "azure_cloud_sect": 2,
+            "medicine_hall": 3
+          },
+          "sectContribution": {
+            "azure_cloud_sect": 5
+          },
+          "morality": {
+            "patient": 1
+          },
+          "setFlags": {
+            "noticed_by_medicine_hall": true,
+            "early_elder_recruitment": "medicine_hall"
+          }
+        }
+      },
+      {
+        "label": "Show the Craft Hall elder what Guo taught you about honest iron",
+        "nextScene": "craft_hall_elder_notice",
+        "requires": {
+          "realm": "Mortal",
+          "stage": "Middle",
+          "stats": {
+            "strength": 8,
+            "perception": 12
+          },
+          "skills": {
+            "iron_sense": 2,
+            "tool_repair": 1
+          }
+        },
+        "effects": {
+          "relationships": {
+            "craft_hall_elder": 1
+          },
+          "reputation": {
+            "azure_cloud_sect": 2,
+            "craft_hall": 3
+          },
+          "sectContribution": {
+            "azure_cloud_sect": 5
+          },
+          "morality": {
+            "practical": 1
+          },
+          "setFlags": {
+            "noticed_by_craft_hall": true,
+            "early_elder_recruitment": "craft_hall"
+          }
+        }
+      },
+      {
+        "label": "Remain with the other unclaimed candidates and follow the senior disciple",
+        "nextScene": "senior_disciple_mountain_tour",
+        "effects": {
+          "meetNpc": "senior_brother_wei",
+          "recordNpcConversation": {
+            "npcId": "senior_brother_wei",
+            "topic": "He guided unclaimed candidates up the mountain and explained the outer sect rules before the first trial."
+          },
+          "relationships": {
+            "senior_brother_wei": 1
+          },
+          "morality": {
+            "humble": 1
+          },
+          "setFlags": {
+            "unclaimed_after_elder_selection": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "martial_hall_elder_notice",
+    "title": "A Body Worth Testing",
+    "body": "The Martial Hall elder does not ask for your name first. He asks you to stand.\n\nYou set your feet the way Old Ren taught you: not pretty, not proud, hard to move. The elder's gaze drops to your knuckles, your shoulders, the old ache in your stance.\n\n\"Village training,\" he says.\n\n\"Yes.\"\n\n\"Crude. Useful. You have entered Mortal Middle before touching sect qi. Do not waste that. If you survive the first trial, report to the Martial Hall before choosing common lessons. I will see whether your bones are merely stubborn or worth tempering.\"",
+    "choices": [
+      {
+        "label": "Bow and return to the candidates below the stair",
+        "nextScene": "exam_waiting_ground"
+      }
+    ]
+  },
+  {
+    "id": "medicine_hall_elder_notice",
+    "title": "Hands That Know Bitter Work",
+    "body": "The Medicine Hall elder has you sort three leaves on a jade tray. Two are harmless. One would leave heat in the lungs for a week.\n\nYou do not reach quickly. Aunt Lin's voice lives in your fingers: look again.\n\nThe elder's veil shifts as if she smiled.\n\n\"A mortal village taught you caution. Good. Cultivators ruin themselves with pills because they think power excuses carelessness. If you pass the first trial, come to the Medicine Hall. I can use a disciple who hesitates for the right reason.\"",
+    "choices": [
+      {
+        "label": "Bow and return to the candidates below the stair",
+        "nextScene": "exam_waiting_ground"
+      }
+    ]
+  },
+  {
+    "id": "craft_hall_elder_notice",
+    "title": "The Sound Of Honest Iron",
+    "body": "The Craft Hall elder tosses you a dull buckle with a hairline crack hidden beneath old polish.\n\n\"Tell me why this failed.\"\n\nYou turn it once, hearing Guo's hammer in memory. Bad iron complains before it fails.\n\n\"It was repaired to look whole, not to hold weight.\"\n\nThe elder laughs once, short and pleased.\n\n\"A poor answer would blame the metal. A useful answer blames the hand. Pass the trial, village child. The Craft Hall wastes nothing, and perhaps that includes you.\"",
+    "choices": [
+      {
+        "label": "Bow and return to the candidates below the stair",
+        "nextScene": "exam_waiting_ground"
+      }
+    ]
+  },
+  {
+    "id": "senior_disciple_mountain_tour",
+    "title": "Rules Beneath The Clouds",
+    "body": "Senior Brother Wei leads the unclaimed candidates through the lower gate, neither cruel nor comforting.\n\n\"No fighting outside marked grounds. No stealing pills, manuals, spirit stones, or beasts. No entering sealed paths because a cousin dared you. Contribution points buy food, manuals, room upgrades, and forgiveness for small mistakes. They do not buy back a severed hand.\"\n\nSomeone laughs nervously. Wei does not.\n\n\"Outer disciples bow to elders, obey hall stewards, and keep their tokens visible. If a senior challenges you in the arena, you may refuse once without shame. Refuse twice and people will decide what your courage is worth.\"\n\nYou look up at the buildings stepping into cloud. You have not been chosen early. That does not mean the mountain has finished measuring you.",
+    "choices": [
+      {
+        "label": "Join the candidates gathering below the first trial stair",
+        "nextScene": "exam_waiting_ground",
+        "effects": {
+          "reputation": {
+            "azure_cloud_sect": 1
+          },
+          "setFlags": {
+            "toured_azure_cloud_rules": true
           }
         }
       }
@@ -2805,12 +3192,114 @@
         "nextScene": "arena_watch"
       },
       {
+        "label": "Explore the lower grove for useful finds",
+        "nextScene": "lower_grove_explore_common",
+        "outcomes": [
+          {
+            "nextScene": "lower_grove_explore_rare",
+            "requires": {
+              "stats": {
+                "perception": 8
+              },
+              "skills": {
+                "herb_recognition": 2
+              }
+            },
+            "effects": {
+              "trainingFatigue": 1,
+              "spiritStones": 2,
+              "addItems": ["frost_vein_herb", "cloud_moss", "minor_qi_pill"],
+              "addSkills": {
+                "careful_eye": 1,
+                "herb_recognition": 1
+              },
+              "addElements": {
+                "Wood": 1,
+                "Water": 1
+              },
+              "setFlags": {
+                "found_lower_grove_rare_cache": true
+              }
+            }
+          },
+          {
+            "nextScene": "lower_grove_explore_herbs",
+            "requires": {
+              "skills": {
+                "herb_recognition": 1
+              }
+            },
+            "effects": {
+              "trainingFatigue": 1,
+              "spiritStones": 1,
+              "addItems": ["frost_vein_herb", "cloud_moss"],
+              "addSkills": {
+                "herb_recognition": 1
+              },
+              "addElements": {
+                "Wood": 1
+              },
+              "setFlags": {
+                "found_lower_grove_herbs": true
+              }
+            }
+          },
+          {
+            "nextScene": "lower_grove_explore_common",
+            "effects": {
+              "health": -1,
+              "trainingFatigue": 1,
+              "addItems": ["cloud_moss", "low_grade_beast_bone"],
+              "addSkills": {
+                "campcraft": 1
+              },
+              "setFlags": {
+                "explored_lower_grove": true
+              }
+            }
+          }
+        ]
+      },
+      {
         "label": "Walk to the cloud edge overlook",
         "nextScene": "cloud_edge_overlook"
       },
       {
         "label": "Return to the main courtyard",
         "nextScene": "outer_sect_courtyard"
+      }
+    ]
+  },
+  {
+    "id": "lower_grove_explore_rare",
+    "title": "A Cold Thread In The Leaves",
+    "body": "You leave the main path and let the grove's small sounds sort themselves out: water over stone, insects under bark, qi gathering where frost should not last. Beneath a root shelf you find a cluster of frost-vein herbs, a patch of cloud moss, and a forgotten pill bottle sealed in wax.\n\nThis is why disciples wander even when no steward is watching. The forest keeps rewards for people who notice what others step over.",
+    "choices": [
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "lower_grove_explore_herbs",
+    "title": "Useful Green",
+    "body": "The lower grove does not hand over treasure loudly. You crouch near damp stones, compare leaf veins, and gather a clean bundle of frost-vein herbs and cloud moss without tearing the roots.\n\nIt is not a legendary inheritance. It is better than empty hands, and it teaches your fingers what sect herbs feel like before a senior sister is watching.",
+    "choices": [
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "lower_grove_explore_common",
+    "title": "Underbrush And Old Bones",
+    "body": "You push through the lower grove and quickly learn that immortal forests still have thorns. By the time you find your way back to the marked path, your sleeves are snagged, but your pouch holds cloud moss and a small beast bone half-buried under leaves.",
+    "choices": [
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
       }
     ]
   },

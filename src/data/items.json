@@ -6,7 +6,7 @@
     "category": "Elixir",
     "rarity": "low-grade",
     "description": "A cloudy pill used by outer disciples to gather a small amount of qi.",
-    "icon": "/assets/items/minor_qi_pill.png",
+    "icon": "/assets/items/elixirs/elixir_uncommon.png",
     "effects": {
       "qi": 10,
       "impurity": 2
@@ -39,7 +39,7 @@
     "category": "Elixir",
     "rarity": "mortal",
     "description": "A rough village elixir. It helps stir qi, but its impurities make elders frown.",
-    "icon": "/assets/items/crude_qi_elixir.png",
+    "icon": "/assets/items/elixirs/elixir_common.png",
     "effects": {
       "qi": 4,
       "impurity": 1
@@ -52,7 +52,7 @@
     "category": "Weapon",
     "rarity": "mortal",
     "description": "A plain bamboo pole cut for reach. It will not impress a cultivator, but it keeps desperate hands farther away.",
-    "icon": "/assets/items/bamboo_staff.png",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r4c3.png",
     "equipmentSlot": "weapon",
     "equipmentEffects": {
       "combatDamage": 1
@@ -66,7 +66,7 @@
     "category": "Weapon",
     "rarity": "mortal",
     "description": "A plain staff strengthened with iron bands at the village forge. It is not an immortal weapon, but the mountain road is still a road.",
-    "icon": "/assets/items/reinforced_walking_staff.png",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r4c4.png",
     "equipmentSlot": "weapon",
     "equipmentEffects": {
       "combatDamage": 2,
@@ -81,7 +81,7 @@
     "category": "Accessory",
     "rarity": "low-grade",
     "description": "A small jade pendant carried by the immortal child you rescued from the bandit road. Its cloud mark feels warmer than plain stone.",
-    "icon": "/assets/items/childs_cloud_jade.png",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r4c5.png",
     "equipmentSlot": "accessory",
     "equipmentEffects": {
       "combatDefense": 1
@@ -115,7 +115,7 @@
     "category": "Accessory",
     "rarity": "low-grade",
     "description": "A pale hairpin left by the injured immortal girl after you treated her wounds. A faint medicinal fragrance clings to it.",
-    "icon": "/assets/items/silk_lotus_hairpin.png",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r2c5.png",
     "equipmentSlot": "accessory",
     "equipmentEffects": {
       "combatDefense": 1
@@ -131,5 +131,72 @@
     "description": "A black-threaded bronze token marked with a cloud-over-mountain symbol. It hums faintly when turned toward the north.",
     "icon": "/assets/items/azure_cloud_trial_token.png",
     "effects": {}
+  },
+  {
+    "id": "frost_vein_herb",
+    "name": "Frost-Vein Herb",
+    "type": "material",
+    "category": "Material",
+    "rarity": "low-grade",
+    "description": "A pale spirit herb that grows near cold streams in the lower grove. Medicine disciples use it for simple qi-soothing brews.",
+    "effects": {}
+  },
+  {
+    "id": "cloud_moss",
+    "name": "Cloud Moss",
+    "type": "material",
+    "category": "Material",
+    "rarity": "mortal",
+    "description": "Soft silver-green moss that gathers around damp stones touched by thin mountain qi.",
+    "effects": {}
+  },
+  {
+    "id": "low_grade_beast_bone",
+    "name": "Low-Grade Beast Bone",
+    "type": "material",
+    "category": "Material",
+    "rarity": "low-grade",
+    "description": "A small spirit beast bone left in the brush. It can be traded, studied, or used in crude crafting later.",
+    "effects": {}
+  },
+  {
+    "id": "cooling_herb_salve",
+    "name": "Cooling Herb Salve",
+    "type": "medicine",
+    "category": "Medicine",
+    "rarity": "mortal",
+    "description": "A clean herbal salve for cuts, burns, and road wounds. It restores a modest amount of health.",
+    "icon": "/assets/items/elixirs/elixir_common.png",
+    "effects": {
+      "health": 8
+    }
+  },
+  {
+    "id": "bone_reinforced_staff",
+    "name": "Bone-Reinforced Staff",
+    "type": "weapon",
+    "category": "Weapon",
+    "rarity": "low-grade",
+    "description": "A staff strengthened with low-grade beast bone. Still crude, but much more dangerous in trained hands.",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r4c1.png",
+    "equipmentSlot": "weapon",
+    "equipmentEffects": {
+      "combatDamage": 3,
+      "combatDefense": 1
+    },
+    "effects": {}
+  },
+  {
+    "id": "mist_core_qi_draught",
+    "name": "Mist-Core Qi Draught",
+    "type": "elixir",
+    "category": "Elixir",
+    "rarity": "low-grade",
+    "description": "A rough qi draught refined from a mist wolf core. It grants qi, but leaves impurity behind.",
+    "icon": "/assets/items/elixirs/elixir_rare.png",
+    "effects": {
+      "qi": 14,
+      "impurity": 3
+    }
   }
 ]

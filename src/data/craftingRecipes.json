@@ -1,0 +1,50 @@
+[
+  {
+    "id": "cooling_herb_salve",
+    "name": "Cooling Herb Salve",
+    "category": "Medicine",
+    "description": "A simple field medicine made from frost-vein herbs and cloud moss. Useful for treating cuts, burns, and road wounds.",
+    "ingredients": {
+      "frost_vein_herb": 1,
+      "cloud_moss": 1
+    },
+    "resultItem": "cooling_herb_salve",
+    "quantity": 1,
+    "requiresSkills": {
+      "herb_recognition": 1
+    }
+  },
+  {
+    "id": "bone_reinforced_staff",
+    "name": "Bone-Reinforced Staff",
+    "category": "Weapon",
+    "description": "A crude but reliable fighting staff reinforced with spirit beast bone and careful binding.",
+    "ingredients": {
+      "bamboo_staff": 1,
+      "low_grade_beast_bone": 1,
+      "cloud_moss": 1
+    },
+    "resultItem": "bone_reinforced_staff",
+    "quantity": 1,
+    "requiresSkills": {
+      "staff_basics": 1,
+      "tool_repair": 1
+    }
+  },
+  {
+    "id": "mist_core_qi_draught",
+    "name": "Mist-Core Qi Draught",
+    "category": "Elixir",
+    "description": "A rough draught that draws faint qi out of a mist wolf core. Effective, but not clean.",
+    "ingredients": {
+      "mist_wolf_core": 1,
+      "frost_vein_herb": 1
+    },
+    "resultItem": "mist_core_qi_draught",
+    "quantity": 1,
+    "requiresSkills": {
+      "crude_elixir_refining": 1,
+      "impurity_awareness": 1
+    }
+  }
+]

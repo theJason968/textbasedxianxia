@@ -1,5 +1,39 @@
 [
   {
+    "id": "gao_xue",
+    "name": "Gao Xue",
+    "title": "Wounded Lotus-Robed Cultivator",
+    "disposition": "ally",
+    "faction": "Unknown Immortal Family",
+    "firstSceneId": "bandit_road_lotus_hairpin",
+    "description": "A young cultivator found wounded on the broken trade road, proud enough to hide her name until survival made honesty possible.",
+    "personality": [
+      "guarded",
+      "proud",
+      "debt-conscious",
+      "soft-spoken when exhausted"
+    ],
+    "relationshipToPlayer": "Owes the player a life debt after being treated for three days with crude roadside medicine.",
+    "skills": {
+      "herb_recognition": 3,
+      "impurity_awareness": 3,
+      "careful_eye": 4,
+      "azure_cloud_breathing_roots": 3
+    },
+    "teachesSkills": [],
+    "associatedQuests": ["broken_trade_route"],
+    "memoryFlags": [
+      "saved_injured_immortal_girl",
+      "learned_gao_xue_name",
+      "kept_watch_over_injured_immortal_girl"
+    ],
+    "returnHooks": [
+      "Can repay the life debt with medicine, protection, or information from her family.",
+      "Can pull the player into the politics behind the bandit road ambush.",
+      "Can recognize whether the player stayed merciful after entering the sect."
+    ]
+  },
+  {
     "id": "old_ren",
     "name": "Old Ren",
     "title": "Retired Caravan Guard",
@@ -293,6 +327,39 @@
       "Can become an information source through merchant family letters.",
       "Can repay kindness with supplies or warnings.",
       "Can show how weaker disciples survive through alliances."
+    ]
+  },
+  {
+    "id": "senior_brother_wei",
+    "name": "Senior Brother Wei",
+    "title": "Outer Sect Guide",
+    "disposition": "neutral",
+    "faction": "Azure Cloud Sect",
+    "firstSceneId": "senior_disciple_mountain_tour",
+    "description": "A patient outer disciple assigned to guide unclaimed candidates through the sect grounds and rules.",
+    "personality": [
+      "calm",
+      "procedural",
+      "quietly observant",
+      "more helpful than his bored tone suggests"
+    ],
+    "relationshipToPlayer": "Explains the sect's outer rules and becomes the player's first normal senior contact if no elder recruits them early.",
+    "skills": {
+      "plain_speech": 4,
+      "careful_eye": 3,
+      "azure_cloud_breathing_roots": 3,
+      "foundation_control": 2
+    },
+    "teachesSkills": [],
+    "associatedQuests": ["enter_azure_cloud_sect"],
+    "memoryFlags": [
+      "toured_azure_cloud_rules",
+      "unclaimed_after_elder_selection"
+    ],
+    "returnHooks": [
+      "Can explain sect rules and contribution systems.",
+      "Can warn the player before they offend a hall elder.",
+      "Can become a low-pressure senior contact for early outer sect errands."
     ]
   },
   {

@@ -13,8 +13,11 @@ export type ElementalEssence =
   | "Ice"
   | "Lightning";
 
+export type CharacterGender = "female" | "male";
+
 export type Player = {
   name: string;
+  gender: CharacterGender;
   realm: Realm;
   stage: RealmStage;
   health: number;
@@ -47,6 +50,11 @@ export type Player = {
   techniqueMastery: Record<string, number>;
   quests: Record<string, PlayerQuest>;
   npcJournal: Record<string, PlayerNpcJournalEntry>;
+  relationships: SocialScores;
+  reputation: SocialScores;
+  morality: SocialScores;
+  sectContribution: SocialScores;
+  corruption: number;
   flags: Record<string, boolean | number | string>;
 };
 
@@ -65,6 +73,8 @@ export type PlayerNpcJournalEntry = {
   met: boolean;
   conversations: string[];
 };
+
+export type SocialScores = Record<string, number>;
 
 export type PlayerQuest = {
   status: QuestStatus;
@@ -205,6 +215,7 @@ export type ChoiceEffect = Partial<
     | "cultivationInsight"
     | "daysRemainingToExam"
     | "spiritStones"
+    | "corruption"
   >
 > & {
   advanceDays?: number;
@@ -239,6 +250,11 @@ export type ChoiceEffect = Partial<
     npcId: string;
     topic: string;
   };
+  relationships?: SocialScores;
+  reputation?: SocialScores;
+  morality?: SocialScores;
+  sectContribution?: SocialScores;
+  corruption?: number;
   setFlags?: Record<string, boolean | number | string>;
   startCombat?: {
     enemyId: string;
@@ -278,6 +294,11 @@ export type ChoiceRequirement = {
   skills?: Record<string, number>;
   elements?: Partial<Record<ElementalEssence, number>>;
   constitutions?: string[];
+  relationships?: SocialScores;
+  reputation?: SocialScores;
+  morality?: SocialScores;
+  sectContribution?: SocialScores;
+  corruption?: number;
   flags?: Record<string, boolean | number | string>;
 };
 
@@ -304,10 +325,24 @@ export type CombatNarration = {
   defeat?: string[];
 };
 
+export type SceneImage = {
+  src: string;
+  alt: string;
+  caption?: string;
+};
+
+export type SceneStatus = {
+  label: string;
+  value: number;
+  max: number;
+};
+
 export type Scene = {
   id: string;
   title: string;
   body: string;
+  image?: SceneImage;
+  status?: SceneStatus;
   combatNarration?: CombatNarration;
   choices: Choice[];
 };

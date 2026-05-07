@@ -54,6 +54,7 @@ const numericEffectKeys: NumericPlayerStat[] = [
   "cultivationInsight",
   "daysRemainingToExam",
   "spiritStones",
+  "corruption",
 ];
 const skillData = skills as Skill[];
 const itemData = items as Array<{ id: string; name: string }>;
@@ -80,6 +81,7 @@ const playerChangeKeys: Array<keyof Pick<
   | "impurity"
   | "cultivationInsight"
   | "spiritStones"
+  | "corruption"
 >> = [
   "health",
   "maxHealth",
@@ -100,6 +102,7 @@ const playerChangeKeys: Array<keyof Pick<
   "impurity",
   "cultivationInsight",
   "spiritStones",
+  "corruption",
 ];
 const playerStatLabels: Record<(typeof playerChangeKeys)[number], string> = {
   health: "Health",
@@ -121,6 +124,7 @@ const playerStatLabels: Record<(typeof playerChangeKeys)[number], string> = {
   impurity: "Impurity",
   cultivationInsight: "Cultivation Insight",
   spiritStones: "Spirit Stones",
+  corruption: "Corruption",
 };
 
 export function applyChoice(gameState: GameState, choice: Choice): GameState {
@@ -184,6 +188,14 @@ export function getPlayerChangeMessages(
     ...getElementMessages(previousPlayer, nextPlayer),
     ...getConstitutionMessages(previousPlayer, nextPlayer),
     ...getQuestMessages(previousPlayer, nextPlayer),
+    ...getSocialScoreMessages("Relationship", previousPlayer.relationships, nextPlayer.relationships),
+    ...getSocialScoreMessages("Reputation", previousPlayer.reputation, nextPlayer.reputation),
+    ...getSocialScoreMessages("Morality", previousPlayer.morality, nextPlayer.morality),
+    ...getSocialScoreMessages(
+      "Sect Contribution",
+      previousPlayer.sectContribution,
+      nextPlayer.sectContribution,
+    ),
   ];
 }
 
@@ -236,6 +248,13 @@ function applyEffects(player: Player, effects?: ChoiceEffect): Player {
       effects.techniqueMastery,
     ),
     npcJournal: updateNpcJournal(player.npcJournal, effects),
+    relationships: mergeSocialScores(player.relationships, effects.relationships),
+    reputation: mergeSocialScores(player.reputation, effects.reputation),
+    morality: mergeSocialScores(player.morality, effects.morality),
+    sectContribution: mergeSocialScores(
+      player.sectContribution,
+      effects.sectContribution,
+    ),
     flags: {
       ...player.flags,
       ...effects.setFlags,
@@ -303,6 +322,19 @@ function applyQuestEffects(player: Player, effects: NonNullable<Choice["effects"
 
 function mergeUnique(current: string[], additions: string[] = []): string[] {
   return [...new Set([...current, ...additions])];
+}
+
+function mergeSocialScores(
+  currentScores: Player["relationships"],
+  scoreChanges: Player["relationships"] = {},
+): Player["relationships"] {
+  return Object.entries(scoreChanges).reduce<Player["relationships"]>(
+    (nextScores, [scoreId, change]) => ({
+      ...nextScores,
+      [scoreId]: (nextScores[scoreId] ?? 0) + change,
+    }),
+    { ...currentScores },
+  );
 }
 
 function equipRewardedItem(
@@ -616,6 +648,34 @@ function getQuestMessages(previousPlayer: Player, nextPlayer: Player): string[] 
     .filter((message) => message !== null);
 }
 
+function getSocialScoreMessages(
+  scoreType: string,
+  previousScores: Player["relationships"] = {},
+  nextScores: Player["relationships"] = {},
+): string[] {
+  return Object.entries(nextScores)
+    .map(([scoreId, nextValue]) => {
+      const change = nextValue - (previousScores[scoreId] ?? 0);
+
+      if (change === 0) {
+        return null;
+      }
+
+      const label = formatSocialScoreLabel(scoreId);
+
+      return change > 0
+        ? `${scoreType} increased: ${label} +${change}.`
+        : `${scoreType} decreased: ${label} ${change}.`;
+    })
+    .filter((message) => message !== null);
+}
+
+function formatSocialScoreLabel(scoreId: string): string {
+  return scoreId
+    .replaceAll("_", " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
 function getAddedCounts(previousValues: string[], nextValues: string[]): Array<[string, number]> {
   const previousCounts = countValues(previousValues);
   const nextCounts = countValues(nextValues);
@@ -658,6 +718,7 @@ function clampPlayerStat(player: Player, key: NumericPlayerStat, value: number):
     key === "foundationStability" ||
     key === "trainingFatigue" ||
     key === "impurity" ||
+    key === "corruption" ||
     key === "cultivationInsight" ||
     key === "daysRemainingToExam"
   ) {

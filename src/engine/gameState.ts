@@ -6,6 +6,7 @@ export function createInitialGameState(): GameState {
     combat: null,
     player: {
       name: "Unnamed Villager",
+      gender: "male",
       realm: "Mortal",
       stage: "Early",
       health: 30,
@@ -38,6 +39,11 @@ export function createInitialGameState(): GameState {
       techniqueMastery: {},
       quests: {},
       npcJournal: {},
+      relationships: {},
+      reputation: {},
+      morality: {},
+      sectContribution: {},
+      corruption: 0,
       flags: {},
     },
   };
