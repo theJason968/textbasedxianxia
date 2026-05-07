@@ -267,6 +267,7 @@ export type ChoiceEffect = Partial<
   morality?: SocialScores;
   sectContribution?: SocialScores;
   corruption?: number;
+  messages?: string[];
   setFlags?: Record<string, boolean | number | string>;
   startCombat?: {
     enemyId: string;

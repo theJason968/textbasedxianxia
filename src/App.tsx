@@ -432,6 +432,24 @@ function getChoiceRequirementSummary(player: Player, choice: Choice): string[] {
   return messages;
 }
 
+function getChoiceCheckSummary(choice: Choice): string[] {
+  const checkLabels = new Set<string>();
+
+  choice.outcomes?.forEach((outcome) => {
+    Object.keys(outcome.requires?.skills ?? {}).forEach((skillId) => {
+      const skillName = skillData.find((skill) => skill.id === skillId)?.name ?? skillId;
+
+      checkLabels.add(`${skillName} check`);
+    });
+  });
+
+  return Array.from(checkLabels);
+}
+
+function isCheckResultMessage(message: string): boolean {
+  return /^\[[^\]]+\] Check (Passed|Failed)!$/.test(message);
+}
+
 function getNamedRequirement(
   data: Array<{ id: string; name: string }>,
   id: string,
@@ -836,6 +854,10 @@ function App() {
       : "Unaffiliated";
   const quickTechniqueSlots = learnedTechniques.slice(0, 4);
   const quickSkillSlots = visibleSkills.slice(0, 2);
+  const checkResultMessages = actionMessages.filter(isCheckResultMessage);
+  const regularActionMessages = actionMessages.filter(
+    (message) => !isCheckResultMessage(message),
+  );
 
   function handleAuthSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -1106,6 +1128,13 @@ function App() {
 
       <section className="story-panel">
         <h1>{currentLocationTitle}</h1>
+        {checkResultMessages.length > 0 ? (
+          <ul className="action-messages" aria-live="polite">
+            {checkResultMessages.map((message) => (
+              <li key={message}>{message}</li>
+            ))}
+          </ul>
+        ) : null}
         <h2 className="scene-title">{currentScene.title}</h2>
         {currentScene.status ? (
           <div className="scene-status" aria-label={currentScene.status.label}>
@@ -1128,9 +1157,9 @@ function App() {
           </div>
         ) : null}
         <p className="scene-body">{currentScene.body}</p>
-        {actionMessages.length > 0 ? (
+        {regularActionMessages.length > 0 ? (
           <ul className="action-messages" aria-live="polite">
-            {actionMessages.map((message) => (
+            {regularActionMessages.map((message) => (
               <li key={message}>{message}</li>
             ))}
           </ul>
@@ -1207,6 +1236,7 @@ function App() {
                   gameState.player,
                   choice,
                 );
+                const checkSummary = getChoiceCheckSummary(choice);
 
                 return (
                   <div
@@ -1218,7 +1248,10 @@ function App() {
                       onClick={() => handleChoice(choice)}
                       disabled={!isAvailable}
                     >
-                      {choice.label}
+                      <span>{choice.label}</span>
+                      {checkSummary.length > 0 ? (
+                        <small>{checkSummary.join(", ")}</small>
+                      ) : null}
                     </button>
                     {!isAvailable && requirementSummary.length > 0 ? (
                       <p>Requires {requirementSummary.join(", ")}</p>

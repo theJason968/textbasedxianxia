@@ -2017,14 +2017,837 @@
       "alt": "A steep mountain path rising toward the Azure Cloud Sect gate",
       "caption": "The Azure Cloud Sect waits above the jade steps."
     },
-    "body": "Mist coils around the ten thousand jade steps of the Azure Cloud Sect. Carriages crowd the lower road: lacquered clan wagons, merchant litters, hired guards holding parasols over children in silk. Your village pack suddenly feels louder than any boast.\n\nA bronze bell sounds once. The exam has not begun, but judgment already has.",
+    "body": "The Azure Cloud mountain gate does not look built so much as carved out of the mountain's first breath. Two stone pillars rise higher than any village watchtower, their dragon reliefs half-hidden by moss and cold mist. Between them, a jade stair climbs into cloud until the steps vanish, then reappear far above as a thin white scar across the cliffs.\n\nSpiritual pressure leaks from the gate in slow waves. It is not qi you can gather. Not yet. It is weight: on your shoulders, in your teeth, behind your eyes. Around you, candidates pretend not to feel it. Clan heirs arrive in lacquered carriages. Merchant children clutch advice scrolls. Servants carry boxes of pills, spare robes, and weapons wrapped in silk.\n\nYour village pack hangs from one shoulder. Your trial token rests against your palm, warmer than it should be.\n\nA bronze bell sounds once from somewhere above the clouds. The exam has not begun, but the mountain is already sorting people.",
     "choices": [
       {
-        "label": "Join the registration line with your trial token",
-        "nextScene": "exam_registration",
+        "label": "Continue up toward the registration crowd",
+        "nextScene": "mountain_gate_outer_queue",
         "effects": {
           "startQuest": "enter_azure_cloud_sect"
         }
+      }
+    ]
+  },
+  {
+    "id": "mountain_gate_outer_queue",
+    "areaId": "azure_cloud_mountain",
+    "title": "The Outer Queue",
+    "body": "The first stair is wide enough for ten ox carts, but the crowd still finds a way to press shoulder to shoulder. Sect attendants in grey robes guide candidates into loose lines. Above them, bronze plaques mark origins you barely understand: clan recommendation, merchant bond, wandering token, mortal village exception.\n\nThat last one catches like a thorn.\n\nA blue-silk heir near a lacquered carriage laughs whenever a poor candidate passes. A plain-robed girl stands near the stair shadow, breathing in sets of three. A merchant boy fumbles with a pack strap and tries to hide how badly his hands shake.\n\nNo examiner has called your name yet. For one quiet moment, you can decide how to enter this crowd.",
+    "choices": [
+      {
+        "label": "Scan the crowd before choosing where to stand",
+        "nextScene": "mountain_gate_crowd_scan_failed",
+        "effects": {
+          "startQuest": "enter_azure_cloud_sect",
+          "addSkills": {
+            "careful_eye": 1
+          },
+          "reputation": {
+            "azure_cloud_candidates": -1
+          },
+          "trainingFatigue": 1,
+          "messages": ["[Careful Eye] Check Failed!"],
+          "setFlags": {
+            "failed_mountain_gate_crowd_scan": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "mountain_gate_crowd_scan",
+            "requires": {
+              "skills": {
+                "careful_eye": 1
+              }
+            },
+            "effects": {
+              "startQuest": "enter_azure_cloud_sect",
+              "addSkills": {
+                "careful_eye": 1
+              },
+              "meetNpc": "han_yue",
+              "recordNpcConversation": {
+                "npcId": "han_yue",
+                "topic": "Noticed her calm breathing at the mountain gate before trouble could set your pace."
+              },
+              "relationships": {
+                "han_yue": 1,
+                "qiao_min": 1
+              },
+              "reputation": {
+                "azure_cloud_candidates": 1
+              },
+              "morality": {
+                "observant": 1
+              },
+              "messages": ["[Careful Eye] Check Passed!"],
+              "setFlags": {
+                "scanned_mountain_gate_crowd": true,
+                "recognized_gate_troublemakers": true,
+                "recognized_gate_friendlies": true,
+                "met_han_yue": true,
+                "noticed_qiao_min_at_gate": true,
+                "noticed_liu_zhen_at_gate": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Help the nervous boy whose pack is coming loose",
+        "nextScene": "mountain_gate_help_qiao_min",
+        "effects": {
+          "startQuest": "enter_azure_cloud_sect",
+          "meetNpc": "qiao_min",
+          "recordNpcConversation": {
+            "npcId": "qiao_min",
+            "topic": "Helped him fix his pack straps at the mountain gate before registration."
+          },
+          "relationships": {
+            "qiao_min": 2
+          },
+          "morality": {
+            "kind": 1
+          },
+          "karma": 1,
+          "setFlags": {
+            "met_qiao_min": true,
+            "helped_qiao_min_at_gate": true
+          }
+        }
+      },
+      {
+        "label": "Hold your ground when the blue-silk heir laughs at your village clothes",
+        "nextScene": "mountain_gate_liu_zhen_spark",
+        "effects": {
+          "startQuest": "enter_azure_cloud_sect",
+          "meetNpc": "liu_zhen",
+          "recordNpcConversation": {
+            "npcId": "liu_zhen",
+            "topic": "He mocked your village clothes at the mountain gate before registration."
+          },
+          "relationships": {
+            "liu_zhen": -2
+          },
+          "reputation": {
+            "azure_cloud_candidates": 1
+          },
+          "morality": {
+            "proud": 1
+          },
+          "setFlags": {
+            "met_liu_zhen": true,
+            "angered_liu_zhen_at_gate": true
+          }
+        }
+      },
+      {
+        "label": "Ignore the crowd and join the registration line with your trial token",
+        "nextScene": "origin_plaques",
+        "effects": {
+          "startQuest": "enter_azure_cloud_sect",
+          "morality": {
+            "focused": 1
+          },
+          "setFlags": {
+            "went_directly_to_registration": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "mountain_gate_crowd_scan",
+    "areaId": "azure_cloud_mountain",
+    "title": "Faces Beneath The Gate",
+    "body": "You do not move at first. Mei taught you that stillness is sometimes the only way to hear what noise is hiding.\n\nThe crowd sorts itself when you stop trying to look at all of it. The blue-silk heir near the lacquered carriage laughs whenever a poor candidate passes, but his eyes keep checking who is watching. Trouble, then. Not because he is loud, but because he performs cruelty like a test.\n\nA plain-robed girl stands near the stair shadow, breathing in sets of three. Her shoulders rise less each time the gate pressure rolls over the crowd. Friendly, perhaps, or at least disciplined enough not to waste fear.\n\nA merchant boy fumbles with a pack strap and tries to hide how badly his hands shake. He is not dangerous. That may make him easy prey.\n\nTwo reactions follow. Liu Zhen's smile misses you because you move before his servants can hem you in. Han Yue gives the smallest nod, as if she saw you choose quiet ground instead of loud trouble.",
+    "choices": [
+      {
+        "label": "Continue toward the origin plaques",
+        "nextScene": "origin_plaques",
+        "effects": {
+          "meetNpc": "qiao_min",
+          "recordNpcConversation": {
+            "npcId": "qiao_min",
+            "topic": "Spotted him at the mountain gate and recognized he might become an ally if kept away from harsher candidates."
+          },
+          "setFlags": {
+            "met_qiao_min": true,
+            "avoided_gate_crowd_trouble": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "mountain_gate_crowd_scan_failed",
+    "areaId": "azure_cloud_mountain",
+    "title": "Faces Lost In The Crowd",
+    "body": "You try to read the crowd, but the mountain gate presses at your skull and every silk robe, servant box, token cord, and anxious face blurs into noise. By the time you decide where to stand, the line has already shifted around you.\n\nTwo reactions follow. Liu Zhen's servants drift close enough that his laugh lands where everyone can hear it. The plain-robed girl near the stair shadow notices your late step, then looks away before helping can become attention.\n\nYou still find the registration line, but you enter it tired and watched.",
+    "choices": [
+      {
+        "label": "Continue toward the origin plaques",
+        "nextScene": "origin_plaques",
+        "effects": {
+          "setFlags": {
+            "entered_registration_after_failed_scan": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "mountain_gate_help_qiao_min",
+    "areaId": "azure_cloud_mountain",
+    "title": "A Strap Before The Stair",
+    "body": "The merchant boy's pack slips sideways just as the line surges. A servant behind him clicks his tongue and a silk-robed candidate laughs, but no one reaches out.\n\nYou catch the strap before the pack drags him off balance.\n\n\"Higher,\" you say, tightening it across his shoulder. \"If the weight pulls low, the stair will make it feel twice as heavy.\"\n\nHe blinks at you, startled by useful kindness.\n\n\"Qiao Min,\" he says quickly. \"My father said alliances are expensive, but he forgot to mention straps. Thank you.\"\n\nA few candidates notice. Some with approval. Some with the look of people counting weakness.",
+    "choices": [
+      {
+        "label": "Walk with Qiao Min toward the origin plaques",
+        "nextScene": "origin_plaques",
+        "effects": {
+          "setFlags": {
+            "registered_near_qiao_min": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "mountain_gate_liu_zhen_spark",
+    "areaId": "azure_cloud_mountain",
+    "title": "Blue Silk, Village Dust",
+    "body": "The blue-silk heir looks you over from patched cuff to worn shoe.\n\n\"The sect is generous this year,\" he says. \"Even mountain weeds are allowed to climb.\"\n\nA few candidates laugh because his robe costs more than their courage.\n\nYou touch the trial token in your palm and meet his eyes.\n\n\"If the mountain only wanted silk, it would test wardrobes.\"\n\nThe laughter thins. His smile stays, but it loses all warmth.\n\n\"Liu Zhen,\" someone whispers near you. \"Liu clan. Do not make him remember you.\"\n\nToo late. He already has.",
+    "choices": [
+      {
+        "label": "Move on before the argument becomes a scene",
+        "nextScene": "origin_plaques",
+        "effects": {
+          "setFlags": {
+            "liu_zhen_remembers_gate_insult": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "origin_plaques",
+    "areaId": "azure_cloud_mountain",
+    "title": "The Origin Plaques",
+    "body": "Past the outer crowd, the stair widens beneath five bronze plaques fixed into the cliff face. Each one hangs from chains as thick as your wrist. Mist beads along the carved words: Clan Recommendation, Merchant Bond, Wandering Token, Servant Sponsorship, Mortal Village Exception.\n\nMost candidates know where to stand before they arrive. Clan heirs drift to polished stone lanes where attendants bow without being asked. Merchant children present stamped contracts. Servant-sponsored candidates keep their eyes low and their documents higher than their pride.\n\nThe last plaque waits at the edge of the stair, half-dark beneath a pine shadow.\n\nMortal Village Exception.\n\nNo one stands there yet. That may be mercy, warning, or both.",
+    "choices": [
+      {
+        "label": "Read the Mortal Village Exception plaque carefully",
+        "nextScene": "origin_plaques_misread",
+        "effects": {
+          "messages": ["[Careful Eye] Check Failed!"],
+          "reputation": {
+            "azure_cloud_candidates": -1
+          },
+          "setFlags": {
+            "misread_mortal_exception_plaque": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "origin_plaques_read",
+            "requires": {
+              "skills": {
+                "careful_eye": 1
+              }
+            },
+            "effects": {
+              "messages": ["[Careful Eye] Check Passed!"],
+              "addSkills": {
+                "careful_eye": 1
+              },
+              "reputation": {
+                "azure_cloud_candidates": 1
+              },
+              "setFlags": {
+                "read_mortal_exception_plaque": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Ask a grey-robed attendant what exception means",
+        "nextScene": "origin_plaques_attendant_fail",
+        "effects": {
+          "messages": ["[Plain Speech] Check Failed!"],
+          "reputation": {
+            "azure_cloud_sect": -1
+          },
+          "setFlags": {
+            "asked_attendant_badly_at_plaques": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "origin_plaques_attendant",
+            "requires": {
+              "skills": {
+                "plain_speech": 1
+              }
+            },
+            "effects": {
+              "messages": ["[Plain Speech] Check Passed!"],
+              "addSkills": {
+                "plain_speech": 1
+              },
+              "relationships": {
+                "examiner_su": 1
+              },
+              "setFlags": {
+                "learned_mortal_exception_meaning": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Keep walking without staring",
+        "nextScene": "token_warmth",
+        "effects": {
+          "morality": {
+            "focused": 1
+          },
+          "setFlags": {
+            "ignored_origin_plaques": true
+          }
+        }
+      },
+      {
+        "label": "Stand beneath the wrong plaque and hope no one notices",
+        "nextScene": "origin_plaques_wrong_line",
+        "effects": {
+          "reputation": {
+            "azure_cloud_candidates": -1
+          },
+          "setFlags": {
+            "stood_under_wrong_origin_plaque": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "origin_plaques_read",
+    "areaId": "azure_cloud_mountain",
+    "title": "The Mortal Exception",
+    "body": "You wait until the mist thins and read the small characters beneath the plaque.\n\nMortal Village Exception: token-bearers without clan backing may register if the token answers the mountain formation. No servant may speak for them. No sponsor may shield them. Their result belongs to them alone.\n\nTwo reactions follow. Qiao Min goes quiet beside you, realizing your path has fewer cushions than his. Liu Zhen notices the same thing and smiles like he has found a bruise.",
+    "choices": [
+      {
+        "label": "Step away before more candidates gather",
+        "nextScene": "token_warmth"
+      }
+    ]
+  },
+  {
+    "id": "origin_plaques_misread",
+    "areaId": "azure_cloud_mountain",
+    "title": "Words In Mist",
+    "body": "The plaque's smaller characters blur beneath old patina and cold mist. You make out enough to know it concerns token-bearers without sponsors, but not enough to understand the rules.\n\nTwo reactions follow. A merchant candidate snorts when you lean closer for too long. Han Yue notices your frustration and shifts aside, giving you a clearer path forward without making a performance of helping.",
+    "choices": [
+      {
+        "label": "Leave the plaque and keep moving",
+        "nextScene": "token_warmth"
+      }
+    ]
+  },
+  {
+    "id": "origin_plaques_attendant",
+    "areaId": "azure_cloud_mountain",
+    "title": "The Attendant's Answer",
+    "body": "You bow just enough to be respectful without wasting the line's patience.\n\n\"Senior brother, what does Mortal Village Exception mean?\"\n\nThe grey-robed attendant looks you over, then answers in a low voice.\n\n\"It means the sect did not invite your family. It invited your fate. Do not let anyone else touch your token before the jade table.\"\n\nTwo reactions follow. His warning gives you a useful chill. Liu Zhen's servant, who had been drifting too close, stops pretending not to listen.",
+    "choices": [
+      {
+        "label": "Grip the token and continue",
+        "nextScene": "token_warmth"
+      }
+    ]
+  },
+  {
+    "id": "origin_plaques_attendant_fail",
+    "areaId": "azure_cloud_mountain",
+    "title": "A Question Too Loud",
+    "body": "You ask quickly, but the words come out louder than you mean them to.\n\n\"What does Mortal Village Exception mean?\"\n\nSeveral candidates turn. The attendant's mouth tightens.\n\n\"It means you should stand where the plaque tells you to stand. Next.\"\n\nTwo reactions follow. The crowd learns you do not know the rules. Qiao Min winces, then edges closer as if standing beside you can make the mistake smaller.",
+    "choices": [
+      {
+        "label": "Swallow the embarrassment and keep moving",
+        "nextScene": "token_warmth",
+        "effects": {
+          "relationships": {
+            "qiao_min": 1
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "origin_plaques_wrong_line",
+    "areaId": "azure_cloud_mountain",
+    "title": "The Wrong Chain",
+    "body": "You step beneath Merchant Bond because the line is shorter and the attendants are moving faster.\n\nA clerk glances at your clothes, then at your token cord.\n\n\"Not this lane. Mortal exception. There.\"\n\nThe word there lands heavier than it should.\n\nTwo reactions follow. A few candidates laugh because they have been waiting for someone poorer than them to make the first mistake. Han Yue does not laugh. She only watches which faces enjoy it.",
+    "choices": [
+      {
+        "label": "Cross to the mortal exception lane",
+        "nextScene": "token_warmth"
+      }
+    ]
+  },
+  {
+    "id": "token_warmth",
+    "areaId": "azure_cloud_mountain",
+    "title": "The Token Warms",
+    "body": "The closer you come to the gate formation, the warmer the Azure Cloud token becomes. At first it is only a coin left in sunlight. Then it presses heat into your palm like a coal wrapped in silk.\n\nThe stone beneath your shoes hums with a sound too low for hearing. Some candidates' tokens remain dull. Others pulse faintly beneath embroidered sleeves. One boy in red tries to hide a token that has gone completely cold.\n\nAn attendant's eyes sweep the lane.\n\nThe token is no longer proof that you were invited. It is starting to answer the mountain.",
+    "choices": [
+      {
+        "label": "Hide the token in your sleeve",
+        "nextScene": "token_warmth_hidden_fail",
+        "effects": {
+          "messages": ["[Careful Eye] Check Failed!"],
+          "reputation": {
+            "azure_cloud_sect": -1
+          },
+          "setFlags": {
+            "hid_token_badly": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "token_warmth_hidden",
+            "requires": {
+              "skills": {
+                "careful_eye": 1
+              }
+            },
+            "effects": {
+              "messages": ["[Careful Eye] Check Passed!"],
+              "addSkills": {
+                "careful_eye": 1
+              },
+              "setFlags": {
+                "hid_token_cleanly": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Ask if anyone else's token is warming",
+        "nextScene": "token_warmth_ask",
+        "effects": {
+          "relationships": {
+            "qiao_min": 1,
+            "han_yue": 1
+          },
+          "setFlags": {
+            "asked_about_warming_tokens": true
+          }
+        }
+      },
+      {
+        "label": "Focus on the warmth and steady your breathing",
+        "nextScene": "token_warmth_focus",
+        "effects": {
+          "qi": 2,
+          "addSkills": {
+            "calm_breath": 1
+          },
+          "trainingFatigue": 1,
+          "setFlags": {
+            "studied_token_warmth": true
+          }
+        }
+      },
+      {
+        "label": "Hold the token openly and keep walking",
+        "nextScene": "first_gate_pressure",
+        "effects": {
+          "reputation": {
+            "azure_cloud_candidates": 1
+          },
+          "morality": {
+            "direct": 1
+          },
+          "setFlags": {
+            "carried_token_openly": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "token_warmth_hidden",
+    "areaId": "azure_cloud_mountain",
+    "title": "Heat Under Cloth",
+    "body": "You tuck the token into your sleeve only after watching where the attendants' eyes pause. The cloth hides the glow without blocking the formation's pull.\n\nTwo reactions follow. Liu Zhen's servant loses track of your token hand. Han Yue notices the timing and gives you another almost-nod.",
+    "choices": [
+      {
+        "label": "Walk into the gate pressure",
+        "nextScene": "first_gate_pressure"
+      }
+    ]
+  },
+  {
+    "id": "token_warmth_hidden_fail",
+    "areaId": "azure_cloud_mountain",
+    "title": "A Clumsy Sleeve",
+    "body": "You push the token into your sleeve too quickly. The fabric catches, the token flashes blue-white, and an attendant's gaze snaps toward you.\n\nTwo reactions follow. The attendant marks something on a bamboo slip. Liu Zhen sees enough to know your token is active, and that seems to please him.",
+    "choices": [
+      {
+        "label": "Stop fumbling and face the gate pressure",
+        "nextScene": "first_gate_pressure"
+      }
+    ]
+  },
+  {
+    "id": "token_warmth_ask",
+    "areaId": "azure_cloud_mountain",
+    "title": "Other Warm Tokens",
+    "body": "\"Is anyone else's token warming?\" you ask, keeping your voice low.\n\nQiao Min opens his hand. His token glows weakly, like a candle afraid of wind.\n\nHan Yue does not show hers, but she answers.\n\n\"The mountain is testing whether the token knows you. Do not panic when it burns. Panic if it goes cold.\"\n\nTwo reactions follow. Qiao Min looks relieved to have words for his fear. Liu Zhen hears the exchange and decides you are gathering allies.",
+    "choices": [
+      {
+        "label": "Carry that warning into the gate pressure",
+        "nextScene": "first_gate_pressure",
+        "effects": {
+          "relationships": {
+            "liu_zhen": -1
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "token_warmth_focus",
+    "areaId": "azure_cloud_mountain",
+    "title": "A Breath Of Blue Heat",
+    "body": "You do not try to gather the token's heat. You only breathe around it the way Old Ren taught you to breathe around pain: acknowledge it, give it room, refuse to let it command you.\n\nFor one blink, a thread of blue warmth moves through your palm and settles behind your ribs.\n\nTwo reactions follow. Your body feels steadier, though the effort leaves your legs heavier. The gate formation seems to notice you noticing it.",
+    "choices": [
+      {
+        "label": "Step forward before your courage cools",
+        "nextScene": "first_gate_pressure"
+      }
+    ]
+  },
+  {
+    "id": "first_gate_pressure",
+    "areaId": "azure_cloud_mountain",
+    "title": "The First Wave Of Pressure",
+    "body": "The lane passes beneath the outer arch. The moment your foot crosses the shadow, the mountain presses down.\n\nIt is not an attack. That almost makes it worse. The pressure is patient, ancient, and perfectly indifferent to whether your knees understand pride. Candidates gasp around you. Someone drops a scroll. Someone else vomits into a lacquered sleeve and pretends it did not happen.\n\nThe jade stair ahead is only a few body lengths away.\n\nTo reach registration, you must cross the arch without letting the mountain choose your posture for you.",
+    "choices": [
+      {
+        "label": "Set your feet and ground your stance",
+        "nextScene": "first_gate_pressure_stumble",
+        "effects": {
+          "messages": ["[River Endurance] Check Failed!"],
+          "health": -3,
+          "trainingFatigue": 1,
+          "setFlags": {
+            "stumbled_under_gate_pressure": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "first_gate_pressure_stance",
+            "requires": {
+              "skills": {
+                "river_endurance": 1
+              }
+            },
+            "effects": {
+              "messages": ["[River Endurance] Check Passed!"],
+              "addSkills": {
+                "river_endurance": 1
+              },
+              "reputation": {
+                "azure_cloud_candidates": 1
+              },
+              "setFlags": {
+                "endured_gate_pressure_with_stance": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Regulate your breath before the pressure peaks",
+        "nextScene": "first_gate_pressure_breath_fail",
+        "effects": {
+          "messages": ["[Calm Breath] Check Failed!"],
+          "health": -2,
+          "trainingFatigue": 1,
+          "setFlags": {
+            "lost_breath_under_gate_pressure": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "first_gate_pressure_breath",
+            "requires": {
+              "skills": {
+                "calm_breath": 1
+              }
+            },
+            "effects": {
+              "messages": ["[Calm Breath] Check Passed!"],
+              "qi": 1,
+              "addSkills": {
+                "calm_breath": 1
+              },
+              "setFlags": {
+                "breathed_through_gate_pressure": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Help Qiao Min stay upright",
+        "nextScene": "first_gate_pressure_help_qiao_min",
+        "effects": {
+          "relationships": {
+            "qiao_min": 2
+          },
+          "karma": 1,
+          "trainingFatigue": 1,
+          "setFlags": {
+            "helped_qiao_min_under_gate_pressure": true
+          }
+        }
+      },
+      {
+        "label": "Force yourself forward through the pressure",
+        "nextScene": "first_gate_pressure_force",
+        "effects": {
+          "health": -4,
+          "reputation": {
+            "azure_cloud_candidates": 1
+          },
+          "morality": {
+            "unyielding": 1
+          },
+          "setFlags": {
+            "forced_through_gate_pressure": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "first_gate_pressure_stance",
+    "areaId": "azure_cloud_mountain",
+    "title": "Stone Under The Feet",
+    "body": "You lower your weight the way the river stones taught you: knees soft, spine alive, breath held only long enough to become a root.\n\nThe pressure rolls over you. It bends your shoulders but does not take your feet.\n\nTwo reactions follow. A few candidates glance over, surprised a village body knows how to endure. Liu Zhen's smile tightens because this was supposed to be beneath his notice.",
+    "choices": [
+      {
+        "label": "Step beyond the arch",
+        "nextScene": "before_jade_table"
+      }
+    ]
+  },
+  {
+    "id": "first_gate_pressure_stumble",
+    "areaId": "azure_cloud_mountain",
+    "title": "Knees In The Dust",
+    "body": "You try to brace, but the pressure finds every place your training is still only effort. One knee hits the stone before you can stop it.\n\nTwo reactions follow. Pain flashes up your leg. Qiao Min reaches out before thinking, then pulls back when an attendant's eyes pass over both of you.",
+    "choices": [
+      {
+        "label": "Stand and finish crossing",
+        "nextScene": "before_jade_table"
+      }
+    ]
+  },
+  {
+    "id": "first_gate_pressure_breath",
+    "areaId": "azure_cloud_mountain",
+    "title": "Breath Against The Mountain",
+    "body": "You breathe in three counts and release in six. The pressure does not lessen. You do.\n\nFor a moment, the mountain's weight becomes rhythm instead of panic.\n\nTwo reactions follow. Han Yue notices the breathing pattern and matches it for one step. The token warms again, softer this time, as if approving of restraint.",
+    "choices": [
+      {
+        "label": "Step beyond the arch",
+        "nextScene": "before_jade_table"
+      }
+    ]
+  },
+  {
+    "id": "first_gate_pressure_breath_fail",
+    "areaId": "azure_cloud_mountain",
+    "title": "A Broken Breath",
+    "body": "You try to count your breath, but the pressure crowds the numbers out. Your inhale catches halfway. Your chest burns before the arch is behind you.\n\nTwo reactions follow. The token cools for one frightening heartbeat. Liu Zhen sees your stagger and looks satisfied enough to remember it later.",
+    "choices": [
+      {
+        "label": "Recover before the registration table",
+        "nextScene": "before_jade_table"
+      }
+    ]
+  },
+  {
+    "id": "first_gate_pressure_help_qiao_min",
+    "areaId": "azure_cloud_mountain",
+    "title": "A Shoulder In The Arch",
+    "body": "Qiao Min's legs lock as the pressure peaks. You catch his elbow before he falls into the candidate behind him.\n\n\"Do not fight it all at once,\" you say. \"Small steps.\"\n\nHe nods, pale and sweating, and moves when you move.\n\nTwo reactions follow. You spend strength you could have saved. But Qiao Min reaches the far side with you, and gratitude can be heavier than silver.",
+    "choices": [
+      {
+        "label": "Catch your breath near the jade table",
+        "nextScene": "before_jade_table"
+      }
+    ]
+  },
+  {
+    "id": "first_gate_pressure_force",
+    "areaId": "azure_cloud_mountain",
+    "title": "Teeth Through Pressure",
+    "body": "You grit your teeth and walk.\n\nThe mountain presses. You keep walking.\n\nPain sparks behind your eyes. Your ribs feel too narrow for breath. Still, you cross the arch without kneeling.\n\nTwo reactions follow. A few candidates respect the refusal to bend. Han Yue's expression says endurance without wisdom is still a kind of wound.",
+    "choices": [
+      {
+        "label": "Reach the jade table hurting but upright",
+        "nextScene": "before_jade_table"
+      }
+    ]
+  },
+  {
+    "id": "before_jade_table",
+    "areaId": "azure_cloud_registration",
+    "title": "Before The Jade Table",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The jade table waits, and every name before yours changes the air."
+    },
+    "body": "The registration table is close enough to touch, but the line slows until every candidate is forced to wait with their own nerves.\n\nExaminer Su writes names with a brush that never splashes ink. Each token is placed on a jade dish. Some glow blue. Some stay dark. When a token goes dark, an attendant guides its owner away before the crowd can decide whether to pity or mock them.\n\nLiu Zhen stands two places behind you, speaking softly to a servant. Qiao Min checks his pack strap again and again. Han Yue watches the brush more than the candidates.\n\nThe next name is almost yours.",
+    "choices": [
+      {
+        "label": "Watch Examiner Su's brush and token dish",
+        "nextScene": "before_jade_table_brush_fail",
+        "effects": {
+          "messages": ["[Careful Eye] Check Failed!"],
+          "trainingFatigue": 1,
+          "setFlags": {
+            "missed_registration_pattern": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "before_jade_table_brush",
+            "requires": {
+              "skills": {
+                "careful_eye": 2
+              }
+            },
+            "effects": {
+              "messages": ["[Careful Eye] Check Passed!"],
+              "addSkills": {
+                "careful_eye": 1
+              },
+              "reputation": {
+                "azure_cloud_sect": 1
+              },
+              "setFlags": {
+                "noticed_registration_token_pattern": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Listen to the noble candidates whispering behind you",
+        "nextScene": "before_jade_table_nobles",
+        "effects": {
+          "meetNpc": "liu_zhen",
+          "relationships": {
+            "liu_zhen": -1
+          },
+          "setFlags": {
+            "heard_noble_candidate_whispers": true
+          }
+        }
+      },
+      {
+        "label": "Speak quietly with the ally closest to you",
+        "nextScene": "before_jade_table_ally",
+        "effects": {
+          "relationships": {
+            "qiao_min": 1,
+            "han_yue": 1
+          },
+          "setFlags": {
+            "spoke_with_gate_ally_before_registration": true
+          }
+        }
+      },
+      {
+        "label": "Step forward when Examiner Su calls for the next token",
+        "nextScene": "exam_registration"
+      }
+    ]
+  },
+  {
+    "id": "before_jade_table_brush",
+    "areaId": "azure_cloud_registration",
+    "title": "Ink And Light",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The dish shines only when token and bearer answer together."
+    },
+    "body": "You watch the brush, but the brush is not the secret. The dish is.\n\nA token brightens only after the candidate touches it without flinching. When one girl lets her uncle place it down for her, the glow weakens. Examiner Su notices and writes a smaller mark beside her name.\n\nTwo reactions follow. You understand that the test has already begun. Han Yue sees you notice and finally speaks first.\n\n\"Good,\" she says. \"Do not let anyone carry your fate for you.\"",
+    "choices": [
+      {
+        "label": "Place your own token when called",
+        "nextScene": "exam_registration"
+      }
+    ]
+  },
+  {
+    "id": "before_jade_table_brush_fail",
+    "areaId": "azure_cloud_registration",
+    "title": "Too Much To Watch",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The line moves, and the pattern hides in plain sight."
+    },
+    "body": "You try to follow the brush, the dish, the tokens, the attendants, and the candidates all at once. The details tangle until nothing stands out.\n\nTwo reactions follow. Examiner Su's gaze passes over you as if measuring distraction. Qiao Min whispers, \"I think we just put the token down when told. Probably.\"",
+    "choices": [
+      {
+        "label": "Trust the simple rule and step forward",
+        "nextScene": "exam_registration"
+      }
+    ]
+  },
+  {
+    "id": "before_jade_table_nobles",
+    "areaId": "azure_cloud_registration",
+    "title": "Silk Whispers",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "Behind every name, someone is already ranking the competition."
+    },
+    "body": "You let the noble candidates' whispers wash past as if you are not listening.\n\n\"Liu Zhen's uncle sent a letter to the Outer Sword Pavilion.\"\n\n\"Han Yue refused a carriage. Strange girl.\"\n\n\"The mortal exception has a live token? That should not happen often.\"\n\nTwo reactions follow. You gain names and hints, but Liu Zhen's servant notices your stillness. By the time the line moves, you know more than before and are trusted less.",
+    "choices": [
+      {
+        "label": "Step forward before they decide what you heard",
+        "nextScene": "exam_registration"
+      }
+    ]
+  },
+  {
+    "id": "before_jade_table_ally",
+    "areaId": "azure_cloud_registration",
+    "title": "A Quiet Word",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "A single quiet word can make the mountain feel less crowded."
+    },
+    "body": "You speak without turning it into a scene.\n\nIf Qiao Min is near you, he exhales like a man remembering he is allowed to breathe.\n\n\"If I faint,\" he whispers, \"tell my father I was robbed. It sounds better.\"\n\nIf Han Yue is closer, she keeps her eyes forward.\n\n\"The gate rewards people who know when to stand alone,\" she says. \"It does not require them to be lonely.\"\n\nTwo reactions follow. The line feels less hostile. Liu Zhen sees that you are not as isolated as he hoped.",
+    "choices": [
+      {
+        "label": "Answer Examiner Su when your name is called",
+        "nextScene": "exam_registration"
       }
     ]
   },

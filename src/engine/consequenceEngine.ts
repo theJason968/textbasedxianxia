@@ -150,7 +150,7 @@ export function applyChoiceWithResult(
   if (!outcome.effects?.startCombat) {
     return {
       gameState: nextGameState,
-      messages: getPlayerChangeMessages(gameState.player, player),
+      messages: getChoiceResultMessages(gameState.player, player, outcome.effects),
     };
   }
 
@@ -169,8 +169,16 @@ export function applyChoiceWithResult(
       outcome.effects.startCombat.victorySceneId,
       outcome.effects.startCombat.defeatSceneId,
     ),
-    messages: getPlayerChangeMessages(gameState.player, player),
+    messages: getChoiceResultMessages(gameState.player, player, outcome.effects),
   };
+}
+
+function getChoiceResultMessages(
+  previousPlayer: Player,
+  nextPlayer: Player,
+  effects?: ChoiceEffect,
+): string[] {
+  return [...(effects?.messages ?? []), ...getPlayerChangeMessages(previousPlayer, nextPlayer)];
 }
 
 export function getPlayerChangeMessages(

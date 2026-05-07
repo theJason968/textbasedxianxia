@@ -323,6 +323,29 @@ h3 {
   line-height: 1.45;
 }
 
+.choice-option .choice-check-label {
+  color: #d7b56d;
+  font-weight: 800;
+}
+
+.choices button {
+  display: grid;
+  align-content: center;
+  gap: 0.2rem;
+}
+
+.choices button span,
+.choices button small {
+  min-width: 0;
+}
+
+.choices button small {
+  color: #d7b56d;
+  font-size: 0.74rem;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
 .choice-option-locked p {
   color: #9f9384;
 }
@@ -1646,12 +1669,12 @@ body::before {
 }
 
 .scene-window-panel .choices {
-  grid-auto-rows: 3.35rem;
+  grid-auto-rows: 3.75rem;
   margin-top: 0;
 }
 
 .scene-window-panel .choice-option {
-  min-height: 3.35rem;
+  min-height: 3.75rem;
 }
 
 .scene-window-panel .choice-option button {
