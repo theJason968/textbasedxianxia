@@ -2860,30 +2860,1355 @@
       "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
       "caption": "Names are written before the gate, and every robe in the crowd seems to weigh more than yours."
     },
-    "body": "A grey-robed examiner sits behind a jade table and checks each token without looking impressed by any of them. Rich candidates announce family names that make nearby servants bow. When your turn comes, you place the Azure Cloud trial token on the table.\n\nThe examiner's brush pauses.\n\n\"Village origin?\"\n\n\"Yes.\"\n\nA boy in blue silk laughs softly behind you.\n\n\"The mountain is generous this year.\"",
+    "body": "A grey-robed examiner sits behind a jade table and checks each token without looking impressed by any of them. Rich candidates announce family names that make nearby servants bow. When your turn comes, you place the Azure Cloud trial token on the table.\n\nThe jade dish answers before Examiner Su can speak. Blue light spreads under the token in a clean circle, bright enough that the candidates behind you fall quiet.\n\nExaminer Su's brush pauses.\n\n\"Village origin?\"\n\n\"Yes.\"\n\nA boy in blue silk laughs softly behind you.\n\n\"The mountain is generous this year.\"\n\nExaminer Su finally looks up.\n\n\"This token is enough to admit you as a normal outer disciple. Robe, room, low stipend, no trial reward. Or you may keep the safety of entry and request a specialized exam. Pass, and the sect will invest more in you. Fail, and the token still carries you through the gate.\"",
     "choices": [
       {
-        "label": "Keep your head level and answer the examiner plainly",
-        "nextScene": "elder_selection_courtyard",
+        "label": "Use the token and enter as a normal outer disciple",
+        "nextScene": "token_outer_disciple_entry",
         "effects": {
           "meetNpc": "examiner_su",
           "recordNpcConversation": {
             "npcId": "examiner_su",
-            "topic": "Registered for the Azure Cloud Sect exam with the trial token while richer candidates watched."
+            "topic": "Used the Azure Cloud token for safe outer disciple entry instead of requesting a specialized exam."
           },
+          "relationships": {
+            "examiner_su": 1
+          },
+          "reputation": {
+            "azure_cloud_sect": 1,
+            "azure_cloud_candidates": -1
+          },
+          "morality": {
+            "practical": 1
+          },
+          "setFlags": {
+            "registered_for_azure_exam": true,
+            "used_token_for_outer_disciple_entry": true,
+            "examRoute": "token_entry"
+          }
+        }
+      },
+      {
+        "label": "Show the token and request a specialized exam",
+        "nextScene": "specialized_exam_choice",
+        "effects": {
+          "meetNpc": "examiner_su",
+          "recordNpcConversation": {
+            "npcId": "examiner_su",
+            "topic": "Asked to take a specialized exam even though the token guaranteed outer disciple entry."
+          },
+          "relationships": {
+            "examiner_su": 2,
+            "han_yue": 1,
+            "liu_zhen": -2
+          },
+          "reputation": {
+            "azure_cloud_sect": 2,
+            "azure_cloud_candidates": 2
+          },
+          "morality": {
+            "ambitious": 1
+          },
+          "setFlags": {
+            "registered_for_azure_exam": true,
+            "requested_specialized_exam": true,
+            "examRoute": "specialized_exam"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "token_outer_disciple_entry",
+    "areaId": "azure_cloud_registration",
+    "title": "The Safe Robe",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The token opens the gate, but it does not make the mountain bow."
+    },
+    "body": "You let the token's blue light stand for you.\n\n\"Outer disciple entry,\" Examiner Su says, writing the mark beside your name. \"No trial ranking. No exam reward. Report with the other admitted candidates after the testing grounds clear.\"\n\nA grey-robed attendant gives you a plain wooden tally. It is not shameful. It is a place inside the sect, and many mortals would trade years of life for it.\n\nTwo reactions follow. Qiao Min looks relieved that survival is allowed to be enough. Liu Zhen smiles as if he has found the word he wanted for you: lucky.\n\nHan Yue watches the token, then you.\n\n\"Living through the gate is still living,\" she says. \"Just remember that the sect remembers who chose to be measured.\"",
+    "choices": [
+      {
+        "label": "Follow the attendant toward the outer disciple waiting ground",
+        "nextScene": "senior_disciple_mountain_tour",
+        "effects": {
+          "sectContribution": {
+            "azure_cloud_sect": 1
+          },
+          "setFlags": {
+            "entered_sect_without_exam_rewards": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "specialized_exam_choice",
+    "areaId": "azure_cloud_registration",
+    "title": "Four Ways To Be Measured",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "A guaranteed place becomes a question: what are you worth beyond luck?"
+    },
+    "body": "For the first time, the candidates around you stop treating the line like a line. They lean in.\n\nExaminer Su turns the jade dish. Four faint symbols wake along its rim: a crossed blade, a hammer over a cracked plate, a leaf inside a pill furnace, and a brush mark shaped like lightning.\n\n\"The token preserves your place as an outer disciple,\" he says. \"The exam decides whether the sect should invest in you before you have earned contribution. Choose one test. Do not choose what sounds grand. Choose what your hands can answer.\"",
+    "choices": [
+      {
+        "label": "Request the Fighting Exam",
+        "nextScene": "specialized_fighting_exam",
+        "effects": {
+          "setFlags": {
+            "chosenSpecializedExam": "fighting"
+          }
+        }
+      },
+      {
+        "label": "Request the Crafting Exam",
+        "nextScene": "specialized_crafting_exam",
+        "effects": {
+          "setFlags": {
+            "chosenSpecializedExam": "crafting"
+          }
+        }
+      },
+      {
+        "label": "Request the Herbalist and Alchemy Exam",
+        "nextScene": "specialized_herbalist_exam",
+        "effects": {
+          "setFlags": {
+            "chosenSpecializedExam": "herbalist_alchemy"
+          }
+        }
+      },
+      {
+        "label": "Request the Talisman Exam",
+        "nextScene": "specialized_talisman_exam",
+        "effects": {
+          "setFlags": {
+            "chosenSpecializedExam": "talisman"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "specialized_fighting_exam",
+    "areaId": "azure_cloud_registration",
+    "title": "The Martial Ring Announcement",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The martial path does not ask whether you entered safely. It asks where you should stand."
+    },
+    "body": "Examiner Su lifts the crossed-blade symbol from the jade dish. It becomes a small bronze token, warm and heavy, marked with the number one.\n\n\"The fighting exam is a ranking tournament,\" he says. \"The token guarantees sect entry. The ring decides starting rank. Unranked candidates enter as ordinary outer disciples. Bronze, Silver, Gold, and Jade Ring candidates receive better treatment, better stipends, and earlier eyes from the Martial Hall.\"\n\nA second examiner opens a stone gate beside the registration table. Beyond it waits a square fighting ring carved directly into the mountain.\n\n\"First, a puppet seeding match. Then candidates. Control matters. Cruelty is recorded. Cowardice is also recorded.\"\n\nLiu Zhen smiles as if the word rank was invented for him.\n\nHan Yue glances at you once.\n\n\"Do not fight his shadow,\" she says quietly. \"Fight the test.\"",
+    "choices": [
+      {
+        "label": "Step into the martial ring for the seeding match",
+        "nextScene": "martial_puppet_seeding",
+        "effects": {
+          "setFlags": {
+            "entered_martial_tournament": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "martial_puppet_seeding",
+    "areaId": "azure_cloud_registration",
+    "title": "Puppet Seeding Match",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "A wooden puppet waits without hatred, mercy, or impatience."
+    },
+    "body": "An attendant carries out a wooden puppet with bronze joints and a blank face. Its arms hang loose until Examiner Su taps the jade dish. Then the puppet bows.\n\n\"One exchange,\" Examiner Su says. \"Show stance, reaction, and control. This match decides your seed, not your worth. Do not mistake the two.\"\n\nThe puppet's bronze feet scrape once against the ring.\n\nLiu Zhen laughs under his breath.\n\n\"A village body against sect wood. This should be educational.\"\n\nHan Yue does not laugh. She watches your feet.",
+    "choices": [
+      {
+        "label": "Meet the puppet with village fist forms",
+        "nextScene": "martial_puppet_low_seed",
+        "effects": {
+          "messages": ["[Village Fist Forms] Check Failed!"],
+          "health": -3,
+          "trainingFatigue": 1,
+          "setFlags": {
+            "martialSeed": "low",
+            "struggled_puppet_seeding": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "martial_puppet_high_seed",
+            "requires": {
+              "skills": {
+                "village_fist_forms": 2
+              }
+            },
+            "effects": {
+              "messages": ["[Village Fist Forms] Check Passed!"],
+              "addSkills": {
+                "village_fist_forms": 1
+              },
+              "relationships": {
+                "han_yue": 1,
+                "examiner_su": 1
+              },
+              "reputation": {
+                "azure_cloud_candidates": 1,
+                "martial_hall": 1
+              },
+              "setFlags": {
+                "martialSeed": "high",
+                "won_puppet_seeding": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Use your staff training to control the distance",
+        "nextScene": "martial_puppet_low_seed",
+        "effects": {
+          "messages": ["[Staff Basics] Check Failed!"],
+          "health": -2,
+          "trainingFatigue": 1,
+          "setFlags": {
+            "martialSeed": "low",
+            "struggled_puppet_seeding": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "martial_puppet_high_seed",
+            "requires": {
+              "skills": {
+                "staff_basics": 2
+              }
+            },
+            "effects": {
+              "messages": ["[Staff Basics] Check Passed!"],
+              "addSkills": {
+                "staff_basics": 1
+              },
+              "relationships": {
+                "han_yue": 1,
+                "examiner_su": 1
+              },
+              "reputation": {
+                "azure_cloud_candidates": 1,
+                "martial_hall": 1
+              },
+              "setFlags": {
+                "martialSeed": "high",
+                "won_puppet_seeding": true
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "martial_puppet_high_seed",
+    "areaId": "azure_cloud_registration",
+    "title": "A High Seed",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The puppet yields one step, and the crowd remembers your feet."
+    },
+    "body": "The puppet moves like a dropped shadow. You do not try to overpower it. You let the first strike tell you its weight, then answer with the part of your training that survived bruises, cold mornings, and old corrections.\n\nWood cracks against stone. Not broken. Checked.\n\nTwo reactions follow. Examiner Su moves your bronze token higher on the bracket board. Han Yue's eyes sharpen with respect. Liu Zhen stops smiling because mockery is easier when the target cannot hit back.",
+    "choices": [
+      {
+        "label": "Enter round one with a better seed",
+        "nextScene": "martial_round_one_commoner",
+        "effects": {
+          "setFlags": {
+            "martial_high_seed": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "martial_puppet_low_seed",
+    "areaId": "azure_cloud_registration",
+    "title": "A Low Seed",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "Failure hurts, but the token still shines."
+    },
+    "body": "The puppet is faster than a village lesson has any right to prepare you for. Its bronze wrist clips your guard aside, and the stone under your heel steals your balance.\n\nYou do not fall cleanly. That may be worse.\n\nTwo reactions follow. Liu Zhen laughs openly this time. Examiner Su does not. He only checks that you stand again before moving your bronze token to the lower bracket.\n\n\"Low seed,\" he says. \"Not expelled. The token remains valid, and the ring is not finished with you.\"",
+    "choices": [
+      {
+        "label": "Enter round one from the lower bracket",
+        "nextScene": "martial_round_one_commoner",
+        "effects": {
+          "setFlags": {
+            "martial_low_seed": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "martial_round_one_commoner",
+    "areaId": "azure_cloud_registration",
+    "title": "Round One: A Desperate Opponent",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The first human opponent is not cruel. That makes the fight harder."
+    },
+    "body": "Your first opponent is a thin commoner with wrapped knuckles and fear held tightly behind his eyes. He bows too fast.\n\n\"Chen Bo,\" he says. \"No clan. No sponsor. If I rank, my village eats this winter.\"\n\nThe ring suddenly feels smaller.\n\nWhen the gong sounds, he rushes with everything he owns: bad footwork, honest courage, and a punch thrown like a prayer.",
+    "choices": [
+      {
+        "label": "Win with control and end it cleanly",
+        "nextScene": "martial_round_one_control_fail",
+        "effects": {
+          "messages": ["[River Endurance] Check Failed!"],
+          "health": -2,
+          "trainingFatigue": 1,
+          "setFlags": {
+            "martial_round_one_messy": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "martial_round_one_control",
+            "requires": {
+              "skills": {
+                "river_endurance": 1
+              }
+            },
+            "effects": {
+              "messages": ["[River Endurance] Check Passed!"],
+              "addSkills": {
+                "river_endurance": 1
+              },
+              "reputation": {
+                "azure_cloud_candidates": 1,
+                "martial_hall": 1
+              },
+              "morality": {
+                "disciplined": 1
+              },
+              "setFlags": {
+                "won_round_one_cleanly": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Overwhelm him before he can gather courage",
+        "nextScene": "martial_round_one_rough",
+        "effects": {
+          "reputation": {
+            "azure_cloud_candidates": 1
+          },
+          "morality": {
+            "ruthless": 1
+          },
+          "relationships": {
+            "han_yue": -1
+          },
+          "setFlags": {
+            "won_round_one_roughly": true
+          }
+        }
+      },
+      {
+        "label": "Help him stand after you win",
+        "nextScene": "martial_round_one_mercy",
+        "effects": {
+          "relationships": {
+            "han_yue": 1,
+            "qiao_min": 1
+          },
+          "karma": 1,
+          "morality": {
+            "kind": 1
+          },
+          "setFlags": {
+            "showed_mercy_to_chen_bo": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "martial_round_one_control",
+    "areaId": "azure_cloud_registration",
+    "title": "A Clean First Win",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "Control is quieter than power, but the ring hears it."
+    },
+    "body": "You let Chen Bo's courage reach you without letting it break you. One step aside. One palm to turn his shoulder. One sweep that sends him to the mat without smashing his face into stone.\n\nTwo reactions follow. Examiner Su marks the win without frowning. Han Yue nods once, as if restraint is a language she respects.",
+    "choices": [
+      {
+        "label": "Advance to the second round",
+        "nextScene": "martial_round_two_retainer"
+      }
+    ]
+  },
+  {
+    "id": "martial_round_one_control_fail",
+    "areaId": "azure_cloud_registration",
+    "title": "A Messy First Win",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "A win can still cost breath, skin, and pride."
+    },
+    "body": "You try to end it cleanly, but Chen Bo's desperation keeps changing shape. His shoulder clips your ribs. Your counter catches him harder than intended.\n\nHe falls. You win. Neither of you looks proud.\n\nTwo reactions follow. Examiner Su records the victory with a smaller mark. Liu Zhen smiles at the clumsiness, then stops when he realizes you are still advancing.",
+    "choices": [
+      {
+        "label": "Advance while catching your breath",
+        "nextScene": "martial_round_two_retainer"
+      }
+    ]
+  },
+  {
+    "id": "martial_round_one_rough",
+    "areaId": "azure_cloud_registration",
+    "title": "A Hard Lesson",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The crowd respects strength faster than it respects kindness."
+    },
+    "body": "You do not give Chen Bo time to become brave. You step into him, break his rhythm, and send him down hard enough that the breath leaves him in a thin sound.\n\nTwo reactions follow. Some candidates cheer because victory is easy to understand. Han Yue's expression cools. Examiner Su writes the win and another mark beside it.",
+    "choices": [
+      {
+        "label": "Advance under louder eyes",
+        "nextScene": "martial_round_two_retainer"
+      }
+    ]
+  },
+  {
+    "id": "martial_round_one_mercy",
+    "areaId": "azure_cloud_registration",
+    "title": "A Hand After The Gong",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "Mercy is not weakness when everyone can see you already won."
+    },
+    "body": "The fight is awkward, breathless, and honest. When Chen Bo falls, you offer your hand before the attendants can drag him away.\n\nHe stares at it, then takes it.\n\n\"Rank for both of us next time,\" he mutters.\n\nTwo reactions follow. Qiao Min looks openly relieved. Han Yue's respect settles into something warmer. Liu Zhen rolls his eyes as if kindness is a provincial disease.",
+    "choices": [
+      {
+        "label": "Advance with one more person hoping you win",
+        "nextScene": "martial_round_two_retainer"
+      }
+    ]
+  },
+  {
+    "id": "martial_round_two_retainer",
+    "areaId": "azure_cloud_registration",
+    "title": "Round Two: Clan Retainer",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The second opponent fights like someone trained to make another person's name look good."
+    },
+    "body": "Your second opponent wears no silk, but the cut of his sleeves is too precise for poverty. A clan retainer. Someone trained from childhood to stand behind heirs and make their victories easier.\n\nHe bows correctly. His eyes do not.\n\nThe gong sounds. He does not rush. He circles, testing your lead foot, your breathing, the angle of your guard. His first attack is a feint inside a feint.",
+    "choices": [
+      {
+        "label": "Read the feint before committing",
+        "nextScene": "martial_round_two_fail",
+        "effects": {
+          "messages": ["[Careful Eye] Check Failed!"],
+          "health": -3,
+          "trainingFatigue": 1,
+          "setFlags": {
+            "lost_to_retainer_feint": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "martial_round_two_win",
+            "requires": {
+              "skills": {
+                "careful_eye": 2
+              }
+            },
+            "effects": {
+              "messages": ["[Careful Eye] Check Passed!"],
+              "addSkills": {
+                "careful_eye": 1
+              },
+              "reputation": {
+                "azure_cloud_candidates": 2,
+                "martial_hall": 1
+              },
+              "setFlags": {
+                "beat_clan_retainer": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Break his rhythm with staff distance",
+        "nextScene": "martial_round_two_fail",
+        "effects": {
+          "messages": ["[Staff Basics] Check Failed!"],
+          "health": -3,
+          "trainingFatigue": 1,
+          "setFlags": {
+            "lost_to_retainer_pressure": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "martial_round_two_win",
+            "requires": {
+              "skills": {
+                "staff_basics": 2
+              }
+            },
+            "effects": {
+              "messages": ["[Staff Basics] Check Passed!"],
+              "addSkills": {
+                "staff_basics": 1
+              },
+              "reputation": {
+                "azure_cloud_candidates": 2,
+                "martial_hall": 1
+              },
+              "setFlags": {
+                "beat_clan_retainer": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Meet technique with stubborn endurance",
+        "nextScene": "martial_round_two_scrape_by",
+        "effects": {
+          "health": -4,
+          "trainingFatigue": 2,
+          "reputation": {
+            "azure_cloud_candidates": 1
+          },
+          "setFlags": {
+            "scraped_by_clan_retainer": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "martial_round_two_win",
+    "areaId": "azure_cloud_registration",
+    "title": "Technique Answered",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The trained retainer expected ignorance. He found timing."
+    },
+    "body": "The retainer's feint arrives dressed as certainty. You do not buy it.\n\nYour answer lands before his true strike can unfold. Not beautiful. Not sect-polished. But correct.\n\nTwo reactions follow. The crowd makes a different sound this time. Not laughter. Calculation. Liu Zhen's servant leans close to whisper in his ear.",
+    "choices": [
+      {
+        "label": "Prepare for the semifinal pressure",
+        "nextScene": "martial_rival_pressure"
+      }
+    ]
+  },
+  {
+    "id": "martial_round_two_scrape_by",
+    "areaId": "azure_cloud_registration",
+    "title": "A Bruised Advance",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "Some victories are mostly proof that you refused to fall first."
+    },
+    "body": "You cannot fully read him. You cannot fully stop him. So you endure.\n\nHe scores cleaner strikes. You take worse bruises. But the ring has edges, and fatigue teaches everyone. When he oversteps, you drive him out of bounds with more grit than grace.\n\nTwo reactions follow. Examiner Su marks the advance with a note beside it. Han Yue exhales as if she had been holding your breath for you.",
+    "choices": [
+      {
+        "label": "Limp toward the semifinal pressure",
+        "nextScene": "martial_rival_pressure"
+      }
+    ]
+  },
+  {
+    "id": "martial_round_two_fail",
+    "areaId": "azure_cloud_registration",
+    "title": "A Clean Loss",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The second round ends your bracket, but not your path."
+    },
+    "body": "The retainer's feint takes your balance, then his real strike takes the space you meant to recover into. The ring edge arrives behind your heel. One more step and you are out.\n\nThe gong sounds.\n\nTwo reactions follow. You have lost the tournament bracket, but Examiner Su does not erase your name. Liu Zhen smirks. Han Yue watches to see whether you can accept defeat without shrinking.",
+    "choices": [
+      {
+        "label": "Stand straight for the ranking stone",
+        "nextScene": "martial_ranking_bronze",
+        "effects": {
+          "setFlags": {
+            "martialTournamentStoppedAtRoundTwo": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "martial_rival_pressure",
+    "areaId": "azure_cloud_registration",
+    "title": "Rival Pressure Before The Semifinal",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The next fight begins before the gong."
+    },
+    "body": "Before the semifinal, Liu Zhen steps close enough that the attendants can pretend not to hear him.\n\n\"The token dragged you through the gate,\" he says. \"The ring dragged you further. How many things must carry you before you admit your feet are decoration?\"\n\nHis chosen fighter waits across the ring: a broad-shouldered candidate with a practice blade and a face trained not to show doubt.\n\nThe crowd listens. Of course it listens.",
+    "choices": [
+      {
+        "label": "Ignore Liu Zhen and steady your breath",
+        "nextScene": "martial_semifinal",
+        "effects": {
+          "messages": ["[Calm Breath] Check Failed!"],
+          "trainingFatigue": 1,
+          "relationships": {
+            "liu_zhen": -1
+          },
+          "setFlags": {
+            "rattled_by_liu_zhen": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "martial_semifinal",
+            "requires": {
+              "skills": {
+                "calm_breath": 1
+              }
+            },
+            "effects": {
+              "messages": ["[Calm Breath] Check Passed!"],
+              "addSkills": {
+                "calm_breath": 1
+              },
+              "relationships": {
+                "han_yue": 1,
+                "liu_zhen": -1
+              },
+              "morality": {
+                "steady": 1
+              },
+              "setFlags": {
+                "ignored_liu_zhen_pressure": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Answer him publicly before the crowd",
+        "nextScene": "martial_semifinal",
+        "effects": {
+          "reputation": {
+            "azure_cloud_candidates": 2
+          },
+          "relationships": {
+            "liu_zhen": -3
+          },
+          "morality": {
+            "proud": 1
+          },
+          "setFlags": {
+            "answered_liu_zhen_before_semifinal": true
+          }
+        }
+      },
+      {
+        "label": "Study his chosen fighter instead of his insult",
+        "nextScene": "martial_semifinal",
+        "effects": {
+          "messages": ["[Careful Eye] Check Failed!"],
+          "setFlags": {
+            "missed_chosen_fighter_tell": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "martial_semifinal",
+            "requires": {
+              "skills": {
+                "careful_eye": 2
+              }
+            },
+            "effects": {
+              "messages": ["[Careful Eye] Check Passed!"],
+              "addSkills": {
+                "careful_eye": 1
+              },
+              "setFlags": {
+                "saw_chosen_fighter_tell": true
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "martial_semifinal",
+    "areaId": "azure_cloud_registration",
+    "title": "Semifinal: Liu Zhen's Blade",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "This opponent carries someone else's contempt into the ring."
+    },
+    "body": "The chosen fighter bows with perfect form. His practice blade is dull, but his intent is not.\n\nWhen the gong sounds, he attacks your hands first. Not your chest. Not your head. Your hands. Someone told him to take away the part of you that keeps surprising people.\n\nLiu Zhen watches from the edge of the ring, smiling like this is already his victory.",
+    "choices": [
+      {
+        "label": "Endure the pressure and counter at the ring edge",
+        "nextScene": "martial_semifinal_loss",
+        "effects": {
+          "messages": ["[River Endurance] Check Failed!"],
+          "health": -5,
+          "trainingFatigue": 2,
+          "setFlags": {
+            "lost_semifinal_to_liu_zhens_fighter": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "martial_semifinal_win",
+            "requires": {
+              "skills": {
+                "river_endurance": 2
+              }
+            },
+            "effects": {
+              "messages": ["[River Endurance] Check Passed!"],
+              "relationships": {
+                "liu_zhen": -3,
+                "han_yue": 1
+              },
+              "reputation": {
+                "azure_cloud_candidates": 3,
+                "martial_hall": 2
+              },
+              "setFlags": {
+                "won_semifinal_against_liu_zhens_fighter": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Exploit the tell you noticed before the match",
+        "nextScene": "martial_semifinal_loss",
+        "requires": {
+          "flags": {
+            "saw_chosen_fighter_tell": true
+          }
+        },
+        "effects": {
+          "messages": ["[Careful Eye] Check Passed!"],
+          "relationships": {
+            "liu_zhen": -3,
+            "han_yue": 1
+          },
+          "reputation": {
+            "azure_cloud_candidates": 3,
+            "martial_hall": 2
+          },
+          "setFlags": {
+            "won_semifinal_against_liu_zhens_fighter": true,
+            "used_chosen_fighter_tell": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "martial_semifinal_win",
+            "requires": {
+              "flags": {
+                "saw_chosen_fighter_tell": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Trade blow for blow until someone breaks",
+        "nextScene": "martial_semifinal_loss",
+        "effects": {
+          "health": -6,
+          "trainingFatigue": 2,
+          "reputation": {
+            "azure_cloud_candidates": 1
+          },
+          "morality": {
+            "unyielding": 1
+          },
+          "setFlags": {
+            "lost_semifinal_but_showed_grit": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "martial_semifinal_win",
+    "areaId": "azure_cloud_registration",
+    "title": "A Smile Broken",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "A semifinal win changes the way enemies say your name."
+    },
+    "body": "The chosen fighter overcommits by less than a finger's width. It is enough.\n\nYou turn the blade aside, step through the space behind it, and drive him out of the ring.\n\nThe gong sounds.\n\nTwo reactions follow. Liu Zhen's smile breaks cleanly. Han Yue does not cheer, but the look she gives you has the weight of one. Examiner Su moves your token into the final bracket.",
+    "choices": [
+      {
+        "label": "Face the final exchange",
+        "nextScene": "martial_final_exchange"
+      }
+    ]
+  },
+  {
+    "id": "martial_semifinal_loss",
+    "areaId": "azure_cloud_registration",
+    "title": "The Semifinal Wall",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The bracket ends, but the rank has not been spoken."
+    },
+    "body": "You make him work for it. That matters. It does not change the gong.\n\nThe practice blade catches your guard, numbs your arm, and drives you over the ring line. The chosen fighter bows. Liu Zhen claps twice, slow and poisonous.\n\nTwo reactions follow. Han Yue watches you rise, not your loss. Examiner Su marks the semifinal finish with more ink than a failure should receive.",
+    "choices": [
+      {
+        "label": "Stand before the ranking stone",
+        "nextScene": "martial_ranking_silver",
+        "effects": {
+          "setFlags": {
+            "martialTournamentStoppedAtSemifinal": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "martial_final_exchange",
+    "areaId": "azure_cloud_registration",
+    "title": "Final Exchange: Senior Disciple",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The final opponent does not need to defeat you. He only needs to reveal you."
+    },
+    "body": "No candidate steps into the final ring.\n\nA senior disciple does.\n\nHe wears no armor and carries no weapon. That is worse. His bow is polite enough to be terrifying.\n\n\"One exchange,\" Examiner Su says. \"You are not expected to win. You are expected to show what remains when victory is impossible.\"\n\nThe senior disciple raises one hand. The air around his fingers tightens.",
+    "choices": [
+      {
+        "label": "Stay standing for one full exchange",
+        "nextScene": "martial_ranking_gold",
+        "effects": {
+          "messages": ["[Calm Breath] Check Failed!"],
+          "health": -4,
+          "trainingFatigue": 2,
+          "setFlags": {
+            "survived_senior_exchange_poorly": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "martial_ranking_jade",
+            "requires": {
+              "skills": {
+                "calm_breath": 2,
+                "river_endurance": 2
+              }
+            },
+            "effects": {
+              "messages": ["[Calm Breath] Check Passed!"],
+              "relationships": {
+                "han_yue": 2,
+                "examiner_su": 2,
+                "liu_zhen": -3
+              },
+              "reputation": {
+                "azure_cloud_candidates": 4,
+                "martial_hall": 4,
+                "azure_cloud_sect": 2
+              },
+              "setFlags": {
+                "survived_senior_exchange_cleanly": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Try to counter even though the gap is obvious",
+        "nextScene": "martial_ranking_gold",
+        "effects": {
+          "health": -6,
+          "trainingFatigue": 3,
+          "reputation": {
+            "azure_cloud_candidates": 2,
+            "martial_hall": 2
+          },
+          "morality": {
+            "bold": 1
+          },
+          "setFlags": {
+            "tried_to_counter_senior_disciple": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "martial_ranking_bronze",
+    "areaId": "azure_cloud_registration",
+    "title": "Martial Ranking Stone: Bronze Ring",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "Bronze is not glory. It is proof the ring did not reject you."
+    },
+    "body": "The ranking stone drinks the marks beside your name and answers with bronze light.\n\n\"Bronze Ring,\" Examiner Su announces. \"Admitted with martial notice. Basic salve and standard outer stipend.\"\n\nTwo reactions follow. Liu Zhen treats the result like a small joke. Han Yue does not. Bronze is still metal, and metal can be tempered.",
+    "choices": [
+      {
+        "label": "Carry the Bronze Ring mark forward",
+        "nextScene": "elder_selection_courtyard",
+        "effects": {
+          "sectContribution": {
+            "azure_cloud_sect": 3
+          },
+          "setFlags": {
+            "passed_fighting_exam": true,
+            "specialized_exam_passed": true,
+            "martialRank": "bronze"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "martial_ranking_silver",
+    "areaId": "azure_cloud_registration",
+    "title": "Martial Ranking Stone: Silver Ring",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "Silver light is bright enough for rivals to remember."
+    },
+    "body": "The ranking stone glows silver, clean and cold.\n\n\"Silver Ring,\" Examiner Su announces. \"Admitted with martial merit. Improved stipend. Manual selection after the first trial if you remain standing.\"\n\nTwo reactions follow. Qiao Min grins like he ranked with you. Liu Zhen looks away a heartbeat too late.",
+    "choices": [
+      {
+        "label": "Carry the Silver Ring mark forward",
+        "nextScene": "elder_selection_courtyard",
+        "effects": {
+          "sectContribution": {
+            "azure_cloud_sect": 5
+          },
+          "reputation": {
+            "martial_hall": 1
+          },
+          "setFlags": {
+            "passed_fighting_exam": true,
+            "specialized_exam_passed": true,
+            "martialRank": "silver"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "martial_ranking_gold",
+    "areaId": "azure_cloud_registration",
+    "title": "Martial Ranking Stone: Gold Ring",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "Gold does not mean victory over the senior. It means the senior had to look."
+    },
+    "body": "The senior disciple's exchange leaves your bones humming, but you are still on your feet when the ranking stone wakes.\n\nGold light spreads across its face.\n\n\"Gold Ring,\" Examiner Su announces. \"Admitted with high martial merit. Martial Hall notice. Improved stipend. Technique selection after Trial One.\"\n\nTwo reactions follow. Han Yue's respect becomes impossible to mistake. Liu Zhen's rivalry stops feeling petty and starts feeling deliberate.",
+    "choices": [
+      {
+        "label": "Carry the Gold Ring mark forward",
+        "nextScene": "elder_selection_courtyard",
+        "effects": {
+          "sectContribution": {
+            "azure_cloud_sect": 8
+          },
+          "reputation": {
+            "martial_hall": 3,
+            "azure_cloud_sect": 2
+          },
+          "setFlags": {
+            "passed_fighting_exam": true,
+            "specialized_exam_passed": true,
+            "martialRank": "gold",
+            "martial_hall_notice": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "martial_ranking_jade",
+    "areaId": "azure_cloud_registration",
+    "title": "Martial Ranking Stone: Jade Ring",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "Jade light is rare enough that even arrogance goes quiet."
+    },
+    "body": "The senior disciple's palm stops one inch from your chest.\n\nYou are shaking. You are hurt. You are still standing with your breath intact.\n\nThe ranking stone answers in jade light.\n\nFor the first time since you reached the mountain gate, the entire crowd goes silent.\n\n\"Jade Ring,\" Examiner Su says, and even his voice changes. \"Admitted with exceptional martial potential. Martial Hall priority notice. Technique selection after Trial One. Elder review pending.\"\n\nTwo reactions follow. Han Yue looks at you like the road just became interesting. Liu Zhen looks at you like a problem he can no longer postpone.",
+    "choices": [
+      {
+        "label": "Carry the Jade Ring mark forward",
+        "nextScene": "elder_selection_courtyard",
+        "effects": {
+          "sectContribution": {
+            "azure_cloud_sect": 12
+          },
+          "reputation": {
+            "martial_hall": 5,
+            "azure_cloud_sect": 3,
+            "azure_cloud_candidates": 3
+          },
+          "setFlags": {
+            "passed_fighting_exam": true,
+            "specialized_exam_passed": true,
+            "martialRank": "jade",
+            "martial_hall_priority_notice": true,
+            "liu_zhen_serious_rivalry": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "specialized_crafting_exam",
+    "areaId": "azure_cloud_registration",
+    "title": "The Crafting Exam",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "Not every test asks how hard you strike. Some ask what your hands understand."
+    },
+    "body": "Examiner Su places a cracked bronze hinge on the jade table. It looks ordinary until the crack exhales a faint thread of blue smoke.\n\n\"This came from a low-grade spirit tool. Tell me why it failed, then stabilize it long enough that an artificer could repair it properly.\"\n\nSome candidates lose interest at once. Others lean closer. The sect's swords may fly through clouds, but someone still has to know why metal fails.",
+    "choices": [
+      {
+        "label": "Listen for the flaw Guo would have heard",
+        "nextScene": "specialized_crafting_exam_fail",
+        "effects": {
+          "messages": ["[Iron Sense] Check Failed!"],
+          "trainingFatigue": 1,
+          "setFlags": {
+            "failed_crafting_exam": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "specialized_crafting_exam_pass",
+            "requires": {
+              "skills": {
+                "iron_sense": 2
+              }
+            },
+            "effects": {
+              "messages": ["[Iron Sense] Check Passed!"],
+              "addSkills": {
+                "iron_sense": 1
+              },
+              "relationships": {
+                "examiner_su": 1
+              },
+              "reputation": {
+                "craft_hall": 2,
+                "azure_cloud_sect": 1
+              },
+              "setFlags": {
+                "passed_crafting_exam": true,
+                "specialized_exam_passed": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Stabilize the hinge with careful tool work",
+        "nextScene": "specialized_crafting_exam_fail",
+        "effects": {
+          "messages": ["[Tool Repair] Check Failed!"],
+          "trainingFatigue": 1,
+          "setFlags": {
+            "failed_crafting_exam": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "specialized_crafting_exam_pass",
+            "requires": {
+              "skills": {
+                "tool_repair": 2
+              }
+            },
+            "effects": {
+              "messages": ["[Tool Repair] Check Passed!"],
+              "addSkills": {
+                "tool_repair": 1
+              },
+              "relationships": {
+                "examiner_su": 1
+              },
+              "reputation": {
+                "craft_hall": 2,
+                "azure_cloud_sect": 1
+              },
+              "setFlags": {
+                "passed_crafting_exam": true,
+                "specialized_exam_passed": true
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "specialized_crafting_exam_pass",
+    "areaId": "azure_cloud_registration",
+    "title": "A Useful Hand",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The hinge stops smoking. That is enough for an elder to look twice."
+    },
+    "body": "You do not polish the flaw. You respect it.\n\nThe hinge still looks ugly when you finish, but the blue smoke thins, then stops. Examiner Su turns it once, listening to a sound only trained hands seem to care about.\n\nTwo reactions follow. A Craft Hall attendant at the side of the table makes a note. A few silk-robed candidates look confused that fixing something could be worth respect.",
+    "choices": [
+      {
+        "label": "Return to the line with the crafting exam mark",
+        "nextScene": "elder_selection_courtyard",
+        "effects": {
+          "sectContribution": {
+            "azure_cloud_sect": 5
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "specialized_crafting_exam_fail",
+    "areaId": "azure_cloud_registration",
+    "title": "A Crack That Spreads",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The hinge breaks, but the lesson remains."
+    },
+    "body": "You find the crack too late. The moment you press the hinge, blue smoke spits from the seam and the bronze snaps with a small, final sound.\n\nTwo reactions follow. The crowd loses interest quickly. Examiner Su sets the broken pieces aside without anger.\n\n\"Failed,\" he says. \"You saw that it mattered, at least. The token remains valid.\"",
+    "choices": [
+      {
+        "label": "Accept the failed mark and continue into the sect",
+        "nextScene": "senior_disciple_mountain_tour",
+        "effects": {
+          "setFlags": {
+            "specialized_exam_failed_but_admitted": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "specialized_herbalist_exam",
+    "areaId": "azure_cloud_registration",
+    "title": "The Herbalist And Alchemy Exam",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "Bitter leaves, clean hands, and a life measured in breaths."
+    },
+    "body": "A Medicine Hall attendant brings a jade tray of five herbs and one small brass cup. One herb cools blood. One wakes qi. One leaves poison in the lungs if cut badly.\n\nExaminer Su gestures to a pale candidate seated near the table, still shaking from the gate pressure.\n\n\"Prepare a stabilizing remedy. Do not make him stronger. Make him safe. Alchemy begins with restraint.\"",
+    "choices": [
+      {
+        "label": "Identify the correct herbs before touching the knife",
+        "nextScene": "specialized_herbalist_exam_fail",
+        "effects": {
+          "messages": ["[Herb Recognition] Check Failed!"],
+          "trainingFatigue": 1,
+          "setFlags": {
+            "failed_herbalist_exam": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "specialized_herbalist_exam_pass",
+            "requires": {
+              "skills": {
+                "herb_recognition": 2
+              }
+            },
+            "effects": {
+              "messages": ["[Herb Recognition] Check Passed!"],
+              "addSkills": {
+                "herb_recognition": 1
+              },
+              "relationships": {
+                "han_yue": 1,
+                "examiner_su": 1
+              },
+              "reputation": {
+                "medicine_hall": 2,
+                "azure_cloud_sect": 1
+              },
+              "karma": 1,
+              "setFlags": {
+                "passed_herbalist_exam": true,
+                "specialized_exam_passed": true
+              }
+            }
+          }
+        ]
+      },
+      {
+        "label": "Remove the impurity before the remedy turns harsh",
+        "nextScene": "specialized_herbalist_exam_fail",
+        "effects": {
+          "messages": ["[Impurity Awareness] Check Failed!"],
+          "trainingFatigue": 1,
+          "setFlags": {
+            "failed_herbalist_exam": true
+          }
+        },
+        "outcomes": [
+          {
+            "nextScene": "specialized_herbalist_exam_pass",
+            "requires": {
+              "skills": {
+                "impurity_awareness": 1
+              }
+            },
+            "effects": {
+              "messages": ["[Impurity Awareness] Check Passed!"],
+              "addSkills": {
+                "impurity_awareness": 1
+              },
+              "relationships": {
+                "han_yue": 1,
+                "examiner_su": 1
+              },
+              "reputation": {
+                "medicine_hall": 2,
+                "azure_cloud_sect": 1
+              },
+              "karma": 1,
+              "setFlags": {
+                "passed_herbalist_exam": true,
+                "specialized_exam_passed": true
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "specialized_herbalist_exam_pass",
+    "areaId": "azure_cloud_registration",
+    "title": "A Remedy That Does Not Boast",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The best medicine leaves room for the body to recover itself."
+    },
+    "body": "The cup smells bitter, clean, and unambitious. That is why it works.\n\nThe pale candidate drinks. Color returns slowly to his mouth. He does not leap up stronger than before. He simply stops shaking.\n\nTwo reactions follow. The Medicine Hall attendant's expression softens by half a breath. Han Yue watches you as if kindness and precision have become the same language.",
+    "choices": [
+      {
+        "label": "Return to the line with the herbalist exam mark",
+        "nextScene": "elder_selection_courtyard",
+        "effects": {
+          "sectContribution": {
+            "azure_cloud_sect": 5
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "specialized_herbalist_exam_fail",
+    "areaId": "azure_cloud_registration",
+    "title": "Too Bitter, Too Fast",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "A failed remedy can still teach the shape of caution."
+    },
+    "body": "The remedy darkens too quickly. The Medicine Hall attendant removes the cup before the patient can drink.\n\n\"Not poison,\" she says. \"But not medicine. Not yet.\"\n\nTwo reactions follow. Shame burns hotter than the brass cup. Examiner Su writes a smaller mark beside your name, then taps the glowing token.\n\n\"Failed. Still admitted.\"",
+    "choices": [
+      {
+        "label": "Accept the failed mark and continue into the sect",
+        "nextScene": "senior_disciple_mountain_tour",
+        "effects": {
+          "setFlags": {
+            "specialized_exam_failed_but_admitted": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "specialized_talisman_exam",
+    "areaId": "azure_cloud_registration",
+    "title": "The Talisman Exam",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "Ink, paper, breath, and a door you are not ready to open."
+    },
+    "body": "The fourth symbol on the jade dish brightens when you choose it. A talisman brush is placed before you, its handle heavier than wood should be. Beside it lies a strip of yellow paper with one simple mark already drawn at the top.\n\nExaminer Su studies you for a long moment.\n\n\"Talismans require spiritual control, not only a steady hand. You may copy the mark. Understand this: almost no mortal candidate succeeds. Curiosity is permitted. Arrogance is expensive.\"\n\nThe crowd grows quiet for a different reason now. Even Liu Zhen watches.",
+    "choices": [
+      {
+        "label": "Attempt to copy the spirit mark",
+        "nextScene": "specialized_talisman_exam_fail",
+        "effects": {
+          "messages": ["[Talisman Control] Check Failed!"],
+          "intelligence": 1,
           "relationships": {
             "examiner_su": 1
           },
           "reputation": {
             "azure_cloud_sect": 1
           },
-          "morality": {
-            "steady": 1
-          },
           "setFlags": {
-            "registered_for_azure_exam": true
+            "learned_talismans_exist": true,
+            "failed_talisman_exam": true,
+            "specialized_exam_failed_but_admitted": true,
+            "future_talisman_path_hint": true
           }
         }
+      }
+    ]
+  },
+  {
+    "id": "specialized_talisman_exam_fail",
+    "areaId": "azure_cloud_registration",
+    "title": "A Line That Almost Lives",
+    "image": {
+      "src": "/assets/locations/azure_cloud_registration.png",
+      "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
+      "caption": "The paper breaks, but the idea remains."
+    },
+    "body": "The brush touches paper.\n\nFor one breath, the line almost lives.\n\nThen the mark twists out of your control. The yellow paper splits with a sound like ice cracking, and a curl of harmless smoke rises between your fingers.\n\nTwo reactions follow. Examiner Su covers the broken talisman before anyone can laugh.\n\n\"Failed,\" he says. \"Expected. But you stopped when the line broke instead of forcing qi you do not own. Remember that after your first breakthrough. Talismans may answer you later.\"\n\nHan Yue looks at the smoke with open curiosity. Liu Zhen looks annoyed that even your failure received instruction.",
+    "choices": [
+      {
+        "label": "Keep the lesson and continue into the sect",
+        "nextScene": "senior_disciple_mountain_tour"
       }
     ]
   },
