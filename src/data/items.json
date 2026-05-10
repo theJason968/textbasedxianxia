@@ -114,7 +114,7 @@
     "rarity": "low-grade",
     "tier": "low_grade_spirit",
     "description": "A stained repair manual for keeping carts, weapons, and simple spirit-worked fittings alive under road pressure.",
-    "icon": "/assets/items/cloud_iron_field_manual.png",
+    "icon": "/assets/items/book_manual.png",
     "effects": {}
   },
   {

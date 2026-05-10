@@ -2860,7 +2860,7 @@
       "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
       "caption": "Names are written before the gate, and every robe in the crowd seems to weigh more than yours."
     },
-    "body": "A grey-robed examiner sits behind a jade table and checks each token without looking impressed by any of them. Rich candidates announce family names that make nearby servants bow. When your turn comes, you place the Azure Cloud trial token on the table.\n\nThe jade dish answers before Examiner Su can speak. Blue light spreads under the token in a clean circle, bright enough that the candidates behind you fall quiet.\n\nExaminer Su's brush pauses.\n\n\"Village origin?\"\n\n\"Yes.\"\n\nA boy in blue silk laughs softly behind you.\n\n\"The mountain is generous this year.\"\n\nExaminer Su finally looks up.\n\n\"This token is enough to admit you as a normal outer disciple. Robe, room, low stipend, no trial reward. Or you may keep the safety of entry and request a specialized exam. Pass, and the sect will invest more in you. Fail, and the token still carries you through the gate.\"",
+    "body": "A grey-robed examiner sits behind a jade table and checks each token without looking impressed by any of them. Rich candidates announce family names that make nearby servants bow. When your turn comes, you place the Azure Cloud trial token on the table.\n\nThe jade dish answers before Examiner Su can speak. Blue light spreads under the token in a clean circle, bright enough that the candidates behind you fall quiet.\n\nExaminer Su's brush pauses.\n\n\"Village origin?\"\n\n\"Yes.\"\n\nA boy in blue silk laughs softly behind you.\n\n\"The mountain is generous this year.\"\n\nExaminer Su finally looks up.\n\n\"This token is enough to admit you as a normal outer disciple. Robe, room, low stipend, no trial ranking. Or you may enter the full Azure Cloud examination. The token will still preserve your place if you fail, but only the trials can earn rewards, hall attention, and a better beginning.\"",
     "choices": [
       {
         "label": "Use the token and enter as a normal outer disciple",
@@ -2869,7 +2869,7 @@
           "meetNpc": "examiner_su",
           "recordNpcConversation": {
             "npcId": "examiner_su",
-            "topic": "Used the Azure Cloud token for safe outer disciple entry instead of requesting a specialized exam."
+            "topic": "Used the Azure Cloud token for safe outer disciple entry instead of entering the full Azure Cloud examination."
           },
           "relationships": {
             "examiner_su": 1
@@ -2889,13 +2889,13 @@
         }
       },
       {
-        "label": "Show the token and request a specialized exam",
-        "nextScene": "specialized_exam_choice",
+        "label": "Show the token and enter the full Azure Cloud examination",
+        "nextScene": "elder_selection_courtyard",
         "effects": {
           "meetNpc": "examiner_su",
           "recordNpcConversation": {
             "npcId": "examiner_su",
-            "topic": "Asked to take a specialized exam even though the token guaranteed outer disciple entry."
+            "topic": "Chose the full Azure Cloud examination even though the token guaranteed safe outer disciple entry."
           },
           "relationships": {
             "examiner_su": 2,
@@ -2911,8 +2911,8 @@
           },
           "setFlags": {
             "registered_for_azure_exam": true,
-            "requested_specialized_exam": true,
-            "examRoute": "specialized_exam"
+            "requested_full_azure_exam": true,
+            "examRoute": "full_trials"
           }
         }
       }
@@ -2930,14 +2930,19 @@
     "body": "You let the token's blue light stand for you.\n\n\"Outer disciple entry,\" Examiner Su says, writing the mark beside your name. \"No trial ranking. No exam reward. Report with the other admitted candidates after the testing grounds clear.\"\n\nA grey-robed attendant gives you a plain wooden tally. It is not shameful. It is a place inside the sect, and many mortals would trade years of life for it.\n\nTwo reactions follow. Qiao Min looks relieved that survival is allowed to be enough. Liu Zhen smiles as if he has found the word he wanted for you: lucky.\n\nHan Yue watches the token, then you.\n\n\"Living through the gate is still living,\" she says. \"Just remember that the sect remembers who chose to be measured.\"",
     "choices": [
       {
-        "label": "Follow the attendant toward the outer disciple waiting ground",
-        "nextScene": "senior_disciple_mountain_tour",
+        "label": "Follow the attendant toward the outer disciple dormitory",
+        "nextScene": "first_teaching",
         "effects": {
+          "qi": 3,
+          "addItems": ["outer_disciple_token"],
+          "learnTechniques": ["azure_cloud_breathing"],
           "sectContribution": {
             "azure_cloud_sect": 1
           },
+          "completeQuest": "enter_azure_cloud_sect",
           "setFlags": {
-            "entered_sect_without_exam_rewards": true
+            "entered_sect_without_exam_rewards": true,
+            "accepted_outer_disciple_after_token_entry": true
           }
         }
       }
@@ -2946,13 +2951,13 @@
   {
     "id": "specialized_exam_choice",
     "areaId": "azure_cloud_registration",
-    "title": "Four Ways To Be Measured",
+    "title": "Hall Evaluations",
     "image": {
       "src": "/assets/locations/azure_cloud_registration.png",
       "alt": "A village youth registering before the Azure Cloud Sect gate while noble candidates watch",
-      "caption": "A guaranteed place becomes a question: what are you worth beyond luck?"
+    "caption": "After the core trials, the halls decide where your first real advantage may come from."
     },
-    "body": "For the first time, the candidates around you stop treating the line like a line. They lean in.\n\nExaminer Su turns the jade dish. Four faint symbols wake along its rim: a crossed blade, a hammer over a cracked plate, a leaf inside a pill furnace, and a brush mark shaped like lightning.\n\n\"The token preserves your place as an outer disciple,\" he says. \"The exam decides whether the sect should invest in you before you have earned contribution. Choose one test. Do not choose what sounds grand. Choose what your hands can answer.\"",
+    "body": "Only after the core trials does Examiner Su call the surviving candidates back to the jade table. Dust, sweat, and sect qi cling to everyone differently now. Some stand taller. Some only stand because pride has not yet given them permission to fall.\n\nFour faint symbols wake along the dish's rim: a crossed blade, a hammer over a cracked plate, a leaf inside a pill furnace, and a brush mark shaped like lightning.\n\n\"The trials decided whether you could enter,\" Examiner Su says. \"A hall evaluation decides where the sect may invest in you first. Choose one test. Do not choose what sounds grand. Choose what your hands can answer.\"",
     "choices": [
       {
         "label": "Request the Fighting Exam",
@@ -3781,8 +3786,8 @@
     "body": "The ranking stone drinks the marks beside your name and answers with bronze light.\n\n\"Bronze Ring,\" Examiner Su announces. \"Admitted with martial notice. Basic salve and standard outer stipend.\"\n\nTwo reactions follow. Liu Zhen treats the result like a small joke. Han Yue does not. Bronze is still metal, and metal can be tempered.",
     "choices": [
       {
-        "label": "Carry the Bronze Ring mark forward",
-        "nextScene": "elder_selection_courtyard",
+        "label": "Carry the Bronze Ring mark into outer disciple placement",
+        "nextScene": "first_teaching",
         "effects": {
           "sectContribution": {
             "azure_cloud_sect": 3
@@ -3808,8 +3813,8 @@
     "body": "The ranking stone glows silver, clean and cold.\n\n\"Silver Ring,\" Examiner Su announces. \"Admitted with martial merit. Improved stipend. Manual selection after the first trial if you remain standing.\"\n\nTwo reactions follow. Qiao Min grins like he ranked with you. Liu Zhen looks away a heartbeat too late.",
     "choices": [
       {
-        "label": "Carry the Silver Ring mark forward",
-        "nextScene": "elder_selection_courtyard",
+        "label": "Carry the Silver Ring mark into outer disciple placement",
+        "nextScene": "first_teaching",
         "effects": {
           "sectContribution": {
             "azure_cloud_sect": 5
@@ -3838,8 +3843,8 @@
     "body": "The senior disciple's exchange leaves your bones humming, but you are still on your feet when the ranking stone wakes.\n\nGold light spreads across its face.\n\n\"Gold Ring,\" Examiner Su announces. \"Admitted with high martial merit. Martial Hall notice. Improved stipend. Technique selection after Trial One.\"\n\nTwo reactions follow. Han Yue's respect becomes impossible to mistake. Liu Zhen's rivalry stops feeling petty and starts feeling deliberate.",
     "choices": [
       {
-        "label": "Carry the Gold Ring mark forward",
-        "nextScene": "elder_selection_courtyard",
+        "label": "Carry the Gold Ring mark into outer disciple placement",
+        "nextScene": "first_teaching",
         "effects": {
           "sectContribution": {
             "azure_cloud_sect": 8
@@ -3870,8 +3875,8 @@
     "body": "The senior disciple's palm stops one inch from your chest.\n\nYou are shaking. You are hurt. You are still standing with your breath intact.\n\nThe ranking stone answers in jade light.\n\nFor the first time since you reached the mountain gate, the entire crowd goes silent.\n\n\"Jade Ring,\" Examiner Su says, and even his voice changes. \"Admitted with exceptional martial potential. Martial Hall priority notice. Technique selection after Trial One. Elder review pending.\"\n\nTwo reactions follow. Han Yue looks at you like the road just became interesting. Liu Zhen looks at you like a problem he can no longer postpone.",
     "choices": [
       {
-        "label": "Carry the Jade Ring mark forward",
-        "nextScene": "elder_selection_courtyard",
+        "label": "Carry the Jade Ring mark into outer disciple placement",
+        "nextScene": "first_teaching",
         "effects": {
           "sectContribution": {
             "azure_cloud_sect": 12
@@ -3993,8 +3998,8 @@
     "body": "You do not polish the flaw. You respect it.\n\nThe hinge still looks ugly when you finish, but the blue smoke thins, then stops. Examiner Su turns it once, listening to a sound only trained hands seem to care about.\n\nTwo reactions follow. A Craft Hall attendant at the side of the table makes a note. A few silk-robed candidates look confused that fixing something could be worth respect.",
     "choices": [
       {
-        "label": "Return to the line with the crafting exam mark",
-        "nextScene": "elder_selection_courtyard",
+        "label": "Carry the crafting mark into outer disciple placement",
+        "nextScene": "first_teaching",
         "effects": {
           "sectContribution": {
             "azure_cloud_sect": 5
@@ -4015,8 +4020,8 @@
     "body": "You find the crack too late. The moment you press the hinge, blue smoke spits from the seam and the bronze snaps with a small, final sound.\n\nTwo reactions follow. The crowd loses interest quickly. Examiner Su sets the broken pieces aside without anger.\n\n\"Failed,\" he says. \"You saw that it mattered, at least. The token remains valid.\"",
     "choices": [
       {
-        "label": "Accept the failed mark and continue into the sect",
-        "nextScene": "senior_disciple_mountain_tour",
+        "label": "Accept the failed mark and continue to outer disciple placement",
+        "nextScene": "first_teaching",
         "effects": {
           "setFlags": {
             "specialized_exam_failed_but_admitted": true
@@ -4130,8 +4135,8 @@
     "body": "The cup smells bitter, clean, and unambitious. That is why it works.\n\nThe pale candidate drinks. Color returns slowly to his mouth. He does not leap up stronger than before. He simply stops shaking.\n\nTwo reactions follow. The Medicine Hall attendant's expression softens by half a breath. Han Yue watches you as if kindness and precision have become the same language.",
     "choices": [
       {
-        "label": "Return to the line with the herbalist exam mark",
-        "nextScene": "elder_selection_courtyard",
+        "label": "Carry the herbalist mark into outer disciple placement",
+        "nextScene": "first_teaching",
         "effects": {
           "sectContribution": {
             "azure_cloud_sect": 5
@@ -4152,8 +4157,8 @@
     "body": "The remedy darkens too quickly. The Medicine Hall attendant removes the cup before the patient can drink.\n\n\"Not poison,\" she says. \"But not medicine. Not yet.\"\n\nTwo reactions follow. Shame burns hotter than the brass cup. Examiner Su writes a smaller mark beside your name, then taps the glowing token.\n\n\"Failed. Still admitted.\"",
     "choices": [
       {
-        "label": "Accept the failed mark and continue into the sect",
-        "nextScene": "senior_disciple_mountain_tour",
+        "label": "Accept the failed mark and continue to outer disciple placement",
+        "nextScene": "first_teaching",
         "effects": {
           "setFlags": {
             "specialized_exam_failed_but_admitted": true
@@ -4207,8 +4212,8 @@
     "body": "The brush touches paper.\n\nFor one breath, the line almost lives.\n\nThen the mark twists out of your control. The yellow paper splits with a sound like ice cracking, and a curl of harmless smoke rises between your fingers.\n\nTwo reactions follow. Examiner Su covers the broken talisman before anyone can laugh.\n\n\"Failed,\" he says. \"Expected. But you stopped when the line broke instead of forcing qi you do not own. Remember that after your first breakthrough. Talismans may answer you later.\"\n\nHan Yue looks at the smoke with open curiosity. Liu Zhen looks annoyed that even your failure received instruction.",
     "choices": [
       {
-        "label": "Keep the lesson and continue into the sect",
-        "nextScene": "senior_disciple_mountain_tour"
+        "label": "Keep the lesson and continue to outer disciple placement",
+        "nextScene": "first_teaching"
       }
     ]
   },
@@ -4777,6 +4782,7 @@
   },
   {
     "id": "first_teaching",
+    "areaId": "outer_sect",
     "title": "First Breath Of The Dao",
     "body": "A thread of qi settles inside your meridians. When the light fades, a wooden token rests in your palm, and the first layer of the Azure Cloud Breathing Method echoes in your mind.",
     "choices": [
@@ -4806,6 +4812,7 @@
   },
   {
     "id": "pine_breath_training",
+    "areaId": "outer_sect",
     "title": "Breath Beneath The Pine",
     "body": "You kneel beneath the bent pine and follow the manual's first circulation route. The mountain pressure no longer feels like a wall. It feels like a teacher pressing one finger against your chest.",
     "choices": [
@@ -4832,6 +4839,7 @@
   },
   {
     "id": "outer_disciple_accepted",
+    "areaId": "outer_sect",
     "title": "Outer Disciple",
     "body": "The watching elder gives the smallest nod. A path opens through the mist toward the outer sect courtyard. Behind you, the exam grounds continue judging the hopeful and the broken. Ahead, dormitories, rules, missions, rivals, and real cultivation wait.\n\nYour village road has ended. Your sect road has begun.",
     "choices": [
@@ -4994,7 +5002,7 @@
   {
     "id": "exam_ranking",
     "title": "Ranking Stone",
-    "body": "Names flare across the ranking stone in cloud-white light. Noble heirs search for their places first. Servants whisper. Failed candidates are led away with blank faces.\n\nYour name appears lower than Liu Zhen's and higher than half the crowd expected. Beside it, a second mark blooms: First Trial Breakthrough.\n\nExaminer Su reads the result aloud.\n\n\"Accepted as an outer disciple. Foundation rough. Endurance notable. Character under observation.\"\n\nFrom somewhere near the elder seats, you feel attention settle on you like a hand between the shoulders.",
+    "body": "Names flare across the ranking stone in cloud-white light. Noble heirs search for their places first. Servants whisper. Failed candidates are led away with blank faces.\n\nYour name appears lower than Liu Zhen's and higher than half the crowd expected. Beside it, a second mark blooms: First Trial Breakthrough.\n\nExaminer Su reads the result aloud.\n\n\"Accepted as an outer disciple. Foundation rough. Endurance notable. Character under observation.\"\n\nFrom somewhere near the elder seats, you feel attention settle on you like a hand between the shoulders.\n\nThen four smaller symbols wake beneath your name: blade, hammer, leaf, and talisman brush. The core trials are over. Now the halls may ask what else you can become.",
     "choices": [
       {
         "label": "Receive the outer disciple token and first breathing method",
@@ -5012,11 +5020,30 @@
             "accepted_outer_disciple_after_exam": true
           }
         }
+      },
+      {
+        "label": "Request one hall evaluation before outer disciple placement",
+        "nextScene": "specialized_exam_choice",
+        "effects": {
+          "qi": 5,
+          "addItems": ["outer_disciple_token"],
+          "learnTechniques": ["azure_cloud_breathing"],
+          "addElements": {
+            "Cloud": 1,
+            "Wind": 1
+          },
+          "completeQuest": "enter_azure_cloud_sect",
+          "setFlags": {
+            "accepted_outer_disciple_after_exam": true,
+            "requested_post_trial_hall_evaluation": true
+          }
+        }
       }
     ]
   },
   {
     "id": "outer_sect_courtyard",
+    "areaId": "outer_sect",
     "title": "Outer Sect Courtyard",
     "body": "Morning mist drifts between dormitories, training platforms, and the assignment hall. Outer disciples hurry past with manuals under one arm and sect task slips in the other. For the first time, the day is yours to spend.",
     "choices": [
@@ -5306,7 +5333,13 @@
   },
   {
     "id": "outer_dormitory_rest",
+    "areaId": "outer_sect",
     "title": "Outer Disciple Dormitory",
+    "image": {
+      "src": "/assets/locations/outer_disciple_room.png",
+      "alt": "A quiet wooden outer disciple room with a bed, desk, incense burner, and cloud view",
+      "caption": "Your room is plain, quiet, and finally yours."
+    },
     "body": "Your assigned room is narrow, plain, and blessedly quiet. By morning your breathing has steadied and some of the strain has left your bones.",
     "choices": [
       {
@@ -5317,6 +5350,7 @@
   },
   {
     "id": "outer_sect_paths",
+    "areaId": "outer_sect",
     "title": "Outer Sect Paths",
     "body": "The outer sect is larger than the courtyard first promised. Stone paths wind between lecture halls, work yards, medicine plots, and quiet cliffs where new disciples pretend not to be homesick.",
     "choices": [

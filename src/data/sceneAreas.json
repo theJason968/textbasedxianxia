@@ -28,7 +28,12 @@
   },
   {
     "id": "outer_sect",
-    "name": "Azure Cloud Outer Sect"
+    "name": "Azure Cloud Outer Sect",
+    "image": {
+      "src": "/assets/locations/outer_sect_dormitory.png",
+      "alt": "The Azure Cloud outer sect dormitory district floating among mountains and clouds",
+      "caption": "The outer sect rises above the clouds: dormitories, training yards, bridges, and a thousand new rivals."
+    }
   },
   {
     "id": "lower_grove",

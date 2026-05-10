@@ -5,7 +5,7 @@
     "category": "cultivation",
     "realmRequirement": "Mortal",
     "description": "A foundational breathing art taught to new disciples of the Azure Cloud Sect.",
-    "icon": "/assets/techniques/azure_cloud_breathing.png",
+    "icon": "/assets/items/book_manual.png",
     "maxLevel": 5,
     "effectsPerLevel": {
       "maxQi": 5
@@ -17,7 +17,7 @@
     "category": "movement",
     "realmRequirement": "Mortal",
     "description": "A basic footwork technique that teaches the body to move like wind through mountain pines.",
-    "icon": "/assets/techniques/pine_shadow_step.png",
+    "icon": "/assets/items/book_manual.png",
     "maxLevel": 3,
     "effectsPerLevel": {
       "physique": 1
