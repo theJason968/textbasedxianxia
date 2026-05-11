@@ -128,15 +128,25 @@ export type Npc = {
   returnHooks: string[];
 };
 
+export type EnemyPhase = {
+  threshold: number;
+  announcement: string;
+  attackLines: string[];
+  damageMultiplier?: number;
+};
+
 export type Enemy = {
   id: string;
   name: string;
   description: string;
+  cultivation?: { realm: Realm; stage: RealmStage };
   maxHealth: number;
   attack: number;
   defense: number;
   qiReward: number;
+  spiritStoneReward?: number;
   itemRewards?: string[];
+  phase?: EnemyPhase;
 };
 
 export type SkillTree =
@@ -191,6 +201,8 @@ export type Constitution = {
   requiredElements: Partial<Record<ElementalEssence, number>>;
 };
 
+export type CombatPowerTier = "dominant" | "contested" | "struggling";
+
 export type CombatState = {
   enemyId: string;
   enemyHealth: number;
@@ -198,6 +210,11 @@ export type CombatState = {
   victorySceneId: string;
   defeatSceneId: string;
   log: string[];
+  powerTier: CombatPowerTier;
+  playerStartHealth: number;
+  resolved?: boolean;
+  reflection?: string;
+  phaseTriggered?: boolean;
 };
 
 export type GameState = {
@@ -313,6 +330,14 @@ export type ChoiceRequirement = {
   sectContribution?: SocialScores;
   corruption?: number;
   flags?: Record<string, boolean | number | string>;
+  flagsAbsent?: string[];
+  techniqueMastery?: Record<string, number>;
+};
+
+export type BoardPosition = {
+  x: number;
+  y: number;
+  rotation?: number;
 };
 
 export type Choice = {
@@ -321,6 +346,9 @@ export type Choice = {
   requires?: ChoiceRequirement;
   effects?: ChoiceEffect;
   outcomes?: ChoiceOutcome[];
+  boardPosition?: BoardPosition;
+  boardDescription?: string;
+  boardReward?: string;
 };
 
 export type ChoiceOutcome = {
@@ -365,4 +393,6 @@ export type Scene = {
   status?: SceneStatus;
   combatNarration?: CombatNarration;
   choices: Choice[];
+  type?: "questBoard";
+  boardImage?: string;
 };

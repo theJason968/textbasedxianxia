@@ -83,6 +83,14 @@ export function meetsRequirements(
     return false;
   }
 
+  if (!hasFlagsAbsent(player.flags, requirements.flagsAbsent)) {
+    return false;
+  }
+
+  if (!hasRequiredScores(player.techniqueMastery, requirements.techniqueMastery)) {
+    return false;
+  }
+
   return true;
 }
 
@@ -135,4 +143,11 @@ function hasMatchingFlags(
   return Object.entries(requiredFlags).every(
     ([key, requiredValue]) => currentFlags[key] === requiredValue,
   );
+}
+
+function hasFlagsAbsent(
+  currentFlags: Player["flags"],
+  absentFlags: string[] = [],
+): boolean {
+  return absentFlags.every((flag) => !currentFlags[flag]);
 }

@@ -209,11 +209,187 @@
     "category": "Elixir",
     "rarity": "low-grade",
     "tier": "low_grade_spirit",
-    "description": "A rough qi draught refined from a mist wolf core. It grants qi, but leaves impurity behind.",
+    "description": "A qi draught refined from a mist wolf core and ice-vein herb. The icy trace sharpens the flood of qi into a pressure that can crack a mortal stage ceiling.",
     "icon": "/assets/items/elixirs/elixir_rare.png",
     "effects": {
       "qi": 14,
       "impurity": 3
     }
+  },
+  {
+    "id": "ice_vein_herb",
+    "name": "Ice-Vein Herb",
+    "type": "material",
+    "category": "Material",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A stiff-stemmed herb that grows on cold, permanently shaded stone faces. Its sap carries a faint icy qi trace used in breakthrough elixirs.",
+    "icon": "/assets/items/herbs/herb_rare.png",
+    "effects": {}
+  },
+  {
+    "id": "beast_hide",
+    "name": "Beast Hide",
+    "type": "material",
+    "category": "Material",
+    "rarity": "mortal",
+    "tier": "mortal",
+    "description": "Thick hide stripped from a spirit boar. The qi residue in the bristles makes it tougher than ordinary leather, useful for crude armour or trade.",
+    "effects": {}
+  },
+  {
+    "id": "road_copper",
+    "name": "Road Copper",
+    "type": "material",
+    "category": "Material",
+    "rarity": "mortal",
+    "tier": "mortal",
+    "description": "A handful of worn copper coins taken from bandits — too few to matter to a sect disciple, too many for a hungry man to leave behind.",
+    "effects": {}
+  },
+  {
+    "id": "shadow_viper_gland",
+    "name": "Shadow Viper Gland",
+    "type": "material",
+    "category": "Material",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "The venom gland of a shadow viper, carefully extracted whole. Medicine disciples use it in anti-venom preparations. It smells faintly of turned earth.",
+    "effects": {}
+  },
+  {
+    "id": "viper_scale",
+    "name": "Viper Scale",
+    "type": "material",
+    "category": "Material",
+    "rarity": "mortal",
+    "tier": "mortal",
+    "description": "A dozen finger-nail-sized scales from a shadow viper's flank. The colour shifts between brown and black depending on the angle of light.",
+    "effects": {}
+  },
+  {
+    "id": "cloud_stag_antler",
+    "name": "Cloud Stag Antler",
+    "type": "material",
+    "category": "Material",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A pale antler shed from a cloud stag, still faintly charged with the creature's qi. Prized in medicine and formation work alike. Elders pay above standard rate for clean specimens.",
+    "effects": {}
+  },
+  {
+    "id": "spirit_beast_blood",
+    "name": "Spirit Beast Blood",
+    "type": "material",
+    "category": "Material",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "Collected blood from a spirit beast, sealed in a small clay vial. The qi in it makes it useful for alchemical preparations, body tempering compounds, and certain formation inks.",
+    "effects": {}
+  },
+  {
+    "id": "stone_crab_shell",
+    "name": "Stone Crab Shell",
+    "type": "material",
+    "category": "Material",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A fragment of shell from a stone crab, roughly the size of a palm. The outer face has a natural hardness that resists most mortal-grade cutting edges.",
+    "effects": {}
+  },
+  {
+    "id": "crab_core",
+    "name": "Crab Core",
+    "type": "material",
+    "category": "Material",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A dense qi core taken from the body cavity of a stone crab. Its qi is earthy and stable — less potent than a wolf core, but more consistent.",
+    "effects": {}
+  },
+  {
+    "id": "iron_shortsword",
+    "name": "Iron Shortsword",
+    "type": "weapon",
+    "category": "Weapon",
+    "rarity": "mortal",
+    "tier": "mortal",
+    "description": "A plain road-forged shortsword, single-edged and notched from use. It is heavier than it looks and adequately balanced for someone who trained without a master.",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r4c2.png",
+    "equipmentSlot": "weapon",
+    "equipmentEffects": {
+      "combatDamage": 2
+    },
+    "effects": {}
+  },
+  {
+    "id": "tattered_sect_notes",
+    "name": "Tattered Sect Notes",
+    "type": "lore",
+    "category": "Lore",
+    "rarity": "mortal",
+    "tier": "mortal",
+    "description": "Torn pages from what was once an outer disciple's cultivation journal, overwritten with strange annotations in a different hand. Some passages reference a formation beneath the broken trade road.",
+    "effects": {}
+  },
+  {
+    "id": "shade_essence",
+    "name": "Shade Essence",
+    "type": "material",
+    "category": "Material",
+    "rarity": "mid_grade_spirit",
+    "tier": "mid_grade_spirit",
+    "description": "A cold condensate left behind after a mist shade dissipates. It is not quite solid. Medicine elders classify it as a rare-tier ingredient for certain qi-disruption resistance compounds.",
+    "effects": {}
+  },
+  {
+    "id": "mist_residue",
+    "name": "Mist Residue",
+    "type": "material",
+    "category": "Material",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A faint crystalline residue that settles on surfaces near mist-type spirit entities. It has a weak cooling property and is collected by medicine disciples for minor qi-soothing applications.",
+    "effects": {}
+  },
+  {
+    "id": "bone_shard",
+    "name": "Bone Shard",
+    "type": "material",
+    "category": "Material",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A finger-long fragment from a bone hound's frame, still holding a faint animate qi. Useful in formation work or traded to the sect research hall for a modest contribution credit.",
+    "effects": {}
+  },
+  {
+    "id": "bone_dust",
+    "name": "Bone Dust",
+    "type": "material",
+    "category": "Material",
+    "rarity": "mortal",
+    "tier": "mortal",
+    "description": "Fine powder scraped from a bone hound's outer frame. Alchemy uses for it are limited, but blacksmiths occasionally request it for case-hardening mortal-grade metals.",
+    "effects": {}
+  },
+  {
+    "id": "corrupted_qi_bead",
+    "name": "Corrupted Qi Bead",
+    "type": "material",
+    "category": "Material",
+    "rarity": "mid_grade_spirit",
+    "tier": "mid_grade_spirit",
+    "description": "A dense bead of condensed qi with dark threading through its centre. The corruption is stable but present. Any elder who sees it will have questions. It is worth a great deal to the right buyer and a great deal of trouble to the wrong one.",
+    "effects": {}
+  },
+  {
+    "id": "black_thread_shard",
+    "name": "Black-Thread Shard",
+    "type": "lore",
+    "category": "Lore",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A fragment of the formation token carried by a black-thread cultist. The thread pattern etched into it matches nothing in the sect's documented records. Someone spent time designing this.",
+    "effects": {}
   }
 ]

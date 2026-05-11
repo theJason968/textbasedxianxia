@@ -78,6 +78,31 @@
     ]
   },
   {
+    "id": "lower_grove_patrol",
+    "name": "Grove Boundary Watch",
+    "description": "Walk the lower grove boundary markers before dark and report anything disturbed or unusual to the hall steward.",
+    "steps": [
+      "Accept the patrol task from the board.",
+      "Walk the grove boundary before sundown.",
+      "Report back to the assignment hall."
+    ],
+    "rewards": {
+      "spiritStones": 2
+    }
+  },
+  {
+    "id": "medicine_garden_duty",
+    "name": "Medicine Garden Weeding",
+    "description": "Pull overgrown weeds from the lower medicine garden terraces without damaging the roots.",
+    "steps": [
+      "Accept the weeding task from the board.",
+      "Work through the lower terrace without rushing."
+    ],
+    "rewards": {
+      "spiritStones": 1
+    }
+  },
+  {
     "id": "broken_trade_route",
     "name": "The Broken Trade Route",
     "description": "Investigate trouble on the village road and find out why ordinary bandits are afraid of something above them.",

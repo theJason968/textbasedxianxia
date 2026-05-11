@@ -22,5 +22,42 @@
     "effectsPerLevel": {
       "physique": 1
     }
+  },
+  {
+    "id": "iron_body_method",
+    "name": "Iron Body Method",
+    "category": "body",
+    "realmRequirement": "Mortal",
+    "description": "A body-hardening cultivation method that roots qi into muscle and skin, converting incoming force into something the body can absorb and answer.",
+    "icon": "/assets/items/book_manual.png",
+    "maxLevel": 5,
+    "effectsPerLevel": {
+      "endurance": 1
+    }
+  },
+  {
+    "id": "wind_blade_strike",
+    "name": "Wind Blade Strike",
+    "category": "elemental",
+    "realmRequirement": "Mortal",
+    "description": "An elemental strike technique that condenses Wind qi along the striking limb into a cutting edge. Grows sharper as Wind affinity deepens.",
+    "icon": "/assets/items/book_manual.png",
+    "maxLevel": 5,
+    "effectsPerLevel": {
+      "agility": 1
+    }
+  },
+  {
+    "id": "void_step",
+    "name": "Void Step",
+    "category": "movement",
+    "realmRequirement": "Mortal",
+    "description": "An advanced footwork method discovered through deep mastery of Pine Shadow Step. The practitioner briefly occupies no position, then reappears wherever they choose.",
+    "icon": "/assets/items/book_manual.png",
+    "maxLevel": 5,
+    "effectsPerLevel": {
+      "agility": 1,
+      "physique": 1
+    }
   }
 ]

@@ -20,7 +20,9 @@ export function cultivate(gameState: GameState): CultivationResult {
     };
   }
 
-  const qiGain = Math.max(1, 2 - Math.floor(gameState.player.trainingFatigue / 3));
+  const azureMastery = gameState.player.techniqueMastery["azure_cloud_breathing"] ?? 0;
+  const rank5Bonus = azureMastery >= 5 ? 1 : 0;
+  const qiGain = Math.max(1, 2 + rank5Bonus - Math.floor(gameState.player.trainingFatigue / 3));
   const nextQi = Math.min(gameState.player.maxQi, gameState.player.qi + qiGain);
   const nextFatigue = Math.min(10, gameState.player.trainingFatigue + 1);
   const isOvertraining = nextFatigue >= 4;

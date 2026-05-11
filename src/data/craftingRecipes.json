@@ -41,7 +41,8 @@
     "description": "A rough draught that draws faint qi out of a mist wolf core. Effective, but not clean.",
     "ingredients": {
       "mist_wolf_core": 1,
-      "frost_vein_herb": 1
+      "frost_vein_herb": 1,
+      "ice_vein_herb": 1
     },
     "resultItem": "mist_core_qi_draught",
     "quantity": 1,

@@ -366,9 +366,17 @@ h3 {
 }
 
 .combat-panel h2 {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.25rem;
   color: #efe5d4;
   font-size: 1.35rem;
+}
+
+.combat-cultivation {
+  margin: 0 0 0.5rem;
+  font-size: 0.7rem;
+  color: #9a8b6e;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .combat-actions {
@@ -389,6 +397,17 @@ h3 {
   height: 100%;
   border-radius: inherit;
   background: linear-gradient(90deg, #d85c49, #d7b56d);
+}
+
+.combat-reflection {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-left: 2px solid #d7b56d;
+  color: #efe5d4;
+  font-style: italic;
+  font-size: 0.97rem;
+  line-height: 1.65;
+  background: rgba(215, 181, 109, 0.06);
 }
 
 .combat-log {
@@ -965,21 +984,26 @@ button.inventory-slot:hover {
 }
 
 .collection-tabs {
-  margin-bottom: 1.5rem;
+  padding-top: 0;
 }
 
 .tab-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.45rem;
-  margin-bottom: 0.9rem;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0;
+  border-bottom: 1px solid rgba(231, 205, 157, 0.18);
+  margin-bottom: 0;
 }
 
 .tab-list button {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
+  border-radius: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
   min-height: 2.45rem;
   border: 1px solid rgba(215, 181, 109, 0.24);
   border-radius: 6px;
@@ -989,11 +1013,15 @@ button.inventory-slot:hover {
   cursor: pointer;
 }
 
-.tab-list button:hover,
-.tab-list button[aria-selected="true"] {
-  border-color: rgba(245, 209, 134, 0.72);
+.tab-list button:hover {
   color: #fff7e8;
-  background: rgba(111, 77, 36, 0.45);
+  background: rgba(111, 77, 36, 0.2);
+}
+
+.tab-list button[aria-selected="true"] {
+  color: #f8dfaa;
+  background: rgba(111, 77, 36, 0.25);
+  border-bottom-color: #d7b56d;
 }
 
 .tab-list span {
@@ -1003,7 +1031,6 @@ button.inventory-slot:hover {
 
 .tab-panel {
   min-height: 8.5rem;
-  border-top: 1px solid rgba(231, 205, 157, 0.12);
   padding-top: 0.9rem;
 }
 
@@ -1344,8 +1371,6 @@ body::before {
 
 .sidebar-menu button:hover,
 .sidebar-menu button[aria-pressed="true"],
-.tab-list button:hover,
-.tab-list button[aria-selected="true"],
 .slot-filter-list button:hover,
 .slot-filter-list button[aria-pressed="true"] {
   color: #f8dfaa;
@@ -1734,4 +1759,175 @@ body::before {
   .side-panel.panel-open {
     grid-area: character;
   }
+}
+
+/* ── Quest Board ─────────────────────────────────────────── */
+
+.quest-board-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  height: 100%;
+}
+
+.quest-board-container {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+}
+
+.quest-board-bg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  user-select: none;
+}
+
+.quest-paper {
+  position: absolute;
+  width: 13%;
+  transform-origin: top center;
+  cursor: pointer;
+  z-index: 1;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.quest-paper-hovered {
+  z-index: 10;
+  filter: brightness(1.08);
+}
+
+.quest-paper-taken {
+  cursor: default;
+  opacity: 0.55;
+  filter: grayscale(0.4);
+}
+
+.quest-paper-locked {
+  cursor: not-allowed;
+  opacity: 0.5;
+  filter: grayscale(0.6);
+}
+
+.quest-paper-pin {
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle at 35% 35%, #d4c4a0, #7a6040);
+  border-radius: 50%;
+  margin: 0 auto 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.quest-paper-title {
+  display: block;
+  background: linear-gradient(160deg, #f5ead2, #e8d6b0);
+  border: 1px solid #b89a60;
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  padding: 0.45rem 0.5rem 0.5rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: #3a2a10;
+  line-height: 1.3;
+  text-align: center;
+  border-radius: 2px;
+  min-height: 2.8rem;
+}
+
+.quest-paper-stamp {
+  display: block;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%) rotate(-12deg);
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #8b1a1a;
+  border: 1.5px solid #8b1a1a;
+  padding: 0.1rem 0.3rem;
+  border-radius: 2px;
+  opacity: 0.85;
+  pointer-events: none;
+  text-transform: uppercase;
+}
+
+.quest-paper-tooltip {
+  position: absolute;
+  bottom: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%) rotate(calc(-1 * var(--rotation, 0deg)));
+  width: 180px;
+  background: linear-gradient(160deg, #f9f0dc, #eddfc0);
+  border: 1px solid #b89a60;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
+  padding: 0.65rem 0.75rem;
+  border-radius: 3px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.quest-paper-tooltip strong {
+  display: block;
+  font-size: 0.78rem;
+  color: #2c1f08;
+  margin-bottom: 0.35rem;
+  line-height: 1.3;
+}
+
+.quest-paper-tooltip p {
+  margin: 0 0 0.4rem;
+  font-size: 0.7rem;
+  color: #4a3520;
+  line-height: 1.4;
+}
+
+.quest-paper-reward {
+  display: block;
+  font-size: 0.67rem;
+  color: #7a5c20;
+  font-style: italic;
+}
+
+.quest-paper-taken-note,
+.quest-paper-locked-note {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.quest-paper-taken-note {
+  color: #8b1a1a;
+}
+
+.quest-paper-locked-note {
+  color: #666;
+}
+
+.quest-board-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  padding: 0 0.25rem;
+}
+
+.quest-board-actions button {
+  padding: 0.45rem 1rem;
+  background: rgba(231, 205, 157, 0.08);
+  border: 1px solid rgba(231, 205, 157, 0.25);
+  color: #e7cd9d;
+  border-radius: 4px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.quest-board-actions button:hover {
+  background: rgba(231, 205, 157, 0.15);
 }

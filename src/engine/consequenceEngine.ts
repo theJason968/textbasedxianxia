@@ -485,6 +485,11 @@ function getRealmMessages(previousPlayer: Player, nextPlayer: Player): string[] 
 
 function getTimeMessages(previousPlayer: Player, nextPlayer: Player): string[] {
   const dayChange = previousPlayer.daysRemainingToExam - nextPlayer.daysRemainingToExam;
+  const examKnown = nextPlayer.flags.learned_about_azure_cloud_exam === true;
+
+  if (!examKnown) {
+    return [];
+  }
 
   if (dayChange > 0) {
     return [`${dayChange} day${dayChange === 1 ? "" : "s"} passed before the exam.`];

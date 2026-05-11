@@ -1,5 +1,6 @@
 import { useMemo, useState, type FormEvent } from "react";
-import { Backpack, BookOpen, ListChecks, ScrollText, Workflow } from "lucide-react";
+import { QuestBoardScene } from "./components/QuestBoardScene";
+import { Backpack, BookOpen, Flame, ListChecks, ScrollText, Swords, Workflow } from "lucide-react";
 import scenes from "./data/scenes.json";
 import items from "./data/items.json";
 import techniques from "./data/techniques.json";
@@ -10,7 +11,7 @@ import quests from "./data/quests.json";
 import npcs from "./data/npcs.json";
 import craftingRecipes from "./data/craftingRecipes.json";
 import sceneAreas from "./data/sceneAreas.json";
-import { resolveCombatAction, type CombatAction } from "./engine/combatEngine";
+import { continueCombat, getAvailableTechniqueActions, resolveCombatAction, type CombatAction } from "./engine/combatEngine";
 import { canChoose } from "./engine/conditionEngine";
 import {
   canCraftRecipe,
@@ -74,14 +75,10 @@ const npcData = npcs as unknown as Npc[];
 const questData = quests as Quest[];
 const recipeData = craftingRecipes as unknown as CraftingRecipe[];
 const sceneAreaData = sceneAreas as SceneArea[];
-type CollectionTab =
-  | "inventory"
-  | "crafting"
-  | "techniques"
-  | "skills"
-  | "quests"
-  | "journal";
-type SidebarPanel = "stats" | "cultivation" | "collections" | "save" | null;
+type CultivationTab = "progress" | "techniques" | "skills";
+type PackTab = "inventory" | "crafting";
+type PathTab = "quests" | "journal";
+type SidebarPanel = "stats" | "cultivation" | "pack" | "path" | "save" | null;
 type StartView = "auth" | "character" | "game";
 type ItemData = {
   id: string;
@@ -629,8 +626,9 @@ function App() {
   );
   const [actionMessages, setActionMessages] = useState<string[]>([]);
   const [activeSidebarPanel, setActiveSidebarPanel] = useState<SidebarPanel>(null);
-  const [activeCollectionTab, setActiveCollectionTab] =
-    useState<CollectionTab>("inventory");
+  const [activeCultivationTab, setActiveCultivationTab] = useState<CultivationTab>("progress");
+  const [activePackTab, setActivePackTab] = useState<PackTab>("inventory");
+  const [activePathTab, setActivePathTab] = useState<PathTab>("quests");
   const [activeInventoryCategory, setActiveInventoryCategory] = useState("All");
   const [activeTechniqueCategory, setActiveTechniqueCategory] = useState("All");
   const [activeSkillTree, setActiveSkillTree] = useState("All");
@@ -1000,12 +998,18 @@ function App() {
     setSaveMessage("Unsaved changes.");
   }
 
-  function handleCombatAction(action: CombatAction) {
+  function handleCombatContinue() {
+    if (!gameState.combat?.resolved) return;
+    setGameState(continueCombat(gameState));
+    setActionMessages([]);
+  }
+
+  function handleCombatAction(action: CombatAction, techniqueId?: string) {
     if (!activeEnemy) {
       return;
     }
 
-    const nextGameState = resolveCombatAction(gameState, activeEnemy, action);
+    const nextGameState = resolveCombatAction(gameState, activeEnemy, action, techniqueId);
 
     setGameState(nextGameState);
     setActionMessages(getPlayerChangeMessages(gameState.player, nextGameState.player));
@@ -1167,24 +1171,37 @@ function App() {
       </section>
 
       <section className="scene-window-panel" aria-label="Scene art">
-        {currentSceneImage ? (
-          <figure className="scene-image-frame">
-            <img src={currentSceneImage.src} alt={currentSceneImage.alt} />
-            {currentSceneImage.caption ? (
-              <figcaption>{currentSceneImage.caption}</figcaption>
-            ) : null}
-          </figure>
+        {currentScene.type === "questBoard" ? (
+          <QuestBoardScene
+            scene={currentScene}
+            gameState={gameState}
+            onChoice={handleChoice}
+          />
         ) : (
-          <div className="scene-image-placeholder">
-            <span>{currentLocationTitle}</span>
-            <strong>{currentScene.title}</strong>
-          </div>
-        )}
-        {gameState.combat && activeEnemy ? (
+          <>
+            {currentSceneImage ? (
+              <figure className="scene-image-frame">
+                <img src={currentSceneImage.src} alt={currentSceneImage.alt} />
+                {currentSceneImage.caption ? (
+                  <figcaption>{currentSceneImage.caption}</figcaption>
+                ) : null}
+              </figure>
+            ) : (
+              <div className="scene-image-placeholder">
+                <span>{currentLocationTitle}</span>
+                <strong>{currentScene.title}</strong>
+              </div>
+            )}
+            {gameState.combat && activeEnemy ? (
           <div className="combat-panel">
             <div>
               <p className="eyebrow">Combat</p>
               <h2>{activeEnemy.name}</h2>
+              {"cultivation" in activeEnemy && activeEnemy.cultivation ? (
+                <p className="combat-cultivation">
+                  {activeEnemy.cultivation.realm} · {activeEnemy.cultivation.stage}
+                </p>
+              ) : null}
               <p>{activeEnemy.description}</p>
               <div className="enemy-meter" aria-label="Enemy health">
                 <span
@@ -1199,28 +1216,51 @@ function App() {
                 {gameState.combat.enemyHealth}/{activeEnemy.maxHealth} health
               </p>
             </div>
-            <div className="choices combat-actions">
-              <button type="button" onClick={() => handleCombatAction("strike")}>
-                Strike with bare hands
-              </button>
-              {equippedWeapon ? (
-                <button type="button" onClick={() => handleCombatAction("weapon")}>
-                  Strike with {equippedWeapon.name}
+            {gameState.combat.resolved ? (
+              <>
+                {gameState.combat.reflection ? (
+                  <p className="combat-reflection">{gameState.combat.reflection}</p>
+                ) : null}
+                <div className="choices combat-actions">
+                  <button type="button" onClick={handleCombatContinue}>
+                    Continue
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="choices combat-actions">
+                <button type="button" onClick={() => handleCombatAction("strike")}>
+                  Strike with bare hands
                 </button>
-              ) : null}
-              {canFocusQiInCombat ? (
-                <button
-                  type="button"
-                  onClick={() => handleCombatAction("focus")}
-                  disabled={gameState.player.qi < 2}
-                >
-                  Focus qi into your strike
+                {equippedWeapon ? (
+                  <button type="button" onClick={() => handleCombatAction("weapon")}>
+                    Strike with {equippedWeapon.name}
+                  </button>
+                ) : null}
+                {canFocusQiInCombat ? (
+                  <button
+                    type="button"
+                    onClick={() => handleCombatAction("focus")}
+                    disabled={gameState.player.qi < 2}
+                  >
+                    Focus qi into your strike
+                  </button>
+                ) : null}
+                {getAvailableTechniqueActions(gameState.player).map((t) => (
+                  <button
+                    key={t.techniqueId}
+                    type="button"
+                    onClick={() => handleCombatAction("technique", t.techniqueId)}
+                    disabled={gameState.player.qi < t.qiCost}
+                  >
+                    {t.name} <small>(rank {t.mastery} · {t.qiCost} qi)</small>
+                  </button>
+                ))}
+                <button type="button" onClick={() => handleCombatAction("flee")}>
+                  Retreat
                 </button>
-              ) : null}
-              <button type="button" onClick={() => handleCombatAction("flee")}>
-                Retreat
-              </button>
-            </div>
+              </div>
+            )}
             <ul className="combat-log">
               {gameState.combat.log.map((entry) => (
                 <li key={entry}>{entry}</li>
@@ -1265,6 +1305,8 @@ function App() {
               </button>
             )}
           </div>
+        )}
+          </>
         )}
       </section>
 
@@ -1361,11 +1403,11 @@ function App() {
           </div>
         </section>
         <div className="character-panel-actions">
-          <button type="button" onClick={() => setActiveSidebarPanel("collections")}>
-            Inventory
+          <button type="button" onClick={() => setActiveSidebarPanel("pack")}>
+            Pack
           </button>
-          <button type="button" onClick={() => setActiveSidebarPanel("cultivation")}>
-            Cultivation
+          <button type="button" onClick={() => setActiveSidebarPanel("path")}>
+            Path
           </button>
           <button type="button" onClick={() => setActiveSidebarPanel("save")}>
             Save
@@ -1376,13 +1418,15 @@ function App() {
       <aside className={`side-panel${activeSidebarPanel ? " panel-open" : ""}`}>
         <div className="overlay-panel-header">
           <strong>
-            {activeSidebarPanel === "collections"
-              ? "Inventory"
-              : activeSidebarPanel === "cultivation"
-                ? "Cultivation"
-                : activeSidebarPanel === "save"
-                  ? "Save"
-                  : "Stats"}
+            {activeSidebarPanel === "cultivation"
+              ? "Cultivation"
+              : activeSidebarPanel === "pack"
+                ? "Pack"
+                : activeSidebarPanel === "path"
+                  ? "Path"
+                  : activeSidebarPanel === "save"
+                    ? "Save"
+                    : "Stats"}
           </strong>
           <button type="button" onClick={() => setActiveSidebarPanel(null)}>
             Close
@@ -1457,14 +1501,21 @@ function App() {
           </button>
           <button
             type="button"
-            aria-pressed={activeSidebarPanel === "collections"}
+            aria-pressed={activeSidebarPanel === "pack"}
             onClick={() =>
-              setActiveSidebarPanel(
-                activeSidebarPanel === "collections" ? null : "collections",
-              )
+              setActiveSidebarPanel(activeSidebarPanel === "pack" ? null : "pack")
             }
           >
-            Inventory
+            Pack
+          </button>
+          <button
+            type="button"
+            aria-pressed={activeSidebarPanel === "path"}
+            onClick={() =>
+              setActiveSidebarPanel(activeSidebarPanel === "path" ? null : "path")
+            }
+          >
+            Path
           </button>
           <button
             type="button"
@@ -1631,32 +1682,158 @@ function App() {
 
         {activeSidebarPanel === "cultivation" ? (
           <section className="sidebar-panel-section">
-            <h2>Cultivation</h2>
-            <div className="cultivation-meter" aria-label="Qi progress">
-              <span
-                style={{
-                  width: `${(gameState.player.qi / gameState.player.maxQi) * 100}%`,
-                }}
-              />
-            </div>
-            <div className="cultivation-controls">
-              <button type="button" onClick={handleCultivate}>
-                Cultivate
+            <div className="tab-list" role="tablist" aria-label="Cultivation">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeCultivationTab === "progress"}
+                onClick={() => setActiveCultivationTab("progress")}
+              >
+                <Flame aria-hidden="true" size={16} />
+                <span>Progress</span>
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeCultivationTab === "techniques"}
+                onClick={() => setActiveCultivationTab("techniques")}
+              >
+                <ScrollText aria-hidden="true" size={16} />
+                <span>Techniques</span>
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activeCultivationTab === "skills"}
+                onClick={() => setActiveCultivationTab("skills")}
+              >
+                <Swords aria-hidden="true" size={16} />
+                <span>Skills</span>
               </button>
             </div>
-            <p className="cultivation-message">{cultivationMessage}</p>
+
+            {activeCultivationTab === "progress" ? (
+              <div className="tab-panel">
+                <h2>Cultivation</h2>
+                <div className="cultivation-meter" aria-label="Qi progress">
+                  <span
+                    style={{
+                      width: `${(gameState.player.qi / gameState.player.maxQi) * 100}%`,
+                    }}
+                  />
+                </div>
+                <div className="cultivation-controls">
+                  <button type="button" onClick={handleCultivate}>
+                    Cultivate
+                  </button>
+                </div>
+                <p className="cultivation-message">{cultivationMessage}</p>
+              </div>
+            ) : null}
+
+            {activeCultivationTab === "techniques" ? (
+              <div id="techniques-panel" role="tabpanel" className="tab-panel">
+                <h2>Techniques</h2>
+                <div className="slot-board">
+                  <div className="slot-grid" aria-label="Technique slots">
+                    {visibleTechniques.map((technique) => (
+                      <div
+                        className="inventory-slot filled-slot"
+                        key={technique.id}
+                        title={[
+                          technique.name,
+                          technique.description,
+                          `Mastery ${technique.mastery}/${technique.maxLevel}`,
+                        ].join("\n")}
+                      >
+                        <span className="slot-icon">{technique.name.slice(0, 1)}</span>
+                        <strong>{technique.name}</strong>
+                        <small>{technique.category}</small>
+                        <small>Mastery {technique.mastery}/{technique.maxLevel}</small>
+                      </div>
+                    ))}
+                    {Array.from({ length: Math.max(0, 12 - visibleTechniques.length) }).map((_, index) => (
+                      <div className="inventory-slot empty-slot" key={`empty-tech-${index}`}>
+                        <span className="slot-icon">+</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="slot-filter-list" aria-label="Technique categories">
+                    {techniqueCategories.map((category) => (
+                      <button
+                        type="button"
+                        key={category}
+                        aria-pressed={activeTechniqueCategory === category}
+                        onClick={() => setActiveTechniqueCategory(category)}
+                      >
+                        {category}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
+            {activeCultivationTab === "skills" ? (
+              <div id="skills-panel" role="tabpanel" className="tab-panel">
+                <h2>Skill Trees</h2>
+                <div className="slot-board">
+                  <div className="slot-grid" aria-label="Skill slots">
+                    {visibleSkills.map((skill) => (
+                      <div
+                        className="inventory-slot filled-slot"
+                        key={skill.id}
+                        title={[
+                          skill.name,
+                          skill.description,
+                          formatSkillLevel(skill.rank, skill.maxRank),
+                          formatSkillEffectSummary(skill, skill.rank),
+                        ]
+                          .filter((line) => line)
+                          .join("\n")}
+                      >
+                        <span className="slot-icon">{skill.name.slice(0, 1)}</span>
+                        <strong>{skill.name}</strong>
+                        <small>{skill.tree}</small>
+                        <small>{formatSkillLevel(skill.rank, skill.maxRank)}</small>
+                        {formatSkillEffectSummary(skill, skill.rank) ? (
+                          <small>{formatSkillEffectSummary(skill, skill.rank)}</small>
+                        ) : null}
+                      </div>
+                    ))}
+                    {Array.from({ length: Math.max(0, 12 - visibleSkills.length) }).map((_, index) => (
+                      <div className="inventory-slot empty-slot" key={`empty-skill-${index}`}>
+                        <span className="slot-icon">+</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="slot-filter-list" aria-label="Skill trees">
+                    {skillTrees.map((tree) => (
+                      <button
+                        type="button"
+                        key={tree}
+                        aria-pressed={activeSkillTree === tree}
+                        onClick={() => setActiveSkillTree(tree)}
+                      >
+                        {tree}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : null}
           </section>
         ) : null}
 
-        {activeSidebarPanel === "collections" ? (
-          <section className="collection-tabs sidebar-panel-section" aria-label="Character collections">
-          <div className="tab-list" role="tablist" aria-label="Character collections">
+        {activeSidebarPanel === "pack" ? (
+          <section className="collection-tabs sidebar-panel-section" aria-label="Pack">
+          <div className="tab-list" role="tablist" aria-label="Pack">
             <button
               type="button"
               role="tab"
-              aria-selected={activeCollectionTab === "inventory"}
+              aria-selected={activePackTab === "inventory"}
               aria-controls="inventory-panel"
-              onClick={() => setActiveCollectionTab("inventory")}
+              onClick={() => setActivePackTab("inventory")}
             >
               <Backpack aria-hidden="true" size={16} />
               <span>Inventory</span>
@@ -1664,56 +1841,16 @@ function App() {
             <button
               type="button"
               role="tab"
-              aria-selected={activeCollectionTab === "techniques"}
-              aria-controls="techniques-panel"
-              onClick={() => setActiveCollectionTab("techniques")}
-            >
-              <ScrollText aria-hidden="true" size={16} />
-              <span>Techniques</span>
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeCollectionTab === "crafting"}
+              aria-selected={activePackTab === "crafting"}
               aria-controls="crafting-panel"
-              onClick={() => setActiveCollectionTab("crafting")}
+              onClick={() => setActivePackTab("crafting")}
             >
               <Workflow aria-hidden="true" size={16} />
               <span>Crafting</span>
             </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeCollectionTab === "skills"}
-              aria-controls="skills-panel"
-              onClick={() => setActiveCollectionTab("skills")}
-            >
-              <Workflow aria-hidden="true" size={16} />
-              <span>Skills</span>
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeCollectionTab === "quests"}
-              aria-controls="quests-panel"
-              onClick={() => setActiveCollectionTab("quests")}
-            >
-              <ListChecks aria-hidden="true" size={16} />
-              <span>Quests</span>
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activeCollectionTab === "journal"}
-              aria-controls="journal-panel"
-              onClick={() => setActiveCollectionTab("journal")}
-            >
-              <BookOpen aria-hidden="true" size={16} />
-              <span>Journal</span>
-            </button>
           </div>
 
-          {activeCollectionTab === "inventory" ? (
+          {activePackTab === "inventory" ? (
             <div id="inventory-panel" role="tabpanel" className="tab-panel">
               <h2>Inventory</h2>
               <div className="slot-board">
@@ -1865,7 +2002,7 @@ function App() {
             </div>
           ) : null}
 
-          {activeCollectionTab === "crafting" ? (
+          {activePackTab === "crafting" ? (
             <div id="crafting-panel" role="tabpanel" className="tab-panel">
               <h2>Crafting</h2>
               <ul className="crafting-list">
@@ -1903,170 +2040,100 @@ function App() {
             </div>
           ) : null}
 
-          {activeCollectionTab === "techniques" ? (
-            <div id="techniques-panel" role="tabpanel" className="tab-panel">
-              <h2>Techniques</h2>
-              <div className="slot-board">
-                <div className="slot-grid" aria-label="Technique slots">
-                  {visibleTechniques.map((technique) => (
-                    <div
-                      className="inventory-slot filled-slot"
-                      key={technique.id}
-                      title={[
-                        technique.name,
-                        technique.description,
-                        `Mastery ${technique.mastery}/${technique.maxLevel}`,
-                      ].join("\n")}
-                    >
-                      <span className="slot-icon">{technique.name.slice(0, 1)}</span>
-                      <strong>{technique.name}</strong>
-                      <small>{technique.category}</small>
-                      <small>
-                        Mastery {technique.mastery}/{technique.maxLevel}
-                      </small>
-                    </div>
-                  ))}
-                  {Array.from({
-                    length: Math.max(0, 12 - visibleTechniques.length),
-                  }).map((_, index) => (
-                    <div className="inventory-slot empty-slot" key={`empty-tech-${index}`}>
-                      <span className="slot-icon">+</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="slot-filter-list" aria-label="Technique categories">
-                  {techniqueCategories.map((category) => (
-                    <button
-                      type="button"
-                      key={category}
-                      aria-pressed={activeTechniqueCategory === category}
-                      onClick={() => setActiveTechniqueCategory(category)}
-                    >
-                      {category}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ) : null}
-
-          {activeCollectionTab === "skills" ? (
-            <div id="skills-panel" role="tabpanel" className="tab-panel">
-              <h2>Skill Trees</h2>
-              <div className="slot-board">
-                <div className="slot-grid" aria-label="Skill slots">
-                  {visibleSkills.map((skill) => (
-                    <div
-                      className="inventory-slot filled-slot"
-                      key={skill.id}
-                      title={[
-                        skill.name,
-                        skill.description,
-                        formatSkillLevel(skill.rank, skill.maxRank),
-                        formatSkillEffectSummary(skill, skill.rank),
-                      ]
-                        .filter((line) => line)
-                        .join("\n")}
-                    >
-                      <span className="slot-icon">{skill.name.slice(0, 1)}</span>
-                      <strong>{skill.name}</strong>
-                      <small>{skill.tree}</small>
-                      <small>{formatSkillLevel(skill.rank, skill.maxRank)}</small>
-                      {formatSkillEffectSummary(skill, skill.rank) ? (
-                        <small>{formatSkillEffectSummary(skill, skill.rank)}</small>
-                      ) : null}
-                    </div>
-                  ))}
-                  {Array.from({
-                    length: Math.max(0, 12 - visibleSkills.length),
-                  }).map((_, index) => (
-                    <div className="inventory-slot empty-slot" key={`empty-skill-${index}`}>
-                      <span className="slot-icon">+</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="slot-filter-list" aria-label="Skill trees">
-                  {skillTrees.map((tree) => (
-                    <button
-                      type="button"
-                      key={tree}
-                      aria-pressed={activeSkillTree === tree}
-                      onClick={() => setActiveSkillTree(tree)}
-                    >
-                      {tree}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ) : null}
-
-          {activeCollectionTab === "quests" ? (
-            <div id="quests-panel" role="tabpanel" className="tab-panel">
-              <h2>Quests</h2>
-              {trackedQuests.length > 0 ? (
-                <ul className="quest-list">
-                  {trackedQuests.map((quest) => (
-                    <li key={quest.id}>
-                      <strong>{quest.name}</strong>
-                      <span>{quest.playerQuest.status}</span>
-                      <p>
-                        {quest.playerQuest.status === "completed"
-                          ? "Completed"
-                          : quest.steps[quest.playerQuest.step]}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No active quests</p>
-              )}
-            </div>
-          ) : null}
-
-          {activeCollectionTab === "journal" ? (
-            <div id="journal-panel" role="tabpanel" className="tab-panel">
-              <h2>Journal</h2>
-              {npcJournalEntries.length > 0 ? (
-                <ul className="journal-list">
-                  {npcJournalEntries.map(({ npc, journalEntry }) => {
-                    const relatedQuests = npc.associatedQuests
-                      ?.map((questId) => {
-                        const quest = questData.find((candidate) => candidate.id === questId);
-                        const playerQuest = gameState.player.quests[questId];
-
-                        return quest
-                          ? `${quest.name}: ${playerQuest?.status ?? "not started"}`
-                          : null;
-                      })
-                      .filter((questSummary) => questSummary !== null);
-
-                    return (
-                      <li key={npc.id}>
-                        <strong>
-                          {npc.name}: "{npc.description}"
-                        </strong>
-                        <span>{npc.title}</span>
-                        {journalEntry.conversations.length > 0 ? (
-                          <ul>
-                            {journalEntry.conversations.map((conversation) => (
-                              <li key={conversation}>{conversation}</li>
-                            ))}
-                          </ul>
-                        ) : null}
-                        {relatedQuests && relatedQuests.length > 0 ? (
-                          <small>{relatedQuests.join(" | ")}</small>
-                        ) : null}
-                      </li>
-                    );
-                  })}
-                </ul>
-              ) : (
-                <p>No characters recorded yet</p>
-              )}
-            </div>
-          ) : null}
         </section>
+        ) : null}
+
+        {activeSidebarPanel === "path" ? (
+          <section className="collection-tabs sidebar-panel-section" aria-label="Path">
+            <div className="tab-list" role="tablist" aria-label="Path">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activePathTab === "quests"}
+                aria-controls="quests-panel"
+                onClick={() => setActivePathTab("quests")}
+              >
+                <ListChecks aria-hidden="true" size={16} />
+                <span>Quests</span>
+              </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={activePathTab === "journal"}
+                aria-controls="journal-panel"
+                onClick={() => setActivePathTab("journal")}
+              >
+                <BookOpen aria-hidden="true" size={16} />
+                <span>Journal</span>
+              </button>
+            </div>
+
+            {activePathTab === "quests" ? (
+              <div id="quests-panel" role="tabpanel" className="tab-panel">
+                <h2>Quests</h2>
+                {trackedQuests.length > 0 ? (
+                  <ul className="quest-list">
+                    {trackedQuests.map((quest) => (
+                      <li key={quest.id}>
+                        <strong>{quest.name}</strong>
+                        <span>{quest.playerQuest.status}</span>
+                        <p>
+                          {quest.playerQuest.status === "completed"
+                            ? "Completed"
+                            : quest.steps[quest.playerQuest.step]}
+                        </p>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No active quests</p>
+                )}
+              </div>
+            ) : null}
+
+            {activePathTab === "journal" ? (
+              <div id="journal-panel" role="tabpanel" className="tab-panel">
+                <h2>Journal</h2>
+                {npcJournalEntries.length > 0 ? (
+                  <ul className="journal-list">
+                    {npcJournalEntries.map(({ npc, journalEntry }) => {
+                      const relatedQuests = npc.associatedQuests
+                        ?.map((questId) => {
+                          const quest = questData.find((candidate) => candidate.id === questId);
+                          const playerQuest = gameState.player.quests[questId];
+
+                          return quest
+                            ? `${quest.name}: ${playerQuest?.status ?? "not started"}`
+                            : null;
+                        })
+                        .filter((questSummary) => questSummary !== null);
+
+                      return (
+                        <li key={npc.id}>
+                          <strong>
+                            {npc.name}: "{npc.description}"
+                          </strong>
+                          <span>{npc.title}</span>
+                          {journalEntry.conversations.length > 0 ? (
+                            <ul>
+                              {journalEntry.conversations.map((conversation) => (
+                                <li key={conversation}>{conversation}</li>
+                              ))}
+                            </ul>
+                          ) : null}
+                          {relatedQuests && relatedQuests.length > 0 ? (
+                            <small>{relatedQuests.join(" | ")}</small>
+                          ) : null}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                ) : (
+                  <p>No characters recorded yet</p>
+                )}
+              </div>
+            ) : null}
+          </section>
         ) : null}
 
         {activeSidebarPanel === "save" ? (

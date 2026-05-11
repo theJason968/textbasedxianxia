@@ -390,7 +390,7 @@
       },
       {
         "label": "Step back before the trouble swallows you",
-        "nextScene": "ordinary_morning"
+        "nextScene": "pre_exam_days"
       }
     ]
   },
@@ -4844,8 +4844,8 @@
     "body": "The watching elder gives the smallest nod. A path opens through the mist toward the outer sect courtyard. Behind you, the exam grounds continue judging the hopeful and the broken. Ahead, dormitories, rules, missions, rivals, and real cultivation wait.\n\nYour village road has ended. Your sect road has begun.",
     "choices": [
       {
-        "label": "Follow the misty path toward the outer sect courtyard",
-        "nextScene": "outer_sect_courtyard"
+        "label": "Follow the misty path toward the outer sect",
+        "nextScene": "outer_sect_arrival"
       }
     ]
   },
@@ -5081,11 +5081,12 @@
         }
       },
       {
-        "label": "Take a herb gathering task from the assignment hall",
-        "nextScene": "assignment_hall",
-        "effects": {
-          "startQuest": "first_sect_task"
-        }
+        "label": "Visit the assignment hall board",
+        "nextScene": "quest_board"
+      },
+      {
+        "label": "Return to your room",
+        "nextScene": "room_hub"
       },
       {
         "label": "Rest in the outer disciple dormitory",
@@ -5340,8 +5341,12 @@
       "alt": "A quiet wooden outer disciple room with a bed, desk, incense burner, and cloud view",
       "caption": "Your room is plain, quiet, and finally yours."
     },
-    "body": "Your assigned room is narrow, plain, and blessedly quiet. By morning your breathing has steadied and some of the strain has left your bones.",
+    "body": "Your assigned room is narrow, plain, and blessedly quiet. By morning your breathing has steadied and some of the strain has left your bones. The room is small enough to feel like a cell, but it is yours.",
     "choices": [
+      {
+        "label": "Spend time in your room — cultivate, study, or write",
+        "nextScene": "room_hub"
+      },
       {
         "label": "Return to the courtyard",
         "nextScene": "outer_sect_courtyard"
@@ -5444,6 +5449,13 @@
             }
           }
         ]
+      },
+      {
+        "label": "Walk to the cold north face of the lower grove",
+        "nextScene": "cold_face_grove",
+        "requires": {
+          "flags": { "learned_ice_vein_location": true }
+        }
       },
       {
         "label": "Walk to the cloud edge overlook",
@@ -5629,6 +5641,21 @@
         }
       },
       {
+        "label": "Ask Senior Disciple Wei about the Iron Body method",
+        "nextScene": "iron_body_teaching",
+        "requires": {
+          "flagsAbsent": ["learned_iron_body"]
+        }
+      },
+      {
+        "label": "Something in your Pine Shadow Step is ready to change — follow the feeling",
+        "nextScene": "void_step_revelation",
+        "requires": {
+          "techniqueMastery": { "pine_shadow_step": 3 },
+          "flagsAbsent": ["discovered_void_step"]
+        }
+      },
+      {
         "label": "Return to the outer sect paths",
         "nextScene": "outer_sect_paths"
       }
@@ -5691,6 +5718,14 @@
         }
       },
       {
+        "label": "Let the wind qi trace its patterns into your meridians",
+        "nextScene": "wind_blade_discovery",
+        "requires": {
+          "elements": { "Wind": 2 },
+          "flagsAbsent": ["learned_wind_blade"]
+        }
+      },
+      {
         "label": "Return to the outer sect paths",
         "nextScene": "outer_sect_paths"
       }
@@ -5724,8 +5759,115 @@
     "body": "The elder listens to your report and taps the mist wolf core with one finger. Minor stage breakthroughs may be forced with enough qi, but true realm bottlenecks demand timing, resources, and a foundation that will not crack under pressure.",
     "choices": [
       {
+        "label": "Ask what resource is needed to crack Mortal Middle",
+        "nextScene": "elder_ice_vein_guidance",
+        "requires": {
+          "stats": { "cultivationInsight": 15 },
+          "flagsAbsent": ["learned_ice_vein_location"]
+        }
+      },
+      {
+        "label": "Present the completed Mist-Core Qi Draught and ask how to use it",
+        "nextScene": "elder_breakthrough_method",
+        "requires": {
+          "items": ["mist_core_qi_draught"],
+          "flags": { "learned_ice_vein_location": true },
+          "flagsAbsent": ["elder_explained_mist_core_breakthrough"]
+        }
+      },
+      {
         "label": "Return to the courtyard and keep preparing",
         "nextScene": "outer_sect_courtyard"
+      }
+    ]
+  },
+  {
+    "id": "elder_ice_vein_guidance",
+    "areaId": "outer_sect",
+    "title": "What The Bottleneck Needs",
+    "body": "The elder sets the mist wolf core down.\n\n\"The Mist-Core Qi Draught is a rough thing on its own. Wolf-core qi floods in, your meridians receive it, and then it disperses before it can do what you need. What focuses that flood is ice-vein herb — it slows the dispersal, sharpens the pressure, and gives you a window to push forward.\"\n\nHe tilts his head toward the lower grove.\n\n\"It does not grow near the path. The north face of the grove, where the stone cliff keeps permanent shadow — that is where you will find it. The roots go into the rock. Harvest the stalks cleanly or you will break them and lose the sap.\"\n\nHe does not offer to come with you. That part is yours.",
+    "choices": [
+      {
+        "label": "Head toward the cold north face of the grove now",
+        "nextScene": "cold_face_grove",
+        "effects": {
+          "setFlags": {
+            "learned_ice_vein_location": true
+          }
+        }
+      },
+      {
+        "label": "Thank the elder and return to the courtyard",
+        "nextScene": "outer_sect_courtyard",
+        "effects": {
+          "setFlags": {
+            "learned_ice_vein_location": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "cold_face_grove",
+    "areaId": "outer_sect",
+    "title": "The Cold North Face",
+    "body": "The northern edge of the lower grove is a different place. The stone cliff behind it never fully catches the sun, and the cold that settles in the shade over years has changed the soil. The ordinary herbs thin out. In their place, low against the rock, grow the ice-vein herbs the elder described — dark green stalks, almost grey, stiff where the frost-vein herbs beside them are supple.\n\nYour fingers go cold pulling them free. The sap is colourless and smells faintly of deep water.",
+    "choices": [
+      {
+        "label": "Harvest the stalks carefully — cut above the roots",
+        "nextScene": "outer_sect_paths",
+        "effects": {
+          "addItems": ["ice_vein_herb"],
+          "perception": 1,
+          "addSkills": {
+            "herb_recognition": 1
+          },
+          "setFlags": {
+            "gathered_ice_vein_herb": true
+          }
+        }
+      },
+      {
+        "label": "Study the growth pattern before taking any",
+        "nextScene": "outer_sect_paths",
+        "effects": {
+          "perception": 2,
+          "cultivationInsight": 1,
+          "addSkills": {
+            "herb_recognition": 1,
+            "careful_eye": 1
+          }
+        }
+      },
+      {
+        "label": "Return to the main paths",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "elder_breakthrough_method",
+    "areaId": "outer_sect",
+    "title": "The Method For Mortal Late",
+    "body": "The elder examines the draught without opening it.\n\n\"Good. The sap held.\"\n\nHe hands it back.\n\n\"The method is not complicated, but the timing has no room for hesitation. Sit in full circulation of the Azure Cloud Breathing Method — do not stop the cycle. When you feel the qi moving cleanly, consume the draught. Do not pause afterward. Let the flood come.\"\n\nHe leans forward.\n\n\"The ice-vein sap creates a moment of cold stillness before the wolf-core qi disperses. In that moment — that single breath of pressure before the qi scatters — your meridians are loaded past the Mortal Middle ceiling. Push through the centre of that pressure, not around it. If you flinch or try to bleed off the excess, the window closes.\"\n\nHe leans back.\n\n\"Go to a quiet room. Do not attempt this tired or half-ready. The draught will not wait for you to compose yourself after you have already drunk it.\"",
+    "choices": [
+      {
+        "label": "Return to your room and prepare to attempt it",
+        "nextScene": "room_hub",
+        "effects": {
+          "setFlags": {
+            "elder_explained_mist_core_breakthrough": true
+          }
+        }
+      },
+      {
+        "label": "Ask one more question before leaving",
+        "nextScene": "outer_sect_courtyard",
+        "effects": {
+          "setFlags": {
+            "elder_explained_mist_core_breakthrough": true
+          }
+        }
       }
     ]
   },
@@ -5740,6 +5882,1042 @@
         "effects": {
           "failQuest": "enter_azure_cloud_sect"
         }
+      }
+    ]
+  },
+  {
+    "id": "outer_sect_arrival",
+    "areaId": "outer_sect",
+    "title": "The Gate Closes Behind You",
+    "body": "The outer gate is not grand from the inside.\n\nFrom the road it rose like a promise. From the inside it is timber and cloud-iron, and it closes with a sound like a ledger being shut.\n\nSenior Brother Wei walks ahead without hurrying. He has done this before. Around you the other new outer disciples reassemble: some taller now that the trial is finished, some quieter. A merchant's son with his hands folded in his sleeves. The girl who counted her breathing through the cloud mirror. The noble heir who has already found someone to stand behind him.\n\nThe outer sect does not announce itself. Stone paths divide between dormitory rows, a medicine garden running in terraced plots down the slope, and a training yard where a senior disciple practices footwork that makes your mortal forms feel like stumbling. Above all of it, the inner sect buildings catch a different quality of light—not brighter, just cleaner—and no outer path leads there.\n\nSenior Brother Wei stops at a notice pillar. His token is older than yours by years.\n\n\"I will say what the outer sect requires once,\" he says. \"If you forget, it has been carved into the east dormitory wall for forty years. The sect does not repeat itself without a cost.\"",
+    "choices": [
+      {
+        "label": "Stay close to Senior Brother Wei and listen",
+        "nextScene": "senior_wei_outer_rules",
+        "effects": {
+          "meetNpc": "senior_brother_wei",
+          "recordNpcConversation": {
+            "npcId": "senior_brother_wei",
+            "topic": "Listened to his single recitation of the outer sect rules without asking him to repeat anything."
+          },
+          "setFlags": {
+            "toured_azure_cloud_rules": true
+          }
+        }
+      },
+      {
+        "label": "Walk alongside Han Yue and compare notes on the exam",
+        "nextScene": "han_yue_arrival_walk",
+        "requires": {
+          "flags": {
+            "met_han_yue": true
+          }
+        },
+        "effects": {
+          "meetNpc": "han_yue",
+          "recordNpcConversation": {
+            "npcId": "han_yue",
+            "topic": "Walked beside her on the first day through the outer sect. She had already counted every new disciple and their backgrounds."
+          }
+        }
+      },
+      {
+        "label": "Watch Liu Zhen introduce himself to a senior disciple",
+        "nextScene": "liu_zhen_positioning",
+        "requires": {
+          "flags": {
+            "met_liu_zhen": true
+          }
+        },
+        "effects": {
+          "setFlags": {
+            "saw_liu_zhen_positioning": true
+          }
+        }
+      },
+      {
+        "label": "Look up the mountain toward the inner sect path",
+        "nextScene": "first_inner_sect_gaze",
+        "effects": {
+          "cultivationInsight": 1,
+          "setFlags": {
+            "first_saw_inner_sect": true
+          }
+        }
+      },
+      {
+        "label": "Follow in silence and observe before speaking",
+        "nextScene": "first_dormitory_night",
+        "effects": {
+          "perception": 1,
+          "setFlags": {
+            "arrived_outer_sect_quietly": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "senior_wei_outer_rules",
+    "areaId": "outer_sect",
+    "title": "Once",
+    "body": "Wei speaks without looking down at notes.\n\n\"Contribution points run your life here. Gather them from the assignment hall, the medicine garden, arena records, and approved sect tasks. Spend them on scripture access, better dormitory rooms, elder attention, and the privilege of not being assigned laundry rotation.\n\n\"Your token opens the outer sect. It does not open the inner sect, the elder pavilion, or the restricted floors of the scripture hall. If a door does not open for your token, you are not meant to be there. There is no 'yet' for the places that simply do not open at all.\n\n\"The lower grove is training ground for outer disciples. Do not go past the marked boundary stones after dark. A disciple went past last autumn.\"\n\nHe pauses.\n\n\"We logged his token and cleared his room.\"\n\nNo one asks what happened to the disciple. Wei resumes walking as if the question was never available to ask.",
+    "choices": [
+      {
+        "label": "Follow Senior Brother Wei to the dormitory",
+        "nextScene": "first_dormitory_night",
+        "effects": {
+          "intelligence": 1,
+          "setFlags": {
+            "knows_outer_sect_rules": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "han_yue_arrival_walk",
+    "areaId": "outer_sect",
+    "title": "She Has Been Counting",
+    "body": "Han Yue does not look relieved to see you. She looks like someone who has already stopped performing relief and is now working.\n\n\"Thirty-one new outer disciples,\" she says, not quite to you. \"Seventeen from families with cultivation connections. Nine from merchant houses. Five commoners.\"\n\n\"You counted us already.\"\n\n\"My brother was in a group of forty-two. He was one of the five commoners. He made it past the cloud mirror and failed the grove trial.\" She finally looks at you. \"I am not going to fail the grove trial.\"\n\nYou walk in silence past the medicine garden. A senior sister is weeding between two rows without looking up.\n\n\"Your village prepared you for something,\" Han Yue says, watching the senior sister's hands. \"I could see it in your breathing during the cloud mirror. What was it?\"\n\n\"People who did not let me waste my foundation.\"\n\nShe nods, once, as if that is exactly the right kind of answer.",
+    "choices": [
+      {
+        "label": "Ask Han Yue what she has already noticed about the other disciples",
+        "nextScene": "han_yue_disciple_read",
+        "effects": {
+          "relationships": {
+            "han_yue": 2
+          },
+          "addSkills": {
+            "careful_eye": 1
+          }
+        }
+      },
+      {
+        "label": "Walk with her in quiet toward the dormitory",
+        "nextScene": "first_dormitory_night",
+        "effects": {
+          "relationships": {
+            "han_yue": 1
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "han_yue_disciple_read",
+    "areaId": "outer_sect",
+    "title": "What She Sees",
+    "body": "\"The merchant's son—Qiao Min—passed because he was too frightened to let himself fail. That kind of fear is a foundation, for now.\"\n\nShe tilts her head toward a knot of three boys in matching blue sashes.\n\n\"Those three came together. School friends from a private cultivation house. They will be useful to each other until they are not.\"\n\nShe pauses.\n\n\"Liu Zhen—\"\n\n\"You noticed Liu Zhen.\"\n\n\"Everyone who intends to survive here will notice Liu Zhen,\" she says. \"He came from a family that contributes to the sect every season. He passed the exam, but he did not need to pass it. He needed to be seen passing it cleanly. Those are different things, and he understands the difference.\"\n\nShe glances at you.\n\n\"So do you, I think. Or you will.\"",
+    "choices": [
+      {
+        "label": "Walk with Han Yue toward the dormitory",
+        "nextScene": "first_dormitory_night",
+        "effects": {
+          "relationships": {
+            "han_yue": 1
+          },
+          "perception": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "liu_zhen_positioning",
+    "areaId": "outer_sect",
+    "title": "How Power Works Here",
+    "body": "Liu Zhen has already separated himself from the group.\n\nHe stands beside a senior outer disciple in a robe slightly better than regulation, speaking with both hands folded in a gesture that looks like humility and is not. The senior disciple is nodding. Liu Zhen says something that makes him laugh.\n\nYou are close enough to catch the last piece of it:\n\n\"—my family's contribution to the pavilion fund, naturally. Though I hope the sect will judge me by my own effort rather than association.\"\n\nThe senior disciple claps him on the shoulder.\n\nLiu Zhen's eyes move across the senior disciple's shoulder and find you watching. He does not acknowledge you. He turns back to the conversation the way you turn away from furniture.\n\nThe dismissal is deliberate enough to be a message. He has already decided what you are worth here. Whether he is right is a different question.",
+    "choices": [
+      {
+        "label": "Remember what you just saw and walk to the dormitory",
+        "nextScene": "first_dormitory_night",
+        "effects": {
+          "perception": 1,
+          "setFlags": {
+            "understands_liu_zhen_game": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "quest_board",
+    "type": "questBoard",
+    "areaId": "outer_sect",
+    "title": "Assignment Hall Board",
+    "boardImage": "/assets/locations/quest_board.png",
+    "body": "Three slips remain unclaimed on the lower rows. Most outer disciples collect what they can carry and leave.",
+    "choices": [
+      {
+        "label": "Gather Frost-Vein Herbs",
+        "boardPosition": { "x": 26, "y": 21, "rotation": -2 },
+        "boardDescription": "Collect frost-vein herbs from the lower grove and return them to the hall steward before sundown. A standard outer disciple task.",
+        "boardReward": "2–3 spirit stones, minor qi pill",
+        "nextScene": "assignment_hall",
+        "effects": { "startQuest": "first_sect_task" }
+      },
+      {
+        "label": "Grove Boundary Watch",
+        "boardPosition": { "x": 49, "y": 17, "rotation": 2 },
+        "boardDescription": "Walk the lower grove boundary markers before dark and report anything disturbed or unusual to the hall steward.",
+        "boardReward": "2 spirit stones",
+        "nextScene": "lower_grove_patrol_start",
+        "effects": { "startQuest": "lower_grove_patrol" }
+      },
+      {
+        "label": "Medicine Garden Weeding",
+        "boardPosition": { "x": 63, "y": 48, "rotation": -1 },
+        "boardDescription": "Clear overgrown weeds from the lower medicine garden terraces. Careful hands preferred over fast ones.",
+        "boardReward": "1 spirit stone, herb skill practice",
+        "nextScene": "medicine_garden_duty_work",
+        "effects": { "startQuest": "medicine_garden_duty" }
+      },
+      {
+        "label": "Leave the board",
+        "nextScene": "outer_sect_courtyard"
+      }
+    ]
+  },
+  {
+    "id": "lower_grove_patrol_start",
+    "areaId": "lower_grove",
+    "title": "Grove Boundary, Before Dark",
+    "body": "You walk the boundary markers in the fading light. The first two stone discs sit undisturbed. The third is leaning — not fallen, but shifted, as though something pressed against it from outside.\n\nThe pine needle bed around it is disturbed in a half-circle, and the disturbance faces inward. Whatever made it came from outside the boundary, not from within.\n\nYou mark the location carefully and turn back before the light fails completely.",
+    "choices": [
+      {
+        "label": "Report the disturbed marker to the hall steward",
+        "nextScene": "outer_sect_courtyard",
+        "effects": {
+          "perception": 1,
+          "spiritStones": 2,
+          "updateQuest": { "questId": "lower_grove_patrol", "step": 2 },
+          "completeQuest": "lower_grove_patrol",
+          "setFlags": { "noticed_disturbed_grove_marker": true }
+        }
+      },
+      {
+        "label": "Report nothing unusual and collect your stones",
+        "nextScene": "outer_sect_courtyard",
+        "effects": {
+          "spiritStones": 2,
+          "updateQuest": { "questId": "lower_grove_patrol", "step": 2 },
+          "completeQuest": "lower_grove_patrol"
+        }
+      }
+    ]
+  },
+  {
+    "id": "medicine_garden_duty_work",
+    "areaId": "medicine_garden",
+    "title": "Lower Terrace, Before Noon",
+    "body": "The lower terrace is overgrown in patches where a climbing weed has pushed between the root beds. The senior sister who oversees the garden does not give instructions — she watches your hands.\n\nYou learn quickly that the weed has two types of root: a shallow runner that pulls clean, and a deeper tap that snaps if you rush it and poisons the bed it came from. Aunt Lin taught you something like this once, and you find yourself slowing down before you mean to.",
+    "choices": [
+      {
+        "label": "Work carefully, pulling each root clean",
+        "nextScene": "outer_sect_courtyard",
+        "effects": {
+          "spiritStones": 1,
+          "addSkills": { "herb_recognition": 1, "careful_eye": 1 },
+          "trainingFatigue": 1,
+          "relationships": { "medicine_garden_senior_sister": 2 },
+          "updateQuest": { "questId": "medicine_garden_duty", "step": 1 },
+          "completeQuest": "medicine_garden_duty",
+          "setFlags": { "earned_garden_sisters_notice": true }
+        }
+      },
+      {
+        "label": "Work at a steady pace and finish the section",
+        "nextScene": "outer_sect_courtyard",
+        "effects": {
+          "spiritStones": 1,
+          "trainingFatigue": 2,
+          "updateQuest": { "questId": "medicine_garden_duty", "step": 1 },
+          "completeQuest": "medicine_garden_duty"
+        }
+      }
+    ]
+  },
+  {
+    "id": "first_inner_sect_gaze",
+    "areaId": "outer_sect",
+    "title": "The Path You Cannot Take",
+    "body": "The inner sect buildings sit above the cloud line.\n\nFrom here their details are lost—only shapes where the stone is a different color, where the light does not scatter the same way. A path climbs past the outer sect boundary markers and ends, for you, at a line of small carved discs you are not permitted to cross.\n\nTwo inner sect disciples descend past the markers without speaking. Their robes carry the Azure Cloud emblem in silver thread instead of grey. They move through the outer sect like people who have stopped needing to account for the space they occupy.\n\nOne of them glances down the slope toward the cluster of new disciples. Something in the look is not unkind, exactly. It is the way you look at a thing that reminds you of yourself before you became something else.\n\nThey are gone before you think of anything worth saying.\n\nYou stand there long enough to let the path remember your face.",
+    "choices": [
+      {
+        "label": "Walk to the dormitory with the path in mind",
+        "nextScene": "first_dormitory_night",
+        "effects": {
+          "willpower": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "first_dormitory_night",
+    "areaId": "outer_sect",
+    "title": "Room 47, West Dormitory",
+    "image": {
+      "src": "/assets/locations/outer_disciple_room.png",
+      "alt": "A quiet wooden outer disciple room with a bed, desk, incense burner, and cloud view",
+      "caption": "Narrow. Plain. The first thing that has been yours alone."
+    },
+    "body": "The room is numbered in old brushwork above the lintel. West Dormitory, forty-seventh room. Narrow enough that you can touch both walls with your arms half-extended. A sleeping mat rolled against one side. A small desk with no chair. A window that opens onto the training yard below, where lamps burn low and one senior disciple still runs the same footwork pattern over and over in the dark.\n\nSomeone lived here before you. There are four marks scratched into the door frame at chest height—careful, evenly spaced, the kind you make when you want to remember something without writing it down. You do not know what they counted.\n\nThrough the wall on your right, someone is cultivating. The rhythm is slow and controlled, not anxious—a person who has been doing this long enough to stop trying. Further down the corridor, someone else has stopped pretending they are not homesick.\n\nThe outer sect does not pause for a first night.",
+    "choices": [
+      {
+        "label": "Sit and attempt the Azure Cloud Breathing Method alone",
+        "nextScene": "first_night_cultivation",
+        "requires": {
+          "techniques": ["azure_cloud_breathing"]
+        },
+        "effects": {
+          "trainingFatigue": 1
+        }
+      },
+      {
+        "label": "Lie still and listen to the sect around you",
+        "nextScene": "first_night_listening",
+        "effects": {
+          "perception": 1
+        }
+      },
+      {
+        "label": "Compose a letter home in your mind",
+        "nextScene": "first_night_letter",
+        "requires": {
+          "flags": {
+            "visited_village_square": true
+          }
+        },
+        "effects": {
+          "willpower": 1,
+          "karma": 1
+        }
+      },
+      {
+        "label": "Walk the corridor and see which rooms have a light on",
+        "nextScene": "first_night_corridor",
+        "effects": {
+          "trainingFatigue": -1
+        }
+      },
+      {
+        "label": "Sleep without cultivating — the body needs rest too",
+        "nextScene": "outer_sect_courtyard",
+        "effects": {
+          "health": 6,
+          "trainingFatigue": -3,
+          "foundationStability": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "first_night_cultivation",
+    "areaId": "outer_sect",
+    "title": "The Technique Alone",
+    "body": "Without an elder's voice guiding the route, the Azure Cloud Breathing Method is harder to find than you expected.\n\nYou sit with your back to the wall and follow the first circulation from memory. The qi moves but not cleanly—it catches somewhere near your chest and disperses before completing the circuit. You reset. Try again. Reset.\n\nOn the fourth attempt something settles. Not a breakthrough. Just a recognition: the technique is not asking for effort. It is asking you to stop interfering long enough to let it work.\n\nBy the time you stop, the lamp has burned low and your hands are warmer than when you started. Through the wall, the disciple who has been cultivating all evening finally goes still. You did not hear the moment it happened.",
+    "choices": [
+      {
+        "label": "Sleep and let what settled tonight hold until morning",
+        "nextScene": "outer_sect_courtyard",
+        "effects": {
+          "qi": 3,
+          "cultivationInsight": 1,
+          "techniqueMastery": {
+            "azure_cloud_breathing": 1
+          },
+          "health": 4,
+          "trainingFatigue": -2,
+          "setFlags": {
+            "practiced_technique_alone_first_night": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "first_night_listening",
+    "areaId": "outer_sect",
+    "title": "What The Sect Sounds Like",
+    "body": "You lie on the mat and let the sect come to you.\n\nThrough the east wall: slow, unhurried breathing. Someone who has been cultivating for years and no longer needs to concentrate on the breathing itself.\n\nThrough the west wall: nothing. Either an empty room or a very still person.\n\nFrom the corridor: two senior disciples arguing in low voices about a footwork variation—'the weight drops on the wrong beat, it has always dropped on the wrong beat'—until one of them walks away and the other stands in silence for a long moment before following.\n\nNear midnight, a bell rings once from somewhere above the cloud line. One clean note, no repetition. You do not know what it marks. No one explains it.\n\nToward dawn the sect grows very quiet. Then, as if a signal passed through the stone itself, it resumes.",
+    "choices": [
+      {
+        "label": "Rise when the sect rises and face the first full day",
+        "nextScene": "outer_sect_courtyard",
+        "effects": {
+          "perception": 1,
+          "spiritualSense": 1,
+          "health": 3,
+          "setFlags": {
+            "heard_midnight_bell": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "first_night_letter",
+    "areaId": "outer_sect",
+    "title": "What You Would Say",
+    "body": "You sit at the desk and find that you have no paper.\n\nYou sit there anyway.\n\nTo Aunt Lin: the medicine garden here runs in terraced rows and the senior sister who tends it has your hands—careful, always checking the root before the leaf. I understand now why you would not let me guess at anything.\n\nTo Old Ren: I saw a senior disciple practice footwork in the training yard after dark, alone, running the same pattern until it stopped being practice and became something else. I think you would recognize the discipline. I think you would not be impressed, and that would be the correct response.\n\nTo Shrine Keeper Mei: there is a bell above the cloud line that rings once near midnight. I do not know what it is counting. I hope it is not us.\n\nYou do not write any of this down. In the morning the letters will not exist and the village will be no closer. But you feel steadier for having known what you would say.",
+    "choices": [
+      {
+        "label": "Sleep and carry the steadiness into morning",
+        "nextScene": "outer_sect_courtyard",
+        "effects": {
+          "willpower": 1,
+          "foundationStability": 2,
+          "health": 5,
+          "morality": {
+            "honest": 1,
+            "remembers_roots": 1
+          },
+          "setFlags": {
+            "remembered_village_first_night": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "first_night_corridor",
+    "areaId": "outer_sect",
+    "title": "Which Rooms Have A Light",
+    "body": "The corridor is narrow and smells of pine resin and cold stone. Most doors are dark. A few have thin lamplight at the sill.\n\nOne lamp belongs to Qiao Min. You can tell because you can hear him reorganizing something—the sound of a box being opened, repacked, and opened again. A person making order out of objects because he cannot make it out of the situation.\n\nYou stop outside Han Yue's door. No light. No sound. Either she is already asleep or she is sitting in the dark deliberately, cultivating or thinking in the way that looks like stillness from outside and is not.\n\nYou do not knock on either door. They each have their own first night to get through, and so do you.\n\nAt the far end of the corridor, the window opens onto the mountain. The inner sect lights burn above the cloud line like a separate sky.",
+    "choices": [
+      {
+        "label": "Knock on Qiao Min's door",
+        "nextScene": "first_night_qiao_min",
+        "requires": {
+          "flags": {
+            "helped_qiao_min": true
+          }
+        },
+        "effects": {
+          "meetNpc": "qiao_min",
+          "relationships": {
+            "qiao_min": 1
+          }
+        }
+      },
+      {
+        "label": "Return to your room and sleep",
+        "nextScene": "outer_sect_courtyard",
+        "effects": {
+          "health": 5,
+          "trainingFatigue": -2
+        }
+      }
+    ]
+  },
+  {
+    "id": "first_night_qiao_min",
+    "areaId": "outer_sect",
+    "title": "Too Much Purchased Advice",
+    "body": "He opens the door faster than someone who was not already standing at it.\n\n\"I was not expecting anyone,\" he says.\n\n\"You were standing at the door.\"\n\nHe steps back to let you in. His room has twice as many objects as yours: a spirit stone lantern still in its wrapping, three manuals fanned open on the desk, a packet of what looks like stamina medicine from a city shop.\n\n\"My father's merchant contact gave me seventeen pieces of advice before I left,\" he says. \"I have been trying to decide which eleven are wrong.\"\n\n\"Pick the ones that assume everyone here wants to help you.\"\n\nHe stares at you. Then he picks up the medicine packet and sets it in the far corner of the desk, which is probably the right instinct even if it is not the right reason.\n\n\"Were you afraid?\" he asks. \"During the trial. Were you actually afraid?\"\n\n\"Yes.\"\n\n\"Good,\" he says, very quietly. \"I thought it was only me.\"",
+    "choices": [
+      {
+        "label": "Say goodnight and return to your room",
+        "nextScene": "outer_sect_courtyard",
+        "effects": {
+          "relationships": {
+            "qiao_min": 2
+          },
+          "recordNpcConversation": {
+            "npcId": "qiao_min",
+            "topic": "Knocked on his door the first night and told him fear was the right response. He needed to hear it."
+          },
+          "health": 4,
+          "trainingFatigue": -1,
+          "setFlags": {
+            "qiao_min_first_night_talk": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "room_hub",
+    "areaId": "outer_sect",
+    "title": "Your Outer Disciple Room",
+    "image": {
+      "src": "/assets/locations/outer_disciple_room.png",
+      "alt": "A quiet wooden outer disciple room with a bed, desk, incense burner, and cloud view",
+      "caption": "Narrow walls, plain wood, and a window that opens to clouds."
+    },
+    "body": "The room is yours. A narrow bed, a low shelf, a window that opens to the mountain air. It is plain, but it is quiet enough to hear your own breath — and in a cultivation sect, that counts for something.",
+    "choices": [
+      {
+        "label": "Sit and circulate qi — basic morning cultivation",
+        "nextScene": "room_cultivate",
+        "effects": {
+          "qi": 2,
+          "cultivationInsight": 1,
+          "trainingFatigue": 1
+        }
+      },
+      {
+        "label": "Cultivate on the meditation mat — settle qi more deeply",
+        "nextScene": "room_cultivate_mat",
+        "requires": {
+          "flags": { "room_upgrade_mat": true }
+        },
+        "effects": {
+          "qi": 4,
+          "cultivationInsight": 2,
+          "foundationStability": 1,
+          "trainingFatigue": 1
+        }
+      },
+      {
+        "label": "Study a technique at the desk — read through the forms",
+        "nextScene": "room_study",
+        "effects": {
+          "perception": 1,
+          "willpower": 1,
+          "cultivationInsight": 1
+        }
+      },
+      {
+        "label": "Study technique notes under the lamp — deeper focus",
+        "nextScene": "room_study_deep",
+        "requires": {
+          "flags": { "room_upgrade_desk": true }
+        },
+        "effects": {
+          "perception": 1,
+          "willpower": 2,
+          "cultivationInsight": 2,
+          "trainingFatigue": 1
+        }
+      },
+      {
+        "label": "Read borrowed notes from the scripture pavilion",
+        "nextScene": "room_read_notes",
+        "requires": {
+          "flags": { "copied_scripture_notes": true }
+        },
+        "effects": {
+          "perception": 1,
+          "cultivationInsight": 1,
+          "willpower": 1
+        }
+      },
+      {
+        "label": "Study the herb shelf — trace properties and interactions",
+        "nextScene": "room_herb_study",
+        "requires": {
+          "flags": { "room_upgrade_herb_shelf": true }
+        },
+        "effects": {
+          "perception": 2,
+          "willpower": 1,
+          "cultivationInsight": 1
+        }
+      },
+      {
+        "label": "Write in your journal — set down what you have learned",
+        "nextScene": "room_journal_write",
+        "effects": {
+          "willpower": 1,
+          "perception": 1
+        }
+      },
+      {
+        "label": "Enter isolation and attempt the Mortal Late breakthrough",
+        "nextScene": "room_breakthrough_mortal_late",
+        "requires": {
+          "items": ["mist_core_qi_draught"],
+          "flags": { "elder_explained_mist_core_breakthrough": true },
+          "stage": "Middle",
+          "flagsAbsent": ["used_mist_core_for_breakthrough"]
+        }
+      },
+      {
+        "label": "Consider upgrading the room",
+        "nextScene": "room_upgrades"
+      },
+      {
+        "label": "Return to the courtyard",
+        "nextScene": "outer_sect_courtyard"
+      }
+    ]
+  },
+  {
+    "id": "room_cultivate",
+    "areaId": "outer_sect",
+    "title": "Morning Circulation",
+    "body": "You sit on the bare floor, spine straight, hands loose in your lap. The Azure Cloud Breathing Method carries your qi through its first few cycles. It is a short session — the room has no mat, and the wood is hard — but the breath settles something that talking to other disciples never quite manages.",
+    "choices": [
+      {
+        "label": "Hold the breath count a little longer before releasing",
+        "nextScene": "room_hub",
+        "effects": {
+          "qi": 1,
+          "foundationStability": 1,
+          "trainingFatigue": 1
+        }
+      },
+      {
+        "label": "Finish the cycle and stretch out the stiffness",
+        "nextScene": "room_hub",
+        "effects": {
+          "health": 2,
+          "trainingFatigue": -1
+        }
+      }
+    ]
+  },
+  {
+    "id": "room_cultivate_mat",
+    "areaId": "outer_sect",
+    "title": "Cultivation on the Mat",
+    "body": "The meditation mat is a simple thing — woven rush, a faint scent of old incense pressed into the fibers — but it changes the quality of stillness. Your sit bones settle properly. The floor stops complaining. Qi moves more cleanly through the lower channels. An hour here is worth two hours on bare wood.",
+    "choices": [
+      {
+        "label": "Trace the cloud meridian circuit twice before rising",
+        "nextScene": "room_hub",
+        "effects": {
+          "qi": 2,
+          "cultivationInsight": 1,
+          "foundationStability": 1,
+          "addElements": {
+            "Cloud": 1
+          }
+        }
+      },
+      {
+        "label": "Rest in stillness after the cycle — let it settle",
+        "nextScene": "room_hub",
+        "effects": {
+          "qi": 1,
+          "foundationStability": 2,
+          "health": 2
+        }
+      }
+    ]
+  },
+  {
+    "id": "room_study",
+    "areaId": "outer_sect",
+    "title": "Technique Reading",
+    "body": "You spread the technique manual on the low shelf and lean close. Without a proper desk the angle is awkward, and the light is poor, but the words are there. You trace the form diagrams with one finger, mouthing the breath counts. What the body cannot perform yet, the mind can rehearse.",
+    "choices": [
+      {
+        "label": "Focus on the breathing diagrams — trace every count",
+        "nextScene": "room_hub",
+        "effects": {
+          "cultivationInsight": 1,
+          "willpower": 1,
+          "techniqueMastery": {
+            "azure_cloud_breathing": 1
+          }
+        }
+      },
+      {
+        "label": "Skim through the footwork theory — patterns over details",
+        "nextScene": "room_hub",
+        "effects": {
+          "perception": 1,
+          "cultivationInsight": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "room_study_deep",
+    "areaId": "outer_sect",
+    "title": "Deep Study at the Desk",
+    "body": "The desk and lamp change the work entirely. A proper surface to spread the manual flat. A steady flame to read by. You can annotate in the margins now — small marks in faint ink — and come back to them. This is how real study works: slow accumulation, one understanding building on the last.",
+    "choices": [
+      {
+        "label": "Work through the technique's second form in full",
+        "nextScene": "room_hub",
+        "effects": {
+          "cultivationInsight": 2,
+          "willpower": 1,
+          "techniqueMastery": {
+            "azure_cloud_breathing": 2
+          },
+          "trainingFatigue": 1
+        }
+      },
+      {
+        "label": "Cross-reference two different manuals — look for shared principles",
+        "nextScene": "room_hub",
+        "effects": {
+          "perception": 2,
+          "cultivationInsight": 1,
+          "willpower": 1,
+          "trainingFatigue": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "room_read_notes",
+    "areaId": "outer_sect",
+    "title": "Borrowed Scripture Notes",
+    "body": "The copied pages are dense — scripture pavilion hand, abbreviated and imprecise, but the original intent still bleeds through. Whoever copied these marked certain passages twice. You are not sure whether that means agreement or a warning. Either way, the ideas are alive in a way that the official manual is not.",
+    "choices": [
+      {
+        "label": "Work through the marked passages slowly",
+        "nextScene": "room_hub",
+        "effects": {
+          "cultivationInsight": 2,
+          "perception": 1,
+          "willpower": 1,
+          "trainingFatigue": 1
+        }
+      },
+      {
+        "label": "Take notes of your own alongside the copied text",
+        "nextScene": "room_hub",
+        "effects": {
+          "willpower": 2,
+          "cultivationInsight": 1,
+          "perception": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "room_herb_study",
+    "areaId": "outer_sect",
+    "title": "Herb Shelf Study",
+    "body": "The shelf holds a small collection — frost-vein herb, cloud moss, and a few dried samples you have gathered or received. You roll a pinch of frost-vein between your fingers and watch how it bruises: pale green to grey, the sap reluctant. Aunt Lin would call this reading the herb's character. You are beginning to understand what she meant.",
+    "choices": [
+      {
+        "label": "Compare cloud moss and frost-vein — trace the temperature difference",
+        "nextScene": "room_hub",
+        "effects": {
+          "perception": 2,
+          "cultivationInsight": 1,
+          "addSkills": {
+            "herb_lore": 1
+          }
+        }
+      },
+      {
+        "label": "Study the drying patterns — how a herb changes after harvest",
+        "nextScene": "room_hub",
+        "effects": {
+          "perception": 1,
+          "willpower": 1,
+          "cultivationInsight": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "room_journal_write",
+    "areaId": "outer_sect",
+    "title": "Writing in Your Journal",
+    "body": "You open to a blank page and let the brush sit for a moment. The sect has no requirement that disciples keep records of this kind. But something in you wants an account — not the official one, not what Elder Shen would write about your progress, but a true one. What you actually noticed. What you are still afraid of. What surprised you today.",
+    "choices": [
+      {
+        "label": "Write about what you have learned so far — take stock honestly",
+        "nextScene": "room_hub",
+        "effects": {
+          "willpower": 2,
+          "perception": 1,
+          "setFlags": {
+            "journal_written": true
+          }
+        }
+      },
+      {
+        "label": "Write down a question you have not yet asked anyone",
+        "nextScene": "room_hub",
+        "effects": {
+          "willpower": 1,
+          "cultivationInsight": 1,
+          "perception": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "room_upgrades",
+    "areaId": "outer_sect",
+    "title": "Room Improvements",
+    "body": "The room can be made more useful. A meditation mat would change the quality of cultivation practice. A proper desk and lamp would open up serious study. An herb shelf would let you keep samples and trace properties without borrowing space at the medicine garden. Each improvement costs spirit stones but changes what is possible here.",
+    "choices": [
+      {
+        "label": "Purchase a meditation mat — improves cultivation sessions (8 spirit stones)",
+        "nextScene": "room_hub",
+        "requires": {
+          "stats": { "spiritStones": 8 },
+          "flagsAbsent": ["room_upgrade_mat"]
+        },
+        "effects": {
+          "spiritStones": -8,
+          "setFlags": {
+            "room_upgrade_mat": true
+          }
+        }
+      },
+      {
+        "label": "Purchase a writing desk and lamp — improves study sessions (5 spirit stones)",
+        "nextScene": "room_hub",
+        "requires": {
+          "stats": { "spiritStones": 5 },
+          "flagsAbsent": ["room_upgrade_desk"]
+        },
+        "effects": {
+          "spiritStones": -5,
+          "setFlags": {
+            "room_upgrade_desk": true
+          }
+        }
+      },
+      {
+        "label": "Purchase a small herb shelf — enables herb study (10 spirit stones)",
+        "nextScene": "room_hub",
+        "requires": {
+          "stats": { "spiritStones": 10 },
+          "flagsAbsent": ["room_upgrade_herb_shelf"]
+        },
+        "effects": {
+          "spiritStones": -10,
+          "setFlags": {
+            "room_upgrade_herb_shelf": true
+          }
+        }
+      },
+      {
+        "label": "Purchase a bookshelf — enables storing and cross-referencing manuals (12 spirit stones)",
+        "nextScene": "room_hub",
+        "requires": {
+          "stats": { "spiritStones": 12 },
+          "flagsAbsent": ["room_upgrade_bookshelf"]
+        },
+        "effects": {
+          "spiritStones": -12,
+          "setFlags": {
+            "room_upgrade_bookshelf": true
+          }
+        }
+      },
+      {
+        "label": "Leave the room as it is for now",
+        "nextScene": "room_hub"
+      }
+    ]
+  },
+  {
+    "id": "room_breakthrough_mortal_late",
+    "areaId": "outer_sect",
+    "title": "Before The Threshold",
+    "image": {
+      "src": "/assets/locations/outer_disciple_room.png",
+      "alt": "A quiet wooden outer disciple room with a bed, desk, incense burner, and cloud view",
+      "caption": "The room is as quiet as it will ever be."
+    },
+    "body": "You have cleared the desk. Drawn the window curtain to a thin line. Placed the Mist-Core Qi Draught where your hand can reach it without looking.\n\nThe elder's instructions are clear in your memory. Full Azure Cloud Breathing circulation first — do not stop the cycle. Then drink. Then push into the centre of the pressure when it comes, not away from it.\n\nYou sit. You begin the breath count.\n\nThe qi moves. The room narrows to this: breath in, breath out, qi through the left meridian path, through the lower channel, back up. Steady. Your hands warm. The draught sits in front of you and does not get smaller no matter how many cycles pass.\n\nYou are not afraid of the bottleneck. You are afraid of flinching.",
+    "choices": [
+      {
+        "label": "Continue the circulation and drink — commit fully to the push",
+        "nextScene": "room_breakthrough_late_success",
+        "requires": {
+          "stats": {
+            "foundationStability": 60
+          },
+          "techniqueMastery": {
+            "azure_cloud_breathing": 3
+          }
+        },
+        "effects": {
+          "breakthrough": {
+            "stage": "Late",
+            "maxQiIncrease": 10,
+            "maxHealthIncrease": 6,
+            "foundationCost": 15
+          },
+          "impurity": 4,
+          "cultivationInsight": 3,
+          "setFlags": {
+            "used_mist_core_for_breakthrough": true
+          }
+        }
+      },
+      {
+        "label": "Continue the circulation and drink — the foundation is rough but it will hold",
+        "nextScene": "room_breakthrough_late_struggle",
+        "requires": {
+          "stats": {
+            "foundationStability": 35
+          },
+          "techniqueMastery": {
+            "azure_cloud_breathing": 3
+          },
+          "flagsAbsent": ["breakthrough_requires_stable_foundation"]
+        },
+        "effects": {
+          "breakthrough": {
+            "stage": "Late",
+            "maxQiIncrease": 6,
+            "maxHealthIncrease": 3,
+            "foundationCost": 25
+          },
+          "impurity": 8,
+          "trainingFatigue": 4,
+          "setFlags": {
+            "used_mist_core_for_breakthrough": true,
+            "breakthrough_foundation_cracked": true
+          }
+        }
+      },
+      {
+        "label": "Pull back from the edge — not today",
+        "nextScene": "room_hub",
+        "effects": {
+          "willpower": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "room_breakthrough_late_success",
+    "areaId": "outer_sect",
+    "title": "Mortal Late",
+    "body": "The draught goes down cold.\n\nThen the wolf-core qi arrives — not gradual, not polite — a flood that hits the Mortal Middle ceiling from the inside. The ice-vein sap does exactly what the elder said: it holds the pressure in that single cold stillness, neither dispersing nor pushing forward on its own, waiting for you.\n\nYou push.\n\nFor three breaths nothing happens. On the fourth, something gives — not a crack, not a snap, more like a locked door that has been leaning the wrong way for years finally yielding to the right angle. Qi rushes into the space that opens.\n\nYou stay in the breath count through all of it. You do not flinch.\n\nWhen the room comes back, your hands are shaking slightly and the incense has burned through. The qi in your body is different — more of it, and heavier, as if it has learned to hold its own weight.\n\nMortal Late. You did not stumble into it this time. You walked through.",
+    "choices": [
+      {
+        "label": "Rest and let the qi settle",
+        "nextScene": "room_hub",
+        "effects": {
+          "health": 8,
+          "trainingFatigue": -2
+        }
+      },
+      {
+        "label": "Return to the courtyard — the sect should see you now",
+        "nextScene": "outer_sect_courtyard",
+        "effects": {
+          "health": 4
+        }
+      }
+    ]
+  },
+  {
+    "id": "room_breakthrough_late_struggle",
+    "areaId": "outer_sect",
+    "title": "Through, At A Cost",
+    "body": "The draught goes down and the pressure comes harder than you expected.\n\nThe wolf-core qi does not wait for you to find the right angle. It floods, it presses, and the ice-vein stillness lasts only a moment before the pressure starts tearing at your meridians looking for somewhere to go. You push forward anyway — not clean, not elegant, more like forcing a door that was never meant to open this way.\n\nIt opens.\n\nYou reach Mortal Late, but the passage has left marks. The meridians that bent under the excess qi will need careful work to stabilize. Your impurity count has risen. The foundation cracked slightly at the edges where the pressure was uncontrolled.\n\nThe breakthrough counts. The cost counts too.\n\nA senior disciple who passes your door an hour later looks twice at the impurity that has sweated through your outer robe and says nothing.",
+    "choices": [
+      {
+        "label": "Rest — the body needs to settle after what it just went through",
+        "nextScene": "room_hub",
+        "effects": {
+          "health": 5,
+          "trainingFatigue": -2
+        }
+      },
+      {
+        "label": "Return to the courtyard",
+        "nextScene": "outer_sect_courtyard"
+      }
+    ]
+  },
+  {
+    "id": "iron_body_teaching",
+    "areaId": "arena",
+    "title": "The Elder Who Does Not Flinch",
+    "body": "Senior Disciple Wei is older than most outer disciples by a decade. He did not enter young, and the sect took him on strength alone — not bloodline, not talent, not backing. He has the quality of someone who has been hit many times and decided, each time, not to stop.\n\n\"Iron Body is not a violent method,\" he says without being asked. \"It is a listening method. The qi learns where the body is weak and stands there. When the strike arrives, it finds the qi before it finds you.\"\n\nHe points at your stance without touching you.\n\n\"The prerequisite is simple: your body must be strong enough to hold what you are asking it to hold. Too weak a frame and the qi has nowhere to anchor.\"",
+    "choices": [
+      {
+        "label": "Ask him to teach the method",
+        "nextScene": "iron_body_method_learned",
+        "requires": {
+          "stats": { "physique": 4 }
+        },
+        "effects": {
+          "learnTechniques": ["iron_body_method"],
+          "sectContribution": { "Azure Cloud Sect": 1 },
+          "setFlags": { "learned_iron_body": true }
+        }
+      },
+      {
+        "label": "You are not ready yet — thank him and leave",
+        "nextScene": "arena_watch"
+      }
+    ]
+  },
+  {
+    "id": "iron_body_method_learned",
+    "areaId": "arena",
+    "title": "What The Body Learns",
+    "body": "He runs through the basics in a single sitting. The Iron Body Method is short on complexity: root the qi, direct it to the contact surfaces, let the impact travel through instead of stopping at the skin. The theory takes an hour. The practice will take years.\n\n\"You will not feel it working at first,\" he says. \"You will feel it working when you notice you should have been hurt more than you were.\"\n\nAt rank 5, the method becomes passive — the qi distribution happens without conscious thought, and your body holds a permanent hardness that persists outside of combat.",
+    "choices": [
+      {
+        "label": "Return to the blade-scarred arena",
+        "nextScene": "arena_watch"
+      }
+    ]
+  },
+  {
+    "id": "wind_blade_discovery",
+    "areaId": "cloud_edge",
+    "title": "What The Wind Carries",
+    "body": "You sit at the edge of the cloud sea and focus past the visual spectacle. The wind here is not random — it moves in patterns, channels itself through mountain gaps, accelerates around stone edges. Wherever it concentrates, it cuts.\n\nYour mind makes a connection without being asked to. You have been cultivating qi through the Azure Cloud method for long enough that Wind qi is not alien to your meridians. It is just faster, more directional, and eager to be given a shape.\n\nYou do not fully understand the technique yet. But the wind has just shown you the form of it.",
+    "choices": [
+      {
+        "label": "Trace the wind qi pattern through your arm and commit the method to memory",
+        "nextScene": "wind_blade_learned",
+        "effects": {
+          "learnTechniques": ["wind_blade_strike"],
+          "cultivationInsight": 2,
+          "addElements": { "Wind": 1 },
+          "setFlags": { "learned_wind_blade": true }
+        }
+      },
+      {
+        "label": "Return to the cloud edge overlook",
+        "nextScene": "cloud_edge_overlook"
+      }
+    ]
+  },
+  {
+    "id": "wind_blade_learned",
+    "areaId": "cloud_edge",
+    "title": "The Edge In The Meridians",
+    "body": "You run the wind qi through your arm three times before you trust it. By the third pass it holds a shape you can feel — thin, directional, hungry to release. The Wind Blade is not a complex technique. It is a simple one executed with precision, which is a harder thing to learn than complexity.\n\nThe method will sharpen as your Wind affinity deepens. Each point of Wind essence stored in your meridians adds more edge to the strike. For now, it cuts.",
+    "choices": [
+      {
+        "label": "Return to the cloud edge overlook",
+        "nextScene": "cloud_edge_overlook"
+      }
+    ]
+  },
+  {
+    "id": "void_step_revelation",
+    "areaId": "arena",
+    "title": "After The Third Form",
+    "body": "You have practised Pine Shadow Step until it no longer requires thought. Your feet know the angles, your weight distributes without instruction, and the technique has stopped being a technique. It has become a habit.\n\nToday something happens after the third form.\n\nThere is a half-step — not in the pattern, not taught, not part of the method — where you are momentarily neither in your previous position nor your next one. You simply are not there. And then you are somewhere else, and the air in the space you just occupied takes a moment to fill back in.\n\nYou have found the step between steps. Void Step cannot be taught. It can only be discovered.",
+    "choices": [
+      {
+        "label": "Explore the technique",
+        "nextScene": "void_step_first_movement",
+        "effects": {
+          "learnTechniques": ["void_step"],
+          "agility": 1,
+          "physique": 1,
+          "cultivationInsight": 1,
+          "setFlags": { "discovered_void_step": true }
+        }
+      }
+    ]
+  },
+  {
+    "id": "void_step_first_movement",
+    "areaId": "arena",
+    "title": "The Space Between",
+    "body": "You spend the rest of the afternoon in a forgotten corner of the practice yard, stepping and un-stepping. Each time the half-gap opens, you widen it slightly. Each time you exit into a new position, you try to direct it rather than follow it.\n\nBy dusk it is unreliable and exhausting and the most interesting thing you have found in cultivation since the first breathing cycle settled into place. Void Step is not Pine Shadow Step made larger. It treats space less like a fact and more like a suggestion.",
+    "choices": [
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
       }
     ]
   }
