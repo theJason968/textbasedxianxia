@@ -72,17 +72,16 @@
   - Resolves the "something above the bandits" thread from the trade road
 - [x] Dungeon template established for future areas
 
-### Phase 4 — Nearby Town ← NEXT
+### Phase 4 — Nearby Town ✓ COMPLETE
 *Opens free exploration; gives the explorer path a destination*
 
-- [ ] Town: Iron Bridge Town (one day's travel from the sect)
-  - Marketplace (buy items, herbs, spirit stones)
-  - Blacksmith NPC (crafting quests, weapon upgrades)
-  - Inn (rumour hooks, travelling NPCs, rest scenes)
-  - Notice board (town-side quests distinct from sect tasks)
-  - 2–3 town NPCs with relationship tracks
-- [ ] Travel system (sect ↔ town, time cost, road encounters)
-- [ ] Road encounter scenes (random events during travel — uses enemy roster from Phase 1)
+- [x] Town: Iron Bridge Town (one day's travel from the sect, 20 scenes)
+  - Marketplace: elixir counter + materials vendor (standard_qi_pill, road_healing_draught, frost-vein herb, salves)
+  - Blacksmith: Luo Jiwei NPC — spirit-grade shortsword, crude leather vest
+  - Inn: Shu Yilan NPC — paid rest (health restore), crossroads rumours scene
+  - Notice board: spirit boar bounty (town_boar_bounty quest, 3 spirit stones)
+- [x] Travel system (sect ↔ town via mountain road, one departure scene, one return scene)
+- [x] Road encounter: bandit_lieutenant ambush at the mountain pass (combat / stealth / intimidate options)
 
 ### Phase 5 — Crafting Expansion
 *Makes gathering and exploration feel rewarding*

@@ -464,5 +464,71 @@
       "Can become a friendly rival if the player keeps training footwork.",
       "Can demonstrate the gap between new disciples and experienced outer disciples."
     ]
+  },
+  {
+    "id": "luo_jiwei",
+    "name": "Luo Jiwei",
+    "title": "Iron Bridge Town Blacksmith",
+    "disposition": "neutral",
+    "faction": "Iron Bridge Town",
+    "firstSceneId": "town_blacksmith_shop",
+    "description": "A compact man with forearms built from years at the anvil. He taps the iron twice with his knuckle before answering any question, as if the metal has to weigh in first.",
+    "personality": [
+      "practical",
+      "blunt",
+      "fair",
+      "unsentimental"
+    ],
+    "relationshipToPlayer": "A blacksmith at the trade crossroads who sells reliable tools to whoever can pay without asking what they plan to do with them.",
+    "skills": {
+      "iron_sense": 5,
+      "tool_repair": 5,
+      "forge_apprentice": 4,
+      "careful_eye": 3
+    },
+    "teachesSkills": [],
+    "associatedQuests": ["town_boar_bounty"],
+    "memoryFlags": [
+      "met_luo_jiwei",
+      "asked_luo_about_bounty"
+    ],
+    "returnHooks": [
+      "Can upgrade mortal-grade weapons for a spirit stone cost.",
+      "Can introduce sect politics from a civilian observer's angle.",
+      "Can recognise changes in the player's body bearing as cultivation advances."
+    ]
+  },
+  {
+    "id": "innkeeper_shu",
+    "name": "Shu Yilan",
+    "title": "Innkeeper, River Lantern Inn",
+    "disposition": "ally",
+    "faction": "Iron Bridge Town",
+    "firstSceneId": "town_inn",
+    "description": "A round-faced woman who refills cups before they are empty and remembers every cultivator who has ever passed through her door. She has lived her whole life at the crossroads and knows more about who passes through it than most sects would like.",
+    "personality": [
+      "warm",
+      "observant",
+      "talkative",
+      "loyal to no faction"
+    ],
+    "relationshipToPlayer": "A neutral crossroads contact who offers rest, information, and a reminder that the mortal world watches cultivators through complicated eyes.",
+    "skills": {
+      "plain_speech": 4,
+      "careful_eye": 4,
+      "herb_recognition": 2,
+      "campcraft": 2
+    },
+    "teachesSkills": [],
+    "associatedQuests": [],
+    "memoryFlags": [
+      "met_innkeeper_shu",
+      "heard_road_rumours"
+    ],
+    "returnHooks": [
+      "Can pass new rumours on each visit — hooks for future arcs.",
+      "Can ask the player to investigate something on the road.",
+      "Can become a safe house contact if sect politics turn dangerous."
+    ]
   }
 ]

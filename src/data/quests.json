@@ -128,5 +128,17 @@
       "items": ["void_hollow_root"],
       "spiritStones": 5
     }
+  },
+  {
+    "id": "town_boar_bounty",
+    "name": "Eastern Terrace Bounty",
+    "description": "A spirit boar has been tearing through the eastern crop terraces outside Iron Bridge Town. The notice board has a bounty posted under an Azure Cloud Sect seal.",
+    "steps": [
+      "Find the spirit boar at the eastern crop terraces.",
+      "Clear the terrace and collect the reward."
+    ],
+    "rewards": {
+      "spiritStones": 3
+    }
   }
 ]

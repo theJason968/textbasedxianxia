@@ -5471,6 +5471,10 @@
         }
       },
       {
+        "label": "Head down the mountain road — Iron Bridge Town is a day's walk south",
+        "nextScene": "road_departure_gate"
+      },
+      {
         "label": "Return to the main courtyard",
         "nextScene": "outer_sect_courtyard"
       }
@@ -7364,6 +7368,502 @@
           "health": 10,
           "setFlags": { "attempted_hollow": true }
         }
+      }
+    ]
+  },
+  {
+    "id": "road_departure_gate",
+    "areaId": "outer_sect",
+    "title": "The Lower Gate",
+    "body": "The outer sect path drops steeply at its southern end, where the mountain road begins in earnest. A lone disciple guard at the lower gate marks your token with a brush and says nothing — disciples come and go, and your token is in order.\n\nBelow the gate, the mountain road winds south through old pine forest. Iron Bridge Town sits at the base of the range, a full day's walk in clear weather. The road is maintained by merchant guilds, not the sect.",
+    "choices": [
+      {
+        "label": "Head south toward Iron Bridge Town",
+        "nextScene": "road_mountain_pass"
+      },
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "road_mountain_pass",
+    "title": "Mountain Pass",
+    "body": "The road narrows at the first pass, where a landslide left permanent rubble along the right shoulder. From the rubble, three figures step onto the road. They wear no sect markings — road men, spread and watching. The one in front carries a notched saber. The others hold staves.\n\nThey are watching where your hands are.",
+    "choices": [
+      {
+        "label": "Draw and close the distance before they can spread further",
+        "nextScene": "road_mountain_pass_fight",
+        "effects": {
+          "startCombat": {
+            "enemyId": "bandit_lieutenant",
+            "victorySceneId": "road_pass_clear",
+            "defeatSceneId": "road_pass_defeated"
+          },
+          "setFlags": { "road_pass_bandits_fought": true }
+        }
+      },
+      {
+        "label": "Leave the road and move silently through the uphill brush",
+        "nextScene": "road_pass_clear",
+        "requires": {
+          "techniques": ["pine_shadow_step"]
+        },
+        "effects": {
+          "setFlags": { "bypassed_mountain_bandits": true }
+        }
+      },
+      {
+        "label": "Hold your ground and let your cultivation base speak for itself",
+        "nextScene": "road_pass_clear",
+        "requires": {
+          "stats": { "cultivationInsight": 20 }
+        },
+        "effects": {
+          "setFlags": { "intimidated_mountain_bandits": true }
+        }
+      },
+      {
+        "label": "Turn back — the road can wait",
+        "nextScene": "road_departure_gate"
+      }
+    ]
+  },
+  {
+    "id": "road_mountain_pass_fight",
+    "title": "Saber And Road Dust",
+    "body": "The saber man moves first — low and fast, the kind of opening that has dropped unprepared cultivators before. You close the gap before his men can flank.",
+    "combatNarration": {
+      "opening": [
+        "Gravel shifts underfoot as {enemy} raises his saber and steps into range.",
+        "The pass narrows as {enemy} signals his men and charges with the blade low."
+      ],
+      "strike": [
+        "You drive through his guard and hit {enemy} for {damage} damage.",
+        "Dust kicks up from the rubble as your strike lands on {enemy} for {damage} damage.",
+        "You check the saber with your forearm and answer it with {damage} damage."
+      ],
+      "focus": [
+        "You channel qi into your arms and cut through his guard for {damage} damage.",
+        "A focused breath tightens the strike — {enemy} takes {damage} damage.",
+        "Qi floods your limbs as you press forward, dealing {damage} damage to {enemy}."
+      ],
+      "enemyAttack": [
+        "{enemy} drives a hard saber cut that connects for {damage} damage.",
+        "The notched blade catches your shoulder for {damage} damage.",
+        "{enemy} sidesteps and slashes across your guard for {damage} damage."
+      ],
+      "victory": [
+        "{enemy} drops the saber and backs into the rubble, breathing hard.",
+        "The saber man goes down in the dust. His men scatter into the treeline."
+      ],
+      "defeat": [
+        "{enemy} drives you back toward the sect gate, every step costing blood."
+      ]
+    },
+    "choices": []
+  },
+  {
+    "id": "road_pass_clear",
+    "title": "South Of The Pass",
+    "body": "The road opens below the pass. Pine forest gives way to lower valley growth — birch, cultivated terraces, and patches of farmland following the stream south.\n\nBy the time the afternoon light drops toward the western ridge, Iron Bridge Town is visible at the valley floor: tile roofs, a stone bridge, and cooking smoke rising through the cool air.",
+    "choices": [
+      {
+        "label": "Enter Iron Bridge Town",
+        "nextScene": "iron_bridge_town",
+        "effects": {
+          "setFlags": { "visited_iron_bridge_town": true }
+        }
+      }
+    ]
+  },
+  {
+    "id": "road_pass_defeated",
+    "title": "Driven Back",
+    "body": "They were better prepared than they looked. You made it back through the pass with most of your blood still in you — barely — and turned before they pressed the advantage.\n\nThe mountain road south is closed until you are stronger or more careful. Your wounds are not fatal. They are honest.",
+    "choices": [
+      {
+        "label": "Retreat to the outer sect",
+        "nextScene": "outer_sect_paths",
+        "effects": {
+          "health": 10
+        }
+      }
+    ]
+  },
+  {
+    "id": "iron_bridge_town",
+    "areaId": "iron_bridge_town",
+    "title": "Iron Bridge Town",
+    "body": "The town sits at the base of the mountain road where three trade routes converge. The iron bridge that gave it its name still stands — wide enough for two carts abreast, its old rivets stained black from a hundred wet seasons.\n\nThe main road splits inside the gate. Left leads to the market row. Right heads toward the craftsman quarter. Straight on is the River Lantern Inn, a painted lantern swinging over its door. There are cultivators among the crowd — not many, but more than a mortal village would ever see. Most wear no sect markings.",
+    "choices": [
+      {
+        "label": "Walk the market row",
+        "nextScene": "town_marketplace"
+      },
+      {
+        "label": "Find the blacksmith in the craftsman quarter",
+        "nextScene": "town_blacksmith_shop"
+      },
+      {
+        "label": "Step into the River Lantern Inn",
+        "nextScene": "town_inn"
+      },
+      {
+        "label": "Check the notice board outside the inn",
+        "nextScene": "town_notice_board"
+      },
+      {
+        "label": "Head back north toward the sect",
+        "nextScene": "road_from_town"
+      }
+    ]
+  },
+  {
+    "id": "town_marketplace",
+    "areaId": "iron_bridge_town",
+    "title": "Market Row",
+    "body": "The market row is longer than it looks from the gate. Stalls sell preserved spirit herbs, sealed core containers, road tools, and goods that need no explanation. A vendor at one end runs the elixir counter — clean stock, standard prices, no hagglingaccepted. A second stall handles materials: raw herbs, low-grade components, and a few things collected from the surrounding hills.",
+    "choices": [
+      {
+        "label": "Browse the elixir counter",
+        "nextScene": "marketplace_elixirs_counter"
+      },
+      {
+        "label": "Check the materials stall",
+        "nextScene": "marketplace_materials_counter"
+      },
+      {
+        "label": "Return to the main street",
+        "nextScene": "iron_bridge_town"
+      }
+    ]
+  },
+  {
+    "id": "marketplace_elixirs_counter",
+    "areaId": "iron_bridge_town",
+    "title": "Elixir Counter",
+    "body": "The vendor keeps a ledger propped open beside the bottles. The stock is clean — no obvious impurity trace in the outer layer, which is more than the village market ever offered. She does not negotiate on price.",
+    "choices": [
+      {
+        "label": "Buy a standard qi pill (3 spirit stones)",
+        "nextScene": "marketplace_elixirs_counter",
+        "requires": { "stats": { "spiritStones": 3 } },
+        "effects": {
+          "spiritStones": -3,
+          "addItems": ["standard_qi_pill"]
+        }
+      },
+      {
+        "label": "Buy a road healing draught (2 spirit stones)",
+        "nextScene": "marketplace_elixirs_counter",
+        "requires": { "stats": { "spiritStones": 2 } },
+        "effects": {
+          "spiritStones": -2,
+          "addItems": ["road_healing_draught"]
+        }
+      },
+      {
+        "label": "Return to the market row",
+        "nextScene": "town_marketplace"
+      }
+    ]
+  },
+  {
+    "id": "marketplace_materials_counter",
+    "areaId": "iron_bridge_town",
+    "title": "Materials Vendor",
+    "body": "Crates of dried herbs and sealed components line the table. The vendor charges what the posted sign says — no more, no less — with the comfortable authority of someone who has not needed to haggle in years.",
+    "choices": [
+      {
+        "label": "Buy a frost-vein herb bundle (1 spirit stone)",
+        "nextScene": "marketplace_materials_counter",
+        "requires": { "stats": { "spiritStones": 1 } },
+        "effects": {
+          "spiritStones": -1,
+          "addItems": ["frost_vein_herb"]
+        }
+      },
+      {
+        "label": "Buy a cooling herb salve (1 spirit stone)",
+        "nextScene": "marketplace_materials_counter",
+        "requires": { "stats": { "spiritStones": 1 } },
+        "effects": {
+          "spiritStones": -1,
+          "addItems": ["cooling_herb_salve"]
+        }
+      },
+      {
+        "label": "Return to the market row",
+        "nextScene": "town_marketplace"
+      }
+    ]
+  },
+  {
+    "id": "town_blacksmith_shop",
+    "areaId": "iron_bridge_town",
+    "title": "Luo's Iron Works",
+    "body": "The smithy smells of coal and cooling metal. A compact man in a work apron — forearms scarred from years of hot spark work, both of them — looks up from a half-finished fitting and gives you a quick reading. He is not looking at your robe. He is looking at your hands.\n\nHe taps the anvil twice with his knuckle before speaking. \"Outer sect?\" Not unfriendly. Just efficient.",
+    "choices": [
+      {
+        "label": "Buy the spirit-grade shortsword on the rack (5 spirit stones)",
+        "nextScene": "town_blacksmith_shop",
+        "requires": {
+          "stats": { "spiritStones": 5 },
+          "flagsAbsent": ["bought_blacksmith_sword"]
+        },
+        "effects": {
+          "spiritStones": -5,
+          "addItems": ["spirit_grade_shortsword"],
+          "setFlags": { "bought_blacksmith_sword": true }
+        }
+      },
+      {
+        "label": "Buy a crude leather vest (3 spirit stones)",
+        "nextScene": "town_blacksmith_shop",
+        "requires": {
+          "stats": { "spiritStones": 3 },
+          "flagsAbsent": ["bought_blacksmith_vest"]
+        },
+        "effects": {
+          "spiritStones": -3,
+          "addItems": ["crude_leather_vest"],
+          "setFlags": { "bought_blacksmith_vest": true }
+        }
+      },
+      {
+        "label": "Ask about the bounty posting on the notice board",
+        "nextScene": "town_blacksmith_quest",
+        "effects": {
+          "meetNpc": "luo_jiwei",
+          "recordNpcConversation": {
+            "npcId": "luo_jiwei",
+            "topic": "boar_bounty"
+          }
+        }
+      },
+      {
+        "label": "Return to the main street",
+        "nextScene": "iron_bridge_town"
+      }
+    ]
+  },
+  {
+    "id": "town_blacksmith_quest",
+    "areaId": "iron_bridge_town",
+    "title": "The Boar At The East Terrace",
+    "body": "Luo leans on the counter and considers you for a moment.\n\n\"Spirit boar,\" he says. \"Bigger than the grove variety. Been tearing through the east crop terraces for three weeks. Town guard can't touch it — wrong tools and wrong nerves. The posting has an Azure Cloud seal, which means the sect placed the bounty but didn't send anyone to collect.\"\n\nHe taps the anvil again. \"Three spirit stones, on proof. You'll know what proof means after you've been there.\"",
+    "choices": [
+      {
+        "label": "Head to the eastern terraces",
+        "nextScene": "town_east_terraces",
+        "effects": {
+          "startQuest": "town_boar_bounty",
+          "setFlags": { "town_boar_bounty_accepted": true }
+        }
+      },
+      {
+        "label": "Return to the smithy",
+        "nextScene": "town_blacksmith_shop"
+      }
+    ]
+  },
+  {
+    "id": "town_east_terraces",
+    "areaId": "iron_bridge_town",
+    "title": "Eastern Crop Terraces",
+    "body": "The terraces step down the eastern hillside in narrow strips, each one generations of farming work. The damage is systematic — not a beast marking territory, but one working through the harvest row by row.\n\nAt the lowest terrace, you find it. The spirit boar is massive for its kind, layered with ground qi absorbed over years. Its tusks are stained dark. It turns to face you without hesitation.",
+    "choices": [
+      {
+        "label": "Engage the spirit boar",
+        "nextScene": "town_east_fight",
+        "effects": {
+          "startCombat": {
+            "enemyId": "spirit_boar",
+            "victorySceneId": "town_east_clear",
+            "defeatSceneId": "town_east_fled"
+          }
+        }
+      },
+      {
+        "label": "Pull back — this beast is larger than expected",
+        "nextScene": "iron_bridge_town"
+      }
+    ]
+  },
+  {
+    "id": "town_east_fight",
+    "areaId": "iron_bridge_town",
+    "title": "Eastern Terraces",
+    "body": "The spirit boar charges down the terrace slope with the force of something that has been destroying things for weeks without resistance.",
+    "combatNarration": {
+      "opening": [
+        "{enemy} charges from the lower terrace, tusks forward, moving faster than a beast its size should.",
+        "Ground qi radiates off {enemy}'s hide as it closes the distance with lowered head."
+      ],
+      "strike": [
+        "You sidestep the charge and land a blow on {enemy}'s flank for {damage} damage.",
+        "Your strike catches {enemy} at the shoulder for {damage} damage.",
+        "You drive into the opening after the charge and deal {damage} damage."
+      ],
+      "focus": [
+        "You pull qi into the strike and drive through the thick hide for {damage} damage.",
+        "A focused blow connects with the bone beneath the qi-dense hide for {damage} damage.",
+        "You channel and strike the ground-qi-layered flank of {enemy} for {damage} damage."
+      ],
+      "enemyAttack": [
+        "{enemy} catches your guard with a tusk for {damage} damage.",
+        "The massive frame drives into you and lands for {damage} damage.",
+        "{enemy} pivots faster than expected and hooks you for {damage} damage."
+      ],
+      "victory": [
+        "{enemy} stumbles and collapses between the terrace rows, its qi dissipating into the soil.",
+        "The boar goes down in the churned earth. The terraces are quiet."
+      ],
+      "defeat": [
+        "{enemy} drives you back up the terraces before you can find your footing again."
+      ]
+    },
+    "choices": []
+  },
+  {
+    "id": "town_east_clear",
+    "areaId": "iron_bridge_town",
+    "title": "Terraces Cleared",
+    "body": "The boar is down. Farmers from the upper terrace make their way along the slope to look. An older woman — soil-dark hands, unreadable face — gives you a long look before nodding once. She says nothing. She does not need to.\n\nThe bounty was posted under an Azure Cloud seal. You have earned it.",
+    "choices": [
+      {
+        "label": "Take the hide and return to town",
+        "nextScene": "iron_bridge_town",
+        "effects": {
+          "updateQuest": { "questId": "town_boar_bounty", "step": 1 },
+          "completeQuest": "town_boar_bounty",
+          "spiritStones": 3,
+          "addItems": ["beast_hide"],
+          "setFlags": { "cleared_east_terraces": true }
+        }
+      }
+    ]
+  },
+  {
+    "id": "town_east_fled",
+    "areaId": "iron_bridge_town",
+    "title": "Driven From The Terrace",
+    "body": "The spirit boar is larger and more experienced than it first appeared. You retreated intact, which was the correct call. The farmers watching from the upper slope have already disappeared back to their work.\n\nThere is no shame in returning when you are better prepared.",
+    "choices": [
+      {
+        "label": "Return to Iron Bridge Town",
+        "nextScene": "iron_bridge_town",
+        "effects": {
+          "health": 10
+        }
+      }
+    ]
+  },
+  {
+    "id": "town_inn",
+    "areaId": "iron_bridge_town",
+    "title": "The River Lantern Inn",
+    "body": "The inn faces the central crossroads, its painted lantern swinging above the door in the evening air. Inside: low wooden tables, a brazier already built up against the mountain cold, and the smell of dried soup and old tea. A round-faced woman behind the counter looks up when you enter — a quick, filing glance that doesn't judge and doesn't miss much.\n\n\"First time through?\" she says. She does not wait for the answer.",
+    "choices": [
+      {
+        "label": "Ask for a room for the night (1 spirit stone)",
+        "nextScene": "town_inn_rest",
+        "requires": { "stats": { "spiritStones": 1 } },
+        "effects": {
+          "spiritStones": -1,
+          "meetNpc": "innkeeper_shu"
+        }
+      },
+      {
+        "label": "Ask what the road gossip is lately",
+        "nextScene": "town_inn_rumours",
+        "effects": {
+          "meetNpc": "innkeeper_shu"
+        }
+      },
+      {
+        "label": "Return to the main street",
+        "nextScene": "iron_bridge_town"
+      }
+    ]
+  },
+  {
+    "id": "town_inn_rest",
+    "areaId": "iron_bridge_town",
+    "title": "A Night's Rest",
+    "body": "The room is small: a sleeping mat, a wooden shutter, walls thick enough to block the crossroads noise. You wake before dawn with no training bells and no qi channeling from the room beside yours.\n\nThe mountain cultivates you even when you are not trying. A night away from the sect is its own kind of practice — different silence, different pressure.",
+    "choices": [
+      {
+        "label": "Wake up and return downstairs",
+        "nextScene": "town_inn",
+        "effects": {
+          "health": 15,
+          "advanceDays": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "town_inn_rumours",
+    "areaId": "iron_bridge_town",
+    "title": "Crossroads Gossip",
+    "body": "The innkeeper — her name is Shu Yilan, offered without being asked — refills your cup while she talks. Three things before you finish it.\n\nA cultivator in white robes came through two weeks ago and paid for three nights in high-grade spirit stones without looking at the count. He asked about the road to the Jade Spine Mountain and left before dawn on the third morning.\n\nA northern sect has posted missing-disciple notices for three outer disciples who left for a ruins expedition and have not reported back. The notices name a location two days east.\n\nAnd the old trade road east — the one no caravan wants to use anymore — has been drawing more attention than a dead road should.",
+    "choices": [
+      {
+        "label": "Thank her and return to the main floor",
+        "nextScene": "town_inn",
+        "effects": {
+          "addItems": ["mountain_road_gossip"],
+          "recordNpcConversation": {
+            "npcId": "innkeeper_shu",
+            "topic": "crossroads_rumours"
+          },
+          "setFlags": { "heard_road_rumours": true }
+        }
+      }
+    ]
+  },
+  {
+    "id": "town_notice_board",
+    "areaId": "iron_bridge_town",
+    "title": "The Notice Board",
+    "body": "The board outside the inn holds a dozen postings in various states of weather damage. Trade requests, route advisories, and two bounties. One posting stands out: a spirit beast notice with an Azure Cloud Sect seal stamped in the corner. The sect placed the bounty but did not send anyone to fulfil it.\n\nThe text is plain: a spirit boar has damaged the eastern crop terraces for three consecutive growing cycles. The posted reward is three spirit stones on proof of elimination.",
+    "choices": [
+      {
+        "label": "Accept the spirit boar bounty and head to the eastern terraces",
+        "nextScene": "town_east_terraces",
+        "requires": {
+          "flagsAbsent": ["town_boar_bounty_accepted"]
+        },
+        "effects": {
+          "startQuest": "town_boar_bounty",
+          "setFlags": { "town_boar_bounty_accepted": true }
+        }
+      },
+      {
+        "label": "Head to the eastern terraces (bounty active)",
+        "nextScene": "town_east_terraces",
+        "requires": {
+          "flags": { "town_boar_bounty_accepted": true },
+          "flagsAbsent": ["cleared_east_terraces"]
+        }
+      },
+      {
+        "label": "Return to the main street",
+        "nextScene": "iron_bridge_town"
+      }
+    ]
+  },
+  {
+    "id": "road_from_town",
+    "title": "Mountain Road North",
+    "body": "The morning road north is quieter than the afternoon you arrived on. The pass came up sooner than expected — the road crew that had been working the rubble section was gone. Road men tend to move on when the work becomes uncertain.\n\nYou reach the outer sect gate as the afternoon light thins. The guard at the lower post gives you the same brief nod as before.",
+    "choices": [
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
       }
     ]
   }

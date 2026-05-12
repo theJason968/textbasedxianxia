@@ -422,5 +422,72 @@
     "tier": "low_grade_spirit",
     "description": "A sealed codex recovered from the hollow's leader. It names the black-thread order, details their philosophy of collecting what spills from great formations, and lists three secondary siphon sites embedded near major sect formations across the region.",
     "effects": {}
+  },
+  {
+    "id": "standard_qi_pill",
+    "name": "Standard Qi Pill",
+    "type": "pill",
+    "category": "Elixir",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A properly made outer sect grade pill. Cloudless and clean. A mild impurity trace remains — qi pills are honest about what they cost.",
+    "icon": "/assets/items/elixirs/elixir_uncommon.png",
+    "effects": {
+      "qi": 15,
+      "impurity": 1
+    }
+  },
+  {
+    "id": "road_healing_draught",
+    "name": "Road Healing Draught",
+    "type": "medicine",
+    "category": "Medicine",
+    "rarity": "mortal",
+    "tier": "mortal",
+    "description": "A thick herbal draught sold along trade roads for wounds that cannot wait. Bitter. Works.",
+    "icon": "/assets/items/elixirs/elixir_common.png",
+    "effects": {
+      "health": 20
+    }
+  },
+  {
+    "id": "spirit_grade_shortsword",
+    "name": "Spirit-Grade Shortsword",
+    "type": "weapon",
+    "category": "Weapon",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A single-edge shortsword with a hairline of spirit metal folded into the spine. It holds an edge longer than mortal iron and responds more readily to qi channeling.",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r4c2.png",
+    "equipmentSlot": "weapon",
+    "equipmentEffects": {
+      "combatDamage": 4
+    },
+    "effects": {}
+  },
+  {
+    "id": "crude_leather_vest",
+    "name": "Crude Leather Vest",
+    "type": "armor",
+    "category": "Armor",
+    "rarity": "mortal",
+    "tier": "mortal",
+    "description": "Layers of beast hide stitched over a linen backing. It will not stop a blade cleanly, but it will slow one.",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r4c5.png",
+    "equipmentSlot": "clothing",
+    "equipmentEffects": {
+      "combatDefense": 2
+    },
+    "effects": {}
+  },
+  {
+    "id": "mountain_road_gossip",
+    "name": "Mountain Road Gossip",
+    "type": "lore",
+    "category": "Lore",
+    "rarity": "mortal",
+    "tier": "mortal",
+    "description": "A handful of crossroads rumours passed over tea: a white-robed cultivator who paid in high-grade stones without looking at the count, a northern sect posting missing-disciple notices, and quiet attention gathering around the old Jade Spine road east.",
+    "effects": {}
   }
 ]
