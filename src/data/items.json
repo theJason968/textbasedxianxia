@@ -391,5 +391,36 @@
     "tier": "low_grade_spirit",
     "description": "A fragment of the formation token carried by a black-thread cultist. The thread pattern etched into it matches nothing in the sect's documented records. Someone spent time designing this.",
     "effects": {}
+  },
+  {
+    "id": "lightning_method_scroll",
+    "name": "Lightning Method Scroll",
+    "type": "manual",
+    "category": "Manual",
+    "rarity": "mid_grade_spirit",
+    "tier": "mid_grade_spirit",
+    "description": "A sealed cultivation scroll recovered from the Black-Thread Hollow. The qi threading it is sharp and fast, running counter to cloud methods. It contains a complete instruction for a Lightning elemental strike technique.",
+    "icon": "/assets/items/book_manual.png",
+    "effects": {}
+  },
+  {
+    "id": "void_hollow_root",
+    "name": "Void Hollow Root",
+    "type": "material",
+    "category": "Material",
+    "rarity": "mid_grade_spirit",
+    "tier": "mid_grade_spirit",
+    "description": "A pale root recovered from the Black-Thread Hollow's formation chamber, where it spent years absorbing qi overflow from the Azure Cloud base formation. Medicine elders would classify it as a Foundation Establishment-tier ingredient.",
+    "effects": {}
+  },
+  {
+    "id": "black_thread_codex",
+    "name": "Black-Thread Codex",
+    "type": "lore",
+    "category": "Lore",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A sealed codex recovered from the hollow's leader. It names the black-thread order, details their philosophy of collecting what spills from great formations, and lists three secondary siphon sites embedded near major sect formations across the region.",
+    "effects": {}
   }
 ]

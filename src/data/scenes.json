@@ -5462,6 +5462,15 @@
         "nextScene": "cloud_edge_overlook"
       },
       {
+        "label": "Follow where the black-thread token has been pointing all morning",
+        "nextScene": "broken_road_return",
+        "requires": {
+          "items": ["azure_cloud_trial_token"],
+          "flags": { "saw_black_thread_token": true },
+          "stats": { "cultivationInsight": 15 }
+        }
+      },
+      {
         "label": "Return to the main courtyard",
         "nextScene": "outer_sect_courtyard"
       }
@@ -6918,6 +6927,443 @@
       {
         "label": "Return to the outer sect paths",
         "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "broken_road_return",
+    "areaId": "black_thread_hollow",
+    "title": "The Token Points North",
+    "body": "The trade road looks smaller than you remember. You walked it as a mortal with nothing but a staff and a rumour. Now the same stones feel like scenery.\n\nThe token pulls steadily toward a rockfall north of where the bandit fight ended. No footpath leads there. The scrub is dense, the stones are sharp, and someone arranged the approach to feel like a dead end.\n\nYou push through the undergrowth. The token grows warm.",
+    "choices": [
+      {
+        "label": "Push through to the rockfall",
+        "nextScene": "hollow_entrance"
+      },
+      {
+        "label": "Return to the outer sect — come back when ready",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "hollow_entrance",
+    "areaId": "black_thread_hollow",
+    "title": "Beneath The Road",
+    "body": "The rockfall is not a rockfall. Three large stones that should have been falling for decades are held in place by a formation thread so faint you nearly missed it. When you press the token against the central stone, the thread shudders and the stones slide aside to reveal a passage carved into the mountain root.\n\nThe air that comes out is old. It carries the smell of burnt formation ink and something else — qi that has been circulating in an enclosed space for a very long time.\n\nYou light no torch. If there are people down here, light announces you first.",
+    "choices": [
+      {
+        "label": "Enter the passage",
+        "nextScene": "hollow_antechamber",
+        "effects": {
+          "startQuest": "black_thread_hollow"
+        }
+      },
+      {
+        "label": "Study the entrance formation before going in",
+        "nextScene": "hollow_entrance",
+        "requires": {
+          "flagsAbsent": ["studied_hollow_entrance"]
+        },
+        "effects": {
+          "spiritualSense": 1,
+          "cultivationInsight": 1,
+          "setFlags": { "studied_hollow_entrance": true }
+        }
+      },
+      {
+        "label": "Return to the outer sect — this can wait",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "hollow_antechamber",
+    "areaId": "black_thread_hollow",
+    "title": "The First Chamber",
+    "body": "The passage opens into a wide chamber lit by formation stones set at head height. The light is cold and blue — the colour of qi run through something it should not pass through.\n\nThree tunnels branch from the far wall. Left: the faint sound of movement and the smell of something old and wrong. Centre: silence so complete it feels maintained. Right: a rhythmic pulse low enough to feel through the soles of your feet.\n\nThe tattered notes in your pack suddenly make more sense. This is the formation the corrupt disciple was writing about.",
+    "choices": [
+      {
+        "label": "Take the left tunnel — meet whatever is moving directly",
+        "nextScene": "hollow_combat_passage",
+        "effects": {
+          "updateQuest": { "questId": "black_thread_hollow", "step": 1 }
+        }
+      },
+      {
+        "label": "Take the centre tunnel — move without being seen",
+        "nextScene": "hollow_stealth_passage",
+        "requires": {
+          "techniques": ["pine_shadow_step"]
+        }
+      },
+      {
+        "label": "Trace the formation rhythm using your notes from the corrupt disciple",
+        "nextScene": "hollow_lore_passage",
+        "requires": {
+          "items": ["tattered_sect_notes"]
+        },
+        "effects": {
+          "cultivationInsight": 2,
+          "updateQuest": { "questId": "black_thread_hollow", "step": 1 },
+          "setFlags": { "understood_hollow_purpose": true }
+        }
+      },
+      {
+        "label": "Attune your spiritual sense to the formation rhythm",
+        "nextScene": "hollow_lore_passage",
+        "requires": {
+          "stats": { "spiritualSense": 6 }
+        },
+        "effects": {
+          "spiritualSense": 1,
+          "cultivationInsight": 1,
+          "updateQuest": { "questId": "black_thread_hollow", "step": 1 },
+          "setFlags": { "understood_hollow_purpose": true }
+        }
+      }
+    ]
+  },
+  {
+    "id": "hollow_combat_passage",
+    "areaId": "black_thread_hollow",
+    "title": "Teeth In The Dark",
+    "body": "The left tunnel smells of something dead and something that is not. Formation torches dot the walls at long intervals, but between them the dark is total. Things move in the gaps — not randomly, but in a patrol pattern maintained by something that does not sleep or tire.\n\nA bone hound assembles itself from the shadow ahead, drawing from pieces that do not all belong together. It does not growl. It simply commits.",
+    "choices": [
+      {
+        "label": "Face the bone hound",
+        "nextScene": "hollow_bone_ward",
+        "effects": {
+          "startCombat": {
+            "enemyId": "bone_hound",
+            "victorySceneId": "hollow_combat_clear",
+            "defeatSceneId": "hollow_defeat_scene"
+          }
+        }
+      },
+      {
+        "label": "Back into the antechamber — choose a different route",
+        "nextScene": "hollow_antechamber"
+      }
+    ]
+  },
+  {
+    "id": "hollow_bone_ward",
+    "areaId": "black_thread_hollow",
+    "title": "Bone Ward",
+    "body": "The bone hound closes before you finish your breath. The pieces that make it up are from different creatures — the join points visible as it moves. Whatever qi is holding this together is old and has learned the shape of violence.",
+    "choices": [
+      {
+        "label": "Return to the combat passage",
+        "nextScene": "hollow_combat_passage"
+      }
+    ]
+  },
+  {
+    "id": "hollow_combat_clear",
+    "areaId": "black_thread_hollow",
+    "title": "Through The Bone Ward",
+    "body": "The hound collapses in pieces. You step over what remains and press deeper. The combat passage opens into a wider space — the walls here are carved with thread-work patterns that match the token at your belt exactly.\n\nSomeone spent years in this place building toward something. A supply alcove holds dried rations, a pack of binding herbs, and three sealed spirit stones that never made it out.",
+    "choices": [
+      {
+        "label": "Continue to the inner ward",
+        "nextScene": "hollow_inner_ward",
+        "effects": {
+          "spiritStones": 3,
+          "health": 5
+        }
+      }
+    ]
+  },
+  {
+    "id": "hollow_stealth_passage",
+    "areaId": "black_thread_hollow",
+    "title": "Between Moments",
+    "body": "The centre tunnel is silent in the way only maintained silence can be. Two mist shades drift in overlapping circuits through the passage — their attention cycles in regular patterns, leaving gaps. Each gap is exactly long enough if you do not hesitate.\n\nPine Shadow Step was made for corridors like this. Your feet already understand the interval.",
+    "choices": [
+      {
+        "label": "Move through the circuit gap",
+        "nextScene": "hollow_stealth_clear",
+        "outcomes": [
+          {
+            "nextScene": "hollow_stealth_lore_bonus",
+            "requires": {
+              "techniques": ["void_step"]
+            }
+          }
+        ]
+      },
+      {
+        "label": "Challenge the mist shades directly",
+        "nextScene": "hollow_shade_combat",
+        "effects": {
+          "startCombat": {
+            "enemyId": "mist_shade",
+            "victorySceneId": "hollow_inner_ward",
+            "defeatSceneId": "hollow_defeat_scene"
+          }
+        }
+      },
+      {
+        "label": "Back into the antechamber — choose a different route",
+        "nextScene": "hollow_antechamber"
+      }
+    ]
+  },
+  {
+    "id": "hollow_shade_combat",
+    "areaId": "black_thread_hollow",
+    "title": "Facing The Cold",
+    "body": "Both shades turn toward you at the same moment. They knew you were there. Whatever circuit they were running, it was also a net.\n\nYou are committed now.",
+    "choices": [
+      {
+        "label": "Return to the stealth passage",
+        "nextScene": "hollow_stealth_passage"
+      }
+    ]
+  },
+  {
+    "id": "hollow_stealth_clear",
+    "areaId": "black_thread_hollow",
+    "title": "Unseen Through The Ward",
+    "body": "The shades drift past on either side, close enough that the cold radiates off them. Your footwork holds. Your breathing holds. You find the far end of the passage and step through before the circuit completes.\n\nYour heart is running faster than the technique wants it to, but you are through.",
+    "choices": [
+      {
+        "label": "Continue to the inner ward",
+        "nextScene": "hollow_inner_ward",
+        "effects": {
+          "physique": 1,
+          "techniqueMastery": { "pine_shadow_step": 1 }
+        }
+      }
+    ]
+  },
+  {
+    "id": "hollow_stealth_lore_bonus",
+    "areaId": "black_thread_hollow",
+    "title": "The Space The Shades Did Not Guard",
+    "body": "Void Step carries you through a gap in the circuit that Pine Shadow Step would have navigated around. You pass through it — and on the other side, in a niche the shades clearly cannot perceive, you find a sealed cache.\n\nInside: a page in a hand you have seen before on the tattered sect notes. The writing is cleaner here, less hurried. It names the hollow, names the order, and lists three secondary sites. Someone was keeping records of their own operation.",
+    "choices": [
+      {
+        "label": "Take the record and continue to the inner ward",
+        "nextScene": "hollow_inner_ward",
+        "effects": {
+          "cultivationInsight": 2,
+          "physique": 1,
+          "setFlags": { "found_hollow_secondary_records": true }
+        }
+      }
+    ]
+  },
+  {
+    "id": "hollow_lore_passage",
+    "areaId": "black_thread_hollow",
+    "title": "The Stone That Remembers",
+    "body": "The right tunnel's heartbeat is a formation timer — the kind used to cycle qi renewal through a sealed space. The patterns on the wall are not decoration. They are records.\n\nThe formation was not built to guard something. It was built to drain something — a slow siphon anchored below the Azure Cloud mountain root, drawing qi from the sect's base formation one thread at a time. Each thread too thin to detect. The total, compounding over years, is considerable.\n\nSomeone patient built this. Someone who could afford to wait.",
+    "choices": [
+      {
+        "label": "Follow the formation thread toward its anchor point",
+        "nextScene": "hollow_inner_ward",
+        "effects": {
+          "cultivationInsight": 1,
+          "spiritualSense": 1,
+          "setFlags": { "understood_hollow_formation": true }
+        }
+      }
+    ]
+  },
+  {
+    "id": "hollow_inner_ward",
+    "areaId": "black_thread_hollow",
+    "title": "The Inner Ward",
+    "body": "The passages converge in a chamber the size of a small courtyard. The formation here is active — threads of qi move through carved channels in the floor, gathering on a raised dais at the far end. The dais holds a structure like a web of condensed black qi, dense enough to be visible in the air.\n\nA figure stands at the centre of it. Robed. Motionless. The black thread tattoos move across his hands even at rest.\n\nHe heard you coming anyway.",
+    "choices": [
+      {
+        "label": "Study the formation before approaching",
+        "nextScene": "hollow_formation_examination",
+        "requires": {
+          "flagsAbsent": ["examined_hollow_formation"]
+        }
+      },
+      {
+        "label": "Approach the figure directly",
+        "nextScene": "hollow_cultist_confrontation",
+        "effects": {
+          "updateQuest": { "questId": "black_thread_hollow", "step": 2 }
+        }
+      }
+    ]
+  },
+  {
+    "id": "hollow_formation_examination",
+    "areaId": "black_thread_hollow",
+    "title": "What The Threads Take",
+    "body": "The formation is a masterwork of patience. Black qi threads run through the carved floor channels, gathering at the dais and cycling back to the outer wall. You trace the flow — it goes deeper than the room, through the mountain root, in the direction of the Azure Cloud Sect.\n\nOver years, maybe decades, this formation has been pulling minute amounts from the sect's base formation. Not enough to trigger detection. Each thread is a whisper, but whispers compound. The structure on the dais is filled with what was taken.\n\nThe person standing at its centre is not guarding the formation. He is part of it.",
+    "choices": [
+      {
+        "label": "You have seen enough. Face him.",
+        "nextScene": "hollow_cultist_confrontation",
+        "effects": {
+          "updateQuest": { "questId": "black_thread_hollow", "step": 2 },
+          "cultivationInsight": 1,
+          "setFlags": { "examined_hollow_formation": true }
+        }
+      }
+    ]
+  },
+  {
+    "id": "hollow_cultist_confrontation",
+    "areaId": "black_thread_hollow",
+    "title": "The Man At The Centre",
+    "body": "He turns before you speak. The calculation in his expression is quiet and efficient.\n\n\"Outer disciple. You followed the token north. That means one of my agents failed somewhere along the road.\"\n\nHe does not move from the dais.\n\n\"Leave now and I will not report you to the sect as a trespasser. The formation cannot be dismantled from this end — the siphon threads are anchored on the sect side, not here. There is nothing for you to accomplish except being hurt.\"\n\nHe believes this. That is either honesty or a very specific kind of trap.",
+    "choices": [
+      {
+        "label": "You are not leaving. The formation ends today.",
+        "nextScene": "hollow_boss_fight"
+      },
+      {
+        "label": "Ask him who he answers to",
+        "nextScene": "hollow_cultist_dialogue"
+      }
+    ]
+  },
+  {
+    "id": "hollow_cultist_dialogue",
+    "areaId": "black_thread_hollow",
+    "title": "The Order Behind The Thread",
+    "body": "He considers the question long enough that you understand he has considered answering it before.\n\n\"I answer to an order older than this sect's current elders. We collect what spills from the great formations — what would otherwise dissipate unacknowledged. A river does not mourn the water it never touched.\"\n\nHe pauses.\n\n\"We do not oppose the Azure Cloud Sect specifically. We existed before it and will exist after. You, personally, are not important to this operation.\"\n\nThe rationalisation is smooth. Practiced. And it is not actually an answer to your question.",
+    "choices": [
+      {
+        "label": "The answer is no.",
+        "nextScene": "hollow_boss_fight",
+        "effects": {
+          "setFlags": { "heard_cultist_rationale": true }
+        }
+      }
+    ]
+  },
+  {
+    "id": "hollow_boss_fight",
+    "areaId": "black_thread_hollow",
+    "title": "Black Thread Method, Unrestrained",
+    "body": "He does not move dramatically. He simply stops choosing not to fight.\n\nThe formation web behind him flares — the collected qi floods into the thread tattoos and they begin moving with purpose. Whatever ceiling he was maintaining on his method, he has removed it. The temperature in the chamber drops several degrees.",
+    "choices": [
+      {
+        "label": "Hold your ground",
+        "nextScene": "hollow_cultist_combat",
+        "effects": {
+          "startCombat": {
+            "enemyId": "black_thread_cultist",
+            "victorySceneId": "hollow_victory_scene",
+            "defeatSceneId": "hollow_defeat_scene"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "hollow_cultist_combat",
+    "areaId": "black_thread_hollow",
+    "title": "Thread Against Foundation",
+    "body": "The black-thread method operates differently from anything in the Azure Cloud Sect curriculum. It does not push. It pulls — drawing on the ambient formation qi in the chamber, directing it through the thread tattoos as a conductor.",
+    "choices": [
+      {
+        "label": "Return to the formation chamber",
+        "nextScene": "hollow_boss_fight"
+      }
+    ]
+  },
+  {
+    "id": "hollow_victory_scene",
+    "areaId": "black_thread_hollow",
+    "title": "After The Formation Breaks",
+    "body": "He goes down. The formation web flickers and begins to unravel — without the cultist to maintain it, the siphon loses coherence and the collected qi disperses into the chamber walls. You can feel it against your meridians: months or years of Azure Cloud qi returning to circulation at once.\n\nThe chamber is quiet. You are breathing harder than the fight warranted. The method he used pressed against something in your qi flow that will need a day to settle.\n\nSearch this place before you leave.",
+    "choices": [
+      {
+        "label": "Search the formation chamber",
+        "nextScene": "hollow_discovery",
+        "effects": {
+          "updateQuest": { "questId": "black_thread_hollow", "step": 3 },
+          "completeQuest": "black_thread_hollow"
+        }
+      }
+    ]
+  },
+  {
+    "id": "hollow_discovery",
+    "areaId": "black_thread_hollow",
+    "title": "What The Hollow Kept",
+    "body": "The cultist's effects are meticulous: a sealed codex detailing the black-thread order's philosophy, active operations, and three secondary siphon sites. A sealed technique scroll carrying qi unlike anything in the outer sect library — sharp, fast, running counter to the calm cloud methods you were taught. A pale root the length of a forearm growing from a fissure in the wall, absorbing formation overflow for what appears to be years.\n\nEach item represents something the sect's elders will want to see. Each also represents something worth keeping.",
+    "choices": [
+      {
+        "label": "Study the technique scroll here while the formation qi still permeates the air",
+        "nextScene": "hollow_scroll_study",
+        "effects": {
+          "addItems": ["black_thread_codex", "void_hollow_root"],
+          "spiritStones": 5,
+          "setFlags": { "looted_black_thread_hollow": true }
+        }
+      },
+      {
+        "label": "Secure everything and study the scroll at the sect",
+        "nextScene": "hollow_exit",
+        "effects": {
+          "addItems": ["lightning_method_scroll", "black_thread_codex", "void_hollow_root"],
+          "spiritStones": 5,
+          "setFlags": { "looted_black_thread_hollow": true }
+        }
+      }
+    ]
+  },
+  {
+    "id": "hollow_scroll_study",
+    "areaId": "black_thread_hollow",
+    "title": "A Different Current",
+    "body": "The scroll opens to a method unlike anything in the Azure Cloud Sect's teaching. Where cloud qi is slow and accumulative, this technique is immediate — it reads the ambient electrical charge in the air and concentrates it into a discharged strike. The instruction is terse and assumes a reader who already cultivates. Your meridians, still warm from the formation qi dispersal, absorb the pattern quickly.\n\nBy the time you roll the scroll closed, the technique has settled into place. It will sharpen with practice.",
+    "choices": [
+      {
+        "label": "Leave the hollow",
+        "nextScene": "hollow_exit",
+        "effects": {
+          "learnTechniques": ["thunder_current_strike"],
+          "setFlags": { "learned_thunder_current": true }
+        }
+      }
+    ]
+  },
+  {
+    "id": "hollow_exit",
+    "areaId": "black_thread_hollow",
+    "title": "Back Into The Mountain Air",
+    "body": "The passage out is shorter than the passage in. The formation seal does not close behind you — without its anchor, the stones have lost their mechanism. The hollow is open now to whoever finds it next.\n\nYou stand in the scrub north of the broken trade road with new weight in your pack and a different weight in your meridians. The token no longer hums. Whatever purpose it was built for has ended.",
+    "choices": [
+      {
+        "label": "Study the lightning method scroll here in the quiet",
+        "nextScene": "hollow_scroll_study",
+        "requires": {
+          "items": ["lightning_method_scroll"],
+          "flagsAbsent": ["learned_thunder_current"]
+        }
+      },
+      {
+        "label": "Return to the outer sect",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "hollow_defeat_scene",
+    "areaId": "black_thread_hollow",
+    "title": "Driven From The Hollow",
+    "body": "The method overwhelms you. You do not remember making the decision to retreat — only that the passage is behind you and then the cold mountain air is around you and you are moving through the scrub with nothing but the instinct to put distance between yourself and what is below.\n\nHe did not pursue. You were not important enough for that.\n\nThe hollow is still there. So is he. Come back with more.",
+    "choices": [
+      {
+        "label": "Return to the outer sect and recover",
+        "nextScene": "outer_sect_paths",
+        "effects": {
+          "health": 10,
+          "setFlags": { "attempted_hollow": true }
+        }
       }
     ]
   }

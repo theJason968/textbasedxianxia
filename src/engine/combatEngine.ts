@@ -117,6 +117,24 @@ const techniqueCombatData: Record<string, TechniqueCombatData> = {
       ],
     },
   },
+  thunder_current_strike: {
+    qiCost: 3,
+    damageBonusPerTier: { novice: 4, practiced: 7, mastered: 11 },
+    strike: {
+      novice: [
+        "You release the lightning qi before you have full control of it. {enemy} takes {damage} damage — the discharge runs briefly back up your arm. The technique needs refinement.",
+        "A rough lightning strike catches {enemy} for {damage} damage. The current is there. The direction is not yet.",
+      ],
+      practiced: [
+        "The lightning qi concentrates cleanly and discharges into {enemy} for {damage} damage. The method is starting to answer your direction.",
+        "You read the ambient charge and direct it at {enemy}. {damage} damage — the strike arrives faster than a physical blow could.",
+      ],
+      mastered: [
+        "The discharge is nearly invisible before impact. {enemy} takes {damage} damage before the motion registers as a strike. Lightning qi does not announce itself.",
+        "You concentrate the current to a single point and release it into {enemy}'s guard. {damage} damage — precision arriving before the target can respond.",
+      ],
+    },
+  },
 };
 
 const sceneData = scenes as Scene[];
@@ -236,6 +254,7 @@ function getTechniqueDisplayName(techniqueId: string): string {
     iron_body_method: "Iron Body Stance",
     wind_blade_strike: "Wind Blade",
     void_step: "Void Step",
+    thunder_current_strike: "Thunder Current",
   };
   return names[techniqueId] ?? techniqueId;
 }
@@ -497,7 +516,11 @@ function getPlayerDamage(player: Player, action: CombatAction, techniqueId?: str
       techniqueId === "wind_blade_strike"
         ? Math.floor((player.elementalEssence["Wind"] ?? 0) / 2)
         : 0;
-    return Math.max(1, 3 + player.physique + Math.floor(player.strength / 2) + damageBonus + skillBonus + windEssenceBonus);
+    const lightningEssenceBonus =
+      techniqueId === "thunder_current_strike"
+        ? Math.floor((player.elementalEssence["Lightning"] ?? 0) / 2)
+        : 0;
+    return Math.max(1, 3 + player.physique + Math.floor(player.strength / 2) + damageBonus + skillBonus + windEssenceBonus + lightningEssenceBonus);
   }
 
   const techniqueBonus = player.techniques.includes("azure_cloud_breathing") ? 2 : 0;

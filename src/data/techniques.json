@@ -59,5 +59,17 @@
       "agility": 1,
       "physique": 1
     }
+  },
+  {
+    "id": "thunder_current_strike",
+    "name": "Thunder Current Strike",
+    "category": "elemental",
+    "realmRequirement": "Mortal",
+    "description": "A Lightning method recovered from the Black-Thread Hollow. Concentrates ambient electrical qi into a discharged strike. Faster and more direct than cloud methods. Scales with stored Lightning essence.",
+    "icon": "/assets/items/book_manual.png",
+    "maxLevel": 5,
+    "effectsPerLevel": {
+      "spiritualSense": 1
+    }
   }
 ]

@@ -114,5 +114,19 @@
     "rewards": {
       "spiritStones": 1
     }
+  },
+  {
+    "id": "black_thread_hollow",
+    "name": "What The Token Points To",
+    "description": "The bronze token from the trade road has been pulling north since you woke. Something underground is calling it home.",
+    "steps": [
+      "Find what the black-thread token is pointing toward north of the broken trade road.",
+      "Navigate the Black-Thread Hollow and reach its inner ward.",
+      "Confront the cultist at the formation's centre and end the siphon."
+    ],
+    "rewards": {
+      "items": ["void_hollow_root"],
+      "spiritStones": 5
+    }
   }
 ]

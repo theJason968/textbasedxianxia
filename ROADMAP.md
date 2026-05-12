@@ -42,38 +42,37 @@
 
 ## Roadmap
 
-### Phase 1 — Enemy Roster Expansion ← NEXT
+### Phase 1 — Enemy Roster Expansion ✓ COMPLETE
 *The combat system is built and polished. Now it needs opponents.*
 
-- [ ] 8–10 new enemies across tiers:
+- [x] 8–10 new enemies across tiers:
   - **Grove / wilderness**: spirit boar, shadow viper, cloud stag, stone crab
   - **Human**: bandit scout, bandit lieutenant, corrupt outer disciple
   - **Spirit / dungeon**: mist shade, bone hound, black-thread cultist
-- [ ] Each enemy gets: phase data, power-appropriate stats, loot table, description
-- [ ] Enemy variety feeds directly into Phase 3 (dungeon needs 2–3 per area)
+- [x] Each enemy gets: phase data, power-appropriate stats, loot table, description
+- [x] Enemy variety feeds directly into Phase 3 (dungeon needs 2–3 per area)
 
-### Phase 2 — Technique Expansion
+### Phase 2 — Technique Expansion ✓ COMPLETE
 *The technique combat system is built. New techniques plug straight in.*
 
-- [ ] Iron Body hardening method — defensive cultivation, reduces incoming damage, teaches endurance
-- [ ] Wind Blade strike — fast elemental strike, Wind affinity scaling, low qi cost
-- [ ] Void Step — advanced movement technique (unlocks after pine_shadow_step mastery 3)
-- [ ] Elemental technique unlockable through dungeon discovery (reward, not taught)
-- [ ] Technique mastery passive bonuses at rank 5 (e.g. azure_cloud_breathing rank 5 → +maxQi per cultivation session)
+- [x] Iron Body hardening method — defensive cultivation, reduces incoming damage, teaches endurance
+- [x] Wind Blade strike — fast elemental strike, Wind affinity scaling, low qi cost
+- [x] Void Step — advanced movement technique (unlocks after pine_shadow_step mastery 3)
+- [x] Elemental technique unlockable through dungeon discovery (reward, not taught)
+- [x] Technique mastery passive bonuses at rank 5 (azure_cloud_breathing rank 5 → +1 qi per cultivation session; iron_body_method rank 5 → permanent -2 flat enemy damage)
 
-### Phase 3 — First Dungeon
+### Phase 3 — First Dungeon ✓ COMPLETE
 *The black-thread token thread; first taste of the open world*
 
-- [ ] Dungeon: The Black-Thread Hollow
-  - Entry via the broken trade route thread (black-thread token item)
-  - 12–15 scenes with branching paths (combat, stealth, social, observation routes)
-  - 2–3 enemy types from Phase 1
-  - Boss encounter at the end (black-thread cultist leader)
-  - Discovery rewards: elemental technique scroll, rare herb, lore scenes
+- [x] Dungeon: The Black-Thread Hollow (22 scenes)
+  - Entry via the broken trade route thread (black-thread token + cultivationInsight gate)
+  - Three branching paths: combat (bone hound), stealth (pine_shadow_step / void_step bonus), lore (tattered_sect_notes or spiritualSense)
+  - Boss encounter: black-thread cultist leader with two phase announcements
+  - Discovery rewards: thunder_current_strike technique, void_hollow_root ingredient, black_thread_codex lore
   - Resolves the "something above the bandits" thread from the trade road
-- [ ] Dungeon template established for future areas
+- [x] Dungeon template established for future areas
 
-### Phase 4 — Nearby Town
+### Phase 4 — Nearby Town ← NEXT
 *Opens free exploration; gives the explorer path a destination*
 
 - [ ] Town: Iron Bridge Town (one day's travel from the sect)
