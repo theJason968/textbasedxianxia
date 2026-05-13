@@ -481,6 +481,183 @@
     "effects": {}
   },
   {
+    "id": "clear_meridian_tonic",
+    "name": "Clear-Meridian Tonic",
+    "type": "elixir",
+    "category": "Elixir",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A clean, cold tonic that scrapes residue out of shallow meridians. It leaves the foundation slightly raw afterward.",
+    "icon": "/assets/items/elixirs/elixir_rare.png",
+    "effects": {
+      "impurity": -4,
+      "foundationStability": -1
+    }
+  },
+  {
+    "id": "foundation_steadying_decoction",
+    "name": "Foundation-Steadying Decoction",
+    "type": "elixir",
+    "category": "Elixir",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "An earthy, antler-rich decoction that settles rough qi before a bottleneck attempt. It steadies the foundation but leaves the body tired.",
+    "icon": "/assets/items/elixirs/elixir_legendary.png",
+    "effects": {
+      "foundationStability": 2,
+      "cultivationInsight": 1,
+      "trainingFatigue": 1
+    }
+  },
+  {
+    "id": "shadow_viper_antivenom",
+    "name": "Shadow-Viper Antivenom",
+    "type": "medicine",
+    "category": "Medicine",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A sharp antivenom made from the thing that would have killed you. It restores health quickly but leaves a trace of medicinal impurity.",
+    "icon": "/assets/items/elixirs/elixir_epic.png",
+    "effects": {
+      "health": 18,
+      "impurity": 1
+    }
+  },
+  {
+    "id": "road_wound_poultice",
+    "name": "Road Wound Poultice",
+    "type": "medicine",
+    "category": "Medicine",
+    "rarity": "mortal",
+    "tier": "mortal",
+    "description": "A practical field dressing of hide, moss, and bitter paste. It closes wounds well enough to keep moving, though the work taxes the body.",
+    "icon": "/assets/items/elixirs/elixir_common.png",
+    "effects": {
+      "health": 10,
+      "trainingFatigue": 1
+    }
+  },
+  {
+    "id": "mist_calming_draught",
+    "name": "Mist-Calming Draught",
+    "type": "medicine",
+    "category": "Elixir",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A thin draught that calms agitated qi and carries some impurity out with the breath. The cold bites before it helps.",
+    "icon": "/assets/items/elixirs/elixir_uncommon.png",
+    "effects": {
+      "qi": 10,
+      "impurity": -2,
+      "health": -2
+    }
+  },
+  {
+    "id": "spirit_hardened_shortsword",
+    "name": "Spirit-Hardened Shortsword",
+    "type": "weapon",
+    "category": "Weapon",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A road blade hardened with shell and beast blood until it holds qi along the edge. Brutal, plain, and effective.",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r5c2.png",
+    "equipmentSlot": "weapon",
+    "equipmentEffects": {
+      "combatDamage": 5
+    },
+    "effects": {}
+  },
+  {
+    "id": "viper_scale_blade",
+    "name": "Viper-Scale Blade",
+    "type": "weapon",
+    "category": "Weapon",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A shortsword wrapped and balanced with shadow viper scale. It does not hit hardest, but it moves well in close exchanges.",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r4c2.png",
+    "equipmentSlot": "weapon",
+    "equipmentEffects": {
+      "combatDamage": 3,
+      "combatDefense": 1
+    },
+    "effects": {}
+  },
+  {
+    "id": "cloud_stag_spear",
+    "name": "Cloud Stag Spear",
+    "type": "weapon",
+    "category": "Weapon",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A bamboo staff refitted with a cloud stag antler point. It carries reach, piercing force, and a faint cold-white qi trace.",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r5c1.png",
+    "equipmentSlot": "weapon",
+    "equipmentEffects": {
+      "combatDamage": 5
+    },
+    "effects": {}
+  },
+  {
+    "id": "reinforced_beast_hide_vest",
+    "name": "Reinforced Beast-Hide Vest",
+    "type": "armor",
+    "category": "Armor",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A beast-hide vest reinforced with bone dust and careful stitching. It is ugly, heavy, and much better than bleeding.",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r5c5.png",
+    "equipmentSlot": "clothing",
+    "equipmentEffects": {
+      "combatDefense": 3,
+      "maxHealth": 4
+    },
+    "effects": {}
+  },
+  {
+    "id": "crab_shell_pauldron",
+    "name": "Crab Shell Pauldron",
+    "type": "armor",
+    "category": "Armor",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A heavy shoulder guard cut from stone crab shell and strapped over beast hide. It turns glancing blows into bruises instead of wounds.",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r5c4.png",
+    "equipmentSlot": "clothing",
+    "equipmentEffects": {
+      "combatDefense": 4,
+      "maxHealth": 8
+    },
+    "effects": {}
+  },
+  {
+    "id": "cloud_iron_binding_kit",
+    "name": "Cloud-Iron Binding Kit",
+    "type": "component",
+    "category": "Component",
+    "rarity": "mortal",
+    "tier": "mortal",
+    "description": "Copper, bone dust, and cloud moss worked into flexible binding strips. Not impressive alone, but essential for keeping spirit materials attached to mortal gear.",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r3c4.png",
+    "effects": {}
+  },
+  {
+    "id": "spirit_sealed_staff_wrap",
+    "name": "Spirit-Sealed Staff Wrap",
+    "type": "weapon",
+    "category": "Weapon",
+    "rarity": "low-grade",
+    "tier": "low_grade_spirit",
+    "description": "A reinforced staff bound with cloud-iron strips and beast blood sealant. It favors guard, leverage, and measured counterstrikes.",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r5c3.png",
+    "equipmentSlot": "weapon",
+    "equipmentEffects": {
+      "combatDamage": 4,
+      "combatDefense": 1
+    },
+    "effects": {}
+  },
+  {
     "id": "mountain_road_gossip",
     "name": "Mountain Road Gossip",
     "type": "lore",

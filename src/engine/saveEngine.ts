@@ -11,7 +11,8 @@ export type SaveSlotInfo = {
 };
 
 const legacySaveKey = "xianxia-text-adventure-save-v1";
-const saveSlotPrefix = "xianxia-text-adventure-save-slot";
+const unscopedSaveSlotPrefix = "xianxia-text-adventure-save-slot";
+const profileSaveSlotPrefix = "xianxia-text-adventure-profile-save";
 const saveSlots: SaveSlot[] = [1, 2, 3];
 
 type StoredSave = {
@@ -19,49 +20,50 @@ type StoredSave = {
   gameState: Partial<GameState>;
 };
 
-export function saveGame(slot: SaveSlot, gameState: GameState): void {
+export function saveGame(owner: string | null | undefined, slot: SaveSlot, gameState: GameState): void {
   const storedSave: StoredSave = {
     savedAt: new Date().toISOString(),
     gameState,
   };
 
-  localStorage.setItem(getSaveSlotKey(slot), JSON.stringify(storedSave));
+  localStorage.setItem(getSaveSlotKey(owner, slot), JSON.stringify(storedSave));
 }
 
-export function loadGame(slot: SaveSlot): GameState | null {
-  const savedGame = localStorage.getItem(getSaveSlotKey(slot));
+export function loadGame(owner: string | null | undefined, slot: SaveSlot): GameState | null {
+  const savedGame = getStoredSlotSave(owner, slot);
 
-  if (!savedGame) {
+  if (!savedGame.value) {
     return null;
   }
 
   try {
-    return mergeWithInitialState(parseStoredSave(savedGame).gameState);
+    return mergeWithInitialState(parseStoredSave(savedGame.value).gameState);
   } catch {
-    clearSavedGame(slot);
+    localStorage.removeItem(savedGame.key);
     return null;
   }
 }
 
-export function loadLatestGame(): GameState | null {
-  const latestSlot = getSaveSlots()
+export function loadLatestGame(owner: string | null | undefined): GameState | null {
+  const latestSlot = getSaveSlots(owner)
     .filter((slot) => slot.exists && slot.savedAt)
     .sort((a, b) => String(b.savedAt).localeCompare(String(a.savedAt)))[0];
 
   if (latestSlot) {
-    return loadGame(latestSlot.slot);
+    return loadGame(owner, latestSlot.slot);
   }
 
   return loadLegacyGame();
 }
 
-export function clearSavedGame(slot: SaveSlot): void {
-  localStorage.removeItem(getSaveSlotKey(slot));
+export function clearSavedGame(owner: string | null | undefined, slot: SaveSlot): void {
+  localStorage.removeItem(getSaveSlotKey(owner, slot));
+  localStorage.removeItem(getUnscopedSaveSlotKey(slot));
 }
 
-export function getSaveSlots(): SaveSlotInfo[] {
+export function getSaveSlots(owner: string | null | undefined): SaveSlotInfo[] {
   return saveSlots.map((slot) => {
-    const savedGame = localStorage.getItem(getSaveSlotKey(slot));
+    const savedGame = getStoredSlotSave(owner, slot).value;
 
     if (!savedGame) {
       return {
@@ -88,8 +90,8 @@ export function getSaveSlots(): SaveSlotInfo[] {
   });
 }
 
-export function hasAnySavedGame(): boolean {
-  return getSaveSlots().some((slot) => slot.exists) || localStorage.getItem(legacySaveKey) !== null;
+export function hasAnySavedGame(owner: string | null | undefined): boolean {
+  return getSaveSlots(owner).some((slot) => slot.exists) || localStorage.getItem(legacySaveKey) !== null;
 }
 
 function loadLegacyGame(): GameState | null {
@@ -123,8 +125,28 @@ function parseStoredSave(savedGame: string): StoredSave {
   };
 }
 
-function getSaveSlotKey(slot: SaveSlot): string {
-  return `${saveSlotPrefix}-${slot}`;
+function getStoredSlotSave(owner: string | null | undefined, slot: SaveSlot): { key: string; value: string | null } {
+  const profileKey = getSaveSlotKey(owner, slot);
+  const profileSave = localStorage.getItem(profileKey);
+
+  if (profileSave) {
+    return { key: profileKey, value: profileSave };
+  }
+
+  const unscopedKey = getUnscopedSaveSlotKey(slot);
+  return { key: unscopedKey, value: localStorage.getItem(unscopedKey) };
+}
+
+function getSaveSlotKey(owner: string | null | undefined, slot: SaveSlot): string {
+  return `${profileSaveSlotPrefix}-${normalizeSaveOwner(owner)}-slot-${slot}`;
+}
+
+function getUnscopedSaveSlotKey(slot: SaveSlot): string {
+  return `${unscopedSaveSlotPrefix}-${slot}`;
+}
+
+function normalizeSaveOwner(owner: string | null | undefined): string {
+  return encodeURIComponent(owner?.trim().toLowerCase() || "guest");
 }
 
 function mergeWithInitialState(savedGame: Partial<GameState>): GameState {

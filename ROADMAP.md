@@ -86,12 +86,14 @@
 ### Phase 5 — Crafting Expansion
 *Makes gathering and exploration feel rewarding*
 
-- [ ] 8–10 new recipes across categories:
+- [x] 13 new recipes across categories:
   - Elixirs (qi pills, impurity-cleansing tonics)
   - Weapons (spirit-grade sword, reinforced rod)
   - Medicine (wound salves, fatigue tonics)
-- [ ] Rare ingredient locations tied to dungeon and town content
-- [ ] Crafting skill tree expansion
+- [x] Skill-gated recipes using Alchemy, Survival, Blacksmithing, Martial Arts, and Cultivation Foundation skills
+- [x] Rare ingredient locations tied to dungeon, town, lower grove, and beast-hunt content
+- [x] Crafting skill tree expansion with Craftsman's Hand and Breath Discipline
+- [ ] Recipe unlock scenes tied to NPCs and crafting locations
 
 ### Phase 6 — Mortal Peak Arc
 *Central dramatic arc of the mortal stage*

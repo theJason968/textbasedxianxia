@@ -12,7 +12,7 @@
     "id": "azure_cloud_mountain",
     "name": "Azure Cloud Mountain",
     "image": {
-      "src": "/assets/locations/azure_cloud_mountain_gate.jpg",
+      "src": "/assets/locations/azure_cloud_mountain_gate.png",
       "alt": "A steep mountain path rising toward the Azure Cloud Sect gate",
       "caption": "The Azure Cloud Sect waits above the jade steps."
     }

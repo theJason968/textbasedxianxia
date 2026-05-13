@@ -1,4 +1,10 @@
 import type { EquipmentEffects, EquipmentSlot, GameState, Player } from "./types";
+import items from "../data/items.json";
+
+const itemData = items as Array<{
+  id: string;
+  equipmentEffects?: EquipmentEffects;
+}>;
 
 type UsableItem = {
   id: string;
@@ -114,11 +120,29 @@ export function equipItem(gameState: GameState, item: UsableItem): ItemUseResult
     };
   }
 
+  const previousItem = getItemById(gameState.player.equipment[item.equipmentSlot]);
+  const maxHealthChange =
+    (item.equipmentEffects?.maxHealth ?? 0) -
+    (previousItem?.equipmentEffects?.maxHealth ?? 0);
+  const maxQiChange =
+    (item.equipmentEffects?.maxQi ?? 0) -
+    (previousItem?.equipmentEffects?.maxQi ?? 0);
+
   return {
     gameState: {
       ...gameState,
       player: {
         ...gameState.player,
+        maxHealth: Math.max(1, gameState.player.maxHealth + maxHealthChange),
+        health: Math.min(
+          gameState.player.health + Math.max(0, maxHealthChange),
+          Math.max(1, gameState.player.maxHealth + maxHealthChange),
+        ),
+        maxQi: Math.max(1, gameState.player.maxQi + maxQiChange),
+        qi: Math.min(
+          gameState.player.qi + Math.max(0, maxQiChange),
+          Math.max(1, gameState.player.maxQi + maxQiChange),
+        ),
         equipment: {
           ...gameState.player.equipment,
           [item.equipmentSlot]: item.id,
@@ -144,17 +168,30 @@ export function unequipItem(
 
   const nextEquipment = { ...gameState.player.equipment };
   delete nextEquipment[slot];
+  const unequippedItem = getItemById(equippedItemId);
+  const maxHealthChange = -(unequippedItem?.equipmentEffects?.maxHealth ?? 0);
+  const maxQiChange = -(unequippedItem?.equipmentEffects?.maxQi ?? 0);
+  const nextMaxHealth = Math.max(1, gameState.player.maxHealth + maxHealthChange);
+  const nextMaxQi = Math.max(1, gameState.player.maxQi + maxQiChange);
 
   return {
     gameState: {
       ...gameState,
       player: {
         ...gameState.player,
+        maxHealth: nextMaxHealth,
+        health: Math.min(gameState.player.health, nextMaxHealth),
+        maxQi: nextMaxQi,
+        qi: Math.min(gameState.player.qi, nextMaxQi),
         equipment: nextEquipment,
       },
     },
     message: `Unequipped ${equippedItemId}.`,
   };
+}
+
+function getItemById(itemId: string | undefined): { equipmentEffects?: EquipmentEffects } | undefined {
+  return itemId ? itemData.find((item) => item.id === itemId) : undefined;
 }
 
 function removeOne(items: string[], itemId: string): string[] {

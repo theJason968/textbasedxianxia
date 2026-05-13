@@ -59,6 +59,7 @@ import type {
   CharacterGender,
   Constitution,
   ElementalEssence,
+  Enemy,
   EquipmentEffects,
   EquipmentSlot,
   ItemTier,
@@ -73,6 +74,7 @@ import type {
 const sceneData = scenes as Scene[];
 const skillData = skills as Skill[];
 const constitutionData = constitutions as Constitution[];
+const enemyData = enemies as Enemy[];
 const npcData = npcs as unknown as Npc[];
 const questData = quests as Quest[];
 const recipeData = craftingRecipes as unknown as CraftingRecipe[];
@@ -595,19 +597,33 @@ function hasCreatedCharacter(player: Player): boolean {
   return player.name.trim().length > 0 && player.name !== "Unnamed Villager";
 }
 
+function getSaveOwner(session: ProfileSession | null): string {
+  return session?.username?.trim() ? session.username : "guest";
+}
+
 function App() {
   const [profileSession, setProfileSession] = useState<ProfileSession | null>(
     () => getStoredSession(),
   );
+  const saveOwner = getSaveOwner(profileSession);
   const [gameState, setGameState] = useState(
-    () => loadLatestGame() ?? createInitialGameState(),
+    () => {
+      const storedSession = getStoredSession();
+      return storedSession
+        ? loadLatestGame(getSaveOwner(storedSession)) ?? createInitialGameState()
+        : createInitialGameState();
+    },
   );
   const [startView, setStartView] = useState<StartView>(() =>
-    getStoredSession()
-      ? hasCreatedCharacter(loadLatestGame()?.player ?? createInitialGameState().player)
+    (() => {
+      const storedSession = getStoredSession();
+      if (!storedSession) return "auth";
+
+      const savedGame = loadLatestGame(getSaveOwner(storedSession));
+      return hasCreatedCharacter(savedGame?.player ?? createInitialGameState().player)
         ? "game"
-        : "character"
-      : "auth",
+        : "character";
+    })(),
   );
   const [authMode, setAuthMode] = useState<"login" | "register">("login");
   const [authUsername, setAuthUsername] = useState("");
@@ -617,11 +633,11 @@ function App() {
   const [characterGender, setCharacterGender] = useState<CharacterGender>("male");
   const [characterMessage, setCharacterMessage] = useState("Name the person the story will remember.");
   const [saveMessage, setSaveMessage] = useState(
-    hasAnySavedGame()
+    hasAnySavedGame(getSaveOwner(getStoredSession()))
       ? "Loaded the most recent saved path."
       : "No saved path yet.",
   );
-  const [saveSlots, setSaveSlots] = useState(() => getSaveSlots());
+  const [saveSlots, setSaveSlots] = useState(() => getSaveSlots(getSaveOwner(getStoredSession())));
   const [cultivationMessage, setCultivationMessage] = useState(
     "Cultivate after learning a breathing method.",
   );
@@ -653,7 +669,7 @@ function App() {
   const activeEnemy = useMemo(
     () =>
       gameState.combat
-        ? enemies.find((enemy) => enemy.id === gameState.combat?.enemyId)
+        ? enemyData.find((enemy) => enemy.id === gameState.combat?.enemyId)
         : undefined,
     [gameState.combat],
   );
@@ -864,6 +880,24 @@ function App() {
     (message) => !isCheckResultMessage(message),
   );
 
+  function enterSession(session: ProfileSession, message: string) {
+    const owner = getSaveOwner(session);
+    const savedGame = loadLatestGame(owner);
+    const nextGameState = savedGame ?? createInitialGameState();
+
+    setProfileSession(session);
+    setGameState(nextGameState);
+    setActionMessages([]);
+    setSaveSlots(getSaveSlots(owner));
+    setAuthMessage(message);
+    setSaveMessage(
+      savedGame
+        ? `Loaded ${session.username}'s most recent saved path.`
+        : `No saved path for ${session.username} yet.`,
+    );
+    setStartView(hasCreatedCharacter(nextGameState.player) ? "game" : "character");
+  }
+
   function handleAuthSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
@@ -872,23 +906,17 @@ function App() {
         ? registerProfile(authUsername, authPassword)
         : loginProfile(authUsername, authPassword);
 
-    setAuthMessage(result.message);
-
     if (!result.session) {
+      setAuthMessage(result.message);
       return;
     }
 
-    setProfileSession(result.session);
     setAuthPassword("");
-    setStartView(hasCreatedCharacter(gameState.player) ? "game" : "character");
+    enterSession(result.session, result.message);
   }
 
   function handleGuestLogin() {
-    const session = continueAsGuest();
-
-    setProfileSession(session);
-    setAuthMessage("Continuing as guest.");
-    setStartView(hasCreatedCharacter(gameState.player) ? "game" : "character");
+    enterSession(continueAsGuest(), "Continuing as guest.");
   }
 
   function handleCreateCharacter(event: FormEvent<HTMLFormElement>) {
@@ -901,9 +929,13 @@ function App() {
       return;
     }
 
-    setGameState(createCharacterState(trimmedName, characterGender));
+    const nextGameState = createCharacterState(trimmedName, characterGender);
+
+    saveGame(saveOwner, 1, nextGameState);
+    setGameState(nextGameState);
     setActionMessages([]);
-    setSaveMessage("Character created. Save into a slot when ready.");
+    setSaveSlots(getSaveSlots(saveOwner));
+    setSaveMessage("Character created and saved to slot 1.");
     setCultivationMessage("Cultivate after learning a breathing method.");
     setStartView("game");
   }
@@ -931,13 +963,13 @@ function App() {
   }
 
   function handleManualSave(slot: SaveSlot) {
-    saveGame(slot, gameState);
-    setSaveSlots(getSaveSlots());
+    saveGame(saveOwner, slot, gameState);
+    setSaveSlots(getSaveSlots(saveOwner));
     setSaveMessage(`Saved to slot ${slot}.`);
   }
 
   function handleLoad(slot: SaveSlot) {
-    const savedGame = loadGame(slot);
+    const savedGame = loadGame(saveOwner, slot);
 
     if (savedGame) {
       setGameState(savedGame);
@@ -950,8 +982,8 @@ function App() {
   }
 
   function handleClearSave(slot: SaveSlot) {
-    clearSavedGame(slot);
-    setSaveSlots(getSaveSlots());
+    clearSavedGame(saveOwner, slot);
+    setSaveSlots(getSaveSlots(saveOwner));
     setSaveMessage(`Cleared slot ${slot}.`);
   }
 
@@ -1013,8 +1045,7 @@ function App() {
 
   function handlePostCombatChoice(choiceId: PostCombatChoiceId) {
     if (!activeEnemy) return;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const nextState = resolvePostCombatChoice(gameState, activeEnemy as any, choiceId);
+    const nextState = resolvePostCombatChoice(gameState, activeEnemy, choiceId);
     setGameState(nextState);
     setActionMessages([]);
     setSaveMessage("Unsaved changes.");
@@ -1203,8 +1234,7 @@ function App() {
                   <div className="post-combat-choices">
                     <h3 className="ornate-panel-title">What do you do?</h3>
                     <ul className="post-combat-choice-list">
-                      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                      {getPostCombatChoices(gameState.player, activeEnemy as any).map((choice) => (
+                      {getPostCombatChoices(gameState.player, activeEnemy).map((choice) => (
                         <li key={choice.id}>
                           <button
                             type="button"

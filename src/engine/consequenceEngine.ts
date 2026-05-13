@@ -2,6 +2,7 @@ import type {
   Choice,
   ChoiceEffect,
   ElementalEssence,
+  Enemy,
   GameState,
   Player,
   Skill,
@@ -57,6 +58,7 @@ const numericEffectKeys: NumericPlayerStat[] = [
   "corruption",
 ];
 const skillData = skills as Skill[];
+const enemyData = enemies as Enemy[];
 const itemData = items as Array<{ id: string; name: string }>;
 const techniqueData = techniques as Array<{ id: string; name: string }>;
 const questData = quests as Array<{ id: string; name: string }>;
@@ -154,7 +156,7 @@ export function applyChoiceWithResult(
     };
   }
 
-  const enemy = enemies.find(
+  const enemy = enemyData.find(
     (candidate) => candidate.id === outcome.effects?.startCombat?.enemyId,
   );
 

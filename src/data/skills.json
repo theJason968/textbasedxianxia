@@ -240,6 +240,20 @@
     "description": "Blacksmith Guo has taught you how honest repairs keep gear and bones from failing."
   },
   {
+    "id": "craftsmen",
+    "name": "Craftsman's Hand",
+    "tree": "Blacksmithing",
+    "tier": 2,
+    "maxRank": 4,
+    "requiresSkills": {
+      "tool_repair": 1
+    },
+    "effects": {
+      "combatDamage": 1
+    },
+    "description": "You can turn rough materials into gear that survives real pressure."
+  },
+  {
     "id": "untrained_circulation",
     "name": "Untrained Circulation",
     "tree": "Cultivation Foundation",
@@ -257,6 +271,17 @@
       "calm_breath": 1
     },
     "description": "You are beginning to value stability as much as speed."
+  },
+  {
+    "id": "breath_discipline",
+    "name": "Breath Discipline",
+    "tree": "Cultivation Foundation",
+    "tier": 2,
+    "maxRank": 4,
+    "requiresSkills": {
+      "foundation_control": 1
+    },
+    "description": "You can keep circulation steady while medicine, pain, or pressure tries to interrupt it."
   },
   {
     "id": "shrine_breathing",
