@@ -1,4 +1,4 @@
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { QuestBoardScene } from "./components/QuestBoardScene";
 import { Backpack, BookOpen, ListChecks, ScrollText, Swords, Workflow } from "lucide-react";
 import scenes from "./data/scenes.json";
@@ -12,6 +12,8 @@ import npcs from "./data/npcs.json";
 import craftingRecipes from "./data/craftingRecipes.json";
 import sceneAreas from "./data/sceneAreas.json";
 import { continueCombat, getAvailableTechniqueActions, resolveCombatAction, type CombatAction } from "./engine/combatEngine";
+import { getPostCombatChoices, resolvePostCombatChoice } from "./engine/postCombatEngine";
+import type { PostCombatChoiceId } from "./engine/types";
 import { canChoose } from "./engine/conditionEngine";
 import {
   canCraftRecipe,
@@ -849,6 +851,12 @@ function App() {
     gameState.player.flags.accepted_outer_disciple_after_exam
       ? "Azure Clouds"
       : "Unaffiliated";
+
+  useEffect(() => {
+    const theme = sectLabel === "Azure Clouds" ? "theme-azure" : "";
+    document.body.className = theme;
+  }, [sectLabel]);
+
   const quickTechniqueSlots = learnedTechniques.slice(0, 4);
   const quickSkillSlots = visibleSkills.slice(0, 2);
   const checkResultMessages = actionMessages.filter(isCheckResultMessage);
@@ -1001,6 +1009,15 @@ function App() {
     if (!gameState.combat?.resolved) return;
     setGameState(continueCombat(gameState));
     setActionMessages([]);
+  }
+
+  function handlePostCombatChoice(choiceId: PostCombatChoiceId) {
+    if (!activeEnemy) return;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const nextState = resolvePostCombatChoice(gameState, activeEnemy as any, choiceId);
+    setGameState(nextState);
+    setActionMessages([]);
+    setSaveMessage("Unsaved changes.");
   }
 
   function handleCombatAction(action: CombatAction, techniqueId?: string) {
@@ -1170,7 +1187,86 @@ function App() {
       </section>
 
       <section className="scene-window-panel" aria-label="Scene art">
-        {currentScene.type === "questBoard" ? (
+        {gameState.combat?.resolved && activeEnemy ? (
+          <div className="victory-screen">
+            <div className="victory-corner victory-corner-tl" aria-hidden="true" />
+            <div className="victory-corner victory-corner-tr" aria-hidden="true" />
+            <div className="victory-corner victory-corner-bl" aria-hidden="true" />
+            <div className="victory-corner victory-corner-br" aria-hidden="true" />
+            <div className="victory-content">
+              {gameState.combat.postCombat?.stage === "choosing" ? (
+                <>
+                  <h2 className="victory-heading">Victory</h2>
+                  {gameState.combat.reflection && (
+                    <p className="victory-flavor">{gameState.combat.reflection}</p>
+                  )}
+                  <div className="post-combat-choices">
+                    <h3 className="ornate-panel-title">What do you do?</h3>
+                    <ul className="post-combat-choice-list">
+                      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                      {getPostCombatChoices(gameState.player, activeEnemy as any).map((choice) => (
+                        <li key={choice.id}>
+                          <button
+                            type="button"
+                            className={`post-combat-choice-btn alignment-${choice.alignment}${!choice.available ? " choice-locked" : ""}`}
+                            onClick={() => handlePostCombatChoice(choice.id)}
+                            disabled={!choice.available}
+                          >
+                            <span className="post-combat-choice-label">{choice.label}</span>
+                            <span className="post-combat-choice-desc">{choice.description}</span>
+                            {choice.requiresNote && (
+                              <span className="post-combat-choice-req">{choice.requiresNote}</span>
+                            )}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h2 className="victory-heading">Victory</h2>
+                  {gameState.combat.postCombat?.messages.map((msg, i) => (
+                    <p key={i} className="victory-flavor">{msg}</p>
+                  ))}
+                  {(gameState.combat.rewards?.spiritStones ?? 0) > 0 ||
+                   (gameState.combat.rewards?.items?.length ?? 0) > 0 ||
+                   (gameState.combat.rewards?.qi ?? 0) > 0 ? (
+                    <div className="victory-spoils-wrap">
+                      <h3 className="ornate-panel-title">Gained</h3>
+                      <div className="victory-rewards-panel">
+                        {(gameState.combat.rewards?.spiritStones ?? 0) > 0 && (
+                          <div className="victory-reward-row">
+                            <span className="victory-reward-icon">◈</span>
+                            <span>+{gameState.combat.rewards!.spiritStones} Spirit Stones</span>
+                          </div>
+                        )}
+                        {gameState.combat.rewards?.items.map((itemId) => {
+                          const item = itemData.find((i) => i.id === itemId);
+                          return item ? (
+                            <div key={itemId} className="victory-reward-row">
+                              <span className="victory-reward-icon">◆</span>
+                              <span>× 1 {item.name}</span>
+                            </div>
+                          ) : null;
+                        })}
+                        {(gameState.combat.rewards?.qi ?? 0) > 0 && (
+                          <div className="victory-reward-row">
+                            <span className="victory-reward-icon">◎</span>
+                            <span>+{gameState.combat.rewards!.qi} Cultivation Progress</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ) : null}
+                  <button className="victory-continue-btn" type="button" onClick={handleCombatContinue}>
+                    Continue
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        ) : currentScene.type === "questBoard" ? (
           <QuestBoardScene
             scene={currentScene}
             gameState={gameState}
@@ -1215,18 +1311,7 @@ function App() {
                 {gameState.combat.enemyHealth}/{activeEnemy.maxHealth} health
               </p>
             </div>
-            {gameState.combat.resolved ? (
-              <>
-                {gameState.combat.reflection ? (
-                  <p className="combat-reflection">{gameState.combat.reflection}</p>
-                ) : null}
-                <div className="choices combat-actions">
-                  <button type="button" onClick={handleCombatContinue}>
-                    Continue
-                  </button>
-                </div>
-              </>
-            ) : (
+            {!gameState.combat.resolved ? (
               <div className="choices combat-actions">
                 <button type="button" onClick={() => handleCombatAction("strike")}>
                   Strike with bare hands
@@ -1259,10 +1344,23 @@ function App() {
                   Retreat
                 </button>
               </div>
-            )}
+            ) : null}
             <ul className="combat-log">
-              {gameState.combat.log.map((entry) => (
-                <li key={entry}>{entry}</li>
+              {gameState.combat.log.map((entry, i) => (
+                <li key={i} className={`combat-log-entry combat-log-${entry.type}`}>
+                  {entry.turn > 0 && (
+                    <span className="combat-log-turn">T{entry.turn}</span>
+                  )}
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: entry.text.replace(
+                        /\b(\d+)\s+damage\b/g,
+                        (_, n) =>
+                          `<mark class="dmg-${entry.type === "player" ? "dealt" : "taken"}">${n}</mark> damage`,
+                      ),
+                    }}
+                  />
+                </li>
               ))}
             </ul>
           </div>
@@ -1271,6 +1369,7 @@ function App() {
             {currentScene.choices.length > 0 ? (
               currentScene.choices.map((choice) => {
                 const isAvailable = canChoose(gameState, choice);
+                if (choice.hidden && !isAvailable) return null;
                 const requirementSummary = getChoiceRequirementSummary(
                   gameState.player,
                   choice,
@@ -1315,7 +1414,15 @@ function App() {
             <h2 className="ornate-panel-title">Character Stats</h2>
             <div className="character-identity-card">
               <div className="portrait-frame" aria-label="Character portrait">
-                <span>{gameState.player.name.slice(0, 1).toUpperCase()}</span>
+                {gameState.player.gender === "male" ? (
+                  <img
+                    src="/assets/characters/Male_character.png"
+                    alt={gameState.player.name}
+                    className="portrait-image"
+                  />
+                ) : (
+                  <span>{gameState.player.name.slice(0, 1).toUpperCase()}</span>
+                )}
                 <small>{gameState.player.gender === "female" ? "Female" : "Male"}</small>
               </div>
               <div className="vital-stack">

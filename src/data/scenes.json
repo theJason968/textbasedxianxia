@@ -7631,12 +7631,32 @@
       {
         "label": "Ask about the bounty posting on the notice board",
         "nextScene": "town_blacksmith_quest",
+        "hidden": true,
+        "requires": {
+          "flagsAbsent": ["boar_bounty_collected"]
+        },
         "effects": {
           "meetNpc": "luo_jiwei",
           "recordNpcConversation": {
             "npcId": "luo_jiwei",
             "topic": "boar_bounty"
           }
+        }
+      },
+      {
+        "label": "Deliver proof — the spirit boar is dead",
+        "nextScene": "town_blacksmith_shop",
+        "hidden": true,
+        "requires": {
+          "flags": { "cleared_east_terraces": true },
+          "items": ["beast_hide"],
+          "flagsAbsent": ["boar_bounty_collected"]
+        },
+        "effects": {
+          "spiritStones": 3,
+          "completeQuest": "town_boar_bounty",
+          "setFlags": { "boar_bounty_collected": true },
+          "messages": ["Luo takes the hide, turns it over once, and sets it on the counter. He does not say anything about the quality. He counts three spirit stones from a drawer and places them in front of you. \"East terraces will hold this season,\" he says. That is all the acknowledgment you are going to get."]
         }
       },
       {
@@ -7734,9 +7754,6 @@
         "nextScene": "iron_bridge_town",
         "effects": {
           "updateQuest": { "questId": "town_boar_bounty", "step": 1 },
-          "completeQuest": "town_boar_bounty",
-          "spiritStones": 3,
-          "addItems": ["beast_hide"],
           "setFlags": { "cleared_east_terraces": true }
         }
       }
@@ -7823,15 +7840,21 @@
   },
   {
     "id": "town_notice_board",
+    "type": "questBoard",
     "areaId": "iron_bridge_town",
     "title": "The Notice Board",
+    "boardImage": "/assets/locations/quest_board.png",
     "body": "The board outside the inn holds a dozen postings in various states of weather damage. Trade requests, route advisories, and two bounties. One posting stands out: a spirit beast notice with an Azure Cloud Sect seal stamped in the corner. The sect placed the bounty but did not send anyone to fulfil it.\n\nThe text is plain: a spirit boar has damaged the eastern crop terraces for three consecutive growing cycles. The posted reward is three spirit stones on proof of elimination.",
     "choices": [
       {
-        "label": "Accept the spirit boar bounty and head to the eastern terraces",
+        "label": "Spirit Boar Bounty",
         "nextScene": "town_east_terraces",
+        "boardPosition": { "x": 28, "y": 36, "rotation": -2 },
+        "boardDescription": "A spirit boar has been destroying the eastern crop terraces for three growing cycles. Azure Cloud Sect seal. Posted reward on proof of elimination.",
+        "boardReward": "3 spirit stones",
+        "hidden": true,
         "requires": {
-          "flagsAbsent": ["town_boar_bounty_accepted"]
+          "flagsAbsent": ["boar_bounty_collected"]
         },
         "effects": {
           "startQuest": "town_boar_bounty",
@@ -7839,11 +7862,19 @@
         }
       },
       {
-        "label": "Head to the eastern terraces (bounty active)",
-        "nextScene": "town_east_terraces",
+        "label": "Collect the posted bounty reward",
+        "nextScene": "iron_bridge_town",
+        "hidden": true,
         "requires": {
-          "flags": { "town_boar_bounty_accepted": true },
-          "flagsAbsent": ["cleared_east_terraces"]
+          "flags": { "cleared_east_terraces": true },
+          "items": ["beast_hide"],
+          "flagsAbsent": ["boar_bounty_collected"]
+        },
+        "effects": {
+          "spiritStones": 3,
+          "completeQuest": "town_boar_bounty",
+          "setFlags": { "boar_bounty_collected": true },
+          "messages": ["You present the hide at the notice board and remove the posting. The seal is stamped. Three spirit stones are left in the collection box beneath the board."]
         }
       },
       {

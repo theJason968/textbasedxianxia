@@ -135,6 +135,8 @@ export type EnemyPhase = {
   damageMultiplier?: number;
 };
 
+export type EnemyPostCombatType = "beast" | "spirit" | "mortal" | "cultivator";
+
 export type Enemy = {
   id: string;
   name: string;
@@ -147,6 +149,10 @@ export type Enemy = {
   spiritStoneReward?: number;
   itemRewards?: string[];
   phase?: EnemyPhase;
+  postCombatType?: EnemyPostCombatType;
+  secretStash?: { spiritStones?: number; itemRewards?: string[] };
+  teachableTechnique?: string;
+  speechDifficulty?: number;
 };
 
 export type SkillTree =
@@ -203,18 +209,53 @@ export type Constitution = {
 
 export type CombatPowerTier = "dominant" | "contested" | "struggling";
 
+export type PostCombatChoiceId =
+  | "spare"
+  | "spare_oath"
+  | "interrogate_spare"
+  | "interrogate_kill"
+  | "kill"
+  | "kill_harvest_qi"
+  | "kill_take_technique"
+  | "kill_defile"
+  | "strip_cultivation"
+  | "absorb_death_qi"
+  | "leave";
+
+export type PostCombatAlignment = "light" | "neutral" | "dark";
+
+export type PostCombatState = {
+  stage: "choosing" | "result";
+  choiceId?: PostCombatChoiceId;
+  messages: string[];
+};
+
+export type CombatLogEntry = {
+  text: string;
+  type: "player" | "enemy" | "system";
+  turn: number;
+};
+
+export type CombatRewards = {
+  spiritStones: number;
+  qi: number;
+  items: string[];
+};
+
 export type CombatState = {
   enemyId: string;
   enemyHealth: number;
   turn: number;
   victorySceneId: string;
   defeatSceneId: string;
-  log: string[];
+  log: CombatLogEntry[];
   powerTier: CombatPowerTier;
   playerStartHealth: number;
   resolved?: boolean;
   reflection?: string;
+  rewards?: CombatRewards;
   phaseTriggered?: boolean;
+  postCombat?: PostCombatState;
 };
 
 export type GameState = {
@@ -349,6 +390,7 @@ export type Choice = {
   boardPosition?: BoardPosition;
   boardDescription?: string;
   boardReward?: string;
+  hidden?: boolean;
 };
 
 export type ChoiceOutcome = {

@@ -61,6 +61,11 @@
   },
   {
     "id": "iron_bridge_town",
-    "name": "Iron Bridge Town"
+    "name": "Iron Bridge Town",
+    "image": {
+      "src": "/assets/locations/iron_bridge_town.png",
+      "alt": "A bustling riverside town with a great iron bridge, market stalls, and cultivators crossing beneath misty mountain peaks",
+      "caption": "Iron Bridge Town sits at the crossing of three trade roads. Money moves through here before it reaches the sect."
+    }
   }
 ]

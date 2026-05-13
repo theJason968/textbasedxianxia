@@ -2,6 +2,8 @@ import { useState } from "react";
 import { canChoose } from "../engine/conditionEngine";
 import type { Choice, GameState, Scene } from "../engine/types";
 
+export const NOTICE_BOARD_IMAGE = "/assets/locations/quest_board.png";
+
 interface Props {
   scene: Scene;
   gameState: GameState;
@@ -11,8 +13,12 @@ interface Props {
 export function QuestBoardScene({ scene, gameState, onChoice }: Props) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const boardChoices = scene.choices.filter((c) => c.boardPosition);
-  const leaveChoices = scene.choices.filter((c) => !c.boardPosition);
+  const boardChoices = scene.choices.filter(
+    (c) => c.boardPosition && !(c.hidden && !canChoose(gameState, c)),
+  );
+  const leaveChoices = scene.choices.filter(
+    (c) => !c.boardPosition && canChoose(gameState, c),
+  );
 
   function isQuestAlreadyTaken(choice: Choice): boolean {
     const questId = choice.effects?.startQuest;
@@ -21,12 +27,19 @@ export function QuestBoardScene({ scene, gameState, onChoice }: Props) {
     return q?.status === "active" || q?.status === "completed";
   }
 
+  function getQuestStamp(choice: Choice): string {
+    const questId = choice.effects?.startQuest;
+    if (!questId) return "Claimed";
+    const q = gameState.player.quests[questId];
+    return q?.status === "completed" ? "Cleared" : "Claimed";
+  }
+
   return (
     <div className="quest-board-wrapper">
       <div className="quest-board-container">
         <img
-          src={scene.boardImage ?? "/assets/locations/quest_board.png"}
-          alt="Assignment Hall Board"
+          src={scene.boardImage ?? NOTICE_BOARD_IMAGE}
+          alt={scene.title}
           className="quest-board-bg"
           draggable={false}
         />
@@ -63,7 +76,7 @@ export function QuestBoardScene({ scene, gameState, onChoice }: Props) {
             >
               <div className="quest-paper-pin" />
               <span className="quest-paper-title">{choice.label}</span>
-              {taken && <span className="quest-paper-stamp">Claimed</span>}
+              {taken && <span className="quest-paper-stamp">{getQuestStamp(choice)}</span>}
 
               {isHovered && (
                 <div className="quest-paper-tooltip">

@@ -10,6 +10,7 @@
     "qiReward": 4,
     "spiritStoneReward": 1,
     "itemRewards": ["mist_wolf_core"],
+    "postCombatType": "beast",
     "phase": {
       "threshold": 0.35,
       "announcement": "The mist wolf stops pressing forward. It circles at distance, fur raised, one leg not fully bearing weight. Wounded animals with nothing left to lose are the most dangerous kind.",
@@ -30,6 +31,9 @@
     "defense": 1,
     "qiReward": 1,
     "itemRewards": ["road_copper"],
+    "postCombatType": "mortal",
+    "speechDifficulty": 10,
+    "secretStash": { "spiritStones": 5, "itemRewards": ["road_copper"] },
     "phase": {
       "threshold": 0.4,
       "announcement": "Two of the bandits break and run. The last one standing holds his spear differently now — not with training, but with the focus of someone who has nowhere to retreat. He is more afraid of whoever sent him than he is of you.",
@@ -51,6 +55,7 @@
     "defense": 2,
     "qiReward": 2,
     "itemRewards": ["beast_hide", "spirit_beast_blood"],
+    "postCombatType": "beast",
     "phase": {
       "threshold": 0.4,
       "announcement": "The boar stops circling. It drops its head and its breathing changes — slower, heavier. You have seen this before in cornered animals. It is not preparing to flee. It is preparing to charge through you.",
@@ -74,6 +79,7 @@
     "qiReward": 3,
     "spiritStoneReward": 1,
     "itemRewards": ["shadow_viper_gland", "viper_scale"],
+    "postCombatType": "beast",
     "phase": {
       "threshold": 0.35,
       "announcement": "The viper draws into a tight coil, head low, tongue tasting the air every half-second. Injured vipers are the reason sect healers keep anti-venom at the ready. The snake is not retreating. It is recalculating.",
@@ -96,6 +102,7 @@
     "qiReward": 5,
     "spiritStoneReward": 2,
     "itemRewards": ["cloud_stag_antler", "spirit_beast_blood"],
+    "postCombatType": "beast",
     "phase": {
       "threshold": 0.3,
       "announcement": "The stag raises its head and sounds once — a low resonant call that echoes further than it should. Then it turns to face you directly, antlers lowered, and the qi in its horns brightens like cold light before a storm. It has stopped fleeing.",
@@ -118,6 +125,7 @@
     "defense": 4,
     "qiReward": 2,
     "itemRewards": ["stone_crab_shell", "crab_core"],
+    "postCombatType": "beast",
     "phase": {
       "threshold": 0.4,
       "announcement": "The stone crab retracts its legs and slams its shell against the ground. The impact vibrates through the stone underfoot. For a moment it is motionless — then the shell fractures at the joints and it emerges lower, faster, and visibly angrier.",
@@ -140,6 +148,9 @@
     "defense": 0,
     "qiReward": 1,
     "itemRewards": ["road_copper"],
+    "postCombatType": "mortal",
+    "speechDifficulty": 8,
+    "secretStash": { "spiritStones": 3 },
     "phase": {
       "threshold": 0.5,
       "announcement": "The scout glances toward the tree line. He is weighing something. Then he decides to stay — which tells you either he cannot leave, or what is behind him is worse than you are.",
@@ -161,6 +172,9 @@
     "qiReward": 2,
     "spiritStoneReward": 1,
     "itemRewards": ["iron_shortsword", "road_copper"],
+    "postCombatType": "mortal",
+    "speechDifficulty": 14,
+    "secretStash": { "spiritStones": 8, "itemRewards": ["road_copper"] },
     "phase": {
       "threshold": 0.35,
       "announcement": "The lieutenant drops the commanding posture. He rolls his shoulder, adjusts his grip, and his expression closes into something flat. This is the version of him that kept his position. He does not shout orders now.",
@@ -184,6 +198,10 @@
     "qiReward": 6,
     "spiritStoneReward": 2,
     "itemRewards": ["tattered_sect_notes"],
+    "postCombatType": "cultivator",
+    "speechDifficulty": 18,
+    "secretStash": { "spiritStones": 10, "itemRewards": ["tattered_sect_notes"] },
+    "teachableTechnique": "corrupt_palm_method",
     "phase": {
       "threshold": 0.4,
       "announcement": "The disciple's hand moves to something under his robe. When it comes back out, the qi threading through his fingers is wrong — dark at the edges, like ink in water. Whatever method this is, the Azure Cloud Sect does not teach it.",
@@ -207,6 +225,7 @@
     "qiReward": 8,
     "spiritStoneReward": 3,
     "itemRewards": ["shade_essence", "mist_residue"],
+    "postCombatType": "spirit",
     "phase": {
       "threshold": 0.3,
       "announcement": "The mist shade fractures — for a moment there are two of it, overlapping and slightly out of sync. The halves pull back together, but something about the shape has changed. It is more present now, not less. The wounds you dealt appear to have made it more coherent, not scattered it.",
@@ -230,6 +249,7 @@
     "qiReward": 6,
     "spiritStoneReward": 2,
     "itemRewards": ["bone_shard", "bone_dust"],
+    "postCombatType": "spirit",
     "phase": {
       "threshold": 0.35,
       "announcement": "A rib detaches from the hound's side and embeds in the stone wall beside you. The creature does not slow down. The bones reshuffle with a grinding sound — something from one part moving to reinforce another. What remains is smaller, leaner, and focused entirely on you.",
@@ -253,6 +273,10 @@
     "qiReward": 10,
     "spiritStoneReward": 4,
     "itemRewards": ["corrupted_qi_bead", "black_thread_shard"],
+    "postCombatType": "cultivator",
+    "speechDifficulty": 22,
+    "secretStash": { "spiritStones": 15, "itemRewards": ["corrupted_qi_bead"] },
+    "teachableTechnique": "black_thread_method",
     "phase": {
       "threshold": 0.35,
       "announcement": "The cultist pulls his outer robe back over his shoulders. The black thread tattoos are running now — moving up his neck, branching across his collarbone. He was holding back. Whatever method this is, it operates on something other than ordinary qi pathways. The temperature in the immediate area drops several degrees.",

@@ -1,6 +1,8 @@
 import type {
+  CombatLogEntry,
   CombatNarration,
   CombatPowerTier,
+  CombatRewards,
   CombatState,
   Enemy,
   EquipmentSlot,
@@ -276,7 +278,7 @@ export function startCombat(
       turn: 1,
       victorySceneId,
       defeatSceneId,
-      log: [renderCombatLine(pickCombatLine(narration.opening, 0), enemy, 0)],
+      log: [{ text: renderCombatLine(pickCombatLine(narration.opening, 0), enemy, 0), type: "system", turn: 0 }],
       powerTier,
       playerStartHealth: gameState.player.health,
     },
@@ -353,10 +355,17 @@ export function resolveCombatAction(
     };
   }
 
-  const newEntries: string[] =
+  const newEntries: CombatLogEntry[] =
     phaseJustTriggered && enemy.phase
-      ? [actionLog, enemy.phase.announcement, enemyLog]
-      : [actionLog, enemyLog];
+      ? [
+          { text: actionLog, type: "player", turn: gameState.combat.turn },
+          { text: enemy.phase.announcement, type: "system", turn: gameState.combat.turn },
+          { text: enemyLog, type: "enemy", turn: gameState.combat.turn },
+        ]
+      : [
+          { text: actionLog, type: "player", turn: gameState.combat.turn },
+          { text: enemyLog, type: "enemy", turn: gameState.combat.turn },
+        ];
 
   const qiCost =
     action === "technique" && techniqueId
@@ -395,6 +404,7 @@ export function continueCombat(gameState: GameState): GameState {
 function finishCombat(gameState: GameState, enemy: Enemy, actionLog: string): GameState {
   const combat = gameState.combat as CombatState;
   const rewardedQi = Math.min(gameState.player.maxQi, gameState.player.qi + enemy.qiReward);
+  const qiGained = rewardedQi - gameState.player.qi;
   const narration = getCombatNarration(gameState.currentSceneId, combat.powerTier);
   const victoryLine = renderCombatLine(
     pickCombatLine(narration.victory, combat.turn - 1),
@@ -406,13 +416,17 @@ function finishCombat(gameState: GameState, enemy: Enemy, actionLog: string): Ga
   const healthLostFraction = healthLost / Math.max(1, gameState.player.maxHealth);
   const reflection = generateCombatReflection(combat.powerTier, combat.turn, healthLostFraction);
 
+  const rewards: CombatRewards = {
+    spiritStones: enemy.spiritStoneReward ?? 0,
+    qi: qiGained,
+    items: [...new Set(enemy.itemRewards ?? [])],
+  };
+
   return {
     ...gameState,
     player: {
       ...gameState.player,
       qi: rewardedQi,
-      spiritStones: gameState.player.spiritStones + (enemy.spiritStoneReward ?? 0),
-      inventory: [...new Set([...gameState.player.inventory, ...(enemy.itemRewards ?? [])])],
       flags: {
         ...gameState.player.flags,
         [`defeated_${enemy.id}`]: true,
@@ -421,9 +435,15 @@ function finishCombat(gameState: GameState, enemy: Enemy, actionLog: string): Ga
     combat: {
       ...combat,
       enemyHealth: 0,
-      log: [victoryLine, actionLog, ...combat.log].slice(0, 8),
+      log: [
+        { text: victoryLine, type: "system" as const, turn: combat.turn },
+        { text: actionLog, type: "player" as const, turn: combat.turn },
+        ...combat.log,
+      ].slice(0, 8),
       resolved: true,
       reflection,
+      rewards,
+      postCombat: { stage: "choosing" as const, messages: [] },
     },
   };
 }
