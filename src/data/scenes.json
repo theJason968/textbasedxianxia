@@ -5452,10 +5452,7 @@
       },
       {
         "label": "Walk to the cold north face of the lower grove",
-        "nextScene": "cold_face_grove",
-        "requires": {
-          "flags": { "learned_ice_vein_location": true }
-        }
+        "nextScene": "cold_face_grove"
       },
       {
         "label": "Walk to the cloud edge overlook",
@@ -5775,7 +5772,6 @@
         "label": "Ask what resource is needed to crack Mortal Middle",
         "nextScene": "elder_ice_vein_guidance",
         "requires": {
-          "stats": { "cultivationInsight": 15 },
           "flagsAbsent": ["learned_ice_vein_location"]
         }
       },
@@ -5824,7 +5820,7 @@
     "id": "cold_face_grove",
     "areaId": "outer_sect",
     "title": "The Cold North Face",
-    "body": "The northern edge of the lower grove is a different place. The stone cliff behind it never fully catches the sun, and the cold that settles in the shade over years has changed the soil. The ordinary herbs thin out. In their place, low against the rock, grow the ice-vein herbs the elder described — dark green stalks, almost grey, stiff where the frost-vein herbs beside them are supple.\n\nYour fingers go cold pulling them free. The sap is colourless and smells faintly of deep water.",
+    "body": "The northern edge of the lower grove is a different place. The stone cliff behind it never fully catches the sun, and the cold that settles in the shade over years has changed the soil. The ordinary herbs thin out. In their place, low against the rock, grow unfamiliar stalks — dark green, almost grey, stiff where the frost-vein herbs beside them are supple. The leaves do not curl or droop. They feel cold to the touch even in still air.\n\nA small etched marker set in the cliff face reads: ice-vein herb. Harvest above the root or the sap breaks. Used in breakthrough preparations for qi-stage ceilings.\n\nYour fingers go cold pulling them free. The sap is colourless and smells faintly of deep water.",
     "choices": [
       {
         "label": "Harvest the stalks carefully — cut above the roots",

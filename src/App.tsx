@@ -1,6 +1,6 @@
 import { useMemo, useState, type FormEvent } from "react";
 import { QuestBoardScene } from "./components/QuestBoardScene";
-import { Backpack, BookOpen, Flame, ListChecks, ScrollText, Swords, Workflow } from "lucide-react";
+import { Backpack, BookOpen, ListChecks, ScrollText, Swords, Workflow } from "lucide-react";
 import scenes from "./data/scenes.json";
 import items from "./data/items.json";
 import techniques from "./data/techniques.json";
@@ -75,10 +75,9 @@ const npcData = npcs as unknown as Npc[];
 const questData = quests as Quest[];
 const recipeData = craftingRecipes as unknown as CraftingRecipe[];
 const sceneAreaData = sceneAreas as SceneArea[];
-type CultivationTab = "progress" | "techniques" | "skills";
 type PackTab = "inventory" | "crafting";
-type PathTab = "quests" | "journal";
-type SidebarPanel = "stats" | "cultivation" | "pack" | "path" | "save" | null;
+type PathTab = "quests" | "journal" | "techniques" | "skills";
+type RightPanelTab = "stats" | "pack" | "path" | "save";
 type StartView = "auth" | "character" | "game";
 type ItemData = {
   id: string;
@@ -625,8 +624,8 @@ function App() {
     "Cultivate after learning a breathing method.",
   );
   const [actionMessages, setActionMessages] = useState<string[]>([]);
-  const [activeSidebarPanel, setActiveSidebarPanel] = useState<SidebarPanel>(null);
-  const [activeCultivationTab, setActiveCultivationTab] = useState<CultivationTab>("progress");
+  const [rightTab, setRightTab] = useState<RightPanelTab>("stats");
+  const [showFullStats, setShowFullStats] = useState(false);
   const [activePackTab, setActivePackTab] = useState<PackTab>("inventory");
   const [activePathTab, setActivePathTab] = useState<PathTab>("quests");
   const [activeInventoryCategory, setActiveInventoryCategory] = useState("All");
@@ -1310,872 +1309,649 @@ function App() {
         )}
       </section>
 
-      <aside className="character-sheet-panel" aria-label="Character stats">
-        <h2 className="ornate-panel-title">Character Stats</h2>
-        <div className="character-identity-card">
-          <div className="portrait-frame" aria-label="Character portrait">
-            <span>{gameState.player.name.slice(0, 1).toUpperCase()}</span>
-            <small>{gameState.player.gender === "female" ? "Female" : "Male"}</small>
-          </div>
-          <div className="vital-stack">
-            <div className="vital-row">
-              <span>Health</span>
-              <strong>
-                {gameState.player.health}/{gameState.player.maxHealth}
-              </strong>
-            </div>
-            <div className="status-meter health-meter">
-              <span
-                style={{
-                  width: `${
-                    (gameState.player.health / gameState.player.maxHealth) * 100
-                  }%`,
-                }}
-              />
-            </div>
-            <div className="vital-row">
-              <span>Spirit Qi</span>
-              <strong>
-                {gameState.player.qi}/{gameState.player.maxQi}
-              </strong>
-            </div>
-            <div className="status-meter qi-meter">
-              <span
-                style={{
-                  width: `${(gameState.player.qi / gameState.player.maxQi) * 100}%`,
-                }}
-              />
-            </div>
-          </div>
-        </div>
-
-        <dl className="hero-stat-list">
-          <div>
-            <dt>Attack</dt>
-            <dd>{gameState.player.strength}</dd>
-          </div>
-          <div>
-            <dt>Defense</dt>
-            <dd>{gameState.player.endurance}</dd>
-          </div>
-          <div>
-            <dt>Agility</dt>
-            <dd>{gameState.player.agility}</dd>
-          </div>
-          <div>
-            <dt>Intelligence</dt>
-            <dd>{gameState.player.intelligence}</dd>
-          </div>
-        </dl>
-
-        <section className="cultivation-snapshot">
-          <div className="vital-row">
-            <span>Cultivation Progress</span>
-            <strong>
-              {gameState.player.qi}/{gameState.player.maxQi}
-            </strong>
-          </div>
-          <div className="status-meter progress-meter">
-            <span
-              style={{
-                width: `${(gameState.player.qi / gameState.player.maxQi) * 100}%`,
-              }}
-            />
-          </div>
-        </section>
-
-        <section className="quick-ability-section">
-          <h2 className="ornate-panel-title compact-title">Skills / Techniques</h2>
-          <div className="quick-slot-grid">
-            {[...quickTechniqueSlots, ...quickSkillSlots].map((entry) => (
-              <div className="quick-slot filled-slot" key={entry.id} title={entry.description}>
-                <span className="slot-icon">{entry.name.slice(0, 1)}</span>
-                <strong>{entry.name}</strong>
+      <aside className="character-sheet-panel" aria-label="Character">
+        {rightTab === "stats" ? (
+          <>
+            <h2 className="ornate-panel-title">Character Stats</h2>
+            <div className="character-identity-card">
+              <div className="portrait-frame" aria-label="Character portrait">
+                <span>{gameState.player.name.slice(0, 1).toUpperCase()}</span>
+                <small>{gameState.player.gender === "female" ? "Female" : "Male"}</small>
               </div>
-            ))}
-            {Array.from({
-              length: Math.max(0, 6 - quickTechniqueSlots.length - quickSkillSlots.length),
-            }).map((_, index) => (
-              <div className="quick-slot empty-slot" key={`empty-quick-${index}`}>
-                <span className="slot-icon">+</span>
-              </div>
-            ))}
-          </div>
-        </section>
-        <div className="character-panel-actions">
-          <button type="button" onClick={() => setActiveSidebarPanel("pack")}>
-            Pack
-          </button>
-          <button type="button" onClick={() => setActiveSidebarPanel("path")}>
-            Path
-          </button>
-          <button type="button" onClick={() => setActiveSidebarPanel("save")}>
-            Save
-          </button>
-        </div>
-      </aside>
-
-      <aside className={`side-panel${activeSidebarPanel ? " panel-open" : ""}`}>
-        <div className="overlay-panel-header">
-          <strong>
-            {activeSidebarPanel === "cultivation"
-              ? "Cultivation"
-              : activeSidebarPanel === "pack"
-                ? "Pack"
-                : activeSidebarPanel === "path"
-                  ? "Path"
-                  : activeSidebarPanel === "save"
-                    ? "Save"
-                    : "Stats"}
-          </strong>
-          <button type="button" onClick={() => setActiveSidebarPanel(null)}>
-            Close
-          </button>
-        </div>
-        <section className="disciple-summary" aria-label="Disciple summary">
-          <h2>Disciple</h2>
-          <dl>
-            <div>
-              <dt>Name</dt>
-              <dd>{gameState.player.name}</dd>
-            </div>
-            <div>
-              <dt>Gender</dt>
-              <dd>{gameState.player.gender === "female" ? "Female" : "Male"}</dd>
-            </div>
-            <div>
-              <dt>Realm</dt>
-              <dd>
-                {gameState.player.realm} {gameState.player.stage}
-              </dd>
-            </div>
-            <div>
-              <dt>Health</dt>
-              <dd>
-                {gameState.player.health}/{gameState.player.maxHealth}
-              </dd>
-            </div>
-            <div>
-              <dt>Qi</dt>
-              <dd>
-                {gameState.player.qi}/{gameState.player.maxQi}
-              </dd>
-            </div>
-            <div>
-              <dt>
-                {hasLearnedAboutMountainGate(gameState.player)
-                  ? "Mountain Gate"
-                  : "Day"}
-              </dt>
-              <dd>
-                {hasLearnedAboutMountainGate(gameState.player)
-                  ? gameState.player.daysRemainingToExam > 0
-                    ? `${gameState.player.daysRemainingToExam} days`
-                    : "Today"
-                  : "Ordinary morning"}
-              </dd>
-            </div>
-          </dl>
-        </section>
-
-        <div className="sidebar-menu" aria-label="Character panels">
-          <button
-            type="button"
-            aria-pressed={activeSidebarPanel === "stats"}
-            onClick={() =>
-              setActiveSidebarPanel(activeSidebarPanel === "stats" ? null : "stats")
-            }
-          >
-            Stats
-          </button>
-          <button
-            type="button"
-            aria-pressed={activeSidebarPanel === "cultivation"}
-            onClick={() =>
-              setActiveSidebarPanel(
-                activeSidebarPanel === "cultivation" ? null : "cultivation",
-              )
-            }
-          >
-            Cultivation
-          </button>
-          <button
-            type="button"
-            aria-pressed={activeSidebarPanel === "pack"}
-            onClick={() =>
-              setActiveSidebarPanel(activeSidebarPanel === "pack" ? null : "pack")
-            }
-          >
-            Pack
-          </button>
-          <button
-            type="button"
-            aria-pressed={activeSidebarPanel === "path"}
-            onClick={() =>
-              setActiveSidebarPanel(activeSidebarPanel === "path" ? null : "path")
-            }
-          >
-            Path
-          </button>
-          <button
-            type="button"
-            aria-pressed={activeSidebarPanel === "save"}
-            onClick={() =>
-              setActiveSidebarPanel(activeSidebarPanel === "save" ? null : "save")
-            }
-          >
-            Save
-          </button>
-        </div>
-
-        {activeSidebarPanel === "stats" ? (
-          <section className="sidebar-panel-section">
-            <h2>Stats</h2>
-            <dl>
-              <div>
-                <dt>Strength</dt>
-                <dd>{gameState.player.strength}</dd>
-              </div>
-              <div>
-                <dt>Agility</dt>
-                <dd>{gameState.player.agility}</dd>
-              </div>
-              <div>
-                <dt>Endurance</dt>
-                <dd>{gameState.player.endurance}</dd>
-              </div>
-              <div>
-                <dt>Intelligence</dt>
-                <dd>{gameState.player.intelligence}</dd>
-              </div>
-              <div>
-                <dt>Perception</dt>
-                <dd>{gameState.player.perception}</dd>
-              </div>
-              <div>
-                <dt>Spiritual Sense</dt>
-                <dd>{gameState.player.spiritualSense}</dd>
-              </div>
-              <div>
-                <dt>Comprehension</dt>
-                <dd>{gameState.player.comprehension}</dd>
-              </div>
-              <div>
-                <dt>Willpower</dt>
-                <dd>{gameState.player.willpower}</dd>
-              </div>
-              <div>
-                <dt>Foundation</dt>
-                <dd>{gameState.player.foundationStability}%</dd>
-              </div>
-              <div>
-                <dt>Fatigue</dt>
-                <dd>{gameState.player.trainingFatigue}/10</dd>
-              </div>
-              <div>
-                <dt>Impurity</dt>
-                <dd>{gameState.player.impurity}</dd>
-              </div>
-              <div>
-                <dt>Insight</dt>
-                <dd>{gameState.player.cultivationInsight}</dd>
-              </div>
-              <div>
-                <dt>Spirit Stones</dt>
-                <dd>{gameState.player.spiritStones}</dd>
-              </div>
-              <div>
-                <dt>Corruption</dt>
-                <dd>{gameState.player.corruption}</dd>
-              </div>
-            </dl>
-
-            <h2>Constitution</h2>
-            {awakenedConstitutions.length > 0 ? (
-              <ul className="compact-list">
-                {awakenedConstitutions.map((constitution) => (
-                  <li key={constitution.id}>
-                    <span>
-                      {constitution.name}
-                      <small className="effect-summary">
-                        {constitution.description}
-                      </small>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>Dormant</p>
-            )}
-
-            <h2>Stored Elements</h2>
-            {storedElements.length > 0 ? (
-              <ul className="compact-list">
-                {storedElements.map(([element, amount]) => (
-                  <li key={element}>
-                    <span>{element}</span>
-                    <small>{amount}</small>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>None stored</p>
-            )}
-
-            <h2>Relationships</h2>
-            {relationshipEntries.length > 0 ? (
-              <ul className="compact-list">
-                {relationshipEntries.map(([scoreId, score]) => (
-                  <li key={scoreId}>
-                    <span>{formatScoreLabel(scoreId)}</span>
-                    <small>{score}</small>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No bonds yet</p>
-            )}
-
-            <h2>Reputation</h2>
-            {reputationEntries.length > 0 ? (
-              <ul className="compact-list">
-                {reputationEntries.map(([scoreId, score]) => (
-                  <li key={scoreId}>
-                    <span>{formatScoreLabel(scoreId)}</span>
-                    <small>{score}</small>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>Unknown</p>
-            )}
-
-            <h2>Morality</h2>
-            {moralityEntries.length > 0 ? (
-              <ul className="compact-list">
-                {moralityEntries.map(([scoreId, score]) => (
-                  <li key={scoreId}>
-                    <span>{formatScoreLabel(scoreId)}</span>
-                    <small>{score}</small>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>Unshaped</p>
-            )}
-
-            <h2>Sect Contribution</h2>
-            {sectContributionEntries.length > 0 ? (
-              <ul className="compact-list">
-                {sectContributionEntries.map(([scoreId, score]) => (
-                  <li key={scoreId}>
-                    <span>{formatScoreLabel(scoreId)}</span>
-                    <small>{score}</small>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>None earned</p>
-            )}
-          </section>
-        ) : null}
-
-        {activeSidebarPanel === "cultivation" ? (
-          <section className="sidebar-panel-section">
-            <div className="tab-list" role="tablist" aria-label="Cultivation">
-              <button
-                type="button"
-                role="tab"
-                aria-selected={activeCultivationTab === "progress"}
-                onClick={() => setActiveCultivationTab("progress")}
-              >
-                <Flame aria-hidden="true" size={16} />
-                <span>Progress</span>
-              </button>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={activeCultivationTab === "techniques"}
-                onClick={() => setActiveCultivationTab("techniques")}
-              >
-                <ScrollText aria-hidden="true" size={16} />
-                <span>Techniques</span>
-              </button>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={activeCultivationTab === "skills"}
-                onClick={() => setActiveCultivationTab("skills")}
-              >
-                <Swords aria-hidden="true" size={16} />
-                <span>Skills</span>
-              </button>
-            </div>
-
-            {activeCultivationTab === "progress" ? (
-              <div className="tab-panel">
-                <h2>Cultivation</h2>
-                <div className="cultivation-meter" aria-label="Qi progress">
+              <div className="vital-stack">
+                <div className="vital-row">
+                  <span>Health</span>
+                  <strong>
+                    {gameState.player.health}/{gameState.player.maxHealth}
+                  </strong>
+                </div>
+                <div className="status-meter health-meter">
+                  <span
+                    style={{
+                      width: `${
+                        (gameState.player.health / gameState.player.maxHealth) * 100
+                      }%`,
+                    }}
+                  />
+                </div>
+                <div className="vital-row">
+                  <span>Spirit Qi</span>
+                  <strong>
+                    {gameState.player.qi}/{gameState.player.maxQi}
+                  </strong>
+                </div>
+                <div className="status-meter qi-meter">
                   <span
                     style={{
                       width: `${(gameState.player.qi / gameState.player.maxQi) * 100}%`,
                     }}
                   />
                 </div>
-                <div className="cultivation-controls">
-                  <button type="button" onClick={handleCultivate}>
-                    Cultivate
-                  </button>
-                </div>
-                <p className="cultivation-message">{cultivationMessage}</p>
               </div>
-            ) : null}
+            </div>
 
-            {activeCultivationTab === "techniques" ? (
-              <div id="techniques-panel" role="tabpanel" className="tab-panel">
-                <h2>Techniques</h2>
-                <div className="slot-board">
-                  <div className="slot-grid" aria-label="Technique slots">
-                    {visibleTechniques.map((technique) => (
-                      <div
-                        className="inventory-slot filled-slot"
-                        key={technique.id}
-                        title={[
-                          technique.name,
-                          technique.description,
-                          `Mastery ${technique.mastery}/${technique.maxLevel}`,
-                        ].join("\n")}
-                      >
-                        <span className="slot-icon">{technique.name.slice(0, 1)}</span>
-                        <strong>{technique.name}</strong>
-                        <small>{technique.category}</small>
-                        <small>Mastery {technique.mastery}/{technique.maxLevel}</small>
-                      </div>
-                    ))}
-                    {Array.from({ length: Math.max(0, 12 - visibleTechniques.length) }).map((_, index) => (
-                      <div className="inventory-slot empty-slot" key={`empty-tech-${index}`}>
-                        <span className="slot-icon">+</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="slot-filter-list" aria-label="Technique categories">
-                    {techniqueCategories.map((category) => (
-                      <button
-                        type="button"
-                        key={category}
-                        aria-pressed={activeTechniqueCategory === category}
-                        onClick={() => setActiveTechniqueCategory(category)}
-                      >
-                        {category}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+            <section className="cultivation-snapshot">
+              <div className="vital-row">
+                <span>Cultivation Progress</span>
+                <strong>
+                  {gameState.player.qi}/{gameState.player.maxQi}
+                </strong>
               </div>
-            ) : null}
-
-            {activeCultivationTab === "skills" ? (
-              <div id="skills-panel" role="tabpanel" className="tab-panel">
-                <h2>Skill Trees</h2>
-                <div className="slot-board">
-                  <div className="slot-grid" aria-label="Skill slots">
-                    {visibleSkills.map((skill) => (
-                      <div
-                        className="inventory-slot filled-slot"
-                        key={skill.id}
-                        title={[
-                          skill.name,
-                          skill.description,
-                          formatSkillLevel(skill.rank, skill.maxRank),
-                          formatSkillEffectSummary(skill, skill.rank),
-                        ]
-                          .filter((line) => line)
-                          .join("\n")}
-                      >
-                        <span className="slot-icon">{skill.name.slice(0, 1)}</span>
-                        <strong>{skill.name}</strong>
-                        <small>{skill.tree}</small>
-                        <small>{formatSkillLevel(skill.rank, skill.maxRank)}</small>
-                        {formatSkillEffectSummary(skill, skill.rank) ? (
-                          <small>{formatSkillEffectSummary(skill, skill.rank)}</small>
-                        ) : null}
-                      </div>
-                    ))}
-                    {Array.from({ length: Math.max(0, 12 - visibleSkills.length) }).map((_, index) => (
-                      <div className="inventory-slot empty-slot" key={`empty-skill-${index}`}>
-                        <span className="slot-icon">+</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="slot-filter-list" aria-label="Skill trees">
-                    {skillTrees.map((tree) => (
-                      <button
-                        type="button"
-                        key={tree}
-                        aria-pressed={activeSkillTree === tree}
-                        onClick={() => setActiveSkillTree(tree)}
-                      >
-                        {tree}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+              <div className="status-meter progress-meter">
+                <span
+                  style={{
+                    width: `${(gameState.player.qi / gameState.player.maxQi) * 100}%`,
+                  }}
+                />
               </div>
-            ) : null}
-          </section>
-        ) : null}
+              <div className="cultivation-controls">
+                <button type="button" onClick={handleCultivate}>
+                  Cultivate
+                </button>
+              </div>
+              <p className="cultivation-message">{cultivationMessage}</p>
+            </section>
 
-        {activeSidebarPanel === "pack" ? (
-          <section className="collection-tabs sidebar-panel-section" aria-label="Pack">
-          <div className="tab-list" role="tablist" aria-label="Pack">
             <button
               type="button"
-              role="tab"
-              aria-selected={activePackTab === "inventory"}
-              aria-controls="inventory-panel"
-              onClick={() => setActivePackTab("inventory")}
+              className="stats-toggle-btn"
+              onClick={() => setShowFullStats((v) => !v)}
             >
-              <Backpack aria-hidden="true" size={16} />
-              <span>Inventory</span>
+              Stats {showFullStats ? "▲" : "▼"}
             </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={activePackTab === "crafting"}
-              aria-controls="crafting-panel"
-              onClick={() => setActivePackTab("crafting")}
-            >
-              <Workflow aria-hidden="true" size={16} />
-              <span>Crafting</span>
-            </button>
-          </div>
 
-          {activePackTab === "inventory" ? (
-            <div id="inventory-panel" role="tabpanel" className="tab-panel">
-              <h2>Inventory</h2>
-              <div className="slot-board">
-                <div className="slot-grid" aria-label="Inventory slots">
-                  {activeInventoryCategory === "Equipped"
-                    ? equipmentSlots.map((slot) => {
-                        const item = equippedItems.find(
-                          (entry) => entry.slot === slot,
-                        )?.item;
+            {showFullStats && (
+              <dl className="hero-stat-list">
+                <div>
+                  <dt>Attack</dt>
+                  <dd>{gameState.player.strength}</dd>
+                </div>
+                <div>
+                  <dt>Defense</dt>
+                  <dd>{gameState.player.endurance}</dd>
+                </div>
+                <div>
+                  <dt>Agility</dt>
+                  <dd>{gameState.player.agility}</dd>
+                </div>
+                <div>
+                  <dt>Intelligence</dt>
+                  <dd>{gameState.player.intelligence}</dd>
+                </div>
+                <div>
+                  <dt>Perception</dt>
+                  <dd>{gameState.player.perception}</dd>
+                </div>
+                <div>
+                  <dt>Spirit Sense</dt>
+                  <dd>{gameState.player.spiritualSense}</dd>
+                </div>
+                <div>
+                  <dt>Physique</dt>
+                  <dd>{gameState.player.physique}</dd>
+                </div>
+                <div>
+                  <dt>Comprehension</dt>
+                  <dd>{gameState.player.comprehension}</dd>
+                </div>
+                <div>
+                  <dt>Willpower</dt>
+                  <dd>{gameState.player.willpower}</dd>
+                </div>
+                <div>
+                  <dt>Foundation</dt>
+                  <dd>{gameState.player.foundationStability}</dd>
+                </div>
+                <div>
+                  <dt>Fatigue</dt>
+                  <dd>{gameState.player.trainingFatigue}</dd>
+                </div>
+                <div>
+                  <dt>Impurity</dt>
+                  <dd>{gameState.player.impurity}</dd>
+                </div>
+                <div>
+                  <dt>Karma</dt>
+                  <dd>{gameState.player.karma}</dd>
+                </div>
+                <div>
+                  <dt>Corruption</dt>
+                  <dd>{gameState.player.corruption}</dd>
+                </div>
+              </dl>
+            )}
 
-                        return item ? (
-                          <button
-                            type="button"
-                            className="inventory-slot filled-slot equipped-slot"
-                            key={slot}
-                            onClick={() => handleUnequipItem(slot)}
-                            title={
-                              [
-                                item.name,
-                                formatItemTier(item.tier),
-                                item.description,
-                                item.equipmentEffects
-                                  ? formatEquipmentEffects(item.equipmentEffects)
-                                  : null,
-                                "Click to unequip.",
-                              ]
-                                .filter((line) => line)
-                                .join("\n")
-                            }
-                          >
-                            {renderSlotIcon(item.icon, item.name)}
-                            <strong>{item.name}</strong>
-                            <small>{equipmentSlotLabels[slot]}</small>
-                          </button>
-                        ) : (
-                          <div
-                            className="inventory-slot empty-slot"
-                            key={slot}
-                            title={`${equipmentSlotLabels[slot]} slot is empty.`}
-                          >
-                            <span className="slot-icon">
-                              {equipmentSlotLabels[slot].slice(0, 1)}
+            <section className="quick-ability-section">
+              <h2 className="ornate-panel-title compact-title">Skills / Techniques</h2>
+              <div className="quick-slot-grid">
+                {[...quickTechniqueSlots, ...quickSkillSlots].map((entry) => (
+                  <div className="quick-slot filled-slot" key={entry.id} title={entry.description}>
+                    <span className="slot-icon">{entry.name.slice(0, 1)}</span>
+                    <strong>{entry.name}</strong>
+                  </div>
+                ))}
+                {Array.from({
+                  length: Math.max(0, 6 - quickTechniqueSlots.length - quickSkillSlots.length),
+                }).map((_, index) => (
+                  <div className="quick-slot empty-slot" key={`empty-quick-${index}`}>
+                    <span className="slot-icon">+</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <div className="character-panel-actions">
+              <button type="button" onClick={() => setRightTab("pack")}>
+                Pack
+              </button>
+              <button type="button" onClick={() => setRightTab("path")}>
+                Path
+              </button>
+              <button type="button" onClick={() => setRightTab("save")}>
+                Save
+              </button>
+            </div>
+          </>
+        ) : rightTab === "pack" ? (
+          <>
+            <div className="overlay-panel-header">
+              <strong>Pack</strong>
+              <button type="button" onClick={() => setRightTab("stats")}>
+                ← Stats
+              </button>
+            </div>
+            <section className="collection-tabs" aria-label="Pack">
+              <div className="tab-list" role="tablist" aria-label="Pack">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={activePackTab === "inventory"}
+                  aria-controls="inventory-panel"
+                  onClick={() => setActivePackTab("inventory")}
+                >
+                  <Backpack aria-hidden="true" size={16} />
+                  <span>Inventory</span>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={activePackTab === "crafting"}
+                  aria-controls="crafting-panel"
+                  onClick={() => setActivePackTab("crafting")}
+                >
+                  <Workflow aria-hidden="true" size={16} />
+                  <span>Crafting</span>
+                </button>
+              </div>
+
+              {activePackTab === "inventory" ? (
+                <div id="inventory-panel" role="tabpanel" className="tab-panel">
+                  <h2>Inventory</h2>
+                  <div className="slot-board">
+                    <div className="slot-grid" aria-label="Inventory slots">
+                      {activeInventoryCategory === "Equipped"
+                        ? equipmentSlots.map((slot) => {
+                            const item = equippedItems.find(
+                              (entry) => entry.slot === slot,
+                            )?.item;
+
+                            return item ? (
+                              <button
+                                type="button"
+                                className="inventory-slot filled-slot equipped-slot"
+                                key={slot}
+                                onClick={() => handleUnequipItem(slot)}
+                                title={
+                                  [
+                                    item.name,
+                                    formatItemTier(item.tier),
+                                    item.description,
+                                    item.equipmentEffects
+                                      ? formatEquipmentEffects(item.equipmentEffects)
+                                      : null,
+                                    "Click to unequip.",
+                                  ]
+                                    .filter((line) => line)
+                                    .join("\n")
+                                }
+                              >
+                                {renderSlotIcon(item.icon, item.name)}
+                                <strong>{item.name}</strong>
+                                <small>{equipmentSlotLabels[slot]}</small>
+                              </button>
+                            ) : (
+                              <div
+                                className="inventory-slot empty-slot"
+                                key={slot}
+                                title={`${equipmentSlotLabels[slot]} slot is empty.`}
+                              >
+                                <span className="slot-icon">
+                                  {equipmentSlotLabels[slot].slice(0, 1)}
+                                </span>
+                                <small>{equipmentSlotLabels[slot]}</small>
+                              </div>
+                            );
+                          })
+                        : visibleInventoryItems.map((item, index) => {
+                            const isEquipped =
+                              item.equipmentSlot &&
+                              gameState.player.equipment[item.equipmentSlot] === item.id;
+                            const itemEffectSummary = formatItemEffects(item.effects);
+                            const isUsableItem = itemEffectSummary.length > 0;
+
+                            const slotTitle = [
+                              item.name,
+                              formatItemTier(item.tier),
+                              item.description,
+                              isUsableItem ? formatItemEffects(item.effects, "sentence") : null,
+                              item.equipmentEffects
+                                ? formatEquipmentEffects(item.equipmentEffects)
+                                : null,
+                              item.equipmentSlot
+                                ? isEquipped
+                                  ? "Equipped. Click to unequip."
+                                  : "Click to equip."
+                                : isUsableItem
+                                  ? "Click to use."
+                                : null,
+                            ]
+                              .filter((line) => line)
+                              .join("\n");
+
+                            return item.equipmentSlot ? (
+                              <button
+                                type="button"
+                                className={`inventory-slot filled-slot${isEquipped ? " equipped-slot" : ""}`}
+                                key={`${item.id}-${index}`}
+                                onClick={() =>
+                                  isEquipped
+                                    ? handleUnequipItem(item.equipmentSlot as EquipmentSlot)
+                                    : handleEquipItem(item)
+                                }
+                                title={slotTitle}
+                              >
+                                {renderSlotIcon(item.icon, item.name)}
+                                <strong>{item.name}</strong>
+                                <small>{formatItemTier(item.tier)}</small>
+                                <small>{item.category ?? "Misc"}</small>
+                                {item.equipmentEffects ? (
+                                  <small>{formatEquipmentEffects(item.equipmentEffects)}</small>
+                                ) : null}
+                              </button>
+                            ) : isUsableItem ? (
+                              <button
+                                type="button"
+                                className="inventory-slot filled-slot"
+                                key={`${item.id}-${index}`}
+                                onClick={() => handleUseItem(item)}
+                                title={slotTitle}
+                              >
+                                {renderSlotIcon(item.icon, item.name)}
+                                <strong>{item.name}</strong>
+                                <small>{formatItemTier(item.tier)}</small>
+                                <small>{item.category ?? "Misc"}</small>
+                                <small>{itemEffectSummary}</small>
+                              </button>
+                            ) : (
+                              <div
+                                className="inventory-slot filled-slot"
+                                key={`${item.id}-${index}`}
+                                title={slotTitle}
+                              >
+                                {renderSlotIcon(item.icon, item.name)}
+                                <strong>{item.name}</strong>
+                                <small>{formatItemTier(item.tier)}</small>
+                                <small>{item.category ?? "Misc"}</small>
+                                {itemEffectSummary ? <small>{itemEffectSummary}</small> : null}
+                              </div>
+                            );
+                          })}
+                      {Array.from({
+                        length: Math.max(
+                          0,
+                          12 -
+                            (activeInventoryCategory === "Equipped"
+                              ? equipmentSlots.length
+                              : visibleInventoryItems.length),
+                        ),
+                      }).map((_, index) => (
+                        <div className="inventory-slot empty-slot" key={`empty-item-${index}`}>
+                          <span className="slot-icon">+</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="slot-filter-list" aria-label="Inventory categories">
+                      {inventoryCategories.map((category) => (
+                        <button
+                          type="button"
+                          key={category}
+                          aria-pressed={activeInventoryCategory === category}
+                          onClick={() => setActiveInventoryCategory(category)}
+                        >
+                          {category}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+
+              {activePackTab === "crafting" ? (
+                <div id="crafting-panel" role="tabpanel" className="tab-panel">
+                  <h2>Crafting</h2>
+                  <ul className="crafting-list">
+                    {availableRecipes.map(
+                      ({ recipe, canCraft, missingRequirements, resultItem }) => (
+                        <li key={recipe.id}>
+                          <div>
+                            <strong>{recipe.name}</strong>
+                            <span>
+                              {formatItemTier(recipe.tier)} {recipe.category}
                             </span>
-                            <small>{equipmentSlotLabels[slot]}</small>
-                          </div>
-                        );
-                      })
-                    : visibleInventoryItems.map((item, index) => {
-                        const isEquipped =
-                          item.equipmentSlot &&
-                          gameState.player.equipment[item.equipmentSlot] === item.id;
-                        const itemEffectSummary = formatItemEffects(item.effects);
-                        const isUsableItem = itemEffectSummary.length > 0;
-
-                        const slotTitle = [
-                          item.name,
-                          formatItemTier(item.tier),
-                          item.description,
-                          isUsableItem ? formatItemEffects(item.effects, "sentence") : null,
-                          item.equipmentEffects
-                            ? formatEquipmentEffects(item.equipmentEffects)
-                            : null,
-                          item.equipmentSlot
-                            ? isEquipped
-                              ? "Equipped. Click to unequip."
-                              : "Click to equip."
-                            : isUsableItem
-                              ? "Click to use."
-                            : null,
-                        ]
-                          .filter((line) => line)
-                          .join("\n");
-
-                        return item.equipmentSlot ? (
-                          <button
-                            type="button"
-                            className={`inventory-slot filled-slot${isEquipped ? " equipped-slot" : ""}`}
-                            key={`${item.id}-${index}`}
-                            onClick={() =>
-                              isEquipped
-                                ? handleUnequipItem(item.equipmentSlot as EquipmentSlot)
-                                : handleEquipItem(item)
-                            }
-                            title={slotTitle}
-                          >
-                            {renderSlotIcon(item.icon, item.name)}
-                            <strong>{item.name}</strong>
-                            <small>{formatItemTier(item.tier)}</small>
-                            <small>{item.category ?? "Misc"}</small>
-                            {item.equipmentEffects ? (
-                              <small>{formatEquipmentEffects(item.equipmentEffects)}</small>
+                            <p>{recipe.description}</p>
+                            <small>Needs {formatRecipeIngredients(recipe)}</small>
+                            {resultItem ? (
+                              <small>
+                                Creates {recipe.quantity} {formatItemTier(resultItem.tier)}{" "}
+                                {resultItem.name}
+                              </small>
                             ) : null}
-                          </button>
-                        ) : isUsableItem ? (
+                            {!canCraft && missingRequirements.length > 0 ? (
+                              <small>Missing {missingRequirements.join(", ")}</small>
+                            ) : null}
+                          </div>
                           <button
                             type="button"
-                            className="inventory-slot filled-slot"
-                            key={`${item.id}-${index}`}
-                            onClick={() => handleUseItem(item)}
-                            title={slotTitle}
+                            disabled={!canCraft}
+                            onClick={() => handleCraftRecipe(recipe)}
                           >
-                            {renderSlotIcon(item.icon, item.name)}
-                            <strong>{item.name}</strong>
-                            <small>{formatItemTier(item.tier)}</small>
-                            <small>{item.category ?? "Misc"}</small>
-                            <small>{itemEffectSummary}</small>
+                            Craft
                           </button>
-                        ) : (
-                          <div
-                            className="inventory-slot filled-slot"
-                            key={`${item.id}-${index}`}
-                            title={slotTitle}
-                          >
-                            {renderSlotIcon(item.icon, item.name)}
-                            <strong>{item.name}</strong>
-                            <small>{formatItemTier(item.tier)}</small>
-                            <small>{item.category ?? "Misc"}</small>
-                            {itemEffectSummary ? <small>{itemEffectSummary}</small> : null}
-                          </div>
+                        </li>
+                      ),
+                    )}
+                  </ul>
+                </div>
+              ) : null}
+            </section>
+          </>
+        ) : rightTab === "path" ? (
+          <>
+            <div className="overlay-panel-header">
+              <strong>Path</strong>
+              <button type="button" onClick={() => setRightTab("stats")}>
+                ← Stats
+              </button>
+            </div>
+            <section className="collection-tabs" aria-label="Path">
+              <div className="tab-list" role="tablist" aria-label="Path">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={activePathTab === "quests"}
+                  aria-controls="quests-panel"
+                  onClick={() => setActivePathTab("quests")}
+                >
+                  <ListChecks aria-hidden="true" size={16} />
+                  <span>Quests</span>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={activePathTab === "journal"}
+                  aria-controls="journal-panel"
+                  onClick={() => setActivePathTab("journal")}
+                >
+                  <BookOpen aria-hidden="true" size={16} />
+                  <span>Journal</span>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={activePathTab === "techniques"}
+                  onClick={() => setActivePathTab("techniques")}
+                >
+                  <ScrollText aria-hidden="true" size={16} />
+                  <span>Arts</span>
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={activePathTab === "skills"}
+                  onClick={() => setActivePathTab("skills")}
+                >
+                  <Swords aria-hidden="true" size={16} />
+                  <span>Skills</span>
+                </button>
+              </div>
+
+              {activePathTab === "quests" ? (
+                <div id="quests-panel" role="tabpanel" className="tab-panel">
+                  <h2>Quests</h2>
+                  {trackedQuests.length > 0 ? (
+                    <ul className="quest-list">
+                      {trackedQuests.map((quest) => (
+                        <li key={quest.id}>
+                          <strong>{quest.name}</strong>
+                          <span>{quest.playerQuest.status}</span>
+                          <p>
+                            {quest.playerQuest.status === "completed"
+                              ? "Completed"
+                              : quest.steps[quest.playerQuest.step]}
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>No active quests</p>
+                  )}
+                </div>
+              ) : null}
+
+              {activePathTab === "journal" ? (
+                <div id="journal-panel" role="tabpanel" className="tab-panel">
+                  <h2>Journal</h2>
+                  {npcJournalEntries.length > 0 ? (
+                    <ul className="journal-list">
+                      {npcJournalEntries.map(({ npc, journalEntry }) => {
+                        const relatedQuests = npc.associatedQuests
+                          ?.map((questId) => {
+                            const quest = questData.find((candidate) => candidate.id === questId);
+                            const playerQuest = gameState.player.quests[questId];
+
+                            return quest
+                              ? `${quest.name}: ${playerQuest?.status ?? "not started"}`
+                              : null;
+                          })
+                          .filter((questSummary) => questSummary !== null);
+
+                        return (
+                          <li key={npc.id}>
+                            <strong>
+                              {npc.name}: "{npc.description}"
+                            </strong>
+                            <span>{npc.title}</span>
+                            {journalEntry.conversations.length > 0 ? (
+                              <ul>
+                                {journalEntry.conversations.map((conversation) => (
+                                  <li key={conversation}>{conversation}</li>
+                                ))}
+                              </ul>
+                            ) : null}
+                            {relatedQuests && relatedQuests.length > 0 ? (
+                              <small>{relatedQuests.join(" | ")}</small>
+                            ) : null}
+                          </li>
                         );
                       })}
-                  {Array.from({
-                    length: Math.max(
-                      0,
-                      12 -
-                        (activeInventoryCategory === "Equipped"
-                          ? equipmentSlots.length
-                          : visibleInventoryItems.length),
-                    ),
-                  }).map((_, index) => (
-                    <div className="inventory-slot empty-slot" key={`empty-item-${index}`}>
-                      <span className="slot-icon">+</span>
-                    </div>
-                  ))}
+                    </ul>
+                  ) : (
+                    <p>No characters recorded yet</p>
+                  )}
                 </div>
-                <div className="slot-filter-list" aria-label="Inventory categories">
-                  {inventoryCategories.map((category) => (
+              ) : null}
+
+              {activePathTab === "techniques" ? (
+                <div id="techniques-panel" role="tabpanel" className="tab-panel">
+                  <h2>Techniques</h2>
+                  <div className="slot-board">
+                    <div className="slot-grid" aria-label="Technique slots">
+                      {visibleTechniques.map((technique) => (
+                        <div
+                          className="inventory-slot filled-slot"
+                          key={technique.id}
+                          title={[
+                            technique.name,
+                            technique.description,
+                            `Mastery ${technique.mastery}/${technique.maxLevel}`,
+                          ].join("\n")}
+                        >
+                          <span className="slot-icon">{technique.name.slice(0, 1)}</span>
+                          <strong>{technique.name}</strong>
+                          <small>{technique.category}</small>
+                          <small>Mastery {technique.mastery}/{technique.maxLevel}</small>
+                        </div>
+                      ))}
+                      {Array.from({ length: Math.max(0, 12 - visibleTechniques.length) }).map((_, index) => (
+                        <div className="inventory-slot empty-slot" key={`empty-tech-${index}`}>
+                          <span className="slot-icon">+</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="slot-filter-list" aria-label="Technique categories">
+                      {techniqueCategories.map((category) => (
+                        <button
+                          type="button"
+                          key={category}
+                          aria-pressed={activeTechniqueCategory === category}
+                          onClick={() => setActiveTechniqueCategory(category)}
+                        >
+                          {category}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+
+              {activePathTab === "skills" ? (
+                <div id="skills-panel" role="tabpanel" className="tab-panel">
+                  <h2>Skill Trees</h2>
+                  <div className="slot-board">
+                    <div className="slot-grid" aria-label="Skill slots">
+                      {visibleSkills.map((skill) => (
+                        <div
+                          className="inventory-slot filled-slot"
+                          key={skill.id}
+                          title={[
+                            skill.name,
+                            skill.description,
+                            formatSkillLevel(skill.rank, skill.maxRank),
+                            formatSkillEffectSummary(skill, skill.rank),
+                          ]
+                            .filter((line) => line)
+                            .join("\n")}
+                        >
+                          <span className="slot-icon">{skill.name.slice(0, 1)}</span>
+                          <strong>{skill.name}</strong>
+                          <small>{skill.tree}</small>
+                          <small>{formatSkillLevel(skill.rank, skill.maxRank)}</small>
+                          {formatSkillEffectSummary(skill, skill.rank) ? (
+                            <small>{formatSkillEffectSummary(skill, skill.rank)}</small>
+                          ) : null}
+                        </div>
+                      ))}
+                      {Array.from({ length: Math.max(0, 12 - visibleSkills.length) }).map((_, index) => (
+                        <div className="inventory-slot empty-slot" key={`empty-skill-${index}`}>
+                          <span className="slot-icon">+</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="slot-filter-list" aria-label="Skill trees">
+                      {skillTrees.map((tree) => (
+                        <button
+                          type="button"
+                          key={tree}
+                          aria-pressed={activeSkillTree === tree}
+                          onClick={() => setActiveSkillTree(tree)}
+                        >
+                          {tree}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+            </section>
+          </>
+        ) : (
+          <>
+            <div className="overlay-panel-header">
+              <strong>Save</strong>
+              <button type="button" onClick={() => setRightTab("stats")}>
+                ← Stats
+              </button>
+            </div>
+            <section className="sidebar-panel-section">
+              <h2>Save</h2>
+              <div className="save-controls">
+                {saveSlots.map((slotInfo) => (
+                  <div className="save-slot" key={slotInfo.slot}>
+                    <div>
+                      <strong>Slot {slotInfo.slot}</strong>
+                      <span>{getSaveSceneTitle(slotInfo.sceneId)}</span>
+                      <small>{formatSaveTime(slotInfo.savedAt)}</small>
+                    </div>
+                    <button type="button" onClick={() => handleManualSave(slotInfo.slot)}>
+                      Save
+                    </button>
                     <button
                       type="button"
-                      key={category}
-                      aria-pressed={activeInventoryCategory === category}
-                      onClick={() => setActiveInventoryCategory(category)}
+                      onClick={() => handleLoad(slotInfo.slot)}
+                      disabled={!slotInfo.exists}
                     >
-                      {category}
+                      Load
                     </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ) : null}
-
-          {activePackTab === "crafting" ? (
-            <div id="crafting-panel" role="tabpanel" className="tab-panel">
-              <h2>Crafting</h2>
-              <ul className="crafting-list">
-                {availableRecipes.map(
-                  ({ recipe, canCraft, missingRequirements, resultItem }) => (
-                    <li key={recipe.id}>
-                      <div>
-                        <strong>{recipe.name}</strong>
-                        <span>
-                          {formatItemTier(recipe.tier)} {recipe.category}
-                        </span>
-                        <p>{recipe.description}</p>
-                        <small>Needs {formatRecipeIngredients(recipe)}</small>
-                        {resultItem ? (
-                          <small>
-                            Creates {recipe.quantity} {formatItemTier(resultItem.tier)}{" "}
-                            {resultItem.name}
-                          </small>
-                        ) : null}
-                        {!canCraft && missingRequirements.length > 0 ? (
-                          <small>Missing {missingRequirements.join(", ")}</small>
-                        ) : null}
-                      </div>
-                      <button
-                        type="button"
-                        disabled={!canCraft}
-                        onClick={() => handleCraftRecipe(recipe)}
-                      >
-                        Craft
-                      </button>
-                    </li>
-                  ),
-                )}
-              </ul>
-            </div>
-          ) : null}
-
-        </section>
-        ) : null}
-
-        {activeSidebarPanel === "path" ? (
-          <section className="collection-tabs sidebar-panel-section" aria-label="Path">
-            <div className="tab-list" role="tablist" aria-label="Path">
-              <button
-                type="button"
-                role="tab"
-                aria-selected={activePathTab === "quests"}
-                aria-controls="quests-panel"
-                onClick={() => setActivePathTab("quests")}
-              >
-                <ListChecks aria-hidden="true" size={16} />
-                <span>Quests</span>
-              </button>
-              <button
-                type="button"
-                role="tab"
-                aria-selected={activePathTab === "journal"}
-                aria-controls="journal-panel"
-                onClick={() => setActivePathTab("journal")}
-              >
-                <BookOpen aria-hidden="true" size={16} />
-                <span>Journal</span>
-              </button>
-            </div>
-
-            {activePathTab === "quests" ? (
-              <div id="quests-panel" role="tabpanel" className="tab-panel">
-                <h2>Quests</h2>
-                {trackedQuests.length > 0 ? (
-                  <ul className="quest-list">
-                    {trackedQuests.map((quest) => (
-                      <li key={quest.id}>
-                        <strong>{quest.name}</strong>
-                        <span>{quest.playerQuest.status}</span>
-                        <p>
-                          {quest.playerQuest.status === "completed"
-                            ? "Completed"
-                            : quest.steps[quest.playerQuest.step]}
-                        </p>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No active quests</p>
-                )}
-              </div>
-            ) : null}
-
-            {activePathTab === "journal" ? (
-              <div id="journal-panel" role="tabpanel" className="tab-panel">
-                <h2>Journal</h2>
-                {npcJournalEntries.length > 0 ? (
-                  <ul className="journal-list">
-                    {npcJournalEntries.map(({ npc, journalEntry }) => {
-                      const relatedQuests = npc.associatedQuests
-                        ?.map((questId) => {
-                          const quest = questData.find((candidate) => candidate.id === questId);
-                          const playerQuest = gameState.player.quests[questId];
-
-                          return quest
-                            ? `${quest.name}: ${playerQuest?.status ?? "not started"}`
-                            : null;
-                        })
-                        .filter((questSummary) => questSummary !== null);
-
-                      return (
-                        <li key={npc.id}>
-                          <strong>
-                            {npc.name}: "{npc.description}"
-                          </strong>
-                          <span>{npc.title}</span>
-                          {journalEntry.conversations.length > 0 ? (
-                            <ul>
-                              {journalEntry.conversations.map((conversation) => (
-                                <li key={conversation}>{conversation}</li>
-                              ))}
-                            </ul>
-                          ) : null}
-                          {relatedQuests && relatedQuests.length > 0 ? (
-                            <small>{relatedQuests.join(" | ")}</small>
-                          ) : null}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                ) : (
-                  <p>No characters recorded yet</p>
-                )}
-              </div>
-            ) : null}
-          </section>
-        ) : null}
-
-        {activeSidebarPanel === "save" ? (
-          <section className="sidebar-panel-section">
-            <h2>Save</h2>
-            <div className="save-controls">
-              {saveSlots.map((slotInfo) => (
-                <div className="save-slot" key={slotInfo.slot}>
-                  <div>
-                    <strong>Slot {slotInfo.slot}</strong>
-                    <span>{getSaveSceneTitle(slotInfo.sceneId)}</span>
-                    <small>{formatSaveTime(slotInfo.savedAt)}</small>
+                    <button
+                      type="button"
+                      onClick={() => handleClearSave(slotInfo.slot)}
+                      disabled={!slotInfo.exists}
+                    >
+                      Clear
+                    </button>
                   </div>
-                  <button type="button" onClick={() => handleManualSave(slotInfo.slot)}>
-                    Save
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleLoad(slotInfo.slot)}
-                    disabled={!slotInfo.exists}
-                  >
-                    Load
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleClearSave(slotInfo.slot)}
-                    disabled={!slotInfo.exists}
-                  >
-                    Clear
-                  </button>
-                </div>
-              ))}
-            </div>
-            <button className="new-path-button" type="button" onClick={handleRestart}>
-              New Path
-            </button>
-            <button className="new-path-button" type="button" onClick={handleLogout}>
-              Logout
-            </button>
-            <p className="save-message">{saveMessage}</p>
-          </section>
-        ) : null}
+                ))}
+              </div>
+              <button className="new-path-button" type="button" onClick={handleRestart}>
+                New Path
+              </button>
+              <button className="new-path-button" type="button" onClick={handleLogout}>
+                Logout
+              </button>
+              <p className="save-message">{saveMessage}</p>
+            </section>
+          </>
+        )}
       </aside>
     </main>
   );
