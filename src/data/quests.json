@@ -103,6 +103,26 @@
     }
   },
   {
+    "id": "medicine_recipe_trust",
+    "name": "Clean Hands, Clean Roots",
+    "description": "Earn the medicine senior sister's trust by doing patient preparation work before asking for recipe instruction.",
+    "steps": [
+      "Gain the senior sister's notice through careful garden work.",
+      "Sort medicinal materials without rushing.",
+      "Receive practical medicine recipes."
+    ]
+  },
+  {
+    "id": "elder_foundation_instruction",
+    "name": "Medicine For The Wall",
+    "description": "Ask the bottleneck elder for preparation that keeps future breakthroughs from damaging your foundation.",
+    "steps": [
+      "Show enough foundation control to be worth instructing.",
+      "Copy the stabilizing decoction pattern.",
+      "Remember that survival medicine is not the same as raw strength."
+    ]
+  },
+  {
     "id": "broken_trade_route",
     "name": "The Broken Trade Route",
     "description": "Investigate trouble on the village road and find out why ordinary bandits are afraid of something above them.",
@@ -140,5 +160,15 @@
     "rewards": {
       "spiritStones": 3
     }
+  },
+  {
+    "id": "luo_salvage_trust",
+    "name": "Luo's Salvage Work",
+    "description": "Help Luo Jiwei sort useful salvage from junk so he trusts you with practical crafting patterns.",
+    "steps": [
+      "Offer to work beside Luo's anvil.",
+      "Sort salvage by what can hold pressure.",
+      "Earn Luo's first practical correction."
+    ]
   }
 ]

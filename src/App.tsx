@@ -835,12 +835,14 @@ function App() {
   );
   const availableRecipes = useMemo(
     () =>
-      recipeData.map((recipe) => ({
-        recipe,
-        canCraft: canCraftRecipe(gameState.player, recipe),
-        missingRequirements: getRecipeRequirementSummary(gameState.player, recipe),
-        resultItem: itemData.find((item) => item.id === recipe.resultItem),
-      })),
+      recipeData
+        .filter((recipe) => (gameState.player.knownRecipes ?? []).includes(recipe.id))
+        .map((recipe) => ({
+          recipe,
+          canCraft: canCraftRecipe(gameState.player, recipe),
+          missingRequirements: getRecipeRequirementSummary(gameState.player, recipe),
+          resultItem: itemData.find((item) => item.id === recipe.resultItem),
+        })),
     [gameState.player],
   );
   const npcJournalEntries = useMemo(

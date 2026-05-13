@@ -51,3 +51,6 @@
 - Converted Azure Cloud Mountain Gate scene art from JPEG to PNG and updated the scene area reference after the in-app browser blocked the JPEG request.
 - Added Phase 5 crafting expansion data: 13 new recipes, 11 new crafted items, skill gates, buffs/drawbacks, and two supporting skill definitions.
 - Made equipment max health and max qi effects apply when gear is equipped or unequipped.
+- Added known recipe tracking so crafting recipes must be learned before appearing in the crafting panel.
+- Added NPC reputation recipe unlock paths for Luo Jiwei, the Medicine Garden Senior Sister, and Elder Shen.
+- Added supporting trust quests for Luo's salvage work, medicine recipe instruction, and bottleneck foundation instruction.

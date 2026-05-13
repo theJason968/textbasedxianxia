@@ -53,6 +53,7 @@ export type Player = {
   daysRemainingToExam: number;
   spiritStones: number;
   inventory: string[];
+  knownRecipes: string[];
   equipment: Partial<Record<EquipmentSlot, string>>;
   techniques: string[];
   skills: Record<string, number>;
@@ -304,6 +305,7 @@ export type ChoiceEffect = Partial<
     foundationCost?: number;
   };
   learnTechniques?: string[];
+  learnRecipes?: string[];
   addSkills?: Record<string, number>;
   addElements?: Partial<Record<ElementalEssence, number>>;
   awakenConstitutions?: string[];
@@ -361,6 +363,7 @@ export type ChoiceRequirement = {
   realm?: Realm;
   stage?: RealmStage;
   items?: string[];
+  recipes?: string[];
   techniques?: string[];
   skills?: Record<string, number>;
   elements?: Partial<Record<ElementalEssence, number>>;

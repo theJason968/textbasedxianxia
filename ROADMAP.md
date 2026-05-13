@@ -34,7 +34,7 @@
 ### Content — Thin (needs expansion)
 - **2 enemies** — mist_wolf, road_bandits (both have phases; need 8–10 more)
 - **2 techniques** — azure_cloud_breathing, pine_shadow_step (combat system ready for more)
-- **3 crafting recipes** — very limited variety
+- **16 crafting recipes** — Phase 5 expansion added; recipe access now unlocks through NPC trust
 - **9 quests** — mostly short outer sect tasks
 - **18 items** — limited variety
 
@@ -93,7 +93,10 @@
 - [x] Skill-gated recipes using Alchemy, Survival, Blacksmithing, Martial Arts, and Cultivation Foundation skills
 - [x] Rare ingredient locations tied to dungeon, town, lower grove, and beast-hunt content
 - [x] Crafting skill tree expansion with Craftsman's Hand and Breath Discipline
-- [ ] Recipe unlock scenes tied to NPCs and crafting locations
+- [x] Recipe unlock scenes tied to NPCs and crafting locations
+  - Luo Jiwei trust path unlocks practical weapon and armor patterns.
+  - Medicine Garden Senior Sister trust path unlocks pills, poultices, antivenom, and residue-control tonics.
+  - Elder Shen bottleneck guidance unlocks the foundation-stabilizing decoction.
 
 ### Phase 6 — Mortal Peak Arc
 *Central dramatic arc of the mortal stage*

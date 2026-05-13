@@ -40,6 +40,10 @@ export function meetsRequirements(
     return false;
   }
 
+  if (!hasEvery(player.knownRecipes, requirements.recipes)) {
+    return false;
+  }
+
   if (!hasEvery(player.techniques, requirements.techniques)) {
     return false;
   }
@@ -105,7 +109,7 @@ function meetsStatRequirements(
   });
 }
 
-function hasEvery(currentValues: string[], requiredValues: string[] = []): boolean {
+function hasEvery(currentValues: string[] = [], requiredValues: string[] = []): boolean {
   return requiredValues.every((requiredValue) => currentValues.includes(requiredValue));
 }
 

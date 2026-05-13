@@ -25,6 +25,7 @@ import items from "../data/items.json";
 import quests from "../data/quests.json";
 import skills from "../data/skills.json";
 import techniques from "../data/techniques.json";
+import craftingRecipes from "../data/craftingRecipes.json";
 
 type NumericPlayerStat = {
   [Key in keyof Player]: Player[Key] extends number ? Key : never;
@@ -62,6 +63,7 @@ const enemyData = enemies as Enemy[];
 const itemData = items as Array<{ id: string; name: string }>;
 const techniqueData = techniques as Array<{ id: string; name: string }>;
 const questData = quests as Array<{ id: string; name: string }>;
+const recipeData = craftingRecipes as Array<{ id: string; name: string }>;
 const playerChangeKeys: Array<keyof Pick<
   Player,
   | "health"
@@ -192,6 +194,7 @@ export function getPlayerChangeMessages(
     ...getTimeMessages(previousPlayer, nextPlayer),
     ...getNumericStatMessages(previousPlayer, nextPlayer),
     ...getInventoryMessages(previousPlayer, nextPlayer),
+    ...getRecipeMessages(previousPlayer, nextPlayer),
     ...getTechniqueMessages(previousPlayer, nextPlayer),
     ...getTechniqueMasteryMessages(previousPlayer, nextPlayer),
     ...getSkillMessages(previousPlayer, nextPlayer),
@@ -245,6 +248,7 @@ function applyEffects(player: Player, effects?: ChoiceEffect): Player {
     ...player,
     ...statChanges,
     inventory: mergeUnique(player.inventory, effects.addItems),
+    knownRecipes: mergeUnique(player.knownRecipes, effects.learnRecipes),
     equipment: equipRewardedItem(player.equipment, effects),
     techniques: mergeUnique(player.techniques, effects.learnTechniques),
     ...applySkillPractice(player, effects.addSkills),
@@ -330,7 +334,7 @@ function applyQuestEffects(player: Player, effects: NonNullable<Choice["effects"
   return nextPlayer;
 }
 
-function mergeUnique(current: string[], additions: string[] = []): string[] {
+function mergeUnique(current: string[] = [], additions: string[] = []): string[] {
   return [...new Set([...current, ...additions])];
 }
 
@@ -546,6 +550,16 @@ function getInventoryMessages(previousPlayer: Player, nextPlayer: Player): strin
       return `Character gained ${count > 1 ? `${count} ` : ""}${itemName}.`;
     },
   );
+}
+
+function getRecipeMessages(previousPlayer: Player, nextPlayer: Player): string[] {
+  return (nextPlayer.knownRecipes ?? [])
+    .filter((recipeId) => !(previousPlayer.knownRecipes ?? []).includes(recipeId))
+    .map((recipeId) => {
+      const recipeName = recipeData.find((recipe) => recipe.id === recipeId)?.name ?? recipeId;
+
+      return `Recipe learned: ${recipeName}.`;
+    });
 }
 
 function getTechniqueMessages(previousPlayer: Player, nextPlayer: Player): string[] {

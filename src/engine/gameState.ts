@@ -30,6 +30,11 @@ export function createInitialGameState(): GameState {
       daysRemainingToExam: 10,
       spiritStones: 0,
       inventory: [],
+      knownRecipes: [
+        "cooling_herb_salve",
+        "bone_reinforced_staff",
+        "mist_core_qi_draught",
+      ],
       equipment: {},
       techniques: [],
       skills: {},

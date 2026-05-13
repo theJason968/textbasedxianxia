@@ -421,16 +421,55 @@
       "herb_recognition",
       "impurity_awareness"
     ],
-    "associatedQuests": ["first_sect_task"],
+    "associatedQuests": ["first_sect_task", "medicine_recipe_trust"],
     "memoryFlags": [
       "earned_garden_sisters_notice",
       "completed_first_sect_task",
+      "completed_medicine_trust_work",
+      "learned_medicine_residue_patterns",
       "sensed_hidden_herbs"
     ],
     "returnHooks": [
       "Can offer medicine garden follow-up tasks.",
       "Can become an alchemy contact if the player shows care with herbs.",
       "Can judge the player's impurity and foundation stability later."
+    ]
+  },
+  {
+    "id": "bottleneck_elder",
+    "name": "Elder Shen",
+    "title": "Outer Sect Bottleneck Elder",
+    "disposition": "mentor",
+    "faction": "Azure Cloud Sect",
+    "firstSceneId": "first_bottleneck_guidance",
+    "description": "A patient elder assigned to stop new disciples from mistaking reckless breakthroughs for progress.",
+    "personality": [
+      "severe",
+      "patient",
+      "precise",
+      "quietly protective"
+    ],
+    "relationshipToPlayer": "Explains bottleneck preparation after the player survives enough of the outer sect to ask better questions.",
+    "skills": {
+      "foundation_control": 5,
+      "breath_discipline": 4,
+      "impurity_awareness": 4,
+      "crude_elixir_refining": 3
+    },
+    "teachesSkills": [
+      "foundation_control",
+      "breath_discipline"
+    ],
+    "associatedQuests": ["elder_foundation_instruction"],
+    "memoryFlags": [
+      "learned_ice_vein_location",
+      "elder_explained_mist_core_breakthrough",
+      "learned_foundation_steadying_decoction"
+    ],
+    "returnHooks": [
+      "Can warn the player when a breakthrough attempt is underprepared.",
+      "Can unlock safer bottleneck recipes for disciples who show patience.",
+      "Can become a recurring mentor for Mortal Peak and later realm transitions."
     ]
   },
   {
@@ -487,10 +526,14 @@
       "careful_eye": 3
     },
     "teachesSkills": [],
-    "associatedQuests": ["town_boar_bounty"],
+    "associatedQuests": ["town_boar_bounty", "luo_salvage_trust"],
     "memoryFlags": [
       "met_luo_jiwei",
-      "asked_luo_about_bounty"
+      "asked_luo_about_bounty",
+      "helped_luo_sort_salvage",
+      "learned_luo_basic_patterns",
+      "learned_luo_beast_patterns",
+      "learned_luo_staff_patterns"
     ],
     "returnHooks": [
       "Can upgrade mortal-grade weapons for a spirit stone cost.",

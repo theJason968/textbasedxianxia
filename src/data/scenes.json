@@ -5378,6 +5378,27 @@
         }
       },
       {
+        "label": "Ask the medicine senior sister for work that earns instruction",
+        "nextScene": "medicine_trust_work",
+        "requires": {
+          "flags": { "earned_garden_sisters_notice": true },
+          "flagsAbsent": ["completed_medicine_trust_work"]
+        },
+        "effects": {
+          "startQuest": "medicine_recipe_trust"
+        }
+      },
+      {
+        "label": "Bring unusual residues to the medicine senior sister",
+        "nextScene": "medicine_residue_lesson",
+        "hidden": true,
+        "requires": {
+          "relationships": { "medicine_garden_senior_sister": 3 },
+          "items": ["mist_residue"],
+          "flagsAbsent": ["learned_medicine_residue_patterns"]
+        }
+      },
+      {
         "label": "Watch sparring at the blade-scarred arena",
         "nextScene": "arena_watch"
       },
@@ -5576,6 +5597,7 @@
         "effects": {
           "foundationStability": 1,
           "addItems": ["minor_qi_pill"],
+          "relationships": { "medicine_garden_senior_sister": 1 },
           "setFlags": {
             "earned_garden_sisters_notice": true
           }
@@ -5615,6 +5637,54 @@
       {
         "label": "Return to the outer sect paths",
         "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "medicine_trust_work",
+    "areaId": "medicine_garden",
+    "title": "Clean Hands, Clean Roots",
+    "body": "The senior sister studies you for a long moment after hearing your request.\n\n\"Instruction is not a wage,\" she says. \"It is a debt. If I teach you a recipe and you use it carelessly, the person harmed by it will not know my name, but the fault still reaches me.\"\n\nShe sets three trays on the bench: dried frost-vein leaf, road wound moss, and a small dish of dark flakes scraped from a viper bite scar.\n\n\"Sort them. Throw away anything that looks impressive but smells wrong. Then copy the ratios until your wrist stops trying to hurry.\"",
+    "choices": [
+      {
+        "label": "Accept the corrected recipe notes",
+        "nextScene": "outer_sect_paths",
+        "effects": {
+          "trainingFatigue": 1,
+          "completeQuest": "medicine_recipe_trust",
+          "relationships": { "medicine_garden_senior_sister": 2 },
+          "addSkills": {
+            "herb_recognition": 1,
+            "impurity_awareness": 1,
+            "crude_elixir_refining": 1
+          },
+          "learnRecipes": [
+            "standard_qi_pill",
+            "shadow_viper_antivenom",
+            "road_wound_poultice"
+          ],
+          "setFlags": { "completed_medicine_trust_work": true }
+        }
+      }
+    ]
+  },
+  {
+    "id": "medicine_residue_lesson",
+    "areaId": "medicine_garden",
+    "title": "Mist That Leaves A Debt",
+    "body": "The senior sister does not touch the mist residue until she has wrapped her fingers in treated cloth.\n\n\"Residue is honest,\" she says. \"It tells you what the body failed to digest. A crude cultivator chases stronger medicine. A living cultivator learns how to clean up after it.\"\n\nShe shows you how to bind the residue into a calming draught, then how to cut a meridian tonic with enough water-aspected herb that it mends without scouring.",
+    "choices": [
+      {
+        "label": "Study the residue-control recipes",
+        "nextScene": "outer_sect_paths",
+        "effects": {
+          "relationships": { "medicine_garden_senior_sister": 1 },
+          "learnRecipes": [
+            "clear_meridian_tonic",
+            "mist_calming_draught"
+          ],
+          "setFlags": { "learned_medicine_residue_patterns": true }
+        }
       }
     ]
   },
@@ -5785,6 +5855,19 @@
         }
       },
       {
+        "label": "Ask how to prepare for harder bottlenecks without cracking your foundation",
+        "nextScene": "elder_foundation_recipe_lesson",
+        "hidden": true,
+        "requires": {
+          "relationships": { "bottleneck_elder": 1 },
+          "skills": { "foundation_control": 2 },
+          "flagsAbsent": ["learned_foundation_steadying_decoction"]
+        },
+        "effects": {
+          "startQuest": "elder_foundation_instruction"
+        }
+      },
+      {
         "label": "Return to the courtyard and keep preparing",
         "nextScene": "outer_sect_courtyard"
       }
@@ -5800,6 +5883,7 @@
         "label": "Head toward the cold north face of the grove now",
         "nextScene": "cold_face_grove",
         "effects": {
+          "relationships": { "bottleneck_elder": 1 },
           "setFlags": {
             "learned_ice_vein_location": true
           }
@@ -5809,9 +5893,32 @@
         "label": "Thank the elder and return to the courtyard",
         "nextScene": "outer_sect_courtyard",
         "effects": {
+          "relationships": { "bottleneck_elder": 1 },
           "setFlags": {
             "learned_ice_vein_location": true
           }
+        }
+      }
+    ]
+  },
+  {
+    "id": "elder_foundation_recipe_lesson",
+    "areaId": "outer_sect",
+    "title": "Medicine For The Wall",
+    "body": "The elder hears the question without smiling.\n\n\"Good. Wanting to survive the next wall before you touch it is the first sign you may deserve to reach it.\"\n\nHe draws a simple decoction pattern in dark ink: not a pill for forcing qi upward, but a stabilizing medicine that braces the foundation before a bottleneck begins to grind.\n\n\"This will not make you stronger. It will make your mistakes less eager to become injuries. Do not confuse those two things.\"",
+    "choices": [
+      {
+        "label": "Copy the stabilizing decoction pattern",
+        "nextScene": "first_bottleneck_guidance",
+        "effects": {
+          "completeQuest": "elder_foundation_instruction",
+          "relationships": { "bottleneck_elder": 1 },
+          "addSkills": {
+            "foundation_control": 1,
+            "breath_discipline": 1
+          },
+          "learnRecipes": ["foundation_steadying_decoction"],
+          "setFlags": { "learned_foundation_steadying_decoction": true }
         }
       }
     ]
@@ -5864,6 +5971,7 @@
         "label": "Return to your room and prepare to attempt it",
         "nextScene": "room_hub",
         "effects": {
+          "relationships": { "bottleneck_elder": 1 },
           "setFlags": {
             "elder_explained_mist_core_breakthrough": true
           }
@@ -5873,6 +5981,7 @@
         "label": "Ask one more question before leaving",
         "nextScene": "outer_sect_courtyard",
         "effects": {
+          "relationships": { "bottleneck_elder": 1 },
           "setFlags": {
             "elder_explained_mist_core_breakthrough": true
           }
@@ -7644,6 +7753,45 @@
         }
       },
       {
+        "label": "Offer to sort salvage and learn how Luo binds rough materials",
+        "nextScene": "luo_salvage_work",
+        "requires": {
+          "flagsAbsent": ["helped_luo_sort_salvage"]
+        },
+        "effects": {
+          "startQuest": "luo_salvage_trust"
+        }
+      },
+      {
+        "label": "Ask Luo to teach you practical field crafting",
+        "nextScene": "luo_basic_recipe_lesson",
+        "hidden": true,
+        "requires": {
+          "relationships": { "luo_jiwei": 1 },
+          "flagsAbsent": ["learned_luo_basic_patterns"]
+        }
+      },
+      {
+        "label": "Show Luo your beast materials and ask what they can become",
+        "nextScene": "luo_beast_material_lesson",
+        "hidden": true,
+        "requires": {
+          "relationships": { "luo_jiwei": 3 },
+          "items": ["stone_crab_shell", "beast_hide"],
+          "flagsAbsent": ["learned_luo_beast_patterns"]
+        }
+      },
+      {
+        "label": "Ask about advanced staff and spear work",
+        "nextScene": "luo_staff_weapon_lesson",
+        "hidden": true,
+        "requires": {
+          "relationships": { "luo_jiwei": 4 },
+          "items": ["cloud_stag_antler"],
+          "flagsAbsent": ["learned_luo_staff_patterns"]
+        }
+      },
+      {
         "label": "Deliver proof — the spirit boar is dead",
         "nextScene": "town_blacksmith_shop",
         "hidden": true,
@@ -7655,6 +7803,7 @@
         "effects": {
           "spiritStones": 3,
           "completeQuest": "town_boar_bounty",
+          "relationships": { "luo_jiwei": 2 },
           "setFlags": { "boar_bounty_collected": true },
           "messages": ["Luo takes the hide, turns it over once, and sets it on the counter. He does not say anything about the quality. He counts three spirit stones from a drawer and places them in front of you. \"East terraces will hold this season,\" he says. That is all the acknowledgment you are going to get."]
         }
@@ -7662,6 +7811,90 @@
       {
         "label": "Return to the main street",
         "nextScene": "iron_bridge_town"
+      }
+    ]
+  },
+  {
+    "id": "luo_salvage_work",
+    "areaId": "iron_bridge_town",
+    "title": "Work Beside The Anvil",
+    "body": "Luo points you toward a crate of snapped buckles, bent nails, bone chips, and copper scrap.\n\n\"Sort what can hold pressure from what only looks useful,\" he says. \"Half of craft is not lying to yourself about materials. Other half is not lying to the person who has to wear the result.\"\n\nBy the time the crate is clean, your fingers smell of iron and old road dust. Luo gives one short nod.",
+    "choices": [
+      {
+        "label": "Return to the counter",
+        "nextScene": "town_blacksmith_shop",
+        "effects": {
+          "trainingFatigue": 1,
+          "completeQuest": "luo_salvage_trust",
+          "relationships": { "luo_jiwei": 1 },
+          "addSkills": {
+            "iron_sense": 1,
+            "tool_repair": 1,
+            "craftsmen": 1
+          },
+          "setFlags": { "helped_luo_sort_salvage": true }
+        }
+      }
+    ]
+  },
+  {
+    "id": "luo_basic_recipe_lesson",
+    "areaId": "iron_bridge_town",
+    "title": "Patterns For Road Gear",
+    "body": "Luo sketches three patterns on the back of an old receipt: binding strips, a scale-backed blade, and a vest reinforcement that puts ugly practicality before elegance.\n\n\"These are not sect secrets,\" he says. \"They are things people survive because someone bothered to make them properly.\"",
+    "choices": [
+      {
+        "label": "Memorize the practical patterns",
+        "nextScene": "town_blacksmith_shop",
+        "effects": {
+          "relationships": { "luo_jiwei": 1 },
+          "learnRecipes": [
+            "cloud_iron_binding_kit",
+            "viper_scale_blade",
+            "reinforced_beast_hide_vest"
+          ],
+          "setFlags": { "learned_luo_basic_patterns": true }
+        }
+      }
+    ]
+  },
+  {
+    "id": "luo_beast_material_lesson",
+    "areaId": "iron_bridge_town",
+    "title": "Shell, Hide, And Blood",
+    "body": "Luo turns the stone crab shell under the light, then presses a thumb against the beast hide until the hide creaks.\n\n\"Good shell wants to stay shell. Good hide wants to stay animal. If you force them together, they split. If you give them a reason to agree, they save ribs.\"\n\nHe marks two heavier patterns and a sword-hardening method beside them.",
+    "choices": [
+      {
+        "label": "Study the heavier beast-material patterns",
+        "nextScene": "town_blacksmith_shop",
+        "effects": {
+          "relationships": { "luo_jiwei": 1 },
+          "learnRecipes": [
+            "crab_shell_pauldron",
+            "spirit_hardened_shortsword"
+          ],
+          "setFlags": { "learned_luo_beast_patterns": true }
+        }
+      }
+    ]
+  },
+  {
+    "id": "luo_staff_weapon_lesson",
+    "areaId": "iron_bridge_town",
+    "title": "Reach And Restraint",
+    "body": "Luo weighs the cloud stag antler, then looks at your stance.\n\n\"People think long weapons are for hitting first. Wrong. They are for deciding who gets close enough to matter. If you want one, build it like the shaft is a promise you intend to keep.\"\n\nHe shows you how antler joins to bamboo, then how binding strips can turn a reinforced staff into a safer weapon.",
+    "choices": [
+      {
+        "label": "Commit the staff and spear patterns to memory",
+        "nextScene": "town_blacksmith_shop",
+        "effects": {
+          "relationships": { "luo_jiwei": 1 },
+          "learnRecipes": [
+            "cloud_stag_spear",
+            "spirit_sealed_staff_wrap"
+          ],
+          "setFlags": { "learned_luo_staff_patterns": true }
+        }
       }
     ]
   },
