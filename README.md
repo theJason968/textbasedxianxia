@@ -29,6 +29,10 @@ npm run dev
 npm run build
 ```
 
+## Writing References
+
+- [Combat Prose Codex](docs/Combat_Prose_Codex.md) defines power-tier narration, cross-tier fight scaling, and technique-specific prose rules for future combat scenes.
+
 ## Writing Conditional Choices
 
 Choices can use `outcomes` when the same visible option should resolve differently

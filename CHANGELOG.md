@@ -54,3 +54,11 @@
 - Added known recipe tracking so crafting recipes must be learned before appearing in the crafting panel.
 - Added NPC reputation recipe unlock paths for Luo Jiwei, the Medicine Garden Senior Sister, and Elder Shen.
 - Added supporting trust quests for Luo's salvage work, medicine recipe instruction, and bottleneck foundation instruction.
+- Added the Combat Prose Codex as a repo writing reference, with companion rules for technique-specific fight narration.
+- Updated the roadmap with Hermit/Explorer technique parity, Phase 6 technique synergy ideas, Sunder-Heart Palm, the Wall-Faced Remnant, and Phase 7 faction-score/quest-board expansion plans.
+- Added Foundation Establishment resource-path planning: Void Hollow Root for risky explorer breakthroughs and Foundation-Stabilizing Decoction for safer hermit breakthroughs.
+- Clarified faction quest board evolution should never hard or soft lock the player; hostile boards must expose a recovery route.
+- Improved the crafting panel with output item previews, equipment/use effect summaries, and per-ingredient owned/missing counts.
+- Added delayed search resolution to the roadmap: optional 3-second animated investigation bars for search/tracking/exploration choices.
+- Added crafting filters for All, Craftable, Locked Ingredients, and known recipe categories, plus crafting empty-state hints.
+- Added source / teacher labels to crafting recipes and displayed them in the crafting panel, wrapping Phase 5 crafting polish.

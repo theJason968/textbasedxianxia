@@ -5,6 +5,7 @@
     "category": "Medicine",
     "tier": "mortal",
     "description": "A simple field medicine made from frost-vein herbs and cloud moss. Useful for treating cuts, burns, and road wounds.",
+    "source": "Starter recipe",
     "ingredients": {
       "frost_vein_herb": 1,
       "cloud_moss": 1
@@ -21,6 +22,7 @@
     "category": "Weapon",
     "tier": "low_grade_spirit",
     "description": "A crude but reliable fighting staff reinforced with spirit beast bone and careful binding.",
+    "source": "Starter recipe",
     "ingredients": {
       "bamboo_staff": 1,
       "low_grade_beast_bone": 1,
@@ -39,6 +41,7 @@
     "category": "Elixir",
     "tier": "low_grade_spirit",
     "description": "A rough draught that draws faint qi out of a mist wolf core. Effective, but not clean.",
+    "source": "Starter recipe",
     "ingredients": {
       "mist_wolf_core": 1,
       "frost_vein_herb": 1,
@@ -57,6 +60,7 @@
     "category": "Elixir",
     "tier": "low_grade_spirit",
     "description": "Refine a proper outer sect qi pill from clean herbs and beast blood. It gives more qi than crude village medicine with less residue.",
+    "source": "Taught by the Medicine Garden Senior Sister",
     "ingredients": {
       "frost_vein_herb": 1,
       "cloud_moss": 1,
@@ -75,6 +79,7 @@
     "category": "Elixir",
     "tier": "low_grade_spirit",
     "description": "Distill a cold tonic that clears shallow impurity from the meridians at the cost of briefly roughening the foundation.",
+    "source": "Taught by the Medicine Garden Senior Sister",
     "ingredients": {
       "ice_vein_herb": 1,
       "mist_residue": 1,
@@ -93,6 +98,7 @@
     "category": "Elixir",
     "tier": "low_grade_spirit",
     "description": "Boil crab core, stag antler, and frost-vein herb into a heavy decoction that steadies the body before bottleneck work.",
+    "source": "Taught by Elder Shen",
     "ingredients": {
       "crab_core": 1,
       "cloud_stag_antler": 1,
@@ -112,6 +118,7 @@
     "category": "Medicine",
     "tier": "low_grade_spirit",
     "description": "Prepare a fast-acting antivenom from shadow viper gland, cloud moss, and frost-vein herb.",
+    "source": "Taught by the Medicine Garden Senior Sister",
     "ingredients": {
       "shadow_viper_gland": 1,
       "cloud_moss": 1,
@@ -130,6 +137,7 @@
     "category": "Medicine",
     "tier": "mortal",
     "description": "Turn beast hide and cloud moss into a practical field dressing for road wounds.",
+    "source": "Taught by the Medicine Garden Senior Sister",
     "ingredients": {
       "beast_hide": 1,
       "cloud_moss": 1
@@ -146,6 +154,7 @@
     "category": "Elixir",
     "tier": "low_grade_spirit",
     "description": "Refine mist residue and ice-vein herb into a draught that recovers qi while carrying impurity out through cold breath.",
+    "source": "Taught by the Medicine Garden Senior Sister",
     "ingredients": {
       "mist_residue": 1,
       "ice_vein_herb": 1
@@ -163,6 +172,7 @@
     "category": "Weapon",
     "tier": "low_grade_spirit",
     "description": "Harden a road shortsword with stone crab shell and beast blood until it holds qi along the edge.",
+    "source": "Taught by Luo Jiwei",
     "ingredients": {
       "iron_shortsword": 1,
       "stone_crab_shell": 1,
@@ -181,6 +191,7 @@
     "category": "Weapon",
     "tier": "low_grade_spirit",
     "description": "Rebalance an iron shortsword with shadow viper scale so it guards as well as it cuts.",
+    "source": "Taught by Luo Jiwei",
     "ingredients": {
       "viper_scale": 1,
       "iron_shortsword": 1
@@ -198,6 +209,7 @@
     "category": "Weapon",
     "tier": "low_grade_spirit",
     "description": "Set a cloud stag antler onto a bamboo staff to make a long weapon with clean piercing force.",
+    "source": "Taught by Luo Jiwei",
     "ingredients": {
       "cloud_stag_antler": 1,
       "bamboo_staff": 1
@@ -215,6 +227,7 @@
     "category": "Armor",
     "tier": "low_grade_spirit",
     "description": "Reinforce a crude leather vest with beast hide and bone dust for a sturdier explorer's armor.",
+    "source": "Taught by Luo Jiwei",
     "ingredients": {
       "crude_leather_vest": 1,
       "beast_hide": 1,
@@ -233,6 +246,7 @@
     "category": "Armor",
     "tier": "low_grade_spirit",
     "description": "Strap stone crab shell over beast hide to make a heavy shoulder guard that keeps serious blows away from the ribs.",
+    "source": "Taught by Luo Jiwei",
     "ingredients": {
       "stone_crab_shell": 1,
       "beast_hide": 1
@@ -250,6 +264,7 @@
     "category": "Component",
     "tier": "mortal",
     "description": "Work road copper, bone dust, and cloud moss into binding strips for advanced gear repairs and upgrades.",
+    "source": "Taught by Luo Jiwei",
     "ingredients": {
       "road_copper": 1,
       "bone_dust": 1,
@@ -268,6 +283,7 @@
     "category": "Weapon",
     "tier": "low_grade_spirit",
     "description": "Bind a reinforced staff with cloud-iron strips and spirit beast blood to make it safer in close exchanges.",
+    "source": "Taught by Luo Jiwei",
     "ingredients": {
       "bone_reinforced_staff": 1,
       "cloud_iron_binding_kit": 1,

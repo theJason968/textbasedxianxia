@@ -6,6 +6,7 @@ export type CraftingRecipe = {
   category: string;
   tier: ItemTier;
   description: string;
+  source?: string;
   ingredients: Record<string, number>;
   resultItem: string;
   quantity: number;

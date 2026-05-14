@@ -19,7 +19,7 @@
 - Social scores (relationships, reputation, morality, sect contribution)
 - Interactive quest board (2D image with hover tooltips and click-to-accept)
 - Room base system (upgradeable activities: cultivation, study, herb shelf, journal)
-- Condition engine supports: stats, flags, flagsAbsent, items, techniques, techniqueMastery, skills, elements, realm/stage, relationships, reputation
+- Condition engine supports: stats, flags, flagsAbsent, items, techniques, techniqueMastery, skills, elements, realm/stage, relationships, reputation, morality, sect contribution
 
 ### Content — Complete
 | Area | Status |
@@ -97,14 +97,32 @@
   - Luo Jiwei trust path unlocks practical weapon and armor patterns.
   - Medicine Garden Senior Sister trust path unlocks pills, poultices, antivenom, and residue-control tonics.
   - Elder Shen bottleneck guidance unlocks the foundation-stabilizing decoction.
+- [x] Crafting UI polish
+  - Result previews show crafted item effects.
+  - Ingredient rows show owned / required counts.
+  - Filters separate All, Craftable, Locked Ingredients, and recipe categories.
+  - Recipe cards show source / teacher labels.
 
 ### Phase 6 — Mortal Peak Arc
 *Central dramatic arc of the mortal stage*
 
+- [ ] Exploration polish: delayed search resolution
+  - Add an optional animated countdown/progress bar for search, tracking, investigation, and uncertain exploration choices.
+  - Example: player chooses "Search the lower grove carefully" → 3-second bar with investigation text → scene outcome resolves.
+  - Keep it opt-in per choice so routine navigation and dialogue remain instant.
+  - Support short staged text such as "Checking disturbed roots...", "Following qi traces...", "Listening for movement...".
 - [ ] Mortal Late → Peak breakthrough path
   - Impurity purification as primary gate (must reduce impurity below threshold)
   - Elder assessment scene
   - Dedicated purification activity in the room or medicine garden
+- [ ] Phase 6 technique and enemy expansion
+  - Technique: **Sunder-Heart Palm** — deals bonus damage based on enemy impurity / instability; rewards perception, opponent study, and medicine/cultivation knowledge.
+  - Enemy: **Wall-Faced Remnant** — ghost of a cultivator who failed a breakthrough; acts as a narrative warning before Foundation Establishment.
+  - Use the Combat Prose Codex to make Mortal Peak feel oppressive, visibly qi-dense, and close to the edge of mortality.
+- [ ] Technique synergy traits
+  - Add hidden traits unlocked by mastering compatible techniques.
+  - Example: **Steady Heart** from Azure Cloud Breathing 5 + Iron Body Method 5; improves breakthrough safety and resistance to pressure/fear effects.
+  - Example: **Empty Pine Rhythm** from Pine Shadow Step 5 + Void Step 3; improves dodge/escape scenes and advanced movement checks.
 - [ ] Mortal Peak cultivation content
   - Increased technique mastery requirements
   - Foundation stability becomes critical
@@ -112,6 +130,10 @@
 - [ ] Foundation Establishment breakthrough
   - Chapter-ending narrative moment, not just a stat increment
   - Requires a spirit-grade resource from a dungeon or town source
+  - Resource path split:
+    - **Explorer**: Void Hollow Root enables a higher-ceiling breakthrough with stronger affinity/story hooks, but raises impurity or instability during the attempt.
+    - **Hermit**: Foundation-Stabilizing Decoction enables a safer orthodox breakthrough with steadier foundation and sect approval, but fewer bonus affinities.
+  - The Wall-Faced Remnant should demonstrate impurity danger before this gate by using Sunder-Heart Palm against the player.
   - Changes available scenes, NPC reactions, and sect standing
 
 ### Phase 7 — Inner Sect Path
@@ -120,14 +142,30 @@
 - [ ] Inner sect assessment quest
 - [ ] Inner sect area (different atmosphere — new NPCs, higher stakes, different visual tone)
 - [ ] Inner disciple rivals and mentors
+- [ ] Hermit / Explorer technique parity
+  - Hermit path can trade time, sect contribution, and hall reputation for standardized sect techniques.
+  - Explorer path finds ancient, corrupted, or lost variants with stronger risk/reward profiles.
+  - Both paths must cover the same core combat roles so hermits are slower but never blocked from required progression.
 - [ ] Inner sect techniques (significantly more powerful)
+  - Standardized versions: safer, orthodox, easier to justify inside the sect.
+  - Ancient/corrupted variants: higher ceiling, impurity/corruption/faction suspicion costs, stronger story hooks.
 - [ ] Sect politics and faction content
+  - Prefer group social scores over one-off flags: Discipline Hall, Medicine Hall, Sword Hall, Scripture Pavilion, Outer Affairs, etc.
+  - Use specific flags only for irreversible story events; use faction scores for repeatable access, reactions, prices, and quest availability.
+- [ ] Faction quest board evolution
+  - Upgrade the current static quest board into hall/faction boards using `scene.boardImage` and reputation-gated notices.
+  - Board art and available papers can change by sect rank, phase, and faction score.
+  - Add conditional board image selection in priority order, such as warning/vandalized boards for hostile factions or jade notice boards for Foundation Establishment quests.
+  - Avoid true soft locks: hostile faction boards should hide normal work but always show at least one recovery route, apology task, duel challenge, contribution payment, or reputation repair quest.
+  - Use quest-board changes to show politics visually without needing dozens of near-duplicate scenes.
 
 ---
 
 ## Design Principles
 
 - **Two valid paths**: hermit (sect cultivation) and explorer (dungeons/towns) both reach the same progression gates, but at different speeds. The explorer is faster; the hermit is slower but never blocked.
+- **Technique parity, different flavor**: hermits earn standardized orthodox tools through time, contribution, and reputation; explorers find stranger variants with higher risk, higher ceiling, and more story consequences.
+- **Faction scores over flag explosions**: use relationships, reputation, morality, and sect contribution for broad political state; reserve flags for specific events that truly happened or did not happen.
 - **World feels large**: new areas, towns, and dungeons should hint at even larger places beyond them. The player should always feel there is more to find.
 - **Story over grinding**: every activity should have writing attached to it. Stat gains should come with a sentence that makes them feel earned.
 - **Breakthroughs are chapter endings**: each realm/stage advance should feel like a narrative moment, not a menu transaction.

@@ -784,6 +784,11 @@ button.inventory-slot:hover {
   background: rgba(111, 77, 36, 0.45);
 }
 
+.crafting-filter-list {
+  grid-template-columns: repeat(auto-fit, minmax(6.25rem, 1fr));
+  margin-bottom: 0.8rem;
+}
+
 .skill-tree-list {
   display: grid;
   gap: 0.75rem;
@@ -847,7 +852,16 @@ button.inventory-slot:hover {
   list-style: none;
 }
 
-.crafting-list li {
+.crafting-empty-state {
+  margin: 0 0 1.5rem;
+  border: 1px solid rgba(231, 205, 157, 0.14);
+  border-radius: 6px;
+  padding: 0.85rem;
+  color: #cfc4b3;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.crafting-list > li {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.65rem;
@@ -887,6 +901,96 @@ button.inventory-slot:hover {
   color: #b7ab99;
   font-size: 0.75rem;
   line-height: 1.35;
+}
+
+.crafting-source {
+  color: #9ecfca;
+}
+
+.crafting-recipe-main {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.crafting-result-preview {
+  display: grid;
+  grid-template-columns: 2.35rem minmax(0, 1fr);
+  gap: 0.65rem;
+  align-items: center;
+  border: 1px solid rgba(215, 181, 109, 0.16);
+  border-radius: 6px;
+  padding: 0.55rem;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.crafting-result-preview .slot-icon,
+.crafting-result-preview .slot-image {
+  width: 2.35rem;
+  height: 2.35rem;
+}
+
+.crafting-result-preview small:first-child {
+  color: #efe5d4;
+}
+
+.crafting-ingredients {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.crafting-ingredients > span {
+  color: #d7b56d;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.crafting-ingredient-list {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.crafting-ingredient-list li {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr) auto;
+  gap: 0.45rem;
+  align-items: center;
+  border: 1px solid rgba(231, 205, 157, 0.1);
+  border-radius: 6px;
+  padding: 0.4rem 0.5rem;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.crafting-ingredient-list li span {
+  margin: 0;
+  color: #9ecf9f;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.crafting-ingredient-list li strong {
+  color: #ded4c2;
+  font-size: 0.78rem;
+}
+
+.crafting-ingredient-list li small {
+  margin: 0;
+  color: #c8bda9;
+  font-size: 0.72rem;
+}
+
+.crafting-ingredient-list .ingredient-missing {
+  border-color: rgba(192, 92, 82, 0.28);
+  background: rgba(122, 40, 32, 0.16);
+}
+
+.crafting-ingredient-list .ingredient-missing span,
+.crafting-missing-summary {
+  color: #e58f7d;
 }
 
 .crafting-list button {

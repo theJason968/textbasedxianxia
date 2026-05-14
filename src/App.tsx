@@ -83,6 +83,7 @@ type PackTab = "inventory" | "crafting";
 type PathTab = "quests" | "journal" | "techniques" | "skills";
 type RightPanelTab = "stats" | "pack" | "path" | "save";
 type StartView = "auth" | "character" | "game";
+type CraftingFilter = "All" | "Craftable" | "Locked Ingredients" | string;
 type ItemData = {
   id: string;
   name: string;
@@ -118,6 +119,14 @@ type ItemData = {
   >;
 };
 const itemData = items as ItemData[];
+
+type RecipeIngredientDetail = {
+  itemId: string;
+  name: string;
+  requiredCount: number;
+  ownedCount: number;
+  hasEnough: boolean;
+};
 const equipmentSlotLabels: Record<EquipmentSlot, string> = {
   weapon: "Weapon",
   clothing: "Clothing",
@@ -566,14 +575,47 @@ function getRecipeRequirementSummary(
   return [...missingIngredients, ...missingSkills];
 }
 
-function formatRecipeIngredients(recipe: CraftingRecipe): string {
-  return Object.entries(recipe.ingredients)
-    .map(([itemId, count]) => {
-      const itemName = itemData.find((item) => item.id === itemId)?.name ?? itemId;
+function getRecipeIngredientDetails(
+  player: Player,
+  recipe: CraftingRecipe,
+): RecipeIngredientDetail[] {
+  const inventoryCounts = getInventoryCounts(player.inventory);
 
-      return `${count} ${itemName}`;
-    })
-    .join(", ");
+  return Object.entries(recipe.ingredients).map(([itemId, requiredCount]) => {
+    const itemName = itemData.find((item) => item.id === itemId)?.name ?? itemId;
+    const ownedCount = inventoryCounts[itemId] ?? 0;
+
+    return {
+      itemId,
+      name: itemName,
+      requiredCount,
+      ownedCount,
+      hasEnough: ownedCount >= requiredCount,
+    };
+  });
+}
+
+function getResultPreviewLines(item?: ItemData): string[] {
+  if (!item) {
+    return [];
+  }
+
+  return [
+    item.equipmentEffects ? `Equip effect: ${formatEquipmentEffects(item.equipmentEffects)}` : "",
+    formatItemEffects(item.effects, "sentence"),
+  ].filter((line) => line.length > 0);
+}
+
+function formatCraftingFilterLabel(filter: CraftingFilter): string {
+  const labels: Record<string, string> = {
+    Elixir: "Elixirs",
+    Weapon: "Weapons",
+    Armor: "Armor",
+    Medicine: "Medicine",
+    Component: "Components",
+  };
+
+  return labels[filter] ?? filter;
 }
 
 function formatItemTier(tier?: ItemTier): string {
@@ -647,6 +689,7 @@ function App() {
   const [activePackTab, setActivePackTab] = useState<PackTab>("inventory");
   const [activePathTab, setActivePathTab] = useState<PathTab>("quests");
   const [activeInventoryCategory, setActiveInventoryCategory] = useState("All");
+  const [activeCraftingFilter, setActiveCraftingFilter] = useState<CraftingFilter>("All");
   const [activeTechniqueCategory, setActiveTechniqueCategory] = useState("All");
   const [activeSkillTree, setActiveSkillTree] = useState("All");
   const currentScene = useMemo(
@@ -840,10 +883,39 @@ function App() {
         .map((recipe) => ({
           recipe,
           canCraft: canCraftRecipe(gameState.player, recipe),
+          ingredientDetails: getRecipeIngredientDetails(gameState.player, recipe),
           missingRequirements: getRecipeRequirementSummary(gameState.player, recipe),
           resultItem: itemData.find((item) => item.id === recipe.resultItem),
         })),
     [gameState.player],
+  );
+  const craftingFilters = useMemo<CraftingFilter[]>(
+    () => [
+      "All",
+      "Craftable",
+      "Locked Ingredients",
+      ...Array.from(new Set(availableRecipes.map(({ recipe }) => recipe.category))).sort(),
+    ],
+    [availableRecipes],
+  );
+  const visibleRecipes = useMemo(
+    () =>
+      availableRecipes.filter(({ recipe, canCraft, ingredientDetails }) => {
+        if (activeCraftingFilter === "All") {
+          return true;
+        }
+
+        if (activeCraftingFilter === "Craftable") {
+          return canCraft;
+        }
+
+        if (activeCraftingFilter === "Locked Ingredients") {
+          return ingredientDetails.some((ingredient) => !ingredient.hasEnough);
+        }
+
+        return recipe.category === activeCraftingFilter;
+      }),
+    [activeCraftingFilter, availableRecipes],
   );
   const npcJournalEntries = useMemo(
     () =>
@@ -1798,38 +1870,111 @@ function App() {
               {activePackTab === "crafting" ? (
                 <div id="crafting-panel" role="tabpanel" className="tab-panel">
                   <h2>Crafting</h2>
-                  <ul className="crafting-list">
-                    {availableRecipes.map(
-                      ({ recipe, canCraft, missingRequirements, resultItem }) => (
-                        <li key={recipe.id}>
-                          <div>
-                            <strong>{recipe.name}</strong>
-                            <span>
-                              {formatItemTier(recipe.tier)} {recipe.category}
-                            </span>
-                            <p>{recipe.description}</p>
-                            <small>Needs {formatRecipeIngredients(recipe)}</small>
-                            {resultItem ? (
-                              <small>
-                                Creates {recipe.quantity} {formatItemTier(resultItem.tier)}{" "}
-                                {resultItem.name}
-                              </small>
-                            ) : null}
-                            {!canCraft && missingRequirements.length > 0 ? (
-                              <small>Missing {missingRequirements.join(", ")}</small>
-                            ) : null}
-                          </div>
-                          <button
-                            type="button"
-                            disabled={!canCraft}
-                            onClick={() => handleCraftRecipe(recipe)}
-                          >
-                            Craft
-                          </button>
-                        </li>
-                      ),
-                    )}
-                  </ul>
+                  <div
+                    className="slot-filter-list crafting-filter-list"
+                    aria-label="Crafting filters"
+                  >
+                    {craftingFilters.map((filter) => (
+                      <button
+                        type="button"
+                        key={filter}
+                        aria-pressed={activeCraftingFilter === filter}
+                        onClick={() => setActiveCraftingFilter(filter)}
+                      >
+                        {formatCraftingFilterLabel(filter)}
+                      </button>
+                    ))}
+                  </div>
+                  {visibleRecipes.length > 0 ? (
+                    <ul className="crafting-list">
+                      {visibleRecipes.map(
+                        ({
+                          recipe,
+                          canCraft,
+                          ingredientDetails,
+                          missingRequirements,
+                          resultItem,
+                        }) => {
+                          const resultPreviewLines = getResultPreviewLines(resultItem);
+
+                          return (
+                            <li key={recipe.id}>
+                              <div className="crafting-recipe-main">
+                                <strong>{recipe.name}</strong>
+                              <span>
+                                {formatItemTier(recipe.tier)} {recipe.category}
+                              </span>
+                              {recipe.source ? (
+                                <small className="crafting-source">{recipe.source}</small>
+                              ) : null}
+                              <p>{recipe.description}</p>
+
+                                {resultItem ? (
+                                  <div className="crafting-result-preview">
+                                    {renderSlotIcon(resultItem.icon, resultItem.name)}
+                                    <div>
+                                      <small>
+                                        Creates {recipe.quantity} {formatItemTier(resultItem.tier)}{" "}
+                                        {resultItem.name}
+                                      </small>
+                                      {resultPreviewLines.length > 0 ? (
+                                        resultPreviewLines.map((line) => (
+                                          <small key={line}>{line}</small>
+                                        ))
+                                      ) : (
+                                        <small>{resultItem.category ?? "Crafting component"}</small>
+                                      )}
+                                    </div>
+                                  </div>
+                                ) : null}
+
+                                <div className="crafting-ingredients" aria-label="Recipe ingredients">
+                                  <span>Ingredients</span>
+                                  <ul className="crafting-ingredient-list">
+                                    {ingredientDetails.map((ingredient) => (
+                                      <li
+                                        key={ingredient.itemId}
+                                        className={
+                                          ingredient.hasEnough
+                                            ? "ingredient-owned"
+                                            : "ingredient-missing"
+                                        }
+                                      >
+                                        <span>{ingredient.hasEnough ? "Have" : "Need"}</span>
+                                        <strong>{ingredient.name}</strong>
+                                        <small>
+                                          {ingredient.ownedCount}/{ingredient.requiredCount}
+                                        </small>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+
+                                {!canCraft && missingRequirements.length > 0 ? (
+                                  <small className="crafting-missing-summary">
+                                    Missing {missingRequirements.join(", ")}
+                                  </small>
+                                ) : null}
+                              </div>
+                              <button
+                                type="button"
+                                disabled={!canCraft}
+                                onClick={() => handleCraftRecipe(recipe)}
+                              >
+                                Craft
+                              </button>
+                            </li>
+                          );
+                        },
+                      )}
+                    </ul>
+                  ) : (
+                    <p className="crafting-empty-state">
+                      {availableRecipes.length > 0
+                        ? "No recipes match this filter."
+                        : "Earn trust with crafters, medicine disciples, and elders to learn more recipes."}
+                    </p>
+                  )}
                 </div>
               ) : null}
             </section>
