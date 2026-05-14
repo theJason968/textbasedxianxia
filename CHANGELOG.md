@@ -62,3 +62,4 @@
 - Added delayed search resolution to the roadmap: optional 3-second animated investigation bars for search/tracking/exploration choices.
 - Added crafting filters for All, Craftable, Locked Ingredients, and known recipe categories, plus crafting empty-state hints.
 - Added source / teacher labels to crafting recipes and displayed them in the crafting panel, wrapping Phase 5 crafting polish.
+- Reworked the Arts tab into readable technique cards with filters, descriptions, mastery bars, and benefit summaries.

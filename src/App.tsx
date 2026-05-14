@@ -127,6 +127,17 @@ type RecipeIngredientDetail = {
   ownedCount: number;
   hasEnough: boolean;
 };
+type LearnedTechniqueView = {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  icon?: string;
+  realmRequirement?: string;
+  maxLevel: number;
+  mastery: number;
+  effectsPerLevel: Record<string, number>;
+};
 const equipmentSlotLabels: Record<EquipmentSlot, string> = {
   weapon: "Weapon",
   clothing: "Clothing",
@@ -618,6 +629,48 @@ function formatCraftingFilterLabel(filter: CraftingFilter): string {
   return labels[filter] ?? filter;
 }
 
+function formatTechniqueEffectSummary(effectsPerLevel: Record<string, number>): string {
+  const effectEntries = Object.entries(effectsPerLevel).map(([key, value]) => {
+    const statKey = key as keyof Player;
+    const label = statRequirementLabels[statKey] ?? formatScoreLabel(key);
+    const signedValue = value > 0 ? `+${value}` : `${value}`;
+
+    return `${signedValue} ${label} per mastery`;
+  });
+
+  return effectEntries.length > 0 ? effectEntries.join(", ") : "No passive stat gain listed";
+}
+
+function getTechniqueBenefitLines(technique: LearnedTechniqueView): string[] {
+  const combatLine =
+    technique.mastery >= 1
+      ? "Combat art available"
+      : "Practice to mastery 1 to use in combat";
+  const specialLines: Record<string, string[]> = {
+    azure_cloud_breathing: [
+      "Improves base combat power while known",
+      "Rank 5 improves cultivation gains",
+    ],
+    pine_shadow_step: [
+      "Unlocks movement and stealth scene options",
+      "Mastery 3 can reveal Void Step",
+    ],
+    iron_body_method: [
+      "Iron Body Stance reduces incoming damage when used",
+      "Rank 5 grants passive damage reduction",
+    ],
+    wind_blade_strike: ["Gains bonus damage from stored Wind essence"],
+    void_step: ["Unlocks advanced movement routes and high-scaling combat strikes"],
+    thunder_current_strike: ["Gains bonus damage from stored Lightning essence"],
+  };
+
+  return [
+    combatLine,
+    formatTechniqueEffectSummary(technique.effectsPerLevel),
+    ...(specialLines[technique.id] ?? []),
+  ];
+}
+
 function formatItemTier(tier?: ItemTier): string {
   return tier ? itemTierLabels[tier] : "Untiered";
 }
@@ -744,10 +797,13 @@ function App() {
           name: technique?.name ?? `Unknown technique: ${techniqueId}`,
           category: technique?.category ?? "General",
           description: technique?.description ?? "",
+          icon: technique?.icon,
+          realmRequirement: technique?.realmRequirement,
           maxLevel: technique?.maxLevel ?? 1,
           mastery: gameState.player.techniqueMastery[techniqueId] ?? 0,
+          effectsPerLevel: technique?.effectsPerLevel ?? {},
         };
-      }),
+      }) satisfies LearnedTechniqueView[],
     [gameState.player.techniqueMastery, gameState.player.techniques],
   );
   const learnedSkills = useMemo(
@@ -2097,44 +2153,75 @@ function App() {
 
               {activePathTab === "techniques" ? (
                 <div id="techniques-panel" role="tabpanel" className="tab-panel">
-                  <h2>Techniques</h2>
-                  <div className="slot-board">
-                    <div className="slot-grid" aria-label="Technique slots">
-                      {visibleTechniques.map((technique) => (
-                        <div
-                          className="inventory-slot filled-slot"
-                          key={technique.id}
-                          title={[
-                            technique.name,
-                            technique.description,
-                            `Mastery ${technique.mastery}/${technique.maxLevel}`,
-                          ].join("\n")}
-                        >
-                          <span className="slot-icon">{technique.name.slice(0, 1)}</span>
-                          <strong>{technique.name}</strong>
-                          <small>{technique.category}</small>
-                          <small>Mastery {technique.mastery}/{technique.maxLevel}</small>
-                        </div>
-                      ))}
-                      {Array.from({ length: Math.max(0, 12 - visibleTechniques.length) }).map((_, index) => (
-                        <div className="inventory-slot empty-slot" key={`empty-tech-${index}`}>
-                          <span className="slot-icon">+</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="slot-filter-list" aria-label="Technique categories">
-                      {techniqueCategories.map((category) => (
-                        <button
-                          type="button"
-                          key={category}
-                          aria-pressed={activeTechniqueCategory === category}
-                          onClick={() => setActiveTechniqueCategory(category)}
-                        >
-                          {category}
-                        </button>
-                      ))}
-                    </div>
+                  <h2>Arts</h2>
+                  <div className="slot-filter-list arts-filter-list" aria-label="Art categories">
+                    {techniqueCategories.map((category) => (
+                      <button
+                        type="button"
+                        key={category}
+                        aria-pressed={activeTechniqueCategory === category}
+                        onClick={() => setActiveTechniqueCategory(category)}
+                      >
+                        {category}
+                      </button>
+                    ))}
                   </div>
+                  {visibleTechniques.length > 0 ? (
+                    <ul className="arts-list">
+                      {visibleTechniques.map((technique) => (
+                        <li key={technique.id} className="arts-card">
+                          <div className="arts-card-header">
+                            {renderSlotIcon(technique.icon, technique.name)}
+                            <div>
+                              <strong>{technique.name}</strong>
+                              <span>
+                                {technique.category} art
+                                {technique.realmRequirement
+                                  ? ` · ${technique.realmRequirement} realm`
+                                  : ""}
+                              </span>
+                            </div>
+                          </div>
+                          <p>{technique.description}</p>
+                          <div className="arts-mastery-row">
+                            <span>
+                              Mastery {technique.mastery}/{technique.maxLevel}
+                            </span>
+                            <div
+                              className="arts-mastery-track"
+                              aria-label={`${technique.name} mastery progress`}
+                            >
+                              <span
+                                style={{
+                                  width: `${Math.min(
+                                    100,
+                                    Math.max(
+                                      0,
+                                      (technique.mastery / Math.max(1, technique.maxLevel)) * 100,
+                                    ),
+                                  )}%`,
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <div className="arts-benefits">
+                            <span>Benefits</span>
+                            <ul>
+                              {getTechniqueBenefitLines(technique).map((line) => (
+                                <li key={line}>{line}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="arts-empty-state">
+                      {learnedTechniques.length > 0
+                        ? "No arts match this filter."
+                        : "Learn martial arts from elders, manuals, and dangerous discoveries."}
+                    </p>
+                  )}
                 </div>
               ) : null}
 
