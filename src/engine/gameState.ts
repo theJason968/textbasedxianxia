@@ -31,8 +31,9 @@ export function createInitialGameState(): GameState {
       spiritStones: 0,
       inventory: [],
       knownRecipes: [
+        "simple_field_bandages",
         "cooling_herb_salve",
-        "bone_reinforced_staff",
+        "field_staff_binding",
         "mist_core_qi_draught",
       ],
       equipment: {},

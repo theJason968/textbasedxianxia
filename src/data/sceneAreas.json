@@ -48,6 +48,10 @@
     "name": "Medicine Garden"
   },
   {
+    "id": "craft_hall",
+    "name": "Craft Hall"
+  },
+  {
     "id": "arena",
     "name": "Blade-Scarred Arena"
   },

@@ -169,7 +169,9 @@ function mergePlayer(initialPlayer: Player, savedPlayer?: Partial<Player>): Play
     ...savedPlayer,
     gender: savedPlayer?.gender ?? initialPlayer.gender,
     inventory: savedPlayer?.inventory ?? initialPlayer.inventory,
-    knownRecipes: savedPlayer?.knownRecipes ?? initialPlayer.knownRecipes,
+    knownRecipes: Array.from(
+      new Set([...initialPlayer.knownRecipes, ...(savedPlayer?.knownRecipes ?? [])]),
+    ),
     equipment: {
       ...initialPlayer.equipment,
       ...savedPlayer?.equipment,

@@ -18,7 +18,9 @@ import { canChoose } from "./engine/conditionEngine";
 import {
   canCraftRecipe,
   craftRecipe,
+  getCraftingFacilityLabel,
   getInventoryCounts,
+  hasRequiredFacility,
   type CraftingRecipe,
 } from "./engine/craftingEngine";
 import {
@@ -83,7 +85,7 @@ type PackTab = "inventory" | "crafting";
 type PathTab = "quests" | "journal" | "techniques" | "skills";
 type RightPanelTab = "stats" | "pack" | "path" | "save";
 type StartView = "auth" | "character" | "game";
-type CraftingFilter = "All" | "Craftable" | "Locked Ingredients" | string;
+type CraftingFilter = "All" | "Craftable" | "Locked Requirements" | string;
 type ItemData = {
   id: string;
   name: string;
@@ -582,8 +584,17 @@ function getRecipeRequirementSummary(
 
       return `${skillName} rank ${requiredRank} (${player.skills[skillId] ?? 0})`;
     });
+  const missingTools = (recipe.requiresTools ?? [])
+    .filter((itemId) => !player.inventory.includes(itemId))
+    .map((itemId) => itemData.find((item) => item.id === itemId)?.name ?? itemId);
+  const missingFacility =
+    recipe.requiredFacility && !hasRequiredFacility(player, recipe.requiredFacility)
+      ? [getCraftingFacilityLabel(recipe.requiredFacility)]
+      : [];
 
-  return [...missingIngredients, ...missingSkills];
+  return Array.from(
+    new Set([...missingIngredients, ...missingSkills, ...missingTools, ...missingFacility]),
+  );
 }
 
 function getRecipeIngredientDetails(
@@ -949,14 +960,14 @@ function App() {
     () => [
       "All",
       "Craftable",
-      "Locked Ingredients",
+      "Locked Requirements",
       ...Array.from(new Set(availableRecipes.map(({ recipe }) => recipe.category))).sort(),
     ],
     [availableRecipes],
   );
   const visibleRecipes = useMemo(
     () =>
-      availableRecipes.filter(({ recipe, canCraft, ingredientDetails }) => {
+      availableRecipes.filter(({ recipe, canCraft, missingRequirements }) => {
         if (activeCraftingFilter === "All") {
           return true;
         }
@@ -965,8 +976,8 @@ function App() {
           return canCraft;
         }
 
-        if (activeCraftingFilter === "Locked Ingredients") {
-          return ingredientDetails.some((ingredient) => !ingredient.hasEnough);
+        if (activeCraftingFilter === "Locked Requirements") {
+          return !canCraft && missingRequirements.length > 0;
         }
 
         return recipe.category === activeCraftingFilter;

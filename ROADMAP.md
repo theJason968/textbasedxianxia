@@ -106,6 +106,15 @@
 ### Phase 6 — Mortal Peak Arc
 *Central dramatic arc of the mortal stage*
 
+- [ ] Crafting facilities and recipe tiers
+  - Split crafting access by facility so place matters, not just menu access.
+  - **Travel / field crafting**: available on the road, in dungeons, and during exploration, but limited to crude repairs, simple salves, emergency tonics, basic reinforced weapons, and unstable low-grade preparations.
+  - **Alchemy room / medicine workbench**: required for higher-tier pills, impurity-cleansing tonics, foundation-stabilizing decoctions, safer batch refinement, and volatile herb processing.
+  - **Blacksmithing room / forge**: required for spirit-grade weapons, armor upgrades, dungeon-loot refinement, metalwork repairs, and weapon variants that support specific combat arts.
+  - Recipe availability should check both player skill and facility tier: skill proves knowledge; room/tools prove capacity.
+  - Let players find or buy higher-tier ingredients before they can fully use them, creating anticipation for room access and upgrades.
+  - Tie facility unlocks to sect contribution, NPC trust, Craft Hall / Medicine Hall reputation, town workshops, and room-base upgrades.
+  - Support explorer exceptions: certain dungeon or field locations can temporarily enable special recipes when the environment itself provides the missing facility.
 - [ ] Exploration polish: delayed search resolution
   - Add an optional animated countdown/progress bar for search, tracking, investigation, and uncertain exploration choices.
   - Example: player chooses "Search the lower grove carefully" → 3-second bar with investigation text → scene outcome resolves.

@@ -81,6 +81,61 @@
     "effects": {}
   },
   {
+    "id": "family_sewing_roll",
+    "name": "Family Sewing Roll",
+    "type": "component",
+    "category": "Kit Piece",
+    "rarity": "mortal",
+    "tier": "mortal",
+    "description": "Plain cloth, bone needles, waxed thread, and folded patches given by family before the road could become dangerous.",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r3c4.png",
+    "effects": {}
+  },
+  {
+    "id": "aunt_lins_herb_papers",
+    "name": "Aunt Lin's Herb Papers",
+    "type": "component",
+    "category": "Kit Piece",
+    "rarity": "mortal",
+    "tier": "mortal",
+    "description": "Small folded papers marked with Aunt Lin's notes for wrapping bitter roots, wound powder, and roadside poultices.",
+    "icon": "/assets/items/book_manual.png",
+    "effects": {}
+  },
+  {
+    "id": "guos_wire_and_rivets",
+    "name": "Guo's Wire And Rivets",
+    "type": "component",
+    "category": "Kit Piece",
+    "rarity": "mortal",
+    "tier": "mortal",
+    "description": "A palm-sized twist of wire, rivets, and useful scrap from Blacksmith Guo's forge. Nothing glamorous, which is why it works.",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r2c4.png",
+    "effects": {}
+  },
+  {
+    "id": "old_rens_road_knife",
+    "name": "Old Ren's Road Knife",
+    "type": "component",
+    "category": "Kit Piece",
+    "rarity": "mortal",
+    "tier": "mortal",
+    "description": "A short utility knife from Old Ren, dull enough to be humble and sharp enough to cut cord, bark, bandage, or trouble.",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r2c2.png",
+    "effects": {}
+  },
+  {
+    "id": "mortal_repair_bundle",
+    "name": "Mortal Repair Bundle",
+    "type": "kit",
+    "category": "Tool",
+    "rarity": "mortal",
+    "tier": "mortal",
+    "description": "A complete field bundle assembled from village gifts: cloth, herb papers, wire, rivets, and a road knife. Good enough for crude travel repairs and simple roadside preparation.",
+    "icon": "/assets/items/weapon_sheet/weapon_sheet_r3c5.png",
+    "effects": {}
+  },
+  {
     "id": "childs_cloud_jade",
     "name": "Child's Cloud Jade",
     "type": "accessory",
@@ -184,6 +239,19 @@
     "icon": "/assets/items/elixirs/elixir_common.png",
     "effects": {
       "health": 8
+    }
+  },
+  {
+    "id": "simple_field_bandages",
+    "name": "Simple Field Bandages",
+    "type": "medicine",
+    "category": "Medicine",
+    "rarity": "mortal",
+    "tier": "mortal",
+    "description": "Clean strips, moss padding, and a little bitter paste. Not elegant medicine, but enough to stop bleeding on the road.",
+    "icon": "/assets/items/elixirs/elixir_common.png",
+    "effects": {
+      "health": 5
     }
   },
   {

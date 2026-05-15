@@ -17,6 +17,21 @@
         }
       },
       {
+        "label": "Check in with family before the day begins",
+        "nextScene": "ordinary_family_courtyard",
+        "effects": {
+          "addItems": [
+            "family_sewing_roll"
+          ],
+          "morality": {
+            "filial": 1
+          },
+          "setFlags": {
+            "received_family_sewing_roll": true
+          }
+        }
+      },
+      {
         "label": "Carry stones at the river before chores",
         "nextScene": "ordinary_river_training",
         "effects": {
@@ -52,6 +67,9 @@
           "reputation": {
             "mortal_village": 1
           },
+          "addItems": [
+            "guos_wire_and_rivets"
+          ],
           "addSkills": {
             "bellows_rhythm": 1,
             "iron_sense": 1
@@ -79,6 +97,9 @@
           "morality": {
             "helpful": 1
           },
+          "addItems": [
+            "aunt_lins_herb_papers"
+          ],
           "addSkills": {
             "herb_recognition": 1
           },
@@ -86,6 +107,21 @@
             "helped_as_mortal": true
           }
         }
+      }
+    ]
+  },
+  {
+    "id": "ordinary_family_courtyard",
+    "title": "Needle Thread And Old Cloth",
+    "body": "Home has its own kind of training: carrying water without spilling, listening without arguing, and mending what the day will tear apart. Before you leave, your family presses a small sewing roll into your hand. It is plain cloth, bone needles, waxed thread, and a few folded patches.\n\n\"Roads are hard on sleeves, sandals, and pride,\" they say. \"Fix the first two before the third gets expensive.\"",
+    "choices": [
+      {
+        "label": "Head to the village square with the sewing roll tucked away",
+        "nextScene": "village_square_intro"
+      },
+      {
+        "label": "Return to the morning chores",
+        "nextScene": "ordinary_morning"
       }
     ]
   },
@@ -103,6 +139,9 @@
             "npcId": "old_ren",
             "topic": "Warned you that the south road feels wrong: frightened guards, bad orders, and danger in the hills."
           },
+          "addItems": [
+            "old_rens_road_knife"
+          ],
           "setFlags": {
             "heard_old_ren_road_rumor": true
           }
@@ -5403,6 +5442,13 @@
         "nextScene": "arena_watch"
       },
       {
+        "label": "Visit the Craft Hall forge",
+        "nextScene": "craft_hall_forge",
+        "requires": {
+          "items": ["outer_disciple_token"]
+        }
+      },
+      {
         "label": "Explore the lower grove for useful finds",
         "nextScene": "lower_grove_explore_common",
         "outcomes": [
@@ -5495,6 +5541,271 @@
       {
         "label": "Return to the main courtyard",
         "nextScene": "outer_sect_courtyard"
+      }
+    ]
+  },
+  {
+    "id": "craft_hall_forge",
+    "areaId": "craft_hall",
+    "title": "Craft Hall Forge",
+    "body": "The Craft Hall does not sound like a village forge. It breathes in furnace rows: bellows, hammer falls, hissed quenching troughs, clerks counting tool tokens, senior disciples watching for waste. The work here is cleaner than Luo's smithy and stronger than anything Guo could build with village iron, but the sect charges for access until a disciple has standing worth more than spirit stones.",
+    "choices": [
+      {
+        "label": "Pay the outer forge fee and rent a supervised bench (1 spirit stone)",
+        "nextScene": "craft_hall_paid_forge",
+        "requires": {
+          "stats": { "spiritStones": 1 }
+        },
+        "effects": {
+          "spiritStones": -1,
+          "reputation": {
+            "craft_hall": 1
+          },
+          "addSkills": {
+            "bellows_rhythm": 1,
+            "iron_sense": 1
+          },
+          "setFlags": {
+            "craft_hall_forge_access": true
+          },
+          "messages": ["The clerk takes one spirit stone and stamps your name beside an outer forge bench. For now, Craft Hall strength comes rented by the hour."]
+        }
+      },
+      {
+        "label": "Use your Craft Hall standing to take a bench without paying",
+        "nextScene": "craft_hall_free_forge",
+        "requires": {
+          "reputation": {
+            "craft_hall": 8
+          }
+        },
+        "effects": {
+          "addSkills": {
+            "bellows_rhythm": 1,
+            "tool_repair": 1
+          },
+          "setFlags": {
+            "craft_hall_forge_access": true,
+            "craft_hall_free_forge_access": true
+          },
+          "messages": ["The clerk checks your Craft Hall marks and waves the fee aside. Reputation has become a key, at least for the outer benches."]
+        }
+      },
+      {
+        "label": "Speak with Instructor Han Qingshi about paid lessons",
+        "nextScene": "craft_hall_instructor",
+        "effects": {
+          "meetNpc": "craft_hall_instructor_han",
+          "recordNpcConversation": {
+            "npcId": "craft_hall_instructor_han",
+            "topic": "Met him at the Craft Hall forge, where he sells basic lessons and withholds better patterns until a disciple proves useful."
+          },
+          "relationships": {
+            "craft_hall_instructor_han": 1
+          },
+          "setFlags": {
+            "met_craft_hall_instructor_han": true
+          }
+        }
+      },
+      {
+        "label": "Take the free coal-sorting assignment instead of paying",
+        "nextScene": "craft_hall_coal_sorting",
+        "requires": {
+          "flagsAbsent": ["completed_craft_hall_coal_sorting"]
+        },
+        "effects": {
+          "startQuest": "craft_hall_coal_sorting"
+        }
+      },
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "craft_hall_paid_forge",
+    "areaId": "craft_hall",
+    "title": "A Rented Forge Bench",
+    "body": "Your assigned bench is narrow, but the tools are clean and the heat holds steady. A senior disciple watches the line for mistakes expensive enough to become lessons. You do not get freedom here. You get capacity: a proper anvil, a real quench, and permission to attempt work that road tools could never safely hold.",
+    "choices": [
+      {
+        "label": "Practice safe heat and honest inspection",
+        "nextScene": "craft_hall_forge",
+        "effects": {
+          "perception": 1,
+          "trainingFatigue": 1,
+          "addSkills": {
+            "bellows_rhythm": 1,
+            "iron_sense": 1
+          }
+        }
+      },
+      {
+        "label": "Step back from the bench",
+        "nextScene": "craft_hall_forge"
+      }
+    ]
+  },
+  {
+    "id": "craft_hall_free_forge",
+    "areaId": "craft_hall",
+    "title": "A Bench Earned By Standing",
+    "body": "No one smiles when the fee is waived. That is not how the Craft Hall shows approval. Instead, the clerk assigns you a bench without delay, and the senior disciple watching the furnace line corrects your grip instead of asking whether you paid. It is a small difference. It matters.",
+    "choices": [
+      {
+        "label": "Use the free bench for disciplined repair practice",
+        "nextScene": "craft_hall_forge",
+        "effects": {
+          "perception": 1,
+          "addSkills": {
+            "tool_repair": 1,
+            "craftsmen": 1
+          }
+        }
+      },
+      {
+        "label": "Return to the forge floor",
+        "nextScene": "craft_hall_forge"
+      }
+    ]
+  },
+  {
+    "id": "craft_hall_instructor",
+    "areaId": "craft_hall",
+    "title": "Instructor Han Qingshi",
+    "body": "Han Qingshi stands beside a rack of cracked practice fittings with his sleeves rolled above burn-scarred wrists. He looks at your token, then at your hands.\n\n\"Spirit stones buy instruction,\" he says. \"Reputation buys attention. Quests buy trust. Do not confuse the three.\"",
+    "choices": [
+      {
+        "label": "Pay for basic forge safety instruction (1 spirit stone)",
+        "nextScene": "craft_hall_instructor",
+        "requires": {
+          "stats": { "spiritStones": 1 }
+        },
+        "effects": {
+          "spiritStones": -1,
+          "relationships": {
+            "craft_hall_instructor_han": 1
+          },
+          "reputation": {
+            "craft_hall": 1
+          },
+          "addSkills": {
+            "bellows_rhythm": 1,
+            "iron_sense": 1
+          },
+          "setFlags": {
+            "learned_craft_hall_forge_safety": true
+          },
+          "messages": ["Han makes you repeat the safety forms until your wrists stop drifting. Boring lessons are often the ones that keep fingers attached."]
+        }
+      },
+      {
+        "label": "Pay for field gear reinforcement patterns (2 spirit stones)",
+        "nextScene": "craft_hall_instructor",
+        "requires": {
+          "stats": { "spiritStones": 2 },
+          "flagsAbsent": ["learned_craft_hall_field_reinforcement"]
+        },
+        "effects": {
+          "spiritStones": -2,
+          "relationships": {
+            "craft_hall_instructor_han": 1
+          },
+          "reputation": {
+            "craft_hall": 1
+          },
+          "addSkills": {
+            "tool_repair": 1,
+            "craftsmen": 1
+          },
+          "learnRecipes": [
+            "bone_reinforced_staff",
+            "cloud_iron_binding_kit"
+          ],
+          "setFlags": {
+            "learned_craft_hall_field_reinforcement": true
+          },
+          "messages": ["Han sells you two approved patterns: one for reinforcing a staff with bone, and one for binding rough materials without lying to yourself about their strength."]
+        }
+      },
+      {
+        "label": "Pay for spirit material handling instruction (3 spirit stones, Craft Hall reputation 2)",
+        "nextScene": "craft_hall_instructor",
+        "requires": {
+          "stats": { "spiritStones": 3 },
+          "reputation": {
+            "craft_hall": 2
+          },
+          "flagsAbsent": ["learned_craft_hall_spirit_material_handling"]
+        },
+        "effects": {
+          "spiritStones": -3,
+          "relationships": {
+            "craft_hall_instructor_han": 1
+          },
+          "reputation": {
+            "craft_hall": 2
+          },
+          "addSkills": {
+            "iron_sense": 1,
+            "craftsmen": 2
+          },
+          "learnRecipes": [
+            "reinforced_beast_hide_vest",
+            "spirit_sealed_staff_wrap"
+          ],
+          "setFlags": {
+            "learned_craft_hall_spirit_material_handling": true
+          },
+          "messages": ["Only after checking your Craft Hall marks does Han unlock the stronger lesson. Sect patterns are not secret because they are complicated; they are secret because mistakes waste spirit material."]
+        }
+      },
+      {
+        "label": "Ask for a Craft Hall work assignment",
+        "nextScene": "craft_hall_coal_sorting",
+        "requires": {
+          "flagsAbsent": ["completed_craft_hall_coal_sorting"]
+        },
+        "effects": {
+          "startQuest": "craft_hall_coal_sorting"
+        }
+      },
+      {
+        "label": "Return to the forge floor",
+        "nextScene": "craft_hall_forge"
+      }
+    ]
+  },
+  {
+    "id": "craft_hall_coal_sorting",
+    "areaId": "craft_hall",
+    "title": "Coal, Flux, And Slag",
+    "body": "Han points you toward three bins and one rule: anything useful placed in the waste bin will be counted against you twice. The work is hot, filthy, and humiliatingly specific. Clean coal has a sound. Flux stone leaves dust on the thumb. Slag can glitter enough to fool a greedy beginner.\n\nBy the end, your hands are black and your eye is better.",
+    "choices": [
+      {
+        "label": "Report the sorted bins to Han",
+        "nextScene": "craft_hall_forge",
+        "effects": {
+          "trainingFatigue": 1,
+          "completeQuest": "craft_hall_coal_sorting",
+          "relationships": {
+            "craft_hall_instructor_han": 2
+          },
+          "reputation": {
+            "craft_hall": 2
+          },
+          "addSkills": {
+            "careful_eye": 1,
+            "iron_sense": 1,
+            "tool_repair": 1
+          },
+          "setFlags": {
+            "completed_craft_hall_coal_sorting": true
+          },
+          "messages": ["Han checks the bins, finds only one mistake worth mentioning, and marks your name under useful hands."]
+        }
       }
     ]
   },
@@ -6534,6 +6845,36 @@
         }
       },
       {
+        "label": "Sort the tool rack — keep the Mortal Repair Bundle ready",
+        "nextScene": "room_tool_rack_work",
+        "requires": {
+          "flags": { "room_upgrade_tool_rack": true }
+        },
+        "effects": {
+          "perception": 1,
+          "willpower": 1,
+          "addSkills": {
+            "campcraft": 1,
+            "tool_repair": 1
+          }
+        }
+      },
+      {
+        "label": "Prepare medicine at the alchemy workbench",
+        "nextScene": "room_alchemy_workbench",
+        "requires": {
+          "flags": { "room_upgrade_alchemy_workbench": true }
+        },
+        "effects": {
+          "perception": 1,
+          "cultivationInsight": 1,
+          "addSkills": {
+            "herb_recognition": 1,
+            "heat_control": 1
+          }
+        }
+      },
+      {
         "label": "Write in your journal — set down what you have learned",
         "nextScene": "room_journal_write",
         "effects": {
@@ -6728,6 +7069,70 @@
     ]
   },
   {
+    "id": "room_tool_rack_work",
+    "areaId": "outer_sect",
+    "title": "Tool Rack Maintenance",
+    "body": "The tool rack is not impressive at first glance: a few hooks, a narrow tray for rivets, a dry place for thread, and enough order that your Mortal Repair Bundle stops being a lump at the bottom of a pack. That changes more than it should. When every piece has a place, your hands remember where to reach before your thoughts catch up.",
+    "choices": [
+      {
+        "label": "Repack the bundle for road repairs",
+        "nextScene": "room_hub",
+        "effects": {
+          "perception": 1,
+          "willpower": 1,
+          "addSkills": {
+            "campcraft": 1,
+            "tool_repair": 1
+          }
+        }
+      },
+      {
+        "label": "Practice quick fixes on old straps and buckles",
+        "nextScene": "room_hub",
+        "effects": {
+          "perception": 1,
+          "trainingFatigue": 1,
+          "addSkills": {
+            "tool_repair": 2
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "room_alchemy_workbench",
+    "areaId": "outer_sect",
+    "title": "Alchemy Workbench",
+    "body": "The workbench is small enough to fit beside the window, but it changes the room's purpose. Dried herbs no longer sit as curiosities on a shelf; they wait in labeled bundles. A clay burner holds steady heat. A shallow stone bowl gives bitter medicine somewhere clean to become useful.\n\nThe room smells faintly medicinal now. Not like achievement. Like work you can repeat.",
+    "choices": [
+      {
+        "label": "Prepare herbs by heat, scent, and patience",
+        "nextScene": "room_hub",
+        "effects": {
+          "perception": 1,
+          "cultivationInsight": 1,
+          "addSkills": {
+            "herb_recognition": 1,
+            "heat_control": 1
+          }
+        }
+      },
+      {
+        "label": "Practice keeping residue out of a simple brew",
+        "nextScene": "room_hub",
+        "effects": {
+          "willpower": 1,
+          "cultivationInsight": 1,
+          "trainingFatigue": 1,
+          "addSkills": {
+            "crude_elixir_refining": 1,
+            "impurity_awareness": 1
+          }
+        }
+      }
+    ]
+  },
+  {
     "id": "room_journal_write",
     "areaId": "outer_sect",
     "title": "Writing in Your Journal",
@@ -6759,48 +7164,84 @@
     "id": "room_upgrades",
     "areaId": "outer_sect",
     "title": "Room Improvements",
-    "body": "The room can be made more useful. A meditation mat would change the quality of cultivation practice. A proper desk and lamp would open up serious study. An herb shelf would let you keep samples and trace properties without borrowing space at the medicine garden. Each improvement costs spirit stones but changes what is possible here.",
+    "body": "The room can be made more useful one piece at a time. None of the improvements are grand enough to impress an inner disciple, which is exactly why they matter: a mat that makes cultivation easier to repeat, a desk that turns scattered notes into study, shelves and tools that let the room become a working base instead of a place to collapse.",
     "choices": [
       {
-        "label": "Purchase a meditation mat — improves cultivation sessions (8 spirit stones)",
-        "nextScene": "room_hub",
-        "requires": {
-          "stats": { "spiritStones": 8 },
-          "flagsAbsent": ["room_upgrade_mat"]
-        },
-        "effects": {
-          "spiritStones": -8,
-          "setFlags": {
-            "room_upgrade_mat": true
-          }
-        }
-      },
-      {
-        "label": "Purchase a writing desk and lamp — improves study sessions (5 spirit stones)",
+        "label": "Purchase a meditation mat — improves cultivation sessions (5 spirit stones)",
         "nextScene": "room_hub",
         "requires": {
           "stats": { "spiritStones": 5 },
-          "flagsAbsent": ["room_upgrade_desk"]
+          "flagsAbsent": ["room_upgrade_mat"]
         },
         "effects": {
           "spiritStones": -5,
           "setFlags": {
-            "room_upgrade_desk": true
-          }
+            "room_upgrade_mat": true
+          },
+          "messages": ["The mat changes the room immediately. The floor is still plain wood, but your body no longer has to fight it before cultivation even begins."]
         }
       },
       {
-        "label": "Purchase a small herb shelf — enables herb study (10 spirit stones)",
+        "label": "Purchase a writing desk and lamp — improves study sessions (4 spirit stones)",
+        "nextScene": "room_hub",
+        "requires": {
+          "stats": { "spiritStones": 4 },
+          "flagsAbsent": ["room_upgrade_desk"]
+        },
+        "effects": {
+          "spiritStones": -4,
+          "setFlags": {
+            "room_upgrade_desk": true
+          },
+          "messages": ["The desk gives your manuals somewhere to stay open. Study stops feeling stolen from bad posture and dim light."]
+        }
+      },
+      {
+        "label": "Purchase a small herb shelf — enables herb study (6 spirit stones)",
+        "nextScene": "room_hub",
+        "requires": {
+          "stats": { "spiritStones": 6 },
+          "flags": { "worked_medicine_garden": true },
+          "flagsAbsent": ["room_upgrade_herb_shelf"]
+        },
+        "effects": {
+          "spiritStones": -6,
+          "setFlags": {
+            "room_upgrade_herb_shelf": true
+          },
+          "messages": ["Bundles of cloud moss and frost-vein herb finally have a clean place to dry. The room takes on the quiet bitterness of useful medicine."]
+        }
+      },
+      {
+        "label": "Install a tool rack — improves field repair work (6 spirit stones, Mortal Repair Bundle)",
+        "nextScene": "room_hub",
+        "requires": {
+          "stats": { "spiritStones": 6 },
+          "items": ["mortal_repair_bundle"],
+          "flagsAbsent": ["room_upgrade_tool_rack"]
+        },
+        "effects": {
+          "spiritStones": -6,
+          "setFlags": {
+            "room_upgrade_tool_rack": true
+          },
+          "messages": ["Hooks, trays, and a dry strip of wall turn the Mortal Repair Bundle into a ready kit instead of a travel lump. Small order becomes real speed."]
+        }
+      },
+      {
+        "label": "Build an alchemy workbench — unlocks proper medicine prep (10 spirit stones, Medicine Garden trust)",
         "nextScene": "room_hub",
         "requires": {
           "stats": { "spiritStones": 10 },
-          "flagsAbsent": ["room_upgrade_herb_shelf"]
+          "flags": { "completed_medicine_trust_work": true },
+          "flagsAbsent": ["room_upgrade_alchemy_workbench"]
         },
         "effects": {
           "spiritStones": -10,
           "setFlags": {
-            "room_upgrade_herb_shelf": true
-          }
+            "room_upgrade_alchemy_workbench": true
+          },
+          "messages": ["A clay burner, clean stone bowl, and sealed herb drawers make the room suitable for real preparation. Higher medicine recipes no longer have to remain theory."]
         }
       },
       {
@@ -6814,7 +7255,8 @@
           "spiritStones": -12,
           "setFlags": {
             "room_upgrade_bookshelf": true
-          }
+          },
+          "messages": ["The shelf looks empty at first. Then the copied notes, loose pages, and manuals stop being clutter and start becoming a private archive."]
         }
       },
       {

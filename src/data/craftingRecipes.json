@@ -1,5 +1,25 @@
 [
   {
+    "id": "simple_field_bandages",
+    "name": "Simple Field Bandages",
+    "category": "Medicine",
+    "tier": "mortal",
+    "description": "Cut clean cloth, pad it with cloud moss, and bind it into a road dressing for shallow wounds.",
+    "source": "Starter recipe",
+    "ingredients": {
+      "cloud_moss": 1
+    },
+    "resultItem": "simple_field_bandages",
+    "quantity": 1,
+    "requiresSkills": {
+      "campcraft": 1
+    },
+    "requiresTools": [
+      "mortal_repair_bundle"
+    ],
+    "requiredFacility": "field_kit"
+  },
+  {
     "id": "cooling_herb_salve",
     "name": "Cooling Herb Salve",
     "category": "Medicine",
@@ -14,7 +34,32 @@
     "quantity": 1,
     "requiresSkills": {
       "herb_recognition": 1
-    }
+    },
+    "requiresTools": [
+      "mortal_repair_bundle"
+    ],
+    "requiredFacility": "field_kit"
+  },
+  {
+    "id": "field_staff_binding",
+    "name": "Field Staff Binding",
+    "category": "Weapon",
+    "tier": "mortal",
+    "description": "Use road copper, wire, and patient wrapping to turn a bamboo staff into a sturdier walking weapon without needing a full forge.",
+    "source": "Starter recipe",
+    "ingredients": {
+      "bamboo_staff": 1,
+      "road_copper": 1
+    },
+    "resultItem": "reinforced_walking_staff",
+    "quantity": 1,
+    "requiresSkills": {
+      "iron_sense": 1
+    },
+    "requiresTools": [
+      "mortal_repair_bundle"
+    ],
+    "requiredFacility": "field_kit"
   },
   {
     "id": "bone_reinforced_staff",
@@ -33,7 +78,8 @@
     "requiresSkills": {
       "staff_basics": 1,
       "tool_repair": 1
-    }
+    },
+    "requiredFacility": "blacksmithing_room"
   },
   {
     "id": "mist_core_qi_draught",
@@ -52,7 +98,8 @@
     "requiresSkills": {
       "crude_elixir_refining": 1,
       "impurity_awareness": 1
-    }
+    },
+    "requiredFacility": "alchemy_room"
   },
   {
     "id": "standard_qi_pill",
@@ -71,7 +118,8 @@
     "requiresSkills": {
       "crude_elixir_refining": 2,
       "impurity_awareness": 1
-    }
+    },
+    "requiredFacility": "alchemy_room"
   },
   {
     "id": "clear_meridian_tonic",
@@ -90,7 +138,8 @@
     "requiresSkills": {
       "crude_elixir_refining": 2,
       "impurity_awareness": 2
-    }
+    },
+    "requiredFacility": "alchemy_room"
   },
   {
     "id": "foundation_steadying_decoction",
@@ -110,7 +159,8 @@
       "crude_elixir_refining": 3,
       "impurity_awareness": 2,
       "foundation_control": 2
-    }
+    },
+    "requiredFacility": "alchemy_room"
   },
   {
     "id": "shadow_viper_antivenom",
@@ -129,7 +179,8 @@
     "requiresSkills": {
       "herb_recognition": 2,
       "campcraft": 1
-    }
+    },
+    "requiredFacility": "alchemy_room"
   },
   {
     "id": "road_wound_poultice",
@@ -146,7 +197,11 @@
     "quantity": 1,
     "requiresSkills": {
       "campcraft": 1
-    }
+    },
+    "requiresTools": [
+      "mortal_repair_bundle"
+    ],
+    "requiredFacility": "field_kit"
   },
   {
     "id": "mist_calming_draught",
@@ -164,7 +219,8 @@
     "requiresSkills": {
       "impurity_awareness": 2,
       "foundation_control": 2
-    }
+    },
+    "requiredFacility": "alchemy_room"
   },
   {
     "id": "spirit_hardened_shortsword",
@@ -183,7 +239,8 @@
     "requiresSkills": {
       "tool_repair": 2,
       "craftsmen": 1
-    }
+    },
+    "requiredFacility": "blacksmithing_room"
   },
   {
     "id": "viper_scale_blade",
@@ -201,7 +258,8 @@
     "requiresSkills": {
       "tool_repair": 2,
       "craftsmen": 1
-    }
+    },
+    "requiredFacility": "blacksmithing_room"
   },
   {
     "id": "cloud_stag_spear",
@@ -219,7 +277,8 @@
     "requiresSkills": {
       "staff_basics": 2,
       "tool_repair": 1
-    }
+    },
+    "requiredFacility": "blacksmithing_room"
   },
   {
     "id": "reinforced_beast_hide_vest",
@@ -238,7 +297,8 @@
     "requiresSkills": {
       "tool_repair": 1,
       "campcraft": 2
-    }
+    },
+    "requiredFacility": "blacksmithing_room"
   },
   {
     "id": "crab_shell_pauldron",
@@ -256,7 +316,8 @@
     "requiresSkills": {
       "tool_repair": 2,
       "campcraft": 2
-    }
+    },
+    "requiredFacility": "blacksmithing_room"
   },
   {
     "id": "cloud_iron_binding_kit",
@@ -275,7 +336,11 @@
     "requiresSkills": {
       "tool_repair": 1,
       "craftsmen": 1
-    }
+    },
+    "requiresTools": [
+      "mortal_repair_bundle"
+    ],
+    "requiredFacility": "field_kit"
   },
   {
     "id": "spirit_sealed_staff_wrap",
@@ -295,6 +360,7 @@
       "staff_basics": 2,
       "tool_repair": 2,
       "craftsmen": 1
-    }
+    },
+    "requiredFacility": "blacksmithing_room"
   }
 ]

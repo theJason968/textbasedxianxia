@@ -505,6 +505,48 @@
     ]
   },
   {
+    "id": "craft_hall_instructor_han",
+    "name": "Han Qingshi",
+    "title": "Craft Hall Outer Instructor",
+    "disposition": "mentor",
+    "faction": "Azure Cloud Sect Craft Hall",
+    "firstSceneId": "craft_hall_instructor",
+    "description": "A square-shouldered Craft Hall instructor who treats every wasted rivet like a moral failing. He teaches basic sect-approved forge work for spirit stones, then better patterns only after a disciple proves useful.",
+    "personality": [
+      "transactional",
+      "precise",
+      "unsentimental",
+      "secretly pleased by honest work"
+    ],
+    "relationshipToPlayer": "Offers paid Craft Hall lessons, supervises beginner forge use, and can become a gatekeeper for stronger sect crafting access.",
+    "skills": {
+      "bellows_rhythm": 5,
+      "iron_sense": 5,
+      "tool_repair": 5,
+      "craftsmen": 4,
+      "careful_eye": 3
+    },
+    "teachesSkills": [
+      "bellows_rhythm",
+      "iron_sense",
+      "tool_repair",
+      "craftsmen"
+    ],
+    "associatedQuests": ["craft_hall_coal_sorting"],
+    "memoryFlags": [
+      "met_craft_hall_instructor_han",
+      "learned_craft_hall_forge_safety",
+      "learned_craft_hall_field_reinforcement",
+      "learned_craft_hall_spirit_material_handling",
+      "completed_craft_hall_coal_sorting"
+    ],
+    "returnHooks": [
+      "Can discount or waive forge fees once Craft Hall reputation is high.",
+      "Can unlock stronger sect-approved weapon and armor patterns after Craft Hall quests.",
+      "Can contrast official sect craft discipline with Luo Jiwei's practical town methods."
+    ]
+  },
+  {
     "id": "luo_jiwei",
     "name": "Luo Jiwei",
     "title": "Iron Bridge Town Blacksmith",

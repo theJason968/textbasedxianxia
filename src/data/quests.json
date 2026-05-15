@@ -162,6 +162,16 @@
     }
   },
   {
+    "id": "craft_hall_coal_sorting",
+    "name": "Craft Hall Coal Sorting",
+    "description": "Han Qingshi will not teach better forge work to a disciple who cannot tell clean coal, cracked flux stone, and slag apart by hand.",
+    "steps": [
+      "Report to the Craft Hall outer furnace line.",
+      "Sort coal, flux stone, and scrap without wasting usable material.",
+      "Earn Han Qingshi's first mark of practical trust."
+    ]
+  },
+  {
     "id": "luo_salvage_trust",
     "name": "Luo's Salvage Work",
     "description": "Help Luo Jiwei sort useful salvage from junk so he trusts you with practical crafting patterns.",

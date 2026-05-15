@@ -37,6 +37,14 @@ type ChoiceResult = {
   messages: string[];
 };
 
+const mortalRepairBundleId = "mortal_repair_bundle";
+const mortalRepairBundlePieces = [
+  "family_sewing_roll",
+  "aunt_lins_herb_papers",
+  "guos_wire_and_rivets",
+  "old_rens_road_knife",
+];
+
 const numericEffectKeys: NumericPlayerStat[] = [
   "health",
   "qi",
@@ -247,7 +255,7 @@ function applyEffects(player: Player, effects?: ChoiceEffect): Player {
   const playerWithBasicEffects: Player = {
     ...player,
     ...statChanges,
-    inventory: mergeUnique(player.inventory, effects.addItems),
+    inventory: assembleMortalRepairBundle(mergeUnique(player.inventory, effects.addItems)),
     knownRecipes: mergeUnique(player.knownRecipes, effects.learnRecipes),
     equipment: equipRewardedItem(player.equipment, effects),
     techniques: mergeUnique(player.techniques, effects.learnTechniques),
@@ -336,6 +344,18 @@ function applyQuestEffects(player: Player, effects: NonNullable<Choice["effects"
 
 function mergeUnique(current: string[] = [], additions: string[] = []): string[] {
   return [...new Set([...current, ...additions])];
+}
+
+function assembleMortalRepairBundle(inventory: string[]): string[] {
+  if (inventory.includes(mortalRepairBundleId)) {
+    return inventory;
+  }
+
+  const hasEveryPiece = mortalRepairBundlePieces.every((itemId) =>
+    inventory.includes(itemId),
+  );
+
+  return hasEveryPiece ? [...inventory, mortalRepairBundleId] : inventory;
 }
 
 function mergeSocialScores(
