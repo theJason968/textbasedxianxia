@@ -389,6 +389,18 @@ function getChoiceRequirementSummary(player: Player, choice: Choice): string[] {
     }
   });
 
+  Object.entries(requirements.techniqueMastery ?? {}).forEach(
+    ([techniqueId, requiredMastery]) => {
+      const currentMastery = player.techniqueMastery[techniqueId] ?? 0;
+
+      if (currentMastery < requiredMastery) {
+        messages.push(
+          `${getNamedRequirement(techniques, techniqueId)} mastery ${requiredMastery} (${currentMastery})`,
+        );
+      }
+    },
+  );
+
   Object.entries(requirements.elements ?? {}).forEach(([element, requiredAmount]) => {
     const currentAmount = player.elementalEssence[element as ElementalEssence] ?? 0;
 
