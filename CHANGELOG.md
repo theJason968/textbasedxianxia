@@ -2,6 +2,16 @@
 
 ## 2026-05-15
 
+### Time And Progression Tests
+- Added a simple calendar system with day plus Morning, Afternoon, Evening, and Night time blocks.
+- Character stats panel now shows the current in-game day and time block.
+- Choice effects can now advance time by blocks, while existing day-long actions advance the calendar by full days.
+- Cultivation now consumes a time block, making repeated qi gathering less free.
+- Added the Craft Hall Basic Test as a full-day bottleneck requiring Iron Sense and Tool Repair before unlocking sharper Craft Hall progression.
+- Craft Hall forge practice, paid lessons, coal sorting, and room work now consume time blocks.
+- Added Medicine Hall alchemy room progression with paid/free supervised bench access, Lan Ruxue lessons, burner-cleaning work, and a full-day basic alchemy test.
+- Alchemy recipes can now use either the personal Alchemy Workbench or Medicine Hall alchemy access as their facility requirement.
+
 ### Crafting Progression And Facilities
 - Added optional village kit progression: family, Aunt Lin, Blacksmith Guo, and Old Ren each provide one missable piece toward the Mortal Repair Bundle.
 - Mortal Repair Bundle now forms automatically once all four village pieces are collected.

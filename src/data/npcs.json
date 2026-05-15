@@ -397,19 +397,19 @@
   },
   {
     "id": "medicine_garden_senior_sister",
-    "name": "Unnamed Medicine Garden Senior Sister",
-    "title": "Medicine Garden Senior Sister",
+    "name": "Lan Ruxue",
+    "title": "Medicine Hall Senior Sister",
     "disposition": "neutral",
     "faction": "Azure Cloud Sect",
     "firstSceneId": "medicine_garden_work",
-    "description": "A senior outer disciple who judges new disciples by whether they preserve roots while doing dirty work.",
+    "description": "A senior outer disciple who judges new disciples by whether they preserve roots while doing dirty work, then decides whether their hands deserve supervised alchemy room access.",
     "personality": [
       "measured",
       "demanding",
       "soft-spoken",
       "hard to impress"
     ],
-    "relationshipToPlayer": "May notice careful work in the medicine garden and reward patience over speed.",
+    "relationshipToPlayer": "May notice careful work in the medicine garden, sell basic Medicine Hall lessons, and unlock stronger alchemy instruction after tests and trust.",
     "skills": {
       "herb_recognition": 4,
       "heat_control": 3,
@@ -421,11 +421,15 @@
       "herb_recognition",
       "impurity_awareness"
     ],
-    "associatedQuests": ["first_sect_task", "medicine_recipe_trust"],
+    "associatedQuests": ["first_sect_task", "medicine_recipe_trust", "medicine_hall_burner_cleaning"],
     "memoryFlags": [
       "earned_garden_sisters_notice",
       "completed_first_sect_task",
       "completed_medicine_trust_work",
+      "medicine_hall_alchemy_access",
+      "learned_medicine_hall_basic_prep",
+      "passed_medicine_hall_basic_test",
+      "completed_medicine_hall_burner_cleaning",
       "learned_medicine_residue_patterns",
       "sensed_hidden_herbs"
     ],

@@ -5438,6 +5438,13 @@
         }
       },
       {
+        "label": "Visit the Medicine Hall alchemy room",
+        "nextScene": "medicine_hall_alchemy_room",
+        "requires": {
+          "items": ["outer_disciple_token"]
+        }
+      },
+      {
         "label": "Watch sparring at the blade-scarred arena",
         "nextScene": "arena_watch"
       },
@@ -5545,6 +5552,349 @@
     ]
   },
   {
+    "id": "medicine_hall_alchemy_room",
+    "areaId": "medicine_hall",
+    "title": "Medicine Hall Alchemy Room",
+    "body": "The Medicine Hall smells cleaner than the garden and more dangerous for it. Rows of clay burners sit beneath narrow vents. Herb drawers are sealed with paper strips. A clerk watches the outer benches where new disciples pay for supervised time, while Lan Ruxue corrects a junior's wrist angle without raising her voice.\n\nThe sect will let you use better tools than your room can hold, but not for free forever. Reputation, trust, and clean results matter as much as spirit stones.",
+    "choices": [
+      {
+        "label": "Pay the alchemy room fee and rent a supervised bench (1 spirit stone)",
+        "nextScene": "medicine_hall_paid_bench",
+        "requires": {
+          "stats": { "spiritStones": 1 }
+        },
+        "effects": {
+          "advanceTime": 1,
+          "spiritStones": -1,
+          "reputation": {
+            "medicine_hall": 1
+          },
+          "addSkills": {
+            "herb_recognition": 1,
+            "heat_control": 1
+          },
+          "setFlags": {
+            "medicine_hall_alchemy_access": true
+          },
+          "messages": ["The clerk takes one spirit stone and assigns you a supervised burner. Proper medicine work begins with borrowed fire."]
+        }
+      },
+      {
+        "label": "Use Medicine Hall standing to take a bench without paying",
+        "nextScene": "medicine_hall_free_bench",
+        "requires": {
+          "reputation": {
+            "medicine_hall": 8
+          }
+        },
+        "effects": {
+          "advanceTime": 1,
+          "addSkills": {
+            "heat_control": 1,
+            "impurity_awareness": 1
+          },
+          "setFlags": {
+            "medicine_hall_alchemy_access": true,
+            "medicine_hall_free_alchemy_access": true
+          },
+          "messages": ["The clerk checks your Medicine Hall marks and slides the fee token back. Clean work has started paying for itself."]
+        }
+      },
+      {
+        "label": "Speak with Lan Ruxue about paid alchemy lessons",
+        "nextScene": "medicine_hall_instructor",
+        "effects": {
+          "advanceTime": 1,
+          "meetNpc": "medicine_garden_senior_sister",
+          "recordNpcConversation": {
+            "npcId": "medicine_garden_senior_sister",
+            "topic": "Met Lan Ruxue in the Medicine Hall, where she sells basic alchemy lessons and gates stronger recipes behind clean work and tests."
+          },
+          "relationships": {
+            "medicine_garden_senior_sister": 1
+          },
+          "setFlags": {
+            "met_medicine_hall_instructor_lan": true
+          }
+        }
+      },
+      {
+        "label": "Take the free burner-cleaning assignment instead of paying",
+        "nextScene": "medicine_hall_burner_cleaning",
+        "requires": {
+          "flagsAbsent": ["completed_medicine_hall_burner_cleaning"]
+        },
+        "effects": {
+          "startQuest": "medicine_hall_burner_cleaning"
+        }
+      },
+      {
+        "label": "Return to the outer sect paths",
+        "nextScene": "outer_sect_paths"
+      }
+    ]
+  },
+  {
+    "id": "medicine_hall_paid_bench",
+    "areaId": "medicine_hall",
+    "title": "A Supervised Alchemy Bench",
+    "body": "The rented bench gives you what your room cannot: steady flame, clean bowls, measured water, and someone watching closely enough to stop an expensive mistake before it becomes smoke. You do not own the space. You borrow precision from it.",
+    "choices": [
+      {
+        "label": "Practice flame control with harmless bitterleaf",
+        "nextScene": "medicine_hall_alchemy_room",
+        "effects": {
+          "advanceTime": 1,
+          "perception": 1,
+          "trainingFatigue": 1,
+          "addSkills": {
+            "herb_recognition": 1,
+            "heat_control": 1
+          }
+        }
+      },
+      {
+        "label": "Step back from the bench",
+        "nextScene": "medicine_hall_alchemy_room"
+      }
+    ]
+  },
+  {
+    "id": "medicine_hall_free_bench",
+    "areaId": "medicine_hall",
+    "title": "A Bench Earned By Clean Work",
+    "body": "No one announces that the fee has been waived. The clerk simply points you toward a clean burner without asking for payment, and Lan Ruxue corrects your herb ratio as if your work is now worth correcting.",
+    "choices": [
+      {
+        "label": "Use the free bench for careful residue practice",
+        "nextScene": "medicine_hall_alchemy_room",
+        "effects": {
+          "advanceTime": 1,
+          "perception": 1,
+          "addSkills": {
+            "impurity_awareness": 1,
+            "crude_elixir_refining": 1
+          }
+        }
+      },
+      {
+        "label": "Return to the alchemy room floor",
+        "nextScene": "medicine_hall_alchemy_room"
+      }
+    ]
+  },
+  {
+    "id": "medicine_hall_instructor",
+    "areaId": "medicine_hall",
+    "title": "Lan Ruxue's Lesson Bench",
+    "body": "Lan Ruxue arranges three bowls in a line: clean water, bruised herb, and cloudy residue scraped from a failed batch.\n\n\"Spirit stones buy time at a bench,\" she says. \"Clean hands earn trust. Tests decide whether I let you ruin something stronger.\"",
+    "choices": [
+      {
+        "label": "Pay for basic herb preparation instruction (1 spirit stone)",
+        "nextScene": "medicine_hall_instructor",
+        "requires": {
+          "stats": { "spiritStones": 1 }
+        },
+        "effects": {
+          "advanceTime": 1,
+          "spiritStones": -1,
+          "relationships": {
+            "medicine_garden_senior_sister": 1
+          },
+          "reputation": {
+            "medicine_hall": 1
+          },
+          "addSkills": {
+            "herb_recognition": 1,
+            "heat_control": 1
+          },
+          "setFlags": {
+            "learned_medicine_hall_basic_prep": true
+          },
+          "messages": ["Lan makes you prepare the same bitterleaf three times until the bruising pattern stops changing. Repetition, apparently, is also medicine."]
+        }
+      },
+      {
+        "label": "Pay for stable medicine ratios (2 spirit stones)",
+        "nextScene": "medicine_hall_instructor",
+        "requires": {
+          "stats": { "spiritStones": 2 },
+          "flagsAbsent": ["learned_medicine_hall_stable_ratios"]
+        },
+        "effects": {
+          "advanceTime": 2,
+          "spiritStones": -2,
+          "relationships": {
+            "medicine_garden_senior_sister": 1
+          },
+          "reputation": {
+            "medicine_hall": 1
+          },
+          "addSkills": {
+            "crude_elixir_refining": 1,
+            "impurity_awareness": 1
+          },
+          "learnRecipes": [
+            "standard_qi_pill",
+            "shadow_viper_antivenom"
+          ],
+          "setFlags": {
+            "learned_medicine_hall_stable_ratios": true
+          },
+          "messages": ["Lan sells you two approved ratios: one for a proper outer sect qi pill, and one for medicine that survives poison without becoming poison itself."]
+        }
+      },
+      {
+        "label": "Pay for residue-control instruction (3 spirit stones, Medicine Hall reputation 2)",
+        "nextScene": "medicine_hall_instructor",
+        "requires": {
+          "stats": { "spiritStones": 3 },
+          "reputation": {
+            "medicine_hall": 2
+          },
+          "flagsAbsent": ["learned_medicine_hall_residue_control"]
+        },
+        "effects": {
+          "advanceTime": 2,
+          "spiritStones": -3,
+          "relationships": {
+            "medicine_garden_senior_sister": 1
+          },
+          "reputation": {
+            "medicine_hall": 2
+          },
+          "addSkills": {
+            "impurity_awareness": 2,
+            "crude_elixir_refining": 1
+          },
+          "learnRecipes": [
+            "clear_meridian_tonic",
+            "mist_calming_draught"
+          ],
+          "setFlags": {
+            "learned_medicine_hall_residue_control": true
+          },
+          "messages": ["Only after checking your Medicine Hall marks does Lan teach residue control. Strong medicine is easy to make dangerous; the lesson is how to make it boring enough to survive."]
+        }
+      },
+      {
+        "label": "Attempt the Medicine Hall basic test",
+        "nextScene": "medicine_hall_basic_test_fail",
+        "requires": {
+          "flagsAbsent": ["passed_medicine_hall_basic_test"]
+        },
+        "effects": {
+          "advanceTime": 4,
+          "trainingFatigue": 1,
+          "addSkills": {
+            "herb_recognition": 1
+          },
+          "messages": ["The test takes the whole day. Lan lets you fail with cheap herbs before you can fail with someone's meridians."]
+        },
+        "outcomes": [
+          {
+            "nextScene": "medicine_hall_basic_test_pass",
+            "requires": {
+              "skills": {
+                "herb_recognition": 2,
+                "heat_control": 1
+              }
+            },
+            "effects": {
+              "advanceTime": 4,
+              "relationships": {
+                "medicine_garden_senior_sister": 1
+              },
+              "reputation": {
+                "medicine_hall": 3
+              },
+              "addSkills": {
+                "crude_elixir_refining": 1
+              },
+              "learnRecipes": [
+                "standard_qi_pill"
+              ],
+              "setFlags": {
+                "passed_medicine_hall_basic_test": true
+              },
+              "messages": ["The basic test takes the whole day, but the medicine stays clear. Lan marks your name under disciples permitted to study proper outer sect preparations."]
+            }
+          }
+        ]
+      },
+      {
+        "label": "Ask for a Medicine Hall work assignment",
+        "nextScene": "medicine_hall_burner_cleaning",
+        "requires": {
+          "flagsAbsent": ["completed_medicine_hall_burner_cleaning"]
+        },
+        "effects": {
+          "startQuest": "medicine_hall_burner_cleaning"
+        }
+      },
+      {
+        "label": "Return to the alchemy room floor",
+        "nextScene": "medicine_hall_alchemy_room"
+      }
+    ]
+  },
+  {
+    "id": "medicine_hall_basic_test_pass",
+    "areaId": "medicine_hall",
+    "title": "A Clear Batch",
+    "body": "The test is a simple fever draught, which means there is nowhere to hide. Too much heat clouds it. Too little leaves the herb asleep. You cut the flame, wait one breath longer than pride wants, and pour.\n\nLan holds the bowl to the light. The liquid is pale, clear, and almost painfully ordinary.\n\n\"Basic permission,\" she says. \"Do not mistake clarity for depth.\"",
+    "choices": [
+      {
+        "label": "Return to Lan's lesson bench",
+        "nextScene": "medicine_hall_instructor"
+      }
+    ]
+  },
+  {
+    "id": "medicine_hall_basic_test_fail",
+    "areaId": "medicine_hall",
+    "title": "Clouded Medicine",
+    "body": "The draught clouds as soon as it cools. Not ruined enough to explode. Not clean enough to drink. The worst kind of failure: close enough to tempt someone careless.\n\nLan tips it into the waste jar.\n\n\"You were almost right,\" she says. \"That is when medicine becomes dangerous.\"",
+    "choices": [
+      {
+        "label": "Return to Lan's lesson bench",
+        "nextScene": "medicine_hall_instructor"
+      }
+    ]
+  },
+  {
+    "id": "medicine_hall_burner_cleaning",
+    "areaId": "medicine_hall",
+    "title": "Burners, Ash, And Stains",
+    "body": "Lan gives you a row of clay burners and a cloth that used to be white. The work is not glamorous. Residue hides under lips, in vents, and in the places where a lazy disciple assumes the next flame will burn it away.\n\nBy the end, your fingertips smell of ash and bitter medicine, and your eyes know three shades of dirty that looked identical this morning.",
+    "choices": [
+      {
+        "label": "Report the cleaned burners to Lan",
+        "nextScene": "medicine_hall_alchemy_room",
+        "effects": {
+          "advanceTime": 2,
+          "trainingFatigue": 1,
+          "completeQuest": "medicine_hall_burner_cleaning",
+          "relationships": {
+            "medicine_garden_senior_sister": 2
+          },
+          "reputation": {
+            "medicine_hall": 2
+          },
+          "addSkills": {
+            "careful_eye": 1,
+            "herb_recognition": 1,
+            "impurity_awareness": 1
+          },
+          "setFlags": {
+            "completed_medicine_hall_burner_cleaning": true
+          },
+          "messages": ["Lan checks the burners with a clean cloth, finds only a faint stain, and marks your name under hands that can be trusted near preparation work."]
+        }
+      }
+    ]
+  },
+  {
     "id": "craft_hall_forge",
     "areaId": "craft_hall",
     "title": "Craft Hall Forge",
@@ -5557,6 +5907,7 @@
           "stats": { "spiritStones": 1 }
         },
         "effects": {
+          "advanceTime": 1,
           "spiritStones": -1,
           "reputation": {
             "craft_hall": 1
@@ -5580,6 +5931,7 @@
           }
         },
         "effects": {
+          "advanceTime": 1,
           "addSkills": {
             "bellows_rhythm": 1,
             "tool_repair": 1
@@ -5595,6 +5947,7 @@
         "label": "Speak with Instructor Han Qingshi about paid lessons",
         "nextScene": "craft_hall_instructor",
         "effects": {
+          "advanceTime": 1,
           "meetNpc": "craft_hall_instructor_han",
           "recordNpcConversation": {
             "npcId": "craft_hall_instructor_han",
@@ -5634,6 +5987,7 @@
         "label": "Practice safe heat and honest inspection",
         "nextScene": "craft_hall_forge",
         "effects": {
+          "advanceTime": 1,
           "perception": 1,
           "trainingFatigue": 1,
           "addSkills": {
@@ -5658,6 +6012,7 @@
         "label": "Use the free bench for disciplined repair practice",
         "nextScene": "craft_hall_forge",
         "effects": {
+          "advanceTime": 1,
           "perception": 1,
           "addSkills": {
             "tool_repair": 1,
@@ -5684,6 +6039,7 @@
           "stats": { "spiritStones": 1 }
         },
         "effects": {
+          "advanceTime": 1,
           "spiritStones": -1,
           "relationships": {
             "craft_hall_instructor_han": 1
@@ -5709,6 +6065,7 @@
           "flagsAbsent": ["learned_craft_hall_field_reinforcement"]
         },
         "effects": {
+          "advanceTime": 2,
           "spiritStones": -2,
           "relationships": {
             "craft_hall_instructor_han": 1
@@ -5741,6 +6098,7 @@
           "flagsAbsent": ["learned_craft_hall_spirit_material_handling"]
         },
         "effects": {
+          "advanceTime": 2,
           "spiritStones": -3,
           "relationships": {
             "craft_hall_instructor_han": 1
@@ -5763,6 +6121,51 @@
         }
       },
       {
+        "label": "Attempt the Craft Hall basic test",
+        "nextScene": "craft_hall_basic_test_fail",
+        "requires": {
+          "flagsAbsent": ["passed_craft_hall_basic_test"]
+        },
+        "effects": {
+          "advanceTime": 4,
+          "trainingFatigue": 1,
+          "addSkills": {
+            "iron_sense": 1
+          },
+          "messages": ["The test takes the whole day. Han lets you fail on the practice fitting instead of on something expensive."]
+        },
+        "outcomes": [
+          {
+            "nextScene": "craft_hall_basic_test_pass",
+            "requires": {
+              "skills": {
+                "iron_sense": 2,
+                "tool_repair": 1
+              }
+            },
+            "effects": {
+              "advanceTime": 4,
+              "relationships": {
+                "craft_hall_instructor_han": 1
+              },
+              "reputation": {
+                "craft_hall": 3
+              },
+              "addSkills": {
+                "craftsmen": 1
+              },
+              "learnRecipes": [
+                "viper_scale_blade"
+              ],
+              "setFlags": {
+                "passed_craft_hall_basic_test": true
+              },
+              "messages": ["The basic test takes the whole day, but your repair holds under pressure. Han marks your name under disciples allowed to study sharper sect patterns."]
+            }
+          }
+        ]
+      },
+      {
         "label": "Ask for a Craft Hall work assignment",
         "nextScene": "craft_hall_coal_sorting",
         "requires": {
@@ -5779,6 +6182,30 @@
     ]
   },
   {
+    "id": "craft_hall_basic_test_pass",
+    "areaId": "craft_hall",
+    "title": "A Repair That Holds",
+    "body": "The test fitting looks simple: a cracked hinge, a warped pin, a thin strip of spirit-washed metal that must not be overheated. It is not simple. It is a question disguised as a chore: can you make the repair hold without making the flaw prettier?\n\nWhen Han hangs weight from the hinge, it creaks but does not split. He gives one short nod.\n\n\"Basic permission,\" he says. \"Do not mistake that for mastery.\"",
+    "choices": [
+      {
+        "label": "Return to the instructor's bench",
+        "nextScene": "craft_hall_instructor"
+      }
+    ]
+  },
+  {
+    "id": "craft_hall_basic_test_fail",
+    "areaId": "craft_hall",
+    "title": "A Flaw Made Prettier",
+    "body": "The test fitting comes apart in Han's tongs with an ugly little snap. The surface is cleaner than when you started. The repair is worse.\n\nHan sets both pieces on the bench.\n\n\"You polished the failure,\" he says. \"That is useful to know. Try again after your hands have learned the difference.\"",
+    "choices": [
+      {
+        "label": "Return to the instructor's bench",
+        "nextScene": "craft_hall_instructor"
+      }
+    ]
+  },
+  {
     "id": "craft_hall_coal_sorting",
     "areaId": "craft_hall",
     "title": "Coal, Flux, And Slag",
@@ -5788,6 +6215,7 @@
         "label": "Report the sorted bins to Han",
         "nextScene": "craft_hall_forge",
         "effects": {
+          "advanceTime": 2,
           "trainingFatigue": 1,
           "completeQuest": "craft_hall_coal_sorting",
           "relationships": {
@@ -6851,6 +7279,7 @@
           "flags": { "room_upgrade_tool_rack": true }
         },
         "effects": {
+          "advanceTime": 1,
           "perception": 1,
           "willpower": 1,
           "addSkills": {
@@ -6866,6 +7295,7 @@
           "flags": { "room_upgrade_alchemy_workbench": true }
         },
         "effects": {
+          "advanceTime": 1,
           "perception": 1,
           "cultivationInsight": 1,
           "addSkills": {
@@ -7078,6 +7508,7 @@
         "label": "Repack the bundle for road repairs",
         "nextScene": "room_hub",
         "effects": {
+          "advanceTime": 1,
           "perception": 1,
           "willpower": 1,
           "addSkills": {
@@ -7090,6 +7521,7 @@
         "label": "Practice quick fixes on old straps and buckles",
         "nextScene": "room_hub",
         "effects": {
+          "advanceTime": 1,
           "perception": 1,
           "trainingFatigue": 1,
           "addSkills": {
@@ -7109,6 +7541,7 @@
         "label": "Prepare herbs by heat, scent, and patience",
         "nextScene": "room_hub",
         "effects": {
+          "advanceTime": 1,
           "perception": 1,
           "cultivationInsight": 1,
           "addSkills": {
@@ -7121,6 +7554,7 @@
         "label": "Practice keeping residue out of a simple brew",
         "nextScene": "room_hub",
         "effects": {
+          "advanceTime": 1,
           "willpower": 1,
           "cultivationInsight": 1,
           "trainingFatigue": 1,

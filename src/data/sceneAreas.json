@@ -48,6 +48,10 @@
     "name": "Medicine Garden"
   },
   {
+    "id": "medicine_hall",
+    "name": "Medicine Hall"
+  },
+  {
     "id": "craft_hall",
     "name": "Craft Hall"
   },

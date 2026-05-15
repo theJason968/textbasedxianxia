@@ -15,6 +15,8 @@ export type ElementalEssence =
 
 export type CharacterGender = "female" | "male";
 
+export type TimeOfDay = "Morning" | "Afternoon" | "Evening" | "Night";
+
 export type ItemTier =
   | "mortal"
   | "low_grade_spirit"
@@ -50,6 +52,8 @@ export type Player = {
   trainingFatigue: number;
   impurity: number;
   cultivationInsight: number;
+  day: number;
+  timeOfDay: TimeOfDay;
   daysRemainingToExam: number;
   spiritStones: number;
   inventory: string[];
@@ -289,6 +293,7 @@ export type ChoiceEffect = Partial<
     | "corruption"
   >
 > & {
+  advanceTime?: number;
   advanceDays?: number;
   deadlineScene?: string;
   addItems?: string[];

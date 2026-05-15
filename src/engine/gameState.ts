@@ -27,6 +27,8 @@ export function createInitialGameState(): GameState {
       trainingFatigue: 0,
       impurity: 0,
       cultivationInsight: 0,
+      day: 1,
+      timeOfDay: "Morning",
       daysRemainingToExam: 10,
       spiritStones: 0,
       inventory: [],

@@ -28,6 +28,7 @@ import {
   getPlayerChangeMessages,
 } from "./engine/consequenceEngine";
 import { cultivate } from "./engine/cultivationEngine";
+import { formatCalendarTime } from "./engine/timeEngine";
 import { createInitialGameState } from "./engine/gameState";
 import { equipItem, unequipItem, useItem } from "./engine/itemEngine";
 import {
@@ -1611,6 +1612,10 @@ function App() {
                       }%`,
                     }}
                   />
+                </div>
+                <div className="vital-row">
+                  <span>Time</span>
+                  <strong>{formatCalendarTime(gameState.player)}</strong>
                 </div>
                 <div className="vital-row">
                   <span>Spirit Qi</span>

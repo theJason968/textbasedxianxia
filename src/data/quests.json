@@ -162,6 +162,16 @@
     }
   },
   {
+    "id": "medicine_hall_burner_cleaning",
+    "name": "Medicine Hall Burner Cleaning",
+    "description": "Lan Ruxue will not let a disciple touch proper alchemy fire until they can clean residue from clay burners without smearing it into the next batch.",
+    "steps": [
+      "Report to the Medicine Hall preparation room.",
+      "Clean clay burners, sort stained herb papers, and copy ratio marks.",
+      "Earn Lan Ruxue's first mark of medicinal trust."
+    ]
+  },
+  {
     "id": "craft_hall_coal_sorting",
     "name": "Craft Hall Coal Sorting",
     "description": "Han Qingshi will not teach better forge work to a disciple who cannot tell clean coal, cracked flux stone, and slag apart by hand.",

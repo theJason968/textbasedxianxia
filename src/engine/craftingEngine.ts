@@ -113,7 +113,12 @@ export function hasRequiredFacility(
   }
 
   if (facility === "alchemy_room") {
-    return Boolean(player.flags.room_upgrade_alchemy_workbench);
+    return Boolean(
+      player.flags.room_upgrade_alchemy_workbench ||
+        player.flags.medicine_hall_alchemy_access ||
+        player.flags.medicine_hall_free_alchemy_access ||
+        (player.reputation.medicine_hall ?? 0) >= 8,
+    );
   }
 
   return Boolean(

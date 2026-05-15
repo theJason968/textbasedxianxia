@@ -1,4 +1,5 @@
 import type { GameState, Player, Realm, RealmStage } from "./types";
+import { advancePlayerTime } from "./timeEngine";
 
 export type CultivationResult = {
   gameState: GameState;
@@ -32,16 +33,21 @@ export function cultivate(gameState: GameState): CultivationResult {
   );
   const nextImpurity = gameState.player.impurity + (isOvertraining ? 1 : 0);
 
+  const nextPlayer = advancePlayerTime(
+    {
+      ...gameState.player,
+      qi: nextQi,
+      trainingFatigue: nextFatigue,
+      foundationStability: nextFoundation,
+      impurity: nextImpurity,
+    },
+    1,
+  );
+
   return {
     gameState: {
       ...gameState,
-      player: {
-        ...gameState.player,
-        qi: nextQi,
-        trainingFatigue: nextFatigue,
-        foundationStability: nextFoundation,
-        impurity: nextImpurity,
-      },
+      player: nextPlayer,
     },
     message:
       nextQi >= gameState.player.maxQi

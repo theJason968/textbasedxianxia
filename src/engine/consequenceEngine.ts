@@ -20,6 +20,7 @@ import {
   getSkillLevelName,
   skillPracticesPerLevel,
 } from "./skillEngine";
+import { advancePlayerTime, formatCalendarTime } from "./timeEngine";
 import enemies from "../data/enemies.json";
 import items from "../data/items.json";
 import quests from "../data/quests.json";
@@ -199,6 +200,7 @@ export function getPlayerChangeMessages(
 ): string[] {
   return [
     ...getRealmMessages(previousPlayer, nextPlayer),
+    ...getCalendarMessages(previousPlayer, nextPlayer),
     ...getTimeMessages(previousPlayer, nextPlayer),
     ...getNumericStatMessages(previousPlayer, nextPlayer),
     ...getInventoryMessages(previousPlayer, nextPlayer),
@@ -239,8 +241,6 @@ function applyEffects(player: Player, effects?: ChoiceEffect): Player {
   const numericEffects = effects as NumericEffects;
   const numericEffectsWithTime = {
     ...numericEffects,
-    daysRemainingToExam:
-      (numericEffects.daysRemainingToExam ?? 0) - (effects.advanceDays ?? 0),
   };
   const statChanges = numericEffectKeys.reduce<NumericEffects>((changes, key) => {
     const change = numericEffectsWithTime[key];
@@ -252,9 +252,15 @@ function applyEffects(player: Player, effects?: ChoiceEffect): Player {
     return changes;
   }, {});
 
-  const playerWithBasicEffects: Player = {
+  const playerWithStatEffects: Player = {
     ...player,
     ...statChanges,
+  };
+  const timeBlocks = (effects.advanceDays ?? 0) * 4 + (effects.advanceTime ?? 0);
+  const playerWithTimeEffects = advancePlayerTime(playerWithStatEffects, timeBlocks);
+
+  const playerWithBasicEffects: Player = {
+    ...playerWithTimeEffects,
     inventory: assembleMortalRepairBundle(mergeUnique(player.inventory, effects.addItems)),
     knownRecipes: mergeUnique(player.knownRecipes, effects.learnRecipes),
     equipment: equipRewardedItem(player.equipment, effects),
@@ -278,7 +284,7 @@ function applyEffects(player: Player, effects?: ChoiceEffect): Player {
       effects.sectContribution,
     ),
     flags: {
-      ...player.flags,
+      ...playerWithTimeEffects.flags,
       ...effects.setFlags,
     },
   };
@@ -528,6 +534,17 @@ function getTimeMessages(previousPlayer: Player, nextPlayer: Player): string[] {
   }
 
   return [];
+}
+
+function getCalendarMessages(previousPlayer: Player, nextPlayer: Player): string[] {
+  if (
+    previousPlayer.day === nextPlayer.day &&
+    previousPlayer.timeOfDay === nextPlayer.timeOfDay
+  ) {
+    return [];
+  }
+
+  return [`Time advanced to ${formatCalendarTime(nextPlayer)}.`];
 }
 
 function getNumericStatMessages(previousPlayer: Player, nextPlayer: Player): string[] {
