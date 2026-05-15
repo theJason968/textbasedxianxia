@@ -1,5 +1,29 @@
 # Changelog
 
+## 2026-05-15
+
+### Crafting Progression And Facilities
+- Added optional village kit progression: family, Aunt Lin, Blacksmith Guo, and Old Ren each provide one missable piece toward the Mortal Repair Bundle.
+- Mortal Repair Bundle now forms automatically once all four village pieces are collected.
+- Added field crafting requirements so travel recipes can require the Mortal Repair Bundle without consuming it.
+- Added facility-gated crafting requirements for field kit, alchemy room, and blacksmithing room access.
+- Added early field recipes and items such as Simple Field Bandages and Field Staff Binding.
+- Updated crafting UI lock summaries to show missing tools and missing facilities, not just ingredients and skill ranks.
+
+### Room Upgrades
+- Rebalanced early room upgrades so meditation mat, writing desk, and herb shelf are cheaper and more immediately useful.
+- Added Tool Rack upgrade tied to the Mortal Repair Bundle, with room actions that improve campcraft and tool repair.
+- Added Alchemy Workbench upgrade tied to Medicine Garden trust, with room actions that improve herb and refining skills.
+- Alchemy recipes now require the Alchemy Workbench facility, separating recipe knowledge from having a proper place to prepare medicine.
+
+### Craft Hall And Sect Forge
+- Added Craft Hall as a sect area accessible from the outer sect paths.
+- Added Han Qingshi, a Craft Hall outer instructor who teaches paid blacksmithing lessons and gates stronger instruction behind reputation.
+- Added paid Craft Hall forge access for 1 spirit stone, with high Craft Hall reputation allowing free forge bench access later.
+- Added Craft Hall coal-sorting work assignment as a free reputation and skill path.
+- Blacksmithing-room crafting can now be unlocked through either Luo Jiwei's town forge path or Craft Hall forge access.
+- Moved Bone-Reinforced Staff out of starting recipes so it is learned through blacksmithing instruction instead.
+
 ## 2026-05-14 (Session 2)
 
 ### Post-Combat Choice System
