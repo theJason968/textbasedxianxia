@@ -16,6 +16,10 @@ import {
 import { completeQuest, failQuest, startQuest, updateQuest } from "./questEngine";
 import { meetsRequirements } from "./conditionEngine";
 import {
+  applyBreakthroughRewards,
+  getFoundationQualityLabel,
+} from "./breakthroughEngine";
+import {
   formatSkillEffectSummary,
   getSkillDisplayedExpGain,
   getSkillLevelName,
@@ -30,7 +34,7 @@ import techniques from "../data/techniques.json";
 import craftingRecipes from "../data/craftingRecipes.json";
 
 type NumericPlayerStat = {
-  [Key in keyof Player]: Player[Key] extends number ? Key : never;
+  [Key in keyof Player]-?: NonNullable<Player[Key]> extends number ? Key : never;
 }[keyof Player];
 
 type NumericEffects = Partial<Record<NumericPlayerStat, number>>;
@@ -303,24 +307,14 @@ function applyBreakthroughEffect(
     return player;
   }
 
-  const maxHealthIncrease = effects.breakthrough.maxHealthIncrease ?? 0;
-
-  return {
-    ...player,
-    realm: effects.breakthrough.realm ?? player.realm,
+  const breakthroughResult = applyBreakthroughRewards(player, {
+    realm: effects.breakthrough.realm,
     stage: effects.breakthrough.stage,
-    qi: 0,
-    maxQi: player.maxQi + (effects.breakthrough.maxQiIncrease ?? 0),
-    maxHealth: player.maxHealth + maxHealthIncrease,
-    health: Math.min(player.health + maxHealthIncrease, player.maxHealth + maxHealthIncrease),
-    spiritualSense:
-      player.spiritualSense + (effects.breakthrough.spiritualSenseIncrease ?? 0),
-    foundationStability: Math.max(
-      0,
-      player.foundationStability - (effects.breakthrough.foundationCost ?? 0),
-    ),
-    trainingFatigue: Math.max(0, player.trainingFatigue - 2),
-  };
+    foundationQuality: effects.breakthrough.foundationQuality,
+    foundationCost: effects.breakthrough.foundationCost,
+  });
+
+  return breakthroughResult.player;
 }
 
 function applyQuestEffects(player: Player, effects: NonNullable<Choice["effects"]>): Player {
@@ -516,7 +510,11 @@ function getRealmMessages(previousPlayer: Player, nextPlayer: Player): string[] 
     return [];
   }
 
-  return [`Character advanced to ${nextPlayer.realm} ${nextPlayer.stage}.`];
+  return [
+    `Character advanced to ${nextPlayer.realm} ${nextPlayer.stage} with ${getFoundationQualityLabel(
+      nextPlayer.foundationQuality,
+    )}.`,
+  ];
 }
 
 function getTimeMessages(previousPlayer: Player, nextPlayer: Player): string[] {

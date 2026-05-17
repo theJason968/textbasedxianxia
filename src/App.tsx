@@ -15,6 +15,7 @@ import { continueCombat, getAvailableTechniqueActions, resolveCombatAction, type
 import { getPostCombatChoices, resolvePostCombatChoice } from "./engine/postCombatEngine";
 import type { PostCombatChoiceId } from "./engine/types";
 import { canChoose } from "./engine/conditionEngine";
+import { getFoundationQualityLabel } from "./engine/breakthroughEngine";
 import {
   canCraftRecipe,
   craftRecipe,
@@ -73,6 +74,7 @@ import type {
   Enemy,
   EquipmentEffects,
   EquipmentSlot,
+  FoundationQuality,
   ItemTier,
   Npc,
   Player,
@@ -107,6 +109,12 @@ type DelayedChoiceState = {
 type DiscoveryResult = {
   title: string;
   body: string;
+  rewards: string[];
+};
+type BreakthroughResultView = {
+  realmLine: string;
+  qualityLabel: string;
+  flavor: string;
   rewards: string[];
 };
 type ItemData = {
@@ -144,6 +152,7 @@ type ItemData = {
   >;
 };
 const itemData = items as ItemData[];
+const breakthroughImagePath = "/assets/story/breakthrough_success.png";
 
 const craftingFacilities: CraftingFacilityView[] = [
   {
@@ -159,6 +168,108 @@ const craftingFacilities: CraftingFacilityView[] = [
     label: "Forge",
   },
 ];
+
+function getRealmDisplay(player: Player): string {
+  const realmStage = `${player.realm} ${player.stage}`;
+
+  return player.foundationQuality
+    ? `${realmStage} (${getFoundationQualityLabel(player.foundationQuality)})`
+    : realmStage;
+}
+
+const breakthroughRewardStats: Array<
+  keyof Pick<
+    Player,
+    | "strength"
+    | "agility"
+    | "endurance"
+    | "intelligence"
+    | "perception"
+    | "spiritualSense"
+    | "physique"
+    | "comprehension"
+    | "maxQi"
+    | "maxHealth"
+    | "foundationStability"
+    | "impurity"
+    | "cultivationInsight"
+  >
+> = [
+  "strength",
+  "agility",
+  "endurance",
+  "intelligence",
+  "perception",
+  "spiritualSense",
+  "physique",
+  "comprehension",
+  "maxQi",
+  "maxHealth",
+  "foundationStability",
+  "impurity",
+  "cultivationInsight",
+];
+
+const breakthroughRewardLabels: Record<(typeof breakthroughRewardStats)[number], string> = {
+  strength: "Strength",
+  agility: "Agility",
+  endurance: "Endurance",
+  intelligence: "Intelligence",
+  perception: "Perception",
+  spiritualSense: "Spiritual Sense",
+  physique: "Physique",
+  comprehension: "Comprehension",
+  maxQi: "Max Qi",
+  maxHealth: "Max Health",
+  foundationStability: "Foundation Stability",
+  impurity: "Impurity",
+  cultivationInsight: "Cultivation Insight",
+};
+
+const breakthroughFlavorByQuality: Record<FoundationQuality, string> = {
+  fractured:
+    "The boundary gives way unevenly. Power enters, but not cleanly. You steady your breath around the cracks and understand that survival is still a kind of progress.",
+  unstable:
+    "The pressure opens inside you in uneven waves. Your meridians hold, but the qi does not settle all at once. You breathe until the shaking becomes rhythm.",
+  stable:
+    "The knot in your body loosens. Breath returns first, then warmth, then the quiet certainty that the path ahead has widened.",
+  refined:
+    "The qi does not break through you. It fits. Bone, breath, and meridian answer together, and for a moment your whole body feels carved into a cleaner shape.",
+  perfect:
+    "There is no thunder. No waste. The barrier dissolves as if it had only been waiting for you to arrive correctly. The world sharpens around your next breath.",
+};
+
+function getBreakthroughResultView(
+  previousPlayer: Player,
+  nextPlayer: Player,
+): BreakthroughResultView | null {
+  const advanced =
+    previousPlayer.realm !== nextPlayer.realm || previousPlayer.stage !== nextPlayer.stage;
+
+  if (!advanced || !nextPlayer.foundationQuality) {
+    return null;
+  }
+
+  const rewards = breakthroughRewardStats
+    .map((key) => {
+      const difference = nextPlayer[key] - previousPlayer[key];
+
+      if (difference === 0) {
+        return null;
+      }
+
+      const signedDifference = difference > 0 ? `+${difference}` : `${difference}`;
+      return `${signedDifference} ${breakthroughRewardLabels[key]}`;
+    })
+    .filter((reward): reward is string => reward !== null);
+
+  return {
+    realmLine: getRealmDisplay(nextPlayer),
+    qualityLabel: getFoundationQualityLabel(nextPlayer.foundationQuality),
+    flavor: breakthroughFlavorByQuality[nextPlayer.foundationQuality],
+    rewards,
+  };
+}
 
 type RecipeIngredientDetail = {
   itemId: string;
@@ -897,6 +1008,8 @@ function App() {
   const [activeSkillTree, setActiveSkillTree] = useState("All");
   const [delayedChoice, setDelayedChoice] = useState<DelayedChoiceState | null>(null);
   const [discoveryResult, setDiscoveryResult] = useState<DiscoveryResult | null>(null);
+  const [breakthroughResult, setBreakthroughResult] =
+    useState<BreakthroughResultView | null>(null);
   const currentScene = useMemo(
     () => getSceneById(sceneData, gameState.currentSceneId),
     [gameState.currentSceneId],
@@ -1181,6 +1294,7 @@ function App() {
   const regularActionMessages = actionMessages.filter(
     (message) => !isCheckResultMessage(message),
   );
+  const isBreakthroughDelay = delayedChoice?.choice.effects?.breakthrough !== undefined;
 
   useEffect(() => {
     if (!delayedChoice) {
@@ -1227,6 +1341,7 @@ function App() {
     setActionMessages([]);
     setDelayedChoice(null);
     setDiscoveryResult(null);
+    setBreakthroughResult(null);
     setSaveSlots(getSaveSlots(owner));
     setAuthMessage(message);
     setSaveMessage(
@@ -1275,6 +1390,7 @@ function App() {
     setActionMessages([]);
     setDelayedChoice(null);
     setDiscoveryResult(null);
+    setBreakthroughResult(null);
     setSaveSlots(getSaveSlots(saveOwner));
     setSaveMessage("Character created and saved to slot 1.");
     setCultivationMessage("Cultivate after learning a breathing method.");
@@ -1292,6 +1408,7 @@ function App() {
     if (choice.delay) {
       setDelayedChoice({ choice, progress: 0, stageIndex: 0 });
       setDiscoveryResult(null);
+      setBreakthroughResult(null);
       setActionMessages([]);
       return;
     }
@@ -1301,16 +1418,22 @@ function App() {
 
   function resolveChoice(choice: Choice, showDiscovery: boolean) {
     const result = applyChoiceWithResult(gameState, choice);
+    const nextBreakthroughResult = getBreakthroughResultView(
+      gameState.player,
+      result.gameState.player,
+    );
     const discoveryRewards = getDiscoveryRewardLines(result.messages);
     const shouldShowDiscovery =
       showDiscovery &&
       choice.delay &&
+      !nextBreakthroughResult &&
       (discoveryRewards.length > 0 ||
         choice.delay.resultTitle !== undefined ||
         choice.delay.resultBody !== undefined);
 
     setGameState(result.gameState);
-    setActionMessages(shouldShowDiscovery ? [] : result.messages);
+    setActionMessages(shouldShowDiscovery || nextBreakthroughResult ? [] : result.messages);
+    setBreakthroughResult(nextBreakthroughResult);
     setDiscoveryResult(
       shouldShowDiscovery
         ? {
@@ -1327,11 +1450,16 @@ function App() {
     setDiscoveryResult(null);
   }
 
+  function handleBreakthroughContinue() {
+    setBreakthroughResult(null);
+  }
+
   function handleRestart() {
     setGameState(createCharacterState(gameState.player.name, gameState.player.gender));
     setActionMessages([]);
     setDelayedChoice(null);
     setDiscoveryResult(null);
+    setBreakthroughResult(null);
     setSaveMessage("Started a new path. Save it into a slot when ready.");
     setCultivationMessage("Cultivate after learning a breathing method.");
   }
@@ -1350,6 +1478,7 @@ function App() {
       setActionMessages([]);
       setDelayedChoice(null);
       setDiscoveryResult(null);
+      setBreakthroughResult(null);
       setSaveMessage("Loaded saved path.");
       return;
     }
@@ -1365,9 +1494,18 @@ function App() {
 
   function handleCultivate() {
     const result = cultivate(gameState);
+    const nextBreakthroughResult = getBreakthroughResultView(
+      gameState.player,
+      result.gameState.player,
+    );
 
     setGameState(result.gameState);
-    setActionMessages(getPlayerChangeMessages(gameState.player, result.gameState.player));
+    setActionMessages(
+      nextBreakthroughResult
+        ? []
+        : getPlayerChangeMessages(gameState.player, result.gameState.player),
+    );
+    setBreakthroughResult(nextBreakthroughResult);
     setCultivationMessage(result.message);
     setSaveMessage("Unsaved changes.");
   }
@@ -1547,7 +1685,7 @@ function App() {
         <span>Name: {gameState.player.name}</span>
         <span>Sect: {sectLabel}</span>
         <span>
-          Realm: {gameState.player.realm} {gameState.player.stage}
+          Realm: {getRealmDisplay(gameState.player)}
         </span>
         <span>Spirit Stones: {gameState.player.spiritStones}</span>
         <span>{mountainGateLabel}</span>
@@ -1622,15 +1760,38 @@ function App() {
             </div>
           </div>
         ) : delayedChoice ? (
-          <div className="search-resolution-panel" aria-live="polite">
-            <p className="eyebrow">Searching</p>
+          <div
+            className={
+              isBreakthroughDelay
+                ? "breakthrough-attempt-panel"
+                : "search-resolution-panel"
+            }
+            aria-live="polite"
+          >
+            {isBreakthroughDelay ? (
+              <img
+                src={breakthroughImagePath}
+                alt=""
+                className="breakthrough-attempt-image"
+                aria-hidden="true"
+              />
+            ) : null}
+            {isBreakthroughDelay ? (
+              <div className="breakthrough-attempt-shade" aria-hidden="true" />
+            ) : null}
+            <div className={isBreakthroughDelay ? "breakthrough-attempt-content" : undefined}>
+            <p className="eyebrow">{isBreakthroughDelay ? "Attempting Breakthrough" : "Searching"}</p>
             <h2>{delayedChoice.choice.label}</h2>
             <p>
               {delayedChoice.choice.delay?.stages[delayedChoice.stageIndex] ??
-                "Looking carefully..."}
+                (isBreakthroughDelay ? "The bottleneck begins to move." : "Looking carefully...")}
             </p>
-            <div className="search-progress-track" aria-label="Search progress">
+            <div
+              className={isBreakthroughDelay ? "breakthrough-attempt-track" : "search-progress-track"}
+              aria-label={isBreakthroughDelay ? "Breakthrough progress" : "Search progress"}
+            >
               <span style={{ width: `${Math.round(delayedChoice.progress * 100)}%` }} />
+            </div>
             </div>
           </div>
         ) : gameState.combat?.resolved && activeEnemy ? (
@@ -1939,11 +2100,11 @@ function App() {
             {showFullStats && (
               <dl className="hero-stat-list">
                 <div>
-                  <dt>Attack</dt>
+                  <dt>Strength</dt>
                   <dd>{gameState.player.strength}</dd>
                 </div>
                 <div>
-                  <dt>Defense</dt>
+                  <dt>Endurance</dt>
                   <dd>{gameState.player.endurance}</dd>
                 </div>
                 <div>
@@ -1978,6 +2139,12 @@ function App() {
                   <dt>Foundation</dt>
                   <dd>{gameState.player.foundationStability}</dd>
                 </div>
+                {gameState.player.foundationQuality ? (
+                  <div>
+                    <dt>Foundation Quality</dt>
+                    <dd>{getFoundationQualityLabel(gameState.player.foundationQuality)}</dd>
+                  </div>
+                ) : null}
                 <div>
                   <dt>Fatigue</dt>
                   <dd>{gameState.player.trainingFatigue}</dd>
@@ -2694,6 +2861,43 @@ function App() {
           </>
         )}
       </aside>
+      {breakthroughResult ? (
+        <section className="breakthrough-result-screen" aria-live="polite">
+          <img
+            src={breakthroughImagePath}
+            alt=""
+            className="breakthrough-result-image"
+            aria-hidden="true"
+          />
+          <div className="breakthrough-result-shade" aria-hidden="true" />
+          <div className="breakthrough-result-content">
+            <p className="eyebrow">Breakthrough Successful</p>
+            <h2>{breakthroughResult.realmLine}</h2>
+            <strong>{breakthroughResult.qualityLabel}</strong>
+            <p>{breakthroughResult.flavor}</p>
+            {breakthroughResult.rewards.length > 0 ? (
+              <div className="breakthrough-reward-panel">
+                <h3 className="ornate-panel-title">Gained</h3>
+                <div className="victory-rewards-panel">
+                  {breakthroughResult.rewards.map((reward) => (
+                    <div className="victory-reward-row" key={reward}>
+                      <span className="victory-reward-icon">◎</span>
+                      <span>{reward}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+            <button
+              className="victory-continue-btn"
+              type="button"
+              onClick={handleBreakthroughContinue}
+            >
+              Steady Your Breath
+            </button>
+          </div>
+        </section>
+      ) : null}
     </main>
   );
 }

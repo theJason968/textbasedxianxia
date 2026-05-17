@@ -1,7 +1,7 @@
 import type { Choice, ChoiceRequirement, GameState, Player } from "./types";
 
 type NumericPlayerStat = {
-  [Key in keyof Player]: Player[Key] extends number ? Key : never;
+  [Key in keyof Player]-?: NonNullable<Player[Key]> extends number ? Key : never;
 }[keyof Player];
 
 type NumericRequirements = Partial<Record<NumericPlayerStat, number>>;

@@ -1,6 +1,12 @@
 export type Realm = "Mortal" | "Qi Condensation" | "Foundation Establishment";
 
 export type RealmStage = "Early" | "Middle" | "Late" | "Peak";
+export type FoundationQuality =
+  | "fractured"
+  | "unstable"
+  | "stable"
+  | "refined"
+  | "perfect";
 
 export type ElementalEssence =
   | "Water"
@@ -34,6 +40,7 @@ export type Player = {
   gender: CharacterGender;
   realm: Realm;
   stage: RealmStage;
+  foundationQuality?: FoundationQuality;
   health: number;
   maxHealth: number;
   qi: number;
@@ -304,9 +311,7 @@ export type ChoiceEffect = Partial<
   breakthrough?: {
     realm?: Realm;
     stage: RealmStage;
-    maxQiIncrease?: number;
-    maxHealthIncrease?: number;
-    spiritualSenseIncrease?: number;
+    foundationQuality?: FoundationQuality;
     foundationCost?: number;
   };
   learnTechniques?: string[];

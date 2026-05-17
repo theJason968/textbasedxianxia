@@ -2682,6 +2682,89 @@ body::before {
   transition: width 0.1s linear;
 }
 
+.breakthrough-attempt-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 2rem;
+  text-align: center;
+  background: #11191d;
+}
+
+.breakthrough-attempt-image,
+.breakthrough-attempt-shade {
+  position: absolute;
+  inset: 0;
+}
+
+.breakthrough-attempt-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.8) brightness(0.52) blur(1px);
+  transform: scale(1.02);
+}
+
+.breakthrough-attempt-shade {
+  background:
+    radial-gradient(circle at 66% 48%, rgba(130, 191, 210, 0.18), transparent 32%),
+    linear-gradient(180deg, rgba(10, 15, 18, 0.62) 0%, rgba(10, 15, 18, 0.9) 100%);
+}
+
+.breakthrough-attempt-content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 1rem;
+  width: min(34rem, 100%);
+}
+
+.breakthrough-attempt-content .eyebrow {
+  margin: 0;
+  color: #9ecfca;
+}
+
+.breakthrough-attempt-content h2 {
+  max-width: 20ch;
+  margin: 0 auto;
+  color: var(--gold-bright);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 2.75rem);
+  letter-spacing: 0;
+  line-height: 1.08;
+}
+
+.breakthrough-attempt-content p:not(.eyebrow) {
+  min-height: 3.2rem;
+  margin: 0;
+  color: #e4ded2;
+  font-size: clamp(0.95rem, 2vw, 1.15rem);
+  line-height: 1.55;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.8);
+}
+
+.breakthrough-attempt-track {
+  overflow: hidden;
+  width: min(26rem, 100%);
+  height: 0.75rem;
+  margin: 0 auto;
+  border: 1px solid rgba(158, 207, 202, 0.4);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.34);
+  box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.6), 0 0 20px rgba(158, 207, 202, 0.12);
+}
+
+.breakthrough-attempt-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #7fb8c5, #f5ddb0);
+  transition: width 0.1s linear;
+}
+
 .victory-corner {
   position: absolute;
   width: 80px;
@@ -2794,6 +2877,111 @@ body::before {
 .victory-continue-btn:hover {
   background: linear-gradient(180deg, #5e3a20 0%, #321c0a 100%);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.65), 0 0 16px rgba(232, 200, 120, 0.2);
+}
+
+/* ── Breakthrough Result Screen ───────────────────────────── */
+
+.breakthrough-result-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  overflow: hidden;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  background: #10171b;
+}
+
+.breakthrough-result-image,
+.breakthrough-result-shade {
+  position: absolute;
+  inset: 0;
+}
+
+.breakthrough-result-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.breakthrough-result-shade {
+  background:
+    radial-gradient(circle at 72% 43%, rgba(126, 178, 195, 0.08), transparent 30%),
+    linear-gradient(90deg, rgba(11, 16, 18, 0.86) 0%, rgba(11, 16, 18, 0.52) 48%, rgba(11, 16, 18, 0.34) 100%),
+    linear-gradient(180deg, rgba(5, 8, 10, 0.2) 0%, rgba(5, 8, 10, 0.78) 100%);
+}
+
+.breakthrough-result-content {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 0.8rem;
+  width: min(34rem, 100%);
+  justify-self: start;
+  color: #efe5d4;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.72);
+}
+
+.breakthrough-result-content .eyebrow {
+  margin: 0;
+  color: #9ecfca;
+}
+
+.breakthrough-result-content h2 {
+  margin: 0;
+  color: var(--gold-bright);
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.breakthrough-result-content > strong {
+  color: #f1dca9;
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2.4vw, 1.45rem);
+  letter-spacing: 0;
+}
+
+.breakthrough-result-content > p:not(.eyebrow) {
+  max-width: 38rem;
+  margin: 0;
+  color: #d8d0c3;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.breakthrough-reward-panel {
+  width: min(30rem, 100%);
+  margin-top: 0.45rem;
+}
+
+.breakthrough-reward-panel .ornate-panel-title {
+  position: relative;
+  z-index: 1;
+  margin: 0 auto -0.6rem;
+}
+
+.breakthrough-reward-panel .victory-rewards-panel {
+  max-height: min(34vh, 18rem);
+  overflow: auto;
+}
+
+@media (max-width: 760px) {
+  .breakthrough-result-screen {
+    align-items: end;
+    padding: 1rem;
+  }
+
+  .breakthrough-result-shade {
+    background:
+      linear-gradient(180deg, rgba(9, 12, 14, 0.18) 0%, rgba(9, 12, 14, 0.92) 50%, rgba(9, 12, 14, 0.98) 100%);
+  }
+
+  .breakthrough-result-content {
+    justify-self: stretch;
+  }
 }
 
 /* ── Post-combat choice panel ─────────────────────────────── */

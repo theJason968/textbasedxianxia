@@ -165,6 +165,7 @@
   - Increased technique mastery requirements
   - Qi circulation, meridian pressure, and impurity control become critical
   - Hints at what Qi Gathering will demand before Foundation Establishment is even possible
+  - [x] Breakthroughs now record foundation quality and award tiered growth across core stats, max qi, max health, and long-term foundation flags.
 - [ ] Qi Gathering breakthrough
   - Chapter-ending narrative moment, not just a stat increment
   - Establishes **Qi Gathering** as the realm after Mortal Peak, creating a necessary bridge before Foundation Establishment.

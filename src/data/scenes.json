@@ -4738,11 +4738,20 @@
       {
         "label": "Endure the breakthrough and let the tablet finish judging you",
         "nextScene": "tablet_test",
+        "delay": {
+          "seconds": 5,
+          "stages": [
+            "The tablet's cold qi pours into your arms and finds every weakness.",
+            "Your breath catches. The mountain presses harder.",
+            "Old lessons surface one by one: stance, warning, rhythm, pressure.",
+            "The bottleneck tightens until your bones feel full of rain.",
+            "You hold the line and push through."
+          ]
+        },
         "effects": {
           "breakthrough": {
             "stage": "Middle",
-            "maxQiIncrease": 5,
-            "maxHealthIncrease": 3,
+            "foundationQuality": "unstable",
             "foundationCost": 2
           },
           "foundationStability": 1,
@@ -7793,6 +7802,16 @@
       {
         "label": "Continue the circulation and drink — commit fully to the push",
         "nextScene": "room_breakthrough_late_success",
+        "delay": {
+          "seconds": 5,
+          "stages": [
+            "You complete the first circulation without breaking the breath count.",
+            "The draught enters your body like cold moonlight sinking through stone.",
+            "The bottleneck gathers at the edge of the meridians and refuses you.",
+            "You press inward, not harder, but cleaner.",
+            "The pressure turns. Something opens."
+          ]
+        },
         "requires": {
           "stats": {
             "foundationStability": 60
@@ -7804,8 +7823,7 @@
         "effects": {
           "breakthrough": {
             "stage": "Late",
-            "maxQiIncrease": 10,
-            "maxHealthIncrease": 6,
+            "foundationQuality": "refined",
             "foundationCost": 15
           },
           "impurity": 4,
@@ -7818,6 +7836,16 @@
       {
         "label": "Continue the circulation and drink — the foundation is rough but it will hold",
         "nextScene": "room_breakthrough_late_struggle",
+        "delay": {
+          "seconds": 5,
+          "stages": [
+            "The draught hits before your breath fully shapes it.",
+            "Qi surges through the meridians and scrapes against every rough edge.",
+            "The bottleneck does not open. It bites.",
+            "Pain flashes cold and bright behind your ribs.",
+            "You push anyway."
+          ]
+        },
         "requires": {
           "stats": {
             "foundationStability": 35
@@ -7830,8 +7858,7 @@
         "effects": {
           "breakthrough": {
             "stage": "Late",
-            "maxQiIncrease": 6,
-            "maxHealthIncrease": 3,
+            "foundationQuality": "fractured",
             "foundationCost": 25
           },
           "impurity": 8,

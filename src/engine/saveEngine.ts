@@ -168,6 +168,7 @@ function mergePlayer(initialPlayer: Player, savedPlayer?: Partial<Player>): Play
     ...initialPlayer,
     ...savedPlayer,
     gender: savedPlayer?.gender ?? initialPlayer.gender,
+    foundationQuality: savedPlayer?.foundationQuality ?? initialPlayer.foundationQuality,
     day: savedPlayer?.day ?? initialPlayer.day,
     timeOfDay: savedPlayer?.timeOfDay ?? initialPlayer.timeOfDay,
     inventory: savedPlayer?.inventory ?? initialPlayer.inventory,

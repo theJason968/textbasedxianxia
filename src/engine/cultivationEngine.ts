@@ -1,5 +1,9 @@
 import type { GameState, Player, Realm, RealmStage } from "./types";
 import { advancePlayerTime } from "./timeEngine";
+import {
+  applyBreakthroughRewards,
+  getFoundationQualityLabel,
+} from "./breakthroughEngine";
 
 export type CultivationResult = {
   gameState: GameState;
@@ -87,28 +91,23 @@ export function attemptBreakthrough(gameState: GameState): CultivationResult {
     };
   }
 
+  const breakthroughResult = applyBreakthroughRewards(gameState.player, {
+    realm: advancement.realm,
+    stage: advancement.stage,
+    foundationCost: advancement.foundationCost,
+  });
+
   return {
     gameState: {
       ...gameState,
       player: {
-        ...gameState.player,
-        realm: advancement.realm,
-        stage: advancement.stage,
-        qi: 0,
-        maxQi: gameState.player.maxQi + advancement.maxQiIncrease,
-        maxHealth: gameState.player.maxHealth + advancement.maxHealthIncrease,
-        health: gameState.player.maxHealth + advancement.maxHealthIncrease,
-        spiritualSense:
-          gameState.player.spiritualSense + advancement.spiritualSenseIncrease,
-        foundationStability: Math.max(
-          0,
-          gameState.player.foundationStability - advancement.foundationCost,
-        ),
-        trainingFatigue: Math.max(0, gameState.player.trainingFatigue - 2),
-        cultivationInsight: Math.max(0, gameState.player.cultivationInsight - 1),
+        ...breakthroughResult.player,
+        cultivationInsight: Math.max(0, breakthroughResult.player.cultivationInsight - 1),
       },
     },
-    message: `Breakthrough success. You advanced to ${advancement.realm} ${advancement.stage}.`,
+    message: `Breakthrough success. You advanced to ${advancement.realm} ${advancement.stage} with ${getFoundationQualityLabel(
+      breakthroughResult.quality,
+    )}.`,
   };
 }
 
@@ -120,9 +119,6 @@ function getNextCultivationStep(player: Player):
   | {
       realm: Realm;
       stage: RealmStage;
-      maxQiIncrease: number;
-      maxHealthIncrease: number;
-      spiritualSenseIncrease: number;
       foundationCost: number;
     }
   | null {
@@ -132,9 +128,6 @@ function getNextCultivationStep(player: Player):
     return {
       realm: player.realm,
       stage: stageOrder[currentStageIndex + 1],
-      maxQiIncrease: 5,
-      maxHealthIncrease: 3,
-      spiritualSenseIncrease: 0,
       foundationCost: 2,
     };
   }
@@ -145,9 +138,6 @@ function getNextCultivationStep(player: Player):
     return {
       realm: realmOrder[currentRealmIndex + 1],
       stage: "Early",
-      maxQiIncrease: 10,
-      maxHealthIncrease: 8,
-      spiritualSenseIncrease: 1,
       foundationCost: 5,
     };
   }
