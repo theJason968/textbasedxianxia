@@ -17,7 +17,8 @@
     "requiresTools": [
       "mortal_repair_bundle"
     ],
-    "requiredFacility": "field_kit"
+    "requiredFacility": "field_kit",
+    "requiredFacilityTier": 1
   },
   {
     "id": "cooling_herb_salve",
@@ -38,7 +39,8 @@
     "requiresTools": [
       "mortal_repair_bundle"
     ],
-    "requiredFacility": "field_kit"
+    "requiredFacility": "field_kit",
+    "requiredFacilityTier": 1
   },
   {
     "id": "field_staff_binding",
@@ -59,7 +61,8 @@
     "requiresTools": [
       "mortal_repair_bundle"
     ],
-    "requiredFacility": "field_kit"
+    "requiredFacility": "field_kit",
+    "requiredFacilityTier": 1
   },
   {
     "id": "bone_reinforced_staff",
@@ -79,7 +82,8 @@
       "staff_basics": 1,
       "tool_repair": 1
     },
-    "requiredFacility": "blacksmithing_room"
+    "requiredFacility": "blacksmithing_room",
+    "requiredFacilityTier": 1
   },
   {
     "id": "mist_core_qi_draught",
@@ -99,7 +103,8 @@
       "crude_elixir_refining": 1,
       "impurity_awareness": 1
     },
-    "requiredFacility": "alchemy_room"
+    "requiredFacility": "alchemy_room",
+    "requiredFacilityTier": 1
   },
   {
     "id": "standard_qi_pill",
@@ -119,7 +124,8 @@
       "crude_elixir_refining": 2,
       "impurity_awareness": 1
     },
-    "requiredFacility": "alchemy_room"
+    "requiredFacility": "alchemy_room",
+    "requiredFacilityTier": 1
   },
   {
     "id": "clear_meridian_tonic",
@@ -139,7 +145,8 @@
       "crude_elixir_refining": 2,
       "impurity_awareness": 2
     },
-    "requiredFacility": "alchemy_room"
+    "requiredFacility": "alchemy_room",
+    "requiredFacilityTier": 2
   },
   {
     "id": "foundation_steadying_decoction",
@@ -160,7 +167,8 @@
       "impurity_awareness": 2,
       "foundation_control": 2
     },
-    "requiredFacility": "alchemy_room"
+    "requiredFacility": "alchemy_room",
+    "requiredFacilityTier": 2
   },
   {
     "id": "shadow_viper_antivenom",
@@ -180,7 +188,8 @@
       "herb_recognition": 2,
       "campcraft": 1
     },
-    "requiredFacility": "alchemy_room"
+    "requiredFacility": "alchemy_room",
+    "requiredFacilityTier": 1
   },
   {
     "id": "road_wound_poultice",
@@ -201,7 +210,8 @@
     "requiresTools": [
       "mortal_repair_bundle"
     ],
-    "requiredFacility": "field_kit"
+    "requiredFacility": "field_kit",
+    "requiredFacilityTier": 1
   },
   {
     "id": "mist_calming_draught",
@@ -220,7 +230,8 @@
       "impurity_awareness": 2,
       "foundation_control": 2
     },
-    "requiredFacility": "alchemy_room"
+    "requiredFacility": "alchemy_room",
+    "requiredFacilityTier": 2
   },
   {
     "id": "spirit_hardened_shortsword",
@@ -240,7 +251,8 @@
       "tool_repair": 2,
       "craftsmen": 1
     },
-    "requiredFacility": "blacksmithing_room"
+    "requiredFacility": "blacksmithing_room",
+    "requiredFacilityTier": 2
   },
   {
     "id": "viper_scale_blade",
@@ -259,7 +271,8 @@
       "tool_repair": 2,
       "craftsmen": 1
     },
-    "requiredFacility": "blacksmithing_room"
+    "requiredFacility": "blacksmithing_room",
+    "requiredFacilityTier": 1
   },
   {
     "id": "cloud_stag_spear",
@@ -278,7 +291,8 @@
       "staff_basics": 2,
       "tool_repair": 1
     },
-    "requiredFacility": "blacksmithing_room"
+    "requiredFacility": "blacksmithing_room",
+    "requiredFacilityTier": 1
   },
   {
     "id": "reinforced_beast_hide_vest",
@@ -298,7 +312,8 @@
       "tool_repair": 1,
       "campcraft": 2
     },
-    "requiredFacility": "blacksmithing_room"
+    "requiredFacility": "blacksmithing_room",
+    "requiredFacilityTier": 1
   },
   {
     "id": "crab_shell_pauldron",
@@ -317,7 +332,8 @@
       "tool_repair": 2,
       "campcraft": 2
     },
-    "requiredFacility": "blacksmithing_room"
+    "requiredFacility": "blacksmithing_room",
+    "requiredFacilityTier": 1
   },
   {
     "id": "cloud_iron_binding_kit",
@@ -340,7 +356,8 @@
     "requiresTools": [
       "mortal_repair_bundle"
     ],
-    "requiredFacility": "field_kit"
+    "requiredFacility": "field_kit",
+    "requiredFacilityTier": 2
   },
   {
     "id": "spirit_sealed_staff_wrap",
@@ -361,6 +378,7 @@
       "tool_repair": 2,
       "craftsmen": 1
     },
-    "requiredFacility": "blacksmithing_room"
+    "requiredFacility": "blacksmithing_room",
+    "requiredFacilityTier": 2
   }
 ]

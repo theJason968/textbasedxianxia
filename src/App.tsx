@@ -18,9 +18,13 @@ import { canChoose } from "./engine/conditionEngine";
 import {
   canCraftRecipe,
   craftRecipe,
-  getCraftingFacilityLabel,
+  getCraftingFacilityRequirementLabel,
+  getCraftingFacilityTier,
+  getCraftingFacilityUnlockHint,
   getInventoryCounts,
   hasRequiredFacility,
+  type CraftingFacility,
+  type CraftingFacilityTier,
   type CraftingRecipe,
 } from "./engine/craftingEngine";
 import {
@@ -56,6 +60,10 @@ import {
 import {
   formatSkillEffectSummary,
   formatSkillLevel,
+  getSkillDisplayedExp,
+  getSkillExpRequiredForRank,
+  getSkillLevelName,
+  getSkillPracticeRequiredForRank,
 } from "./engine/skillEngine";
 import type {
   Choice,
@@ -87,6 +95,20 @@ type PathTab = "quests" | "journal" | "techniques" | "skills";
 type RightPanelTab = "stats" | "pack" | "path" | "save";
 type StartView = "auth" | "character" | "game";
 type CraftingFilter = "All" | "Craftable" | "Locked Requirements" | string;
+type CraftingFacilityView = {
+  id: CraftingFacility;
+  label: string;
+};
+type DelayedChoiceState = {
+  choice: Choice;
+  progress: number;
+  stageIndex: number;
+};
+type DiscoveryResult = {
+  title: string;
+  body: string;
+  rewards: string[];
+};
 type ItemData = {
   id: string;
   name: string;
@@ -123,6 +145,21 @@ type ItemData = {
 };
 const itemData = items as ItemData[];
 
+const craftingFacilities: CraftingFacilityView[] = [
+  {
+    id: "field_kit",
+    label: "Field Kit",
+  },
+  {
+    id: "alchemy_room",
+    label: "Alchemy Room",
+  },
+  {
+    id: "blacksmithing_room",
+    label: "Forge",
+  },
+];
+
 type RecipeIngredientDetail = {
   itemId: string;
   name: string;
@@ -140,6 +177,10 @@ type LearnedTechniqueView = {
   maxLevel: number;
   mastery: number;
   effectsPerLevel: Record<string, number>;
+};
+type LearnedSkillView = Skill & {
+  rank: number;
+  practice: number;
 };
 const equipmentSlotLabels: Record<EquipmentSlot, string> = {
   weapon: "Weapon",
@@ -601,8 +642,14 @@ function getRecipeRequirementSummary(
     .filter((itemId) => !player.inventory.includes(itemId))
     .map((itemId) => itemData.find((item) => item.id === itemId)?.name ?? itemId);
   const missingFacility =
-    recipe.requiredFacility && !hasRequiredFacility(player, recipe.requiredFacility)
-      ? [getCraftingFacilityLabel(recipe.requiredFacility)]
+    recipe.requiredFacility &&
+    !hasRequiredFacility(player, recipe.requiredFacility, recipe.requiredFacilityTier)
+      ? [
+          getCraftingFacilityRequirementLabel(
+            recipe.requiredFacility,
+            recipe.requiredFacilityTier,
+          ),
+        ]
       : [];
 
   return Array.from(
@@ -642,6 +689,14 @@ function getResultPreviewLines(item?: ItemData): string[] {
 }
 
 function formatCraftingFilterLabel(filter: CraftingFilter): string {
+  if (filter.startsWith("Facility:")) {
+    const facility = craftingFacilities.find(
+      (candidate) => candidate.id === filter.replace("Facility:", ""),
+    );
+
+    return facility?.label ?? filter;
+  }
+
   const labels: Record<string, string> = {
     Elixir: "Elixirs",
     Weapon: "Weapons",
@@ -651,6 +706,10 @@ function formatCraftingFilterLabel(filter: CraftingFilter): string {
   };
 
   return labels[filter] ?? filter;
+}
+
+function getRequiredFacilityTier(recipe: CraftingRecipe): CraftingFacilityTier {
+  return recipe.requiredFacilityTier ?? 1;
 }
 
 function formatTechniqueEffectSummary(effectsPerLevel: Record<string, number>): string {
@@ -695,6 +754,64 @@ function getTechniqueBenefitLines(technique: LearnedTechniqueView): string[] {
   ];
 }
 
+function getSkillExpLabel(skill: LearnedSkillView): string {
+  return `EXP ${getSkillDisplayedExp(
+    skill.rank,
+    skill.maxRank,
+    skill.practice,
+  )}/${getSkillExpRequiredForRank(skill.rank)}`;
+}
+
+function getSkillExpPercent(skill: LearnedSkillView): number {
+  if (skill.rank >= skill.maxRank) {
+    return 100;
+  }
+
+  return Math.min(
+    100,
+    (getSkillDisplayedExp(skill.rank, skill.maxRank, skill.practice) /
+      getSkillExpRequiredForRank(skill.rank)) *
+      100,
+  );
+}
+
+function getSkillProgressStatus(skill: LearnedSkillView): string {
+  if (skill.rank >= skill.maxRank) {
+    return "Max rank";
+  }
+
+  if (skill.practice >= getSkillPracticeRequiredForRank(skill.rank)) {
+    return "Bottleneck ready";
+  }
+
+  return "Training";
+}
+
+function getSkillProgressSource(tree: Skill["tree"]): string {
+  const sourceByTree: Record<Skill["tree"], string> = {
+    "Mortal Foundation": "Improves through chores, sparring basics, hard labor, and daily discipline.",
+    "Martial Arts": "Improves through sparring, combat, weapon practice, and instructor correction.",
+    "Body Tempering": "Improves through endurance trials, impact training, recovery work, and harsh travel.",
+    "Mind And Perception": "Improves through investigation, meditation, reading signs, and studying intent.",
+    "Social Bearing": "Improves through negotiation, reputation quests, restraint, and formal sect conduct.",
+    Survival: "Improves through scavenging, herb gathering, road work, tracking, and field medicine.",
+    Alchemy: "Improves through herb study, medicine preparation, residue control, and refining.",
+    Blacksmithing: "Improves through repairs, forge work, salvage sorting, and crafting gear.",
+    "Cultivation Foundation": "Improves through breathing discipline, meridian control, and stable circulation.",
+    "Azure Cloud Methods": "Improves through sect arts, cloud-step practice, qi sensitivity, and elder guidance.",
+  };
+
+  return sourceByTree[tree];
+}
+
+function getSkillBottleneckSummary(skill: LearnedSkillView): string {
+  if (skill.rank >= skill.maxRank) {
+    return "No current bottleneck.";
+  }
+
+  return "At full EXP, attempt a higher-tier craft, trial, or field test to break through.";
+}
+
 function formatItemTier(tier?: ItemTier): string {
   return tier ? itemTierLabels[tier] : "Untiered";
 }
@@ -718,6 +835,15 @@ function hasCreatedCharacter(player: Player): boolean {
 
 function getSaveOwner(session: ProfileSession | null): string {
   return session?.username?.trim() ? session.username : "guest";
+}
+
+function getDiscoveryRewardLines(messages: string[]): string[] {
+  return messages
+    .filter((message) => !message.startsWith("Time advanced to "))
+    .map((message) => message.replace(/^Character gained /, "+"))
+    .map((message) => message.replace(/^Character learned /, "Learned "))
+    .map((message) => message.replace(/^Quest completed: /, "Quest completed: "))
+    .map((message) => message.replace(/\.$/, ""));
 }
 
 function App() {
@@ -769,6 +895,8 @@ function App() {
   const [activeCraftingFilter, setActiveCraftingFilter] = useState<CraftingFilter>("All");
   const [activeTechniqueCategory, setActiveTechniqueCategory] = useState("All");
   const [activeSkillTree, setActiveSkillTree] = useState("All");
+  const [delayedChoice, setDelayedChoice] = useState<DelayedChoiceState | null>(null);
+  const [discoveryResult, setDiscoveryResult] = useState<DiscoveryResult | null>(null);
   const currentScene = useMemo(
     () => getSceneById(sceneData, gameState.currentSceneId),
     [gameState.currentSceneId],
@@ -845,7 +973,7 @@ function App() {
           : null;
       })
       .filter((skill) => skill !== null)
-      .sort((firstSkill, secondSkill) => firstSkill.tier - secondSkill.tier),
+      .sort((firstSkill, secondSkill) => firstSkill.tier - secondSkill.tier) satisfies LearnedSkillView[],
     [gameState.player.skillPractice, gameState.player.skills],
   );
   const awakenedConstitutions = useMemo(
@@ -969,11 +1097,27 @@ function App() {
         })),
     [gameState.player],
   );
+  const craftingFacilityStatuses = useMemo(
+    () =>
+      craftingFacilities.map((facility) => {
+        const currentTier = getCraftingFacilityTier(gameState.player, facility.id);
+        const nextTier = Math.min(currentTier + 1, 3) as CraftingFacilityTier;
+
+        return {
+          ...facility,
+          currentTier,
+          hint: getCraftingFacilityUnlockHint(facility.id, nextTier),
+          isAvailable: currentTier > 0,
+        };
+      }),
+    [gameState.player],
+  );
   const craftingFilters = useMemo<CraftingFilter[]>(
     () => [
       "All",
       "Craftable",
       "Locked Requirements",
+      ...craftingFacilities.map((facility) => `Facility:${facility.id}`),
       ...Array.from(new Set(availableRecipes.map(({ recipe }) => recipe.category))).sort(),
     ],
     [availableRecipes],
@@ -991,6 +1135,10 @@ function App() {
 
         if (activeCraftingFilter === "Locked Requirements") {
           return !canCraft && missingRequirements.length > 0;
+        }
+
+        if (activeCraftingFilter.startsWith("Facility:")) {
+          return recipe.requiredFacility === activeCraftingFilter.replace("Facility:", "");
         }
 
         return recipe.category === activeCraftingFilter;
@@ -1034,6 +1182,41 @@ function App() {
     (message) => !isCheckResultMessage(message),
   );
 
+  useEffect(() => {
+    if (!delayedChoice) {
+      return undefined;
+    }
+
+    const seconds = delayedChoice.choice.delay?.seconds ?? 3;
+    const duration = seconds * 1000;
+    const startedAt = Date.now();
+    const stageCount = Math.max(delayedChoice.choice.delay?.stages.length ?? 1, 1);
+    const intervalId = window.setInterval(() => {
+      const elapsed = Date.now() - startedAt;
+      const progress = Math.min(elapsed / duration, 1);
+      const stageIndex = Math.min(Math.floor(progress * stageCount), stageCount - 1);
+
+      setDelayedChoice((current) =>
+        current
+          ? {
+              ...current,
+              progress,
+              stageIndex,
+            }
+          : current,
+      );
+    }, 100);
+    const timeoutId = window.setTimeout(() => {
+      resolveChoice(delayedChoice.choice, true);
+      setDelayedChoice(null);
+    }, duration);
+
+    return () => {
+      window.clearInterval(intervalId);
+      window.clearTimeout(timeoutId);
+    };
+  }, [delayedChoice?.choice]);
+
   function enterSession(session: ProfileSession, message: string) {
     const owner = getSaveOwner(session);
     const savedGame = loadLatestGame(owner);
@@ -1042,6 +1225,8 @@ function App() {
     setProfileSession(session);
     setGameState(nextGameState);
     setActionMessages([]);
+    setDelayedChoice(null);
+    setDiscoveryResult(null);
     setSaveSlots(getSaveSlots(owner));
     setAuthMessage(message);
     setSaveMessage(
@@ -1088,6 +1273,8 @@ function App() {
     saveGame(saveOwner, 1, nextGameState);
     setGameState(nextGameState);
     setActionMessages([]);
+    setDelayedChoice(null);
+    setDiscoveryResult(null);
     setSaveSlots(getSaveSlots(saveOwner));
     setSaveMessage("Character created and saved to slot 1.");
     setCultivationMessage("Cultivate after learning a breathing method.");
@@ -1102,16 +1289,49 @@ function App() {
   }
 
   function handleChoice(choice: Choice) {
+    if (choice.delay) {
+      setDelayedChoice({ choice, progress: 0, stageIndex: 0 });
+      setDiscoveryResult(null);
+      setActionMessages([]);
+      return;
+    }
+
+    resolveChoice(choice, false);
+  }
+
+  function resolveChoice(choice: Choice, showDiscovery: boolean) {
     const result = applyChoiceWithResult(gameState, choice);
+    const discoveryRewards = getDiscoveryRewardLines(result.messages);
+    const shouldShowDiscovery =
+      showDiscovery &&
+      choice.delay &&
+      (discoveryRewards.length > 0 ||
+        choice.delay.resultTitle !== undefined ||
+        choice.delay.resultBody !== undefined);
 
     setGameState(result.gameState);
-    setActionMessages(result.messages);
+    setActionMessages(shouldShowDiscovery ? [] : result.messages);
+    setDiscoveryResult(
+      shouldShowDiscovery
+        ? {
+            title: choice.delay?.resultTitle ?? "Discovery",
+            body: choice.delay?.resultBody ?? "Your search turns up something worth remembering.",
+            rewards: discoveryRewards,
+          }
+        : null,
+    );
     setSaveMessage("Unsaved changes.");
+  }
+
+  function handleDiscoveryContinue() {
+    setDiscoveryResult(null);
   }
 
   function handleRestart() {
     setGameState(createCharacterState(gameState.player.name, gameState.player.gender));
     setActionMessages([]);
+    setDelayedChoice(null);
+    setDiscoveryResult(null);
     setSaveMessage("Started a new path. Save it into a slot when ready.");
     setCultivationMessage("Cultivate after learning a breathing method.");
   }
@@ -1128,6 +1348,8 @@ function App() {
     if (savedGame) {
       setGameState(savedGame);
       setActionMessages([]);
+      setDelayedChoice(null);
+      setDiscoveryResult(null);
       setSaveMessage("Loaded saved path.");
       return;
     }
@@ -1372,7 +1594,46 @@ function App() {
       </section>
 
       <section className="scene-window-panel" aria-label="Scene art">
-        {gameState.combat?.resolved && activeEnemy ? (
+        {discoveryResult ? (
+          <div className="victory-screen discovery-screen">
+            <div className="victory-corner victory-corner-tl" aria-hidden="true" />
+            <div className="victory-corner victory-corner-tr" aria-hidden="true" />
+            <div className="victory-corner victory-corner-bl" aria-hidden="true" />
+            <div className="victory-corner victory-corner-br" aria-hidden="true" />
+            <div className="victory-content">
+              <h2 className="victory-heading">{discoveryResult.title}</h2>
+              <p className="victory-flavor">{discoveryResult.body}</p>
+              {discoveryResult.rewards.length > 0 ? (
+                <div className="victory-spoils-wrap">
+                  <h3 className="ornate-panel-title">Found</h3>
+                  <div className="victory-rewards-panel">
+                    {discoveryResult.rewards.map((reward) => (
+                      <div key={reward} className="victory-reward-row">
+                        <span className="victory-reward-icon">◆</span>
+                        <span>{reward}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+              <button className="victory-continue-btn" type="button" onClick={handleDiscoveryContinue}>
+                Continue
+              </button>
+            </div>
+          </div>
+        ) : delayedChoice ? (
+          <div className="search-resolution-panel" aria-live="polite">
+            <p className="eyebrow">Searching</p>
+            <h2>{delayedChoice.choice.label}</h2>
+            <p>
+              {delayedChoice.choice.delay?.stages[delayedChoice.stageIndex] ??
+                "Looking carefully..."}
+            </p>
+            <div className="search-progress-track" aria-label="Search progress">
+              <span style={{ width: `${Math.round(delayedChoice.progress * 100)}%` }} />
+            </div>
+          </div>
+        ) : gameState.combat?.resolved && activeEnemy ? (
           <div className="victory-screen">
             <div className="victory-corner victory-corner-tl" aria-hidden="true" />
             <div className="victory-corner victory-corner-tr" aria-hidden="true" />
@@ -1954,6 +2215,30 @@ function App() {
               {activePackTab === "crafting" ? (
                 <div id="crafting-panel" role="tabpanel" className="tab-panel">
                   <h2>Crafting</h2>
+                  <div className="crafting-facility-strip" aria-label="Crafting facility access">
+                    {craftingFacilityStatuses.map((facility) => (
+                      <div
+                        key={facility.id}
+                        className={
+                          facility.isAvailable
+                            ? "crafting-facility-card facility-available"
+                            : "crafting-facility-card facility-locked"
+                        }
+                      >
+                        <strong>{facility.label}</strong>
+                        <span>
+                          {facility.currentTier > 0
+                            ? `Tier ${facility.currentTier}`
+                            : "Locked"}
+                        </span>
+                        <small>
+                          {facility.currentTier >= 3
+                            ? "Highest current tier available."
+                            : `${facility.currentTier > 0 ? "Next: " : "Unlock: "}${facility.hint}`}
+                        </small>
+                      </div>
+                    ))}
+                  </div>
                   <div
                     className="slot-filter-list crafting-filter-list"
                     aria-label="Crafting filters"
@@ -1980,6 +2265,29 @@ function App() {
                           resultItem,
                         }) => {
                           const resultPreviewLines = getResultPreviewLines(resultItem);
+                          const requiredFacilityTier = getRequiredFacilityTier(recipe);
+                          const facilityIsAvailable = recipe.requiredFacility
+                            ? hasRequiredFacility(
+                                gameState.player,
+                                recipe.requiredFacility,
+                                requiredFacilityTier,
+                              )
+                            : true;
+                          const facilityLabel = recipe.requiredFacility
+                            ? getCraftingFacilityRequirementLabel(
+                                recipe.requiredFacility,
+                                requiredFacilityTier,
+                              )
+                            : "Hand craft";
+                          const facilityHint = recipe.requiredFacility
+                            ? getCraftingFacilityUnlockHint(
+                                recipe.requiredFacility,
+                                requiredFacilityTier,
+                              )
+                            : "";
+                          const requiredToolNames = (recipe.requiresTools ?? []).map(
+                            (itemId) => itemData.find((item) => item.id === itemId)?.name ?? itemId,
+                          );
 
                           return (
                             <li key={recipe.id}>
@@ -1991,6 +2299,22 @@ function App() {
                               {recipe.source ? (
                                 <small className="crafting-source">{recipe.source}</small>
                               ) : null}
+                              <div
+                                className={
+                                  facilityIsAvailable
+                                    ? "crafting-facility-requirement facility-available"
+                                    : "crafting-facility-requirement facility-locked"
+                                }
+                              >
+                                <span>Facility</span>
+                                <strong>{facilityLabel}</strong>
+                                <small>
+                                  {facilityIsAvailable ? "Available" : `Locked: ${facilityHint}`}
+                                </small>
+                                {requiredToolNames.length > 0 ? (
+                                  <small>Tool: {requiredToolNames.join(", ")}</small>
+                                ) : null}
+                              </div>
                               <p>{recipe.description}</p>
 
                                 {resultItem ? (
@@ -2256,37 +2580,8 @@ function App() {
               {activePathTab === "skills" ? (
                 <div id="skills-panel" role="tabpanel" className="tab-panel">
                   <h2>Skill Trees</h2>
-                  <div className="slot-board">
-                    <div className="slot-grid" aria-label="Skill slots">
-                      {visibleSkills.map((skill) => (
-                        <div
-                          className="inventory-slot filled-slot"
-                          key={skill.id}
-                          title={[
-                            skill.name,
-                            skill.description,
-                            formatSkillLevel(skill.rank, skill.maxRank),
-                            formatSkillEffectSummary(skill, skill.rank),
-                          ]
-                            .filter((line) => line)
-                            .join("\n")}
-                        >
-                          <span className="slot-icon">{skill.name.slice(0, 1)}</span>
-                          <strong>{skill.name}</strong>
-                          <small>{skill.tree}</small>
-                          <small>{formatSkillLevel(skill.rank, skill.maxRank)}</small>
-                          {formatSkillEffectSummary(skill, skill.rank) ? (
-                            <small>{formatSkillEffectSummary(skill, skill.rank)}</small>
-                          ) : null}
-                        </div>
-                      ))}
-                      {Array.from({ length: Math.max(0, 12 - visibleSkills.length) }).map((_, index) => (
-                        <div className="inventory-slot empty-slot" key={`empty-skill-${index}`}>
-                          <span className="slot-icon">+</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="slot-filter-list" aria-label="Skill trees">
+                  <div className="skill-layout">
+                    <div className="slot-filter-list skill-filter-list" aria-label="Skill trees">
                       {skillTrees.map((tree) => (
                         <button
                           type="button"
@@ -2298,6 +2593,53 @@ function App() {
                         </button>
                       ))}
                     </div>
+                    {visibleSkills.length > 0 ? (
+                      <ul className="skill-card-list" aria-label="Known skills">
+                        {visibleSkills.map((skill) => {
+                          const effectSummary = formatSkillEffectSummary(skill, skill.rank);
+
+                          return (
+                            <li className="skill-card" key={skill.id}>
+                              <div className="skill-card-header">
+                                <span className="slot-icon">{skill.name.slice(0, 1)}</span>
+                                <div>
+                                  <strong>{skill.name}</strong>
+                                  <span>{skill.tree}</span>
+                                  <small>{formatSkillLevel(skill.rank, skill.maxRank)}</small>
+                                </div>
+                              </div>
+                              <p>{skill.description}</p>
+                              <div className="skill-exp-row">
+                                <div className="skill-exp-summary">
+                                  <span>{getSkillProgressStatus(skill)}</span>
+                                  <strong>{getSkillExpLabel(skill)}</strong>
+                                </div>
+                                <div
+                                  className="skill-exp-track"
+                                  aria-label={`${skill.name} EXP progress`}
+                                >
+                                  <span style={{ width: `${getSkillExpPercent(skill)}%` }} />
+                                </div>
+                                <small>{getSkillLevelName(skill.rank)}</small>
+                              </div>
+                              <div className="skill-benefits">
+                                <span>Benefits</span>
+                                <ul>
+                                  <li>{effectSummary || "No passive combat bonus yet."}</li>
+                                  <li>{getSkillProgressSource(skill.tree)}</li>
+                                </ul>
+                              </div>
+                              <div className="skill-bottleneck-note">
+                                <span>Bottleneck</span>
+                                <p>{getSkillBottleneckSummary(skill)}</p>
+                              </div>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    ) : (
+                      <p className="arts-empty-state">No skills match this tree.</p>
+                    )}
                   </div>
                 </div>
               ) : null}

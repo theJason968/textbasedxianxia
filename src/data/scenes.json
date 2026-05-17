@@ -1695,6 +1695,16 @@
       {
         "label": "Bind your bruises, then search what the bandits left behind",
         "nextScene": "roadside_search_after_lotus",
+        "delay": {
+          "seconds": 3,
+          "stages": [
+            "Checking the torn cart canvas...",
+            "Following black thread through the dust...",
+            "Listening for bandits returning..."
+          ],
+          "resultTitle": "Road Search",
+          "resultBody": "The wreckage still has a secret under it."
+        },
         "effects": {
           "health": -2,
           "addSkills": {
@@ -1715,7 +1725,17 @@
     "choices": [
       {
         "label": "Search the road for the object behind the rumors",
-        "nextScene": "roadside_search_after_lotus"
+        "nextScene": "roadside_search_after_lotus",
+        "delay": {
+          "seconds": 3,
+          "stages": [
+            "Comparing the caravan stories...",
+            "Checking places frightened hands would miss...",
+            "Following the warm pull beneath the dust..."
+          ],
+          "resultTitle": "Road Search",
+          "resultBody": "The rumors point toward something small, cold, and deliberately hidden."
+        }
       }
     ]
   },
@@ -1726,7 +1746,17 @@
     "choices": [
       {
         "label": "Search the axle box again for what the manual was hiding",
-        "nextScene": "roadside_search_after_lotus"
+        "nextScene": "roadside_search_after_lotus",
+        "delay": {
+          "seconds": 3,
+          "stages": [
+            "Running your fingers along the axle seams...",
+            "Checking the oilcloth folds...",
+            "Listening for the hollow knock of hidden space..."
+          ],
+          "resultTitle": "Hidden Compartment",
+          "resultBody": "The manual was not the only thing someone meant to keep out of sight."
+        }
       }
     ]
   },
@@ -1743,6 +1773,16 @@
       {
         "label": "Scavenge the wreckage for clean cloth, water, and useful herbs",
         "nextScene": "bandit_road_healing_supplies",
+        "delay": {
+          "seconds": 3,
+          "stages": [
+            "Lifting canvas without stirring ash...",
+            "Sorting medicine from spoiled leaves...",
+            "Checking shaded stones for living moss..."
+          ],
+          "resultTitle": "Useful Supplies",
+          "resultBody": "The broken road gives up enough to keep someone alive a little longer."
+        },
         "effects": {
           "advanceDays": 1,
           "deadlineScene": "mountain_gate",
@@ -1844,6 +1884,16 @@
       {
         "label": "Stay a little longer and search the abandoned road",
         "nextScene": "roadside_search_after_lotus",
+        "delay": {
+          "seconds": 3,
+          "stages": [
+            "Watching the mist swallow Gao Xue's trail...",
+            "Searching beside the broken wheel...",
+            "Separating her secret from the road's secret..."
+          ],
+          "resultTitle": "A Debt And A Clue",
+          "resultBody": "The road keeps both her promise and the thing that brought danger here."
+        },
         "effects": {
           "addItems": ["silk_lotus_hairpin"],
           "meetNpc": "gao_xue",
@@ -1879,6 +1929,16 @@
       {
         "label": "Return home and ask what the token symbol means",
         "nextScene": "village_token_questions",
+        "delay": {
+          "seconds": 3,
+          "stages": [
+            "Checking the pill bottle seal...",
+            "Counting the stones in the cloth wrap...",
+            "Turning the black-thread token toward the mountain..."
+          ],
+          "resultTitle": "What The Dust Kept",
+          "resultBody": "Under the wreckage, the road leaves proof that this was never ordinary bandit work."
+        },
         "effects": {
           "addItems": ["azure_cloud_trial_token", "minor_qi_pill"],
           "spiritStones": 2,
@@ -5181,6 +5241,16 @@
       {
         "label": "Search the lower grove carefully",
         "nextScene": "lower_grove_success",
+        "delay": {
+          "seconds": 3,
+          "stages": [
+            "Checking disturbed roots...",
+            "Following cold qi through the grass...",
+            "Listening for movement beyond the stream..."
+          ],
+          "resultTitle": "Grove Search",
+          "resultBody": "Careful hands find what hurried disciples walk past."
+        },
         "outcomes": [
           {
             "nextScene": "lower_grove_hidden_cache",
@@ -6671,6 +6741,16 @@
       {
         "label": "Harvest the stalks carefully — cut above the roots",
         "nextScene": "outer_sect_paths",
+        "delay": {
+          "seconds": 3,
+          "stages": [
+            "Clearing frost from the marker stone...",
+            "Feeling where the sap thickens...",
+            "Cutting above the living root..."
+          ],
+          "resultTitle": "Careful Harvest",
+          "resultBody": "The stalk comes free without wasting the cold sap."
+        },
         "effects": {
           "addItems": ["ice_vein_herb"],
           "perception": 1,
@@ -7950,6 +8030,16 @@
         "requires": {
           "flagsAbsent": ["studied_hollow_entrance"]
         },
+        "delay": {
+          "seconds": 3,
+          "stages": [
+            "Tracing the thread between the stones...",
+            "Watching formation ink answer the token...",
+            "Memorizing how the seal breathes..."
+          ],
+          "resultTitle": "Formation Reading",
+          "resultBody": "The entrance is not just hidden. It was taught to wait."
+        },
         "effects": {
           "spiritualSense": 1,
           "cultivationInsight": 1,
@@ -7988,6 +8078,16 @@
         "requires": {
           "items": ["tattered_sect_notes"]
         },
+        "delay": {
+          "seconds": 3,
+          "stages": [
+            "Matching the wall rhythm to the notes...",
+            "Counting the pulse beneath the floor...",
+            "Finding where the hollow draws breath..."
+          ],
+          "resultTitle": "Formation Pattern",
+          "resultBody": "The notes line up with the chamber too neatly to be coincidence."
+        },
         "effects": {
           "cultivationInsight": 2,
           "updateQuest": { "questId": "black_thread_hollow", "step": 1 },
@@ -7999,6 +8099,16 @@
         "nextScene": "hollow_lore_passage",
         "requires": {
           "stats": { "spiritualSense": 6 }
+        },
+        "delay": {
+          "seconds": 3,
+          "stages": [
+            "Letting your breath match the pulse...",
+            "Following cold qi through the wall channels...",
+            "Separating the true rhythm from the echo..."
+          ],
+          "resultTitle": "Spiritual Attunement",
+          "resultBody": "Your senses catch the hollow's rhythm before the formation can hide it."
         },
         "effects": {
           "spiritualSense": 1,
@@ -8168,6 +8278,16 @@
         "nextScene": "hollow_formation_examination",
         "requires": {
           "flagsAbsent": ["examined_hollow_formation"]
+        },
+        "delay": {
+          "seconds": 3,
+          "stages": [
+            "Watching the black threads cycle...",
+            "Following the channels under the dais...",
+            "Finding what the formation is feeding..."
+          ],
+          "resultTitle": "Inner Ward Reading",
+          "resultBody": "The room is not protecting the man at its center. It is using him."
         }
       },
       {
@@ -8267,6 +8387,16 @@
       {
         "label": "Search the formation chamber",
         "nextScene": "hollow_discovery",
+        "delay": {
+          "seconds": 3,
+          "stages": [
+            "Waiting for the formation web to fade...",
+            "Searching the cultist's sealed effects...",
+            "Checking the wall fissure for living roots..."
+          ],
+          "resultTitle": "Chamber Search",
+          "resultBody": "Once the qi settles, the hollow shows what it had been keeping."
+        },
         "effects": {
           "updateQuest": { "questId": "black_thread_hollow", "step": 3 },
           "completeQuest": "black_thread_hollow"
@@ -8283,6 +8413,16 @@
       {
         "label": "Study the technique scroll here while the formation qi still permeates the air",
         "nextScene": "hollow_scroll_study",
+        "delay": {
+          "seconds": 3,
+          "stages": [
+            "Unsealing the scroll without tearing the qi script...",
+            "Packing the codex and pale root...",
+            "Letting the chamber's charge sharpen the method..."
+          ],
+          "resultTitle": "Hollow Spoils",
+          "resultBody": "The hollow's records, root, and remaining qi are dangerous gifts."
+        },
         "effects": {
           "addItems": ["black_thread_codex", "void_hollow_root"],
           "spiritStones": 5,
@@ -8292,6 +8432,16 @@
       {
         "label": "Secure everything and study the scroll at the sect",
         "nextScene": "hollow_exit",
+        "delay": {
+          "seconds": 3,
+          "stages": [
+            "Wrapping the lightning scroll...",
+            "Sealing the black-thread codex...",
+            "Cutting the pale root free from the fissure..."
+          ],
+          "resultTitle": "Hollow Spoils",
+          "resultBody": "You leave nothing useful for the next person who finds this place."
+        },
         "effects": {
           "addItems": ["lightning_method_scroll", "black_thread_codex", "void_hollow_root"],
           "spiritStones": 5,

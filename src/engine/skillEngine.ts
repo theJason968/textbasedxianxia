@@ -5,6 +5,7 @@ const skillData = skills as Skill[];
 const skillEffectKeys: Array<keyof SkillEffects> = ["combatDamage", "combatDefense"];
 const skillLevelNames = ["Novice", "Intermediate", "Skilled", "Expert"] as const;
 export const skillPracticesPerLevel = 3;
+export const skillExpPerRank = 100;
 
 export function getSkillLevelName(rank: number): string {
   if (rank <= 0) {
@@ -27,7 +28,72 @@ export function formatSkillPracticeProgress(
     return "";
   }
 
-  return `${practice}/${skillPracticesPerLevel} to ${getSkillLevelName(rank + 1)}`;
+  return `${getSkillDisplayedExp(rank, maxRank, practice)}/${getSkillExpRequiredForRank(
+    rank,
+  )} EXP to ${getSkillLevelName(rank + 1)}`;
+}
+
+export function getSkillPracticeRequiredForRank(rank: number): number {
+  return Math.max(1, rank) * skillPracticesPerLevel;
+}
+
+export function getSkillExpRequiredForRank(rank: number): number {
+  return Math.max(1, rank) * skillExpPerRank;
+}
+
+export function getSkillDisplayedExp(
+  rank: number,
+  maxRank: number,
+  practice: number,
+): number {
+  const requiredExp = getSkillExpRequiredForRank(rank);
+
+  if (rank >= maxRank) {
+    return requiredExp;
+  }
+
+  return Math.min(
+    requiredExp,
+    Math.round(
+      (practice / getSkillPracticeRequiredForRank(rank)) * requiredExp,
+    ),
+  );
+}
+
+export function getSkillCumulativeDisplayedExp(
+  rank: number,
+  maxRank: number,
+  practice: number,
+): number {
+  if (rank <= 0) {
+    return 0;
+  }
+
+  const completedRanks = Math.max(0, Math.min(rank - 1, maxRank - 1));
+  const completedExp = Array.from({ length: completedRanks }).reduce<number>(
+    (total, _, index) => total + getSkillExpRequiredForRank(index + 1),
+    0,
+  );
+
+  if (rank >= maxRank) {
+    return completedExp;
+  }
+
+  return completedExp + getSkillDisplayedExp(rank, maxRank, practice);
+}
+
+export function getSkillDisplayedExpGain(
+  previousRank: number,
+  previousPractice: number,
+  nextRank: number,
+  maxRank: number,
+  nextPractice: number,
+): number {
+  return Math.max(
+    0,
+    getSkillCumulativeDisplayedExp(nextRank, maxRank, nextPractice) -
+      getSkillCumulativeDisplayedExp(previousRank, maxRank, previousPractice),
+  );
 }
 
 export function getSkillEffectTotals(player: Player): Required<SkillEffects> {

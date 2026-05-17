@@ -17,8 +17,9 @@ import { completeQuest, failQuest, startQuest, updateQuest } from "./questEngine
 import { meetsRequirements } from "./conditionEngine";
 import {
   formatSkillEffectSummary,
+  getSkillDisplayedExpGain,
   getSkillLevelName,
-  skillPracticesPerLevel,
+  getSkillPracticeRequiredForRank,
 } from "./skillEngine";
 import { advancePlayerTime, formatCalendarTime } from "./timeEngine";
 import enemies from "../data/enemies.json";
@@ -452,8 +453,11 @@ function applySkillPractice(
       if (practiceGain > 0 && nextRank < maxRank) {
         nextPractice += practiceGain;
 
-        while (nextPractice >= skillPracticesPerLevel && nextRank < maxRank) {
-          nextPractice -= skillPracticesPerLevel;
+        while (
+          nextPractice >= getSkillPracticeRequiredForRank(nextRank) &&
+          nextRank < maxRank
+        ) {
+          nextPractice -= getSkillPracticeRequiredForRank(nextRank);
           nextRank += 1;
         }
       }
@@ -634,32 +638,41 @@ function getTechniqueMasteryMessages(
 
 function getSkillMessages(previousPlayer: Player, nextPlayer: Player): string[] {
   return Object.keys(nextPlayer.skills)
-    .map((skillId) => {
-      const rankGain = (nextPlayer.skills[skillId] ?? 0) - (previousPlayer.skills[skillId] ?? 0);
-      const practiceGain =
-        (nextPlayer.skillPractice[skillId] ?? 0) -
-        (previousPlayer.skillPractice[skillId] ?? 0);
-
+    .flatMap((skillId) => {
       const skill = skillData.find((candidate) => candidate.id === skillId);
+      const previousRank = previousPlayer.skills[skillId] ?? 0;
+      const nextRank = nextPlayer.skills[skillId] ?? 0;
+      const previousPractice = previousPlayer.skillPractice[skillId] ?? 0;
+      const nextPractice = nextPlayer.skillPractice[skillId] ?? 0;
+      const rankGain = nextRank - previousRank;
       const skillName = skill?.name ?? skillId;
       const treeName = skill?.tree ?? "Skill";
-      const nextRank = nextPlayer.skills[skillId] ?? 0;
       const levelName = getSkillLevelName(nextRank);
       const effectSummary = skill ? formatSkillEffectSummary(skill, nextRank) : "";
+      const expGain = skill
+        ? getSkillDisplayedExpGain(
+            previousRank,
+            previousPractice,
+            nextRank,
+            skill.maxRank,
+            nextPractice,
+          )
+        : 0;
+      const messages: string[] = [];
 
-      if (rankGain <= 0) {
-        if (practiceGain <= 0 || !skill || nextRank >= skill.maxRank) {
-          return null;
-        }
-
-        return `Character practiced ${treeName}: ${skillName} (${nextPlayer.skillPractice[skillId]}/${skillPracticesPerLevel} to ${getSkillLevelName(
-          nextRank + 1,
-        )}).`;
+      if (expGain > 0) {
+        messages.push(`Player gained ${treeName}: ${expGain} EXP — ${skillName}.`);
       }
 
-      return `Character reached ${levelName} ${treeName}: ${skillName}${
-        effectSummary ? ` (${effectSummary})` : ""
-      }.`;
+      if (rankGain > 0) {
+        messages.push(
+          `Character reached ${levelName} ${treeName}: ${skillName}${
+            effectSummary ? ` (${effectSummary})` : ""
+          }.`,
+        );
+      }
+
+      return messages;
     })
     .filter((message) => message !== null);
 }

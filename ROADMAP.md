@@ -34,7 +34,7 @@
 ### Content — Thin (needs expansion)
 - **2 enemies** — mist_wolf, road_bandits (both have phases; need 8–10 more)
 - **2 techniques** — azure_cloud_breathing, pine_shadow_step (combat system ready for more)
-- **16 crafting recipes** — Phase 5 expansion added; recipe access now unlocks through NPC trust
+- **18 crafting recipes** — Phase 5 expansion added; recipe access now unlocks through NPC trust and facility tiers
 - **9 quests** — mostly short outer sect tasks
 - **18 items** — limited variety
 
@@ -107,6 +107,14 @@
 *Central dramatic arc of the mortal stage*
 
 - [ ] Crafting facilities and recipe tiers
+  - [x] First-pass facility tiers implemented for Field Kit, Alchemy Room, and Forge.
+  - [x] Recipe cards show required facility tier, current access, required tools, and unlock hints.
+  - [x] Higher-tier access is linked to existing world progression:
+    - **Field Kit II**: room tool rack, Craft Hall field reinforcement, or Campcraft rank 3.
+    - **Alchemy Room I**: Medicine Hall reputation 4, supervised bench access, or basic Medicine Hall preparation.
+    - **Alchemy Room II**: Medicine Hall reputation 8, alchemy workbench, Medicine Hall test/residue training, or Elder Shen guidance.
+    - **Forge I**: Luo Jiwei help/basic patterns, Craft Hall reputation 4, forge access, or forge safety instruction.
+    - **Forge II**: Craft Hall reputation 8, free forge access, advanced Luo patterns, Han's test, or spirit-material handling.
   - Split crafting access by facility so place matters, not just menu access.
   - **Travel / field crafting**: available on the road, in dungeons, and during exploration, but limited to crude repairs, simple salves, emergency tonics, basic reinforced weapons, and unstable low-grade preparations.
   - **Alchemy room / medicine workbench**: required for higher-tier pills, impurity-cleansing tonics, foundation-stabilizing decoctions, safer batch refinement, and volatile herb processing.
@@ -115,35 +123,57 @@
   - Let players find or buy higher-tier ingredients before they can fully use them, creating anticipation for room access and upgrades.
   - Tie facility unlocks to sect contribution, NPC trust, Craft Hall / Medicine Hall reputation, town workshops, and room-base upgrades.
   - Support explorer exceptions: certain dungeon or field locations can temporarily enable special recipes when the environment itself provides the missing facility.
+  - Later polish:
+    - Location-based crafting access for Medicine Hall, Craft Hall forge, Iron Bridge blacksmith, room workbench, and dungeon special sites.
+    - Explorer exception facilities such as ancient furnaces, spirit springs, battlefield forge remains, and Black-Thread Hollow ritual basins.
+    - Recipe variants where field-kit versions are rougher, alchemy-room versions are safer, and advanced-room versions gain bonus effects.
+    - Crafting quest hooks such as cleaning burners, sorting spirit coal, repairing broken tools, gathering volatile herbs, and helping Luo test flawed gear.
+    - Higher tiers for Inner Sect / Foundation-stage crafting.
 - [ ] Exploration polish: delayed search resolution
+  - [x] First-pass delayed choice support added with timed progress text.
+  - [x] Discovery result panel added for delayed searches that produce rewards, quest progress, or important findings.
+  - [x] First tagged scenes:
+    - South road wreckage searches and hidden token discovery.
+    - Roadside healing-supply scavenging.
+    - Lower grove careful search.
+    - Ice-vein herb harvest at the cold north face.
+    - Black-Thread Hollow entrance, rhythm, formation, chamber, and loot discoveries.
   - Add an optional animated countdown/progress bar for search, tracking, investigation, and uncertain exploration choices.
   - Example: player chooses "Search the lower grove carefully" → 3-second bar with investigation text → scene outcome resolves.
   - Keep it opt-in per choice so routine navigation and dialogue remain instant.
   - Support short staged text such as "Checking disturbed roots...", "Following qi traces...", "Listening for movement...".
+  - Remaining work: tag more future wilderness, dungeon, and investigation scenes as they are added.
 - [ ] Mortal Late → Peak breakthrough path
   - Impurity purification as primary gate (must reduce impurity below threshold)
   - Elder assessment scene
   - Dedicated purification activity in the room or medicine garden
 - [ ] Phase 6 technique and enemy expansion
   - Technique: **Sunder-Heart Palm** — deals bonus damage based on enemy impurity / instability; rewards perception, opponent study, and medicine/cultivation knowledge.
-  - Enemy: **Wall-Faced Remnant** — ghost of a cultivator who failed a breakthrough; acts as a narrative warning before Foundation Establishment.
+  - Enemy: **Wall-Faced Remnant** — ghost of a cultivator who failed a breakthrough; acts as a narrative warning before the player's first true qi-stage ascent.
   - Use the Combat Prose Codex to make Mortal Peak feel oppressive, visibly qi-dense, and close to the edge of mortality.
 - [ ] Technique synergy traits
   - Add hidden traits unlocked by mastering compatible techniques.
   - Example: **Steady Heart** from Azure Cloud Breathing 5 + Iron Body Method 5; improves breakthrough safety and resistance to pressure/fear effects.
   - Example: **Empty Pine Rhythm** from Pine Shadow Step 5 + Void Step 3; improves dodge/escape scenes and advanced movement checks.
+- [ ] Skill EXP and bottleneck progression
+  - [x] First-pass Skills tab UI shows EXP bars, progression state, training sources, benefits, and bottleneck preview text.
+  - Convert skill practice into larger EXP thresholds per rank.
+  - At full EXP, allow higher-tier crafting, martial trials, or field tests to break bottlenecks.
+  - Crafting bottlenecks should begin near 20% success and improve after each failed attempt.
+  - On a successful higher-tier craft, rank up all relevant capped skills used by the recipe.
 - [ ] Mortal Peak cultivation content
   - Increased technique mastery requirements
-  - Foundation stability becomes critical
-  - Hints at what Foundation Establishment will demand
-- [ ] Foundation Establishment breakthrough
+  - Qi circulation, meridian pressure, and impurity control become critical
+  - Hints at what Qi Gathering will demand before Foundation Establishment is even possible
+- [ ] Qi Gathering breakthrough
   - Chapter-ending narrative moment, not just a stat increment
-  - Requires a spirit-grade resource from a dungeon or town source
+  - Establishes **Qi Gathering** as the realm after Mortal Peak, creating a necessary bridge before Foundation Establishment.
+  - Requires purified meridians, stable qi circulation, and a qi-grade resource from dungeon, town, sect, or crafted preparation.
   - Resource path split:
-    - **Explorer**: Void Hollow Root enables a higher-ceiling breakthrough with stronger affinity/story hooks, but raises impurity or instability during the attempt.
-    - **Hermit**: Foundation-Stabilizing Decoction enables a safer orthodox breakthrough with steadier foundation and sect approval, but fewer bonus affinities.
+    - **Explorer**: Void Hollow Root can be refined into a risky qi-ascent catalyst with stronger affinity/story hooks, but raises impurity or instability during the attempt.
+    - **Hermit**: Foundation-Stabilizing Decoction is reframed as a safer qi-circulation stabilizer that prepares the body for later Foundation Establishment.
   - The Wall-Faced Remnant should demonstrate impurity danger before this gate by using Sunder-Heart Palm against the player.
-  - Changes available scenes, NPC reactions, and sect standing
+  - Changes available scenes, NPC reactions, sect standing, and available techniques.
 
 ### Phase 7 — Inner Sect Path
 *Major story milestone; long-term goal for the sect arc*
@@ -158,6 +188,13 @@
 - [ ] Inner sect techniques (significantly more powerful)
   - Standardized versions: safer, orthodox, easier to justify inside the sect.
   - Ancient/corrupted variants: higher ceiling, impurity/corruption/faction suspicion costs, stronger story hooks.
+- [ ] Foundation Establishment preparation and breakthrough
+  - Foundation Establishment becomes a later major milestone after Qi Gathering has been established.
+  - Requires a true spirit-grade resource, stronger faction support, and a stable personal cultivation foundation.
+  - Resource path split:
+    - **Explorer**: dangerous ancient or dungeon-derived foundation material with higher ceiling, affinity hooks, and instability risk.
+    - **Hermit**: orthodox sect-guided foundation material with safer results, steadier reputation gains, and fewer unusual bonuses.
+  - Should change available scenes, NPC reactions, faction expectations, and board access more dramatically than earlier breakthroughs.
 - [ ] Sect politics and faction content
   - Prefer group social scores over one-off flags: Discipline Hall, Medicine Hall, Sword Hall, Scripture Pavilion, Outer Affairs, etc.
   - Use specific flags only for irreversible story events; use faction scores for repeatable access, reactions, prices, and quest availability.

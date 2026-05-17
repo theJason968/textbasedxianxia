@@ -395,10 +395,18 @@ export type Choice = {
   requires?: ChoiceRequirement;
   effects?: ChoiceEffect;
   outcomes?: ChoiceOutcome[];
+  delay?: ChoiceDelay;
   boardPosition?: BoardPosition;
   boardDescription?: string;
   boardReward?: string;
   hidden?: boolean;
+};
+
+export type ChoiceDelay = {
+  seconds?: number;
+  stages: string[];
+  resultTitle?: string;
+  resultBody?: string;
 };
 
 export type ChoiceOutcome = {
