@@ -378,6 +378,21 @@ h3 {
   font-size: 1.35rem;
 }
 
+.combat-enemy-image {
+  overflow: hidden;
+  border: 1px solid rgba(231, 205, 157, 0.16);
+  border-radius: 8px;
+  margin: 0.75rem 0 1rem;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.combat-enemy-image img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 6;
+  object-fit: cover;
+}
+
 .combat-cultivation {
   margin: 0 0 0.5rem;
   font-size: 0.7rem;
@@ -1340,6 +1355,32 @@ button.inventory-slot:hover {
   color: #e58f7d;
 }
 
+.crafting-bottleneck-note {
+  display: grid;
+  gap: 0.25rem;
+  border: 1px solid rgba(215, 181, 109, 0.24);
+  border-radius: 6px;
+  padding: 0.5rem 0.6rem;
+  background: rgba(111, 77, 36, 0.18);
+}
+
+.crafting-bottleneck-note span {
+  margin: 0;
+  color: #d7b56d;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.crafting-bottleneck-note strong {
+  color: #f1dca9;
+  font-size: 0.82rem;
+}
+
+.crafting-bottleneck-note small {
+  margin: 0;
+}
+
 .crafting-list button {
   min-height: 2.1rem;
   border: 1px solid rgba(215, 181, 109, 0.24);
@@ -1527,6 +1568,63 @@ button.inventory-slot:hover {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.45rem;
+}
+
+.foundation-outlook-card {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0.75rem 0;
+  border: 1px solid rgba(90, 54, 32, 0.22);
+  border-radius: 6px;
+  padding: 0.65rem;
+  background: rgba(255, 248, 223, 0.22);
+}
+
+.foundation-outlook-header {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.foundation-outlook-header span,
+.foundation-outlook-grid span {
+  color: #7b5130;
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.foundation-outlook-header strong {
+  color: #2b1a11;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.foundation-outlook-card p {
+  margin: 0;
+  color: #4c3322;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.foundation-outlook-grid {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.foundation-outlook-grid div {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.foundation-outlook-grid ul {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding-left: 1rem;
+  color: #4d3828;
+  font-size: 0.74rem;
+  line-height: 1.35;
 }
 
 .stats-toggle-btn {
@@ -2926,6 +3024,17 @@ body::before {
 .breakthrough-result-content .eyebrow {
   margin: 0;
   color: #9ecfca;
+}
+
+.skill-breakthrough-result-screen.failure .breakthrough-result-content .eyebrow {
+  color: #e58f7d;
+}
+
+.skill-breakthrough-result-screen.failure .breakthrough-result-shade {
+  background:
+    radial-gradient(circle at 72% 43%, rgba(192, 92, 82, 0.1), transparent 30%),
+    linear-gradient(90deg, rgba(11, 16, 18, 0.88) 0%, rgba(11, 16, 18, 0.58) 48%, rgba(11, 16, 18, 0.38) 100%),
+    linear-gradient(180deg, rgba(5, 8, 10, 0.24) 0%, rgba(5, 8, 10, 0.82) 100%);
 }
 
 .breakthrough-result-content h2 {

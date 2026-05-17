@@ -1,5 +1,52 @@
 # Changelog
 
+## 2026-05-18
+
+### Foundation Quality System
+- Added `FoundationQuality` type: fractured, unstable, stable, refined, perfect
+- `breakthroughEngine.ts` determines quality from foundationStability, impurity, trainingFatigue, cultivationInsight, and technique mastery scores
+- Stat gains on breakthrough are quality-scaled: fractured gives flat +2, perfect gives +10 base with top two stats boosted to +13
+- maxQi and maxHealth increases are also quality-scaled (fractured: +5/+2, perfect: +22/+15)
+- Fractured and unstable breakthroughs carry impurity penalties; refined gives a small stability bonus
+- `getFoundationOutlook(player)` produces preview text listing helpful signs and risks before attempting
+- `foundationQuality?` added to Player; character panel shows the label after first breakthrough
+- `ChoiceEffect.breakthrough` now passes `foundationQuality?` override and `foundationCost?` through the engine
+
+### Delayed Choice System
+- Added `ChoiceDelay` type: `{ seconds?, stages, resultTitle?, resultBody? }` and `delay?` on Choice
+- Choices with a delay show a timed progress panel instead of immediately resolving
+- Stage text cycles through `stages[]` as the bar fills; breakthrough delays show a background image and a dedicated styled panel
+- After the timer finishes, `resolveChoice` runs normally
+- Discovery result screen appears after search-type delays when rewards are gained, with title, body, and item lines
+- Breakthrough result screen appears after breakthrough delays with quality title, flavour text, and stat gain summary
+- `resolveChoice` now gates which overlay to show: breakthrough result takes priority over discovery result
+
+### Crafting Engine Expansion
+- `craftingEngine.ts` rebuilt with facility, tier, and location gating
+- Three facility types: `field_kit`, `alchemy_room`, `blacksmithing_room`; each has three tier levels
+- Field kit tier driven by Mortal Repair Bundle inventory plus room upgrade and skill flags
+- Alchemy room tier driven by Medicine Hall reputation, room workbench upgrade, and lesson flags
+- Blacksmithing room tier driven by Craft Hall reputation, Luo Jiwei trust flags, and lesson flags
+- `hasCraftingFacilityLocation` checks current sceneId so alchemy and forge recipes only work in the right place
+- `getCraftingFacilityUnlockHint` and `getCraftingFacilityLocationHint` surface actionable hints in the crafting UI
+- Crafting bottleneck system: when a required skill has hit its practice cap but not yet advanced, `getCraftingBottleneckAttempt` returns a chance-based breakthrough attempt
+- `attemptCraftingBottleneck` rolls the chance; failure increments `skillBottleneckFailures` and raises next-attempt odds; success advances the skill rank and crafts the item
+
+### Skill Bottleneck Tracking
+- `skillBottleneckFailures: Record<string, number>` added to Player and seeded empty in `gameState.ts`
+- Base breakthrough chance is 20%; each failure adds 15%, capped at 90%
+- `isSkillAtBottleneck`, `getSkillBottleneckSuccessChance`, and cumulative exp display helpers added to `skillEngine.ts`
+
+### Day and Time Tracking
+- `TimeOfDay` type: Morning, Afternoon, Evening, Night
+- `day: number` and `timeOfDay: TimeOfDay` added to Player; initial state is Day 1 Morning
+- `advanceTime?: number` added to ChoiceEffect for sub-day actions (1 block = one time period)
+- `consequenceEngine` converts advanceTime blocks using `advancePlayerTime` from `timeEngine`
+
+### Area Images
+- `lower_grove`, `scripture_pavilion`, `medicine_garden`, `medicine_hall`, `craft_hall`, `arena`, `cloud_edge`, and `black_thread_hollow` all given images in `sceneAreas.json`
+- `image?: SceneImage` added to Enemy type for future enemy portrait display
+
 ## 2026-05-15
 
 ### Time And Progression Tests

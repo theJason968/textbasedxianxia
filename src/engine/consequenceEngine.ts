@@ -24,6 +24,7 @@ import {
   getSkillDisplayedExpGain,
   getSkillLevelName,
   getSkillPracticeRequiredForRank,
+  isSkillAtBottleneck,
 } from "./skillEngine";
 import { advancePlayerTime, formatCalendarTime } from "./timeEngine";
 import enemies from "../data/enemies.json";
@@ -446,14 +447,10 @@ function applySkillPractice(
 
       if (practiceGain > 0 && nextRank < maxRank) {
         nextPractice += practiceGain;
-
-        while (
-          nextPractice >= getSkillPracticeRequiredForRank(nextRank) &&
-          nextRank < maxRank
-        ) {
-          nextPractice -= getSkillPracticeRequiredForRank(nextRank);
-          nextRank += 1;
-        }
+        nextPractice = Math.min(
+          nextPractice,
+          getSkillPracticeRequiredForRank(nextRank),
+        );
       }
 
       if (nextRank >= maxRank) {
@@ -647,6 +644,10 @@ function getSkillMessages(previousPlayer: Player, nextPlayer: Player): string[] 
       const treeName = skill?.tree ?? "Skill";
       const levelName = getSkillLevelName(nextRank);
       const effectSummary = skill ? formatSkillEffectSummary(skill, nextRank) : "";
+      const reachedBottleneck =
+        skill &&
+        !isSkillAtBottleneck(previousRank, skill.maxRank, previousPractice) &&
+        isSkillAtBottleneck(nextRank, skill.maxRank, nextPractice);
       const expGain = skill
         ? getSkillDisplayedExpGain(
             previousRank,
@@ -667,6 +668,12 @@ function getSkillMessages(previousPlayer: Player, nextPlayer: Player): string[] 
           `Character reached ${levelName} ${treeName}: ${skillName}${
             effectSummary ? ` (${effectSummary})` : ""
           }.`,
+        );
+      }
+
+      if (reachedBottleneck) {
+        messages.push(
+          `${skillName} has reached a bottleneck. Attempt a higher-tier craft, trial, or field test to break through.`,
         );
       }
 

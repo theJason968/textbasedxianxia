@@ -69,6 +69,7 @@ export type Player = {
   techniques: string[];
   skills: Record<string, number>;
   skillPractice: Record<string, number>;
+  skillBottleneckFailures: Record<string, number>;
   elementalEssence: Partial<Record<ElementalEssence, number>>;
   constitutions: string[];
   techniqueMastery: Record<string, number>;
@@ -153,6 +154,7 @@ export type Enemy = {
   id: string;
   name: string;
   description: string;
+  image?: SceneImage;
   cultivation?: { realm: Realm; stage: RealmStage };
   maxHealth: number;
   attack: number;

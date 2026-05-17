@@ -3,6 +3,10 @@
     "id": "mist_wolf",
     "name": "Mist Wolf",
     "description": "A lean spirit beast with pale fur and eyes like wet jade.",
+    "image": {
+      "src": "/assets/locations/mist_wolf.png",
+      "alt": "A pale mist wolf stalking through fog-dark pines"
+    },
     "cultivation": { "realm": "Mortal", "stage": "Early" },
     "maxHealth": 18,
     "attack": 4,
@@ -25,6 +29,10 @@
     "id": "road_bandits",
     "name": "Road Bandits",
     "description": "Hungry mortals with stolen spears, frightened eyes, and orders from someone they dare not name.",
+    "image": {
+      "src": "/assets/locations/bandit_scout.png",
+      "alt": "A wary road bandit scout watching from the brush"
+    },
     "cultivation": { "realm": "Mortal", "stage": "Early" },
     "maxHealth": 16,
     "attack": 3,
@@ -49,6 +57,10 @@
     "id": "spirit_boar",
     "name": "Spirit Boar",
     "description": "A heavyset beast with dark bristles and small eyes that carry more intelligence than they should. Outer disciples avoid its territory during the first week of each month.",
+    "image": {
+      "src": "/assets/locations/spirit_boar.png",
+      "alt": "A heavy spirit boar with dark bristles and ground qi in its hide"
+    },
     "cultivation": { "realm": "Mortal", "stage": "Early" },
     "maxHealth": 22,
     "attack": 4,
@@ -72,6 +84,10 @@
     "id": "shadow_viper",
     "name": "Shadow Viper",
     "description": "A finger-thick serpent the colour of dried leaves. It does not announce itself. The only warning is the gap in the undergrowth where there was not one before.",
+    "image": {
+      "src": "/assets/locations/shadow_viper.png",
+      "alt": "A shadow viper coiled in dry leaves and undergrowth"
+    },
     "cultivation": { "realm": "Mortal", "stage": "Early" },
     "maxHealth": 12,
     "attack": 6,
@@ -95,6 +111,10 @@
     "id": "cloud_stag",
     "name": "Cloud Stag",
     "description": "A pale-antlered stag that treads without sound through the upper grove. Its breath fogs even in summer. Killing one is considered wasteful by most outer disciples.",
+    "image": {
+      "src": "/assets/locations/cloud_stag.png",
+      "alt": "A pale-antlered cloud stag standing in a misted grove"
+    },
     "cultivation": { "realm": "Mortal", "stage": "Middle" },
     "maxHealth": 35,
     "attack": 3,
@@ -119,6 +139,10 @@
     "id": "stone_crab",
     "name": "Stone Crab",
     "description": "A crab the size of a medium dog with a shell like river-worn granite. It moves slowly until it does not.",
+    "image": {
+      "src": "/assets/locations/stone_crab.png",
+      "alt": "A stone crab with a granite-like shell near wet rock"
+    },
     "cultivation": { "realm": "Mortal", "stage": "Middle" },
     "maxHealth": 28,
     "attack": 3,
@@ -142,6 +166,10 @@
     "id": "bandit_scout",
     "name": "Bandit Scout",
     "description": "A lean figure who moves like someone trained to not be seen. He carries a short knife and the particular caution of a man who survives by knowing when to run.",
+    "image": {
+      "src": "/assets/locations/bandit_scout.png",
+      "alt": "A lean bandit scout carrying a short knife"
+    },
     "cultivation": { "realm": "Mortal", "stage": "Early" },
     "maxHealth": 14,
     "attack": 3,
@@ -165,6 +193,10 @@
     "id": "bandit_lieutenant",
     "name": "Bandit Lieutenant",
     "description": "A broad-shouldered man with a road-forged shortsword and the air of someone who has given orders long enough to believe they mean something.",
+    "image": {
+      "src": "/assets/locations/bandit_lieutenant.png",
+      "alt": "A broad-shouldered bandit lieutenant with a road-forged shortsword"
+    },
     "cultivation": { "realm": "Mortal", "stage": "Middle" },
     "maxHealth": 28,
     "attack": 6,
@@ -191,6 +223,10 @@
     "id": "corrupt_outer_disciple",
     "name": "Corrupt Outer Disciple",
     "description": "An outer disciple wearing a sect robe with the Azure Cloud insignia cut away. The eyes are wrong — flat and calculating where a cultivator's should have some depth.",
+    "image": {
+      "src": "/assets/locations/corrupt_outer_disciple.png",
+      "alt": "A corrupt outer disciple in a damaged sect robe"
+    },
     "cultivation": { "realm": "Mortal", "stage": "Late" },
     "maxHealth": 24,
     "attack": 7,
@@ -218,6 +254,10 @@
     "id": "mist_shade",
     "name": "Mist Shade",
     "description": "A spirit entity shaped like a person but with no weight behind the shape. It drifts through solid objects if it moves slowly enough. The touch carries a cold that has nothing to do with temperature.",
+    "image": {
+      "src": "/assets/locations/mist_shade.png",
+      "alt": "A mist shade shaped like a person in cold blue fog"
+    },
     "cultivation": { "realm": "Qi Condensation", "stage": "Early" },
     "maxHealth": 20,
     "attack": 8,
@@ -242,6 +282,10 @@
     "id": "bone_hound",
     "name": "Bone Hound",
     "description": "A spirit beast assembled from the remains of other creatures. The bones fit imperfectly, held together by a low persistent qi that is older than the formation that made it.",
+    "image": {
+      "src": "/assets/locations/bone_hound.png",
+      "alt": "A bone hound assembled from mismatched remains"
+    },
     "cultivation": { "realm": "Mortal", "stage": "Peak" },
     "maxHealth": 32,
     "attack": 7,
@@ -266,6 +310,10 @@
     "id": "black_thread_cultist",
     "name": "Black-Thread Cultist",
     "description": "A robed figure whose hands are traced with black qi-thread tattoos that move faintly when still. He speaks like someone reciting rather than choosing words.",
+    "image": {
+      "src": "/assets/locations/black_thread_cultist.png",
+      "alt": "A black-thread cultist with moving qi-thread tattoos"
+    },
     "cultivation": { "realm": "Qi Condensation", "stage": "Early" },
     "maxHealth": 40,
     "attack": 9,

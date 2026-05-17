@@ -15,18 +15,27 @@ import { continueCombat, getAvailableTechniqueActions, resolveCombatAction, type
 import { getPostCombatChoices, resolvePostCombatChoice } from "./engine/postCombatEngine";
 import type { PostCombatChoiceId } from "./engine/types";
 import { canChoose } from "./engine/conditionEngine";
-import { getFoundationQualityLabel } from "./engine/breakthroughEngine";
 import {
+  getFoundationOutlook,
+  getFoundationQualityLabel,
+} from "./engine/breakthroughEngine";
+import {
+  attemptCraftingBottleneck,
   canCraftRecipe,
   craftRecipe,
+  getCraftingBottleneckAttempt,
+  getCraftingFacilityLocationHint,
   getCraftingFacilityRequirementLabel,
   getCraftingFacilityTier,
   getCraftingFacilityUnlockHint,
   getInventoryCounts,
+  hasCraftingFacilityLocation,
   hasRequiredFacility,
+  type CraftingContext,
   type CraftingFacility,
   type CraftingFacilityTier,
   type CraftingRecipe,
+  type CraftingSkillBreakthroughResult,
 } from "./engine/craftingEngine";
 import {
   applyChoiceWithResult,
@@ -61,10 +70,12 @@ import {
 import {
   formatSkillEffectSummary,
   formatSkillLevel,
+  getSkillBottleneckSuccessChance,
   getSkillDisplayedExp,
   getSkillExpRequiredForRank,
   getSkillLevelName,
   getSkillPracticeRequiredForRank,
+  isSkillAtBottleneck,
 } from "./engine/skillEngine";
 import type {
   Choice,
@@ -117,6 +128,15 @@ type BreakthroughResultView = {
   flavor: string;
   rewards: string[];
 };
+type SkillBreakthroughResultView = {
+  outcome: "success" | "failure";
+  imagePath: string;
+  title: string;
+  subtitle: string;
+  flavor: string;
+  rewards: string[];
+  continueLabel: string;
+};
 type ItemData = {
   id: string;
   name: string;
@@ -153,6 +173,55 @@ type ItemData = {
 };
 const itemData = items as ItemData[];
 const breakthroughImagePath = "/assets/story/breakthrough_success.png";
+const skillBreakthroughImagePaths: Record<
+  Skill["tree"] | "Crafting",
+  { success: string; failure: string }
+> = {
+  "Mortal Foundation": {
+    success: "/assets/skill_breakthroughs/cultivation_foundation_success.png",
+    failure: "/assets/skill_breakthroughs/cultivation_foundation_failure.jpg",
+  },
+  "Martial Arts": {
+    success: "/assets/skill_breakthroughs/martial_arts_success.jpg",
+    failure: "/assets/skill_breakthroughs/martial_arts_failure.jpg",
+  },
+  "Body Tempering": {
+    success: "/assets/skill_breakthroughs/crafting_success.jpg",
+    failure: "/assets/skill_breakthroughs/crafting_failure.jpg",
+  },
+  "Mind And Perception": {
+    success: "/assets/skill_breakthroughs/mind_perception_success.jpg",
+    failure: "/assets/skill_breakthroughs/mind_perception_failure.jpg",
+  },
+  "Social Bearing": {
+    success: "/assets/skill_breakthroughs/crafting_success.jpg",
+    failure: "/assets/skill_breakthroughs/crafting_failure.jpg",
+  },
+  Survival: {
+    success: "/assets/skill_breakthroughs/survival_success.jpg",
+    failure: "/assets/skill_breakthroughs/survival_failure.jpg",
+  },
+  Alchemy: {
+    success: "/assets/skill_breakthroughs/alchemy_success.png",
+    failure: "/assets/skill_breakthroughs/alchemy_failure.png",
+  },
+  Blacksmithing: {
+    success: "/assets/skill_breakthroughs/blacksmithing_success.png",
+    failure: "/assets/skill_breakthroughs/blacksmithing_failure.jpg",
+  },
+  "Cultivation Foundation": {
+    success: "/assets/skill_breakthroughs/cultivation_foundation_success.png",
+    failure: "/assets/skill_breakthroughs/cultivation_foundation_failure.jpg",
+  },
+  "Azure Cloud Methods": {
+    success: "/assets/skill_breakthroughs/cultivation_foundation_success.png",
+    failure: "/assets/skill_breakthroughs/cultivation_foundation_failure.jpg",
+  },
+  Crafting: {
+    success: "/assets/skill_breakthroughs/crafting_success.jpg",
+    failure: "/assets/skill_breakthroughs/crafting_failure.jpg",
+  },
+};
 
 const craftingFacilities: CraftingFacilityView[] = [
   {
@@ -271,6 +340,44 @@ function getBreakthroughResultView(
   };
 }
 
+function getSkillBreakthroughResultView(
+  recipe: CraftingRecipe,
+  result: CraftingSkillBreakthroughResult,
+): SkillBreakthroughResultView {
+  const images = skillBreakthroughImagePaths[result.tree];
+  const imagePath = result.success ? images.success : images.failure;
+  const skillLine = result.skillNames.join(", ");
+  const rewards = result.success
+    ? [
+        `Crafted ${recipe.quantity} ${recipe.name}`,
+        ...result.skillIds.map((skillId, index) => {
+          const nextRank = result.nextRanks[skillId] ?? 0;
+          const nextLevel = getSkillLevelName(nextRank);
+
+          return `${result.skillNames[index] ?? skillId} reached ${nextLevel} ${nextRank}`;
+        }),
+      ]
+    : [
+        "No item crafted",
+        "Materials survived the failed attempt",
+        `Next success chance: ${result.nextChance}%`,
+      ];
+
+  return {
+    outcome: result.success ? "success" : "failure",
+    imagePath,
+    title: result.success ? "Skill Breakthrough" : "Breakthrough Failed",
+    subtitle: result.success
+      ? `${skillLine} answered the pressure.`
+      : `${skillLine} did not cross the threshold.`,
+    flavor: result.success
+      ? "The work holds. What used to be careful imitation settles into instinct, and the recipe becomes proof that the skill has grown teeth."
+      : "The pattern slips at the final breath. Nothing is wasted, but the failure leaves a clear scar in memory, making the next attempt less uncertain.",
+    rewards,
+    continueLabel: result.success ? "Hold The Result" : "Try Again Later",
+  };
+}
+
 type RecipeIngredientDetail = {
   itemId: string;
   name: string;
@@ -292,6 +399,7 @@ type LearnedTechniqueView = {
 type LearnedSkillView = Skill & {
   rank: number;
   practice: number;
+  bottleneckFailures: number;
 };
 const equipmentSlotLabels: Record<EquipmentSlot, string> = {
   weapon: "Weapon",
@@ -733,8 +841,11 @@ function formatItemEffects(
 function getRecipeRequirementSummary(
   player: Player,
   recipe: CraftingRecipe,
+  context: CraftingContext,
 ): string[] {
   const inventoryCounts = getInventoryCounts(player.inventory);
+  const bottleneckAttempt = getCraftingBottleneckAttempt(player, recipe, context);
+  const bottleneckSkillIds = new Set(bottleneckAttempt?.skillIds ?? []);
   const missingIngredients = Object.entries(recipe.ingredients)
     .filter(([itemId, requiredCount]) => (inventoryCounts[itemId] ?? 0) < requiredCount)
     .map(([itemId, requiredCount]) => {
@@ -743,7 +854,11 @@ function getRecipeRequirementSummary(
       return `${itemName} ${requiredCount} (${inventoryCounts[itemId] ?? 0})`;
     });
   const missingSkills = Object.entries(recipe.requiresSkills ?? {})
-    .filter(([skillId, requiredRank]) => (player.skills[skillId] ?? 0) < requiredRank)
+    .filter(
+      ([skillId, requiredRank]) =>
+        !bottleneckSkillIds.has(skillId) &&
+        (player.skills[skillId] ?? 0) < requiredRank,
+    )
     .map(([skillId, requiredRank]) => {
       const skillName = skillData.find((skill) => skill.id === skillId)?.name ?? skillId;
 
@@ -754,12 +869,15 @@ function getRecipeRequirementSummary(
     .map((itemId) => itemData.find((item) => item.id === itemId)?.name ?? itemId);
   const missingFacility =
     recipe.requiredFacility &&
-    !hasRequiredFacility(player, recipe.requiredFacility, recipe.requiredFacilityTier)
+    !hasRequiredFacility(player, recipe.requiredFacility, recipe.requiredFacilityTier, context)
       ? [
-          getCraftingFacilityRequirementLabel(
-            recipe.requiredFacility,
-            recipe.requiredFacilityTier,
-          ),
+          getCraftingFacilityTier(player, recipe.requiredFacility) <
+          (recipe.requiredFacilityTier ?? 1)
+            ? getCraftingFacilityRequirementLabel(
+                recipe.requiredFacility,
+                recipe.requiredFacilityTier,
+              )
+            : getCraftingFacilityLocationHint(recipe.requiredFacility),
         ]
       : [];
 
@@ -891,7 +1009,7 @@ function getSkillProgressStatus(skill: LearnedSkillView): string {
     return "Max rank";
   }
 
-  if (skill.practice >= getSkillPracticeRequiredForRank(skill.rank)) {
+  if (isSkillAtBottleneck(skill.rank, skill.maxRank, skill.practice)) {
     return "Bottleneck ready";
   }
 
@@ -920,7 +1038,19 @@ function getSkillBottleneckSummary(skill: LearnedSkillView): string {
     return "No current bottleneck.";
   }
 
-  return "At full EXP, attempt a higher-tier craft, trial, or field test to break through.";
+  if (isSkillAtBottleneck(skill.rank, skill.maxRank, skill.practice)) {
+    const chance = getSkillBottleneckSuccessChance(skill.bottleneckFailures);
+    const failureText =
+      skill.bottleneckFailures > 0
+        ? ` ${skill.bottleneckFailures} failed attempt${
+            skill.bottleneckFailures === 1 ? "" : "s"
+          } already raised the chance.`
+        : "";
+
+    return `Ready. Attempt a recipe, trial, or field test one rank higher for a ${chance}% breakthrough chance.${failureText}`;
+  }
+
+  return "Fill this rank's EXP, then attempt a higher-tier craft, trial, or field test to break through.";
 }
 
 function formatItemTier(tier?: ItemTier): string {
@@ -1010,6 +1140,8 @@ function App() {
   const [discoveryResult, setDiscoveryResult] = useState<DiscoveryResult | null>(null);
   const [breakthroughResult, setBreakthroughResult] =
     useState<BreakthroughResultView | null>(null);
+  const [skillBreakthroughResult, setSkillBreakthroughResult] =
+    useState<SkillBreakthroughResultView | null>(null);
   const currentScene = useMemo(
     () => getSceneById(sceneData, gameState.currentSceneId),
     [gameState.currentSceneId],
@@ -1027,6 +1159,10 @@ function App() {
     [currentArea, currentScene],
   );
   const currentLocationTitle = currentArea?.name ?? getSceneLocationTitle(currentScene.id);
+  const craftingContext = useMemo<CraftingContext>(
+    () => ({ sceneId: gameState.currentSceneId }),
+    [gameState.currentSceneId],
+  );
   const activeEnemy = useMemo(
     () =>
       gameState.combat
@@ -1043,6 +1179,10 @@ function App() {
   );
   const canFocusQiInCombat =
     gameState.player.realm !== "Mortal" || gameState.player.stage !== "Early";
+  const foundationOutlook = useMemo(
+    () => getFoundationOutlook(gameState.player),
+    [gameState.player],
+  );
   const ownedItems = useMemo(
     () =>
       gameState.player.inventory.map((itemId) => {
@@ -1082,12 +1222,17 @@ function App() {
               ...skill,
               rank,
               practice: gameState.player.skillPractice[skillId] ?? 0,
+              bottleneckFailures: gameState.player.skillBottleneckFailures[skillId] ?? 0,
             }
           : null;
       })
       .filter((skill) => skill !== null)
       .sort((firstSkill, secondSkill) => firstSkill.tier - secondSkill.tier) satisfies LearnedSkillView[],
-    [gameState.player.skillPractice, gameState.player.skills],
+    [
+      gameState.player.skillBottleneckFailures,
+      gameState.player.skillPractice,
+      gameState.player.skills,
+    ],
   );
   const awakenedConstitutions = useMemo(
     () =>
@@ -1203,12 +1348,21 @@ function App() {
         .filter((recipe) => (gameState.player.knownRecipes ?? []).includes(recipe.id))
         .map((recipe) => ({
           recipe,
-          canCraft: canCraftRecipe(gameState.player, recipe),
+          canCraft: canCraftRecipe(gameState.player, recipe, craftingContext),
+          bottleneckAttempt: getCraftingBottleneckAttempt(
+            gameState.player,
+            recipe,
+            craftingContext,
+          ),
           ingredientDetails: getRecipeIngredientDetails(gameState.player, recipe),
-          missingRequirements: getRecipeRequirementSummary(gameState.player, recipe),
+          missingRequirements: getRecipeRequirementSummary(
+            gameState.player,
+            recipe,
+            craftingContext,
+          ),
           resultItem: itemData.find((item) => item.id === recipe.resultItem),
         })),
-    [gameState.player],
+    [craftingContext, gameState.player],
   );
   const craftingFacilityStatuses = useMemo(
     () =>
@@ -1220,10 +1374,16 @@ function App() {
           ...facility,
           currentTier,
           hint: getCraftingFacilityUnlockHint(facility.id, nextTier),
+          locationHint: getCraftingFacilityLocationHint(facility.id),
           isAvailable: currentTier > 0,
+          isHere: hasCraftingFacilityLocation(
+            gameState.player,
+            facility.id,
+            craftingContext,
+          ),
         };
       }),
-    [gameState.player],
+    [craftingContext, gameState.player],
   );
   const craftingFilters = useMemo<CraftingFilter[]>(
     () => [
@@ -1237,17 +1397,17 @@ function App() {
   );
   const visibleRecipes = useMemo(
     () =>
-      availableRecipes.filter(({ recipe, canCraft, missingRequirements }) => {
+      availableRecipes.filter(({ recipe, canCraft, bottleneckAttempt, missingRequirements }) => {
         if (activeCraftingFilter === "All") {
           return true;
         }
 
         if (activeCraftingFilter === "Craftable") {
-          return canCraft;
+          return canCraft || bottleneckAttempt !== null;
         }
 
         if (activeCraftingFilter === "Locked Requirements") {
-          return !canCraft && missingRequirements.length > 0;
+          return !canCraft && bottleneckAttempt === null && missingRequirements.length > 0;
         }
 
         if (activeCraftingFilter.startsWith("Facility:")) {
@@ -1523,14 +1683,30 @@ function App() {
   }
 
   function handleCraftRecipe(recipe: CraftingRecipe) {
-    const result = craftRecipe(gameState, recipe);
+    const bottleneckAttempt = getCraftingBottleneckAttempt(
+      gameState.player,
+      recipe,
+      craftingContext,
+    );
+    const result = bottleneckAttempt
+      ? attemptCraftingBottleneck(gameState, recipe, craftingContext)
+      : craftRecipe(gameState, recipe, craftingContext);
 
     setGameState(result.gameState);
     setActionMessages([
       ...getPlayerChangeMessages(gameState.player, result.gameState.player),
       result.message,
     ]);
+    setSkillBreakthroughResult(
+      result.skillBreakthrough
+        ? getSkillBreakthroughResultView(recipe, result.skillBreakthrough)
+        : null,
+    );
     setSaveMessage("Unsaved changes.");
+  }
+
+  function handleSkillBreakthroughContinue() {
+    setSkillBreakthroughResult(null);
   }
 
   function handleEquipItem(item: ItemData) {
@@ -1898,6 +2074,11 @@ function App() {
             <div>
               <p className="eyebrow">Combat</p>
               <h2>{activeEnemy.name}</h2>
+              {activeEnemy.image ? (
+                <figure className="combat-enemy-image">
+                  <img src={activeEnemy.image.src} alt={activeEnemy.image.alt} />
+                </figure>
+              ) : null}
               {"cultivation" in activeEnemy && activeEnemy.cultivation ? (
                 <p className="combat-cultivation">
                   {activeEnemy.cultivation.realm} · {activeEnemy.cultivation.stage}
@@ -2080,6 +2261,37 @@ function App() {
                     width: `${(gameState.player.qi / gameState.player.maxQi) * 100}%`,
                   }}
                 />
+              </div>
+              <div className="foundation-outlook-card">
+                <div className="foundation-outlook-header">
+                  <span>Breakthrough Outlook</span>
+                  <strong>{foundationOutlook.title}</strong>
+                </div>
+                <p>{foundationOutlook.body}</p>
+                <div className="foundation-outlook-grid">
+                  <div>
+                    <span>Helpful Signs</span>
+                    <ul>
+                      {(foundationOutlook.helpfulSigns.length > 0
+                        ? foundationOutlook.helpfulSigns
+                        : ["No clear advantages yet."]
+                      ).map((sign) => (
+                        <li key={sign}>{sign}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <span>Risks</span>
+                    <ul>
+                      {(foundationOutlook.risks.length > 0
+                        ? foundationOutlook.risks
+                        : ["No major risks showing."]
+                      ).map((risk) => (
+                        <li key={risk}>{risk}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               </div>
               <div className="cultivation-controls">
                 <button type="button" onClick={handleCultivate}>
@@ -2400,8 +2612,14 @@ function App() {
                         </span>
                         <small>
                           {facility.currentTier >= 3
-                            ? "Highest current tier available."
-                            : `${facility.currentTier > 0 ? "Next: " : "Unlock: "}${facility.hint}`}
+                            ? facility.isHere
+                              ? "Highest current tier available here."
+                              : `Unlocked, but not here. ${facility.locationHint}`
+                            : facility.currentTier > 0
+                              ? facility.isHere
+                                ? `Available here. Next: ${facility.hint}`
+                                : `Unlocked, but not here. ${facility.locationHint}`
+                              : `Unlock: ${facility.hint}`}
                         </small>
                       </div>
                     ))}
@@ -2427,6 +2645,7 @@ function App() {
                         ({
                           recipe,
                           canCraft,
+                          bottleneckAttempt,
                           ingredientDetails,
                           missingRequirements,
                           resultItem,
@@ -2438,6 +2657,7 @@ function App() {
                                 gameState.player,
                                 recipe.requiredFacility,
                                 requiredFacilityTier,
+                                craftingContext,
                               )
                             : true;
                           const facilityLabel = recipe.requiredFacility
@@ -2455,6 +2675,7 @@ function App() {
                           const requiredToolNames = (recipe.requiresTools ?? []).map(
                             (itemId) => itemData.find((item) => item.id === itemId)?.name ?? itemId,
                           );
+                          const canAttemptBreakthrough = bottleneckAttempt !== null;
 
                           return (
                             <li key={recipe.id}>
@@ -2530,13 +2751,23 @@ function App() {
                                     Missing {missingRequirements.join(", ")}
                                   </small>
                                 ) : null}
+                                {bottleneckAttempt ? (
+                                  <div className="crafting-bottleneck-note">
+                                    <span>Breakthrough Craft</span>
+                                    <strong>{bottleneckAttempt.chance}% success chance</strong>
+                                    <small>
+                                      Success raises {bottleneckAttempt.skillNames.join(", ")}.
+                                      Failure preserves materials and improves the next chance.
+                                    </small>
+                                  </div>
+                                ) : null}
                               </div>
                               <button
                                 type="button"
-                                disabled={!canCraft}
+                                disabled={!canCraft && !canAttemptBreakthrough}
                                 onClick={() => handleCraftRecipe(recipe)}
                               >
-                                Craft
+                                {canAttemptBreakthrough ? "Attempt Breakthrough Craft" : "Craft"}
                               </button>
                             </li>
                           );
@@ -2894,6 +3125,52 @@ function App() {
               onClick={handleBreakthroughContinue}
             >
               Steady Your Breath
+            </button>
+          </div>
+        </section>
+      ) : null}
+      {skillBreakthroughResult ? (
+        <section
+          className={`breakthrough-result-screen skill-breakthrough-result-screen ${skillBreakthroughResult.outcome}`}
+          aria-live="polite"
+        >
+          <img
+            src={skillBreakthroughResult.imagePath}
+            alt=""
+            className="breakthrough-result-image"
+            aria-hidden="true"
+          />
+          <div className="breakthrough-result-shade" aria-hidden="true" />
+          <div className="breakthrough-result-content">
+            <p className="eyebrow">
+              {skillBreakthroughResult.outcome === "success"
+                ? "Breakthrough Craft Successful"
+                : "Breakthrough Craft Failed"}
+            </p>
+            <h2>{skillBreakthroughResult.title}</h2>
+            <strong>{skillBreakthroughResult.subtitle}</strong>
+            <p>{skillBreakthroughResult.flavor}</p>
+            <div className="breakthrough-reward-panel">
+              <h3 className="ornate-panel-title">
+                {skillBreakthroughResult.outcome === "success" ? "Gained" : "Result"}
+              </h3>
+              <div className="victory-rewards-panel">
+                {skillBreakthroughResult.rewards.map((reward) => (
+                  <div className="victory-reward-row" key={reward}>
+                    <span className="victory-reward-icon">
+                      {skillBreakthroughResult.outcome === "success" ? "◎" : "◇"}
+                    </span>
+                    <span>{reward}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <button
+              className="victory-continue-btn"
+              type="button"
+              onClick={handleSkillBreakthroughContinue}
+            >
+              {skillBreakthroughResult.continueLabel}
             </button>
           </div>
         </section>

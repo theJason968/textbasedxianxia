@@ -6,6 +6,9 @@ const skillEffectKeys: Array<keyof SkillEffects> = ["combatDamage", "combatDefen
 const skillLevelNames = ["Novice", "Intermediate", "Skilled", "Expert"] as const;
 export const skillPracticesPerLevel = 3;
 export const skillExpPerRank = 100;
+export const skillBottleneckBaseChance = 20;
+export const skillBottleneckFailureBonus = 15;
+export const skillBottleneckMaxChance = 90;
 
 export function getSkillLevelName(rank: number): string {
   if (rank <= 0) {
@@ -58,6 +61,29 @@ export function getSkillDisplayedExp(
       (practice / getSkillPracticeRequiredForRank(rank)) * requiredExp,
     ),
   );
+}
+
+export function isSkillAtBottleneck(
+  rank: number,
+  maxRank: number,
+  practice: number,
+): boolean {
+  return (
+    rank > 0 &&
+    rank < maxRank &&
+    practice >= getSkillPracticeRequiredForRank(rank)
+  );
+}
+
+export function getSkillBottleneckSuccessChance(failures = 0): number {
+  return Math.min(
+    skillBottleneckMaxChance,
+    skillBottleneckBaseChance + Math.max(0, failures) * skillBottleneckFailureBonus,
+  );
+}
+
+export function getSkillById(skillId: string): Skill | undefined {
+  return skillData.find((candidate) => candidate.id === skillId);
 }
 
 export function getSkillCumulativeDisplayedExp(

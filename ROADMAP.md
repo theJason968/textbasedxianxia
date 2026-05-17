@@ -11,7 +11,7 @@
   - Post-combat reflection (prose calibrated to power gap, health lost, turns taken)
 - Quest system (start / update / complete / fail)
 - Crafting system (ingredient requirements, skill gates)
-- Skill system (practice → rank progression)
+- Skill system (EXP practice, capped bottlenecks, and higher-tier breakthrough attempts)
 - Technique system (learn + mastery tracking)
 - Breakthrough system (realm/stage advancement with stat costs)
 - Elemental essence and constitution awakening
@@ -157,15 +157,19 @@
   - Example: **Empty Pine Rhythm** from Pine Shadow Step 5 + Void Step 3; improves dodge/escape scenes and advanced movement checks.
 - [ ] Skill EXP and bottleneck progression
   - [x] First-pass Skills tab UI shows EXP bars, progression state, training sources, benefits, and bottleneck preview text.
-  - Convert skill practice into larger EXP thresholds per rank.
-  - At full EXP, allow higher-tier crafting, martial trials, or field tests to break bottlenecks.
-  - Crafting bottlenecks should begin near 20% success and improve after each failed attempt.
-  - On a successful higher-tier craft, rank up all relevant capped skills used by the recipe.
+  - [x] Skill practice now caps at full EXP instead of auto-ranking, creating a real bottleneck state.
+  - [x] At full EXP, higher-tier crafting recipes can become bottleneck attempts when all other requirements are met.
+  - [x] Crafting bottlenecks begin near 20% success and improve after each failed attempt.
+  - [x] On a successful higher-tier craft, all capped recipe skills rank up and reset their EXP.
+  - [x] Skill breakthrough success/failure screens now show full-page art, result text, and rewards.
+  - Add martial trial and field-test bottleneck attempts for non-crafting skills.
 - [ ] Mortal Peak cultivation content
   - Increased technique mastery requirements
   - Qi circulation, meridian pressure, and impurity control become critical
   - Hints at what Qi Gathering will demand before Foundation Establishment is even possible
   - [x] Breakthroughs now record foundation quality and award tiered growth across core stats, max qi, max health, and long-term foundation flags.
+  - [x] Cultivation panel now shows a breakthrough outlook with likely foundation quality, helpful signs, and risks without exposing the raw formula.
+  - [x] Personal room now has a dedicated recovery action to reduce training fatigue before breakthrough attempts.
 - [ ] Qi Gathering breakthrough
   - Chapter-ending narrative moment, not just a stat increment
   - Establishes **Qi Gathering** as the realm after Mortal Peak, creating a necessary bridge before Foundation Establishment.

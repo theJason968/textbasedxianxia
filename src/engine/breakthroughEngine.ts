@@ -12,6 +12,14 @@ export type BreakthroughResult = {
   quality: FoundationQuality;
 };
 
+export type FoundationOutlook = {
+  quality: FoundationQuality;
+  title: string;
+  body: string;
+  helpfulSigns: string[];
+  risks: string[];
+};
+
 const coreStatKeys = [
   "strength",
   "agility",
@@ -44,6 +52,20 @@ const foundationQualityLabels: Record<FoundationQuality, string> = {
 
 export function getFoundationQualityLabel(quality?: FoundationQuality): string {
   return quality ? foundationQualityLabels[quality] : "Unformed Foundation";
+}
+
+export function getFoundationOutlook(player: Player): FoundationOutlook {
+  const quality = determineFoundationQuality(player);
+  const helpfulSigns = getHelpfulFoundationSigns(player);
+  const risks = getFoundationRisks(player);
+
+  return {
+    quality,
+    title: getFoundationQualityLabel(quality),
+    body: getFoundationOutlookBody(quality),
+    helpfulSigns,
+    risks,
+  };
 }
 
 export function applyBreakthroughRewards(
@@ -126,6 +148,79 @@ export function determineFoundationQuality(player: Player): FoundationQuality {
   }
 
   return "fractured";
+}
+
+function getHelpfulFoundationSigns(player: Player): string[] {
+  const azureMastery = player.techniqueMastery["azure_cloud_breathing"] ?? 0;
+  const ironBodyMastery = player.techniqueMastery["iron_body_method"] ?? 0;
+
+  return [
+    player.foundationStability >= 95
+      ? "Your foundation feels unusually steady."
+      : player.foundationStability >= 80
+        ? "Your foundation is holding together."
+        : null,
+    player.impurity <= 0 ? "Your meridians feel clean." : null,
+    player.trainingFatigue <= 0 ? "Your breath is calm and unforced." : null,
+    player.cultivationInsight >= 3
+      ? "Recent insight helps you read the bottleneck."
+      : player.cultivationInsight > 0
+        ? "You have some insight to guide the attempt."
+        : null,
+    azureMastery >= 3
+      ? "Azure Cloud Breathing is familiar enough to steady the circulation."
+      : azureMastery > 0
+        ? "Azure Cloud Breathing gives you a usable route."
+        : null,
+    ironBodyMastery >= 3
+      ? "Iron Body Method gives the body a firm vessel."
+      : ironBodyMastery > 0
+        ? "Iron Body Method adds a little resilience."
+        : null,
+  ].filter((sign): sign is string => sign !== null);
+}
+
+function getFoundationRisks(player: Player): string[] {
+  return [
+    player.foundationStability < 60
+      ? "The foundation is too loose for a clean attempt."
+      : player.foundationStability < 85
+        ? "The foundation could still be steadier."
+        : null,
+    player.impurity >= 4
+      ? "Impurity is weighing heavily on the meridians."
+      : player.impurity > 0
+        ? "Trace impurity may dull the result."
+        : null,
+    player.trainingFatigue >= 4
+      ? "Fatigue makes forcing the bottleneck dangerous."
+      : player.trainingFatigue > 0
+        ? "Some fatigue remains in the body."
+        : null,
+    player.cultivationInsight <= 0
+      ? "You lack fresh insight into the bottleneck."
+      : null,
+    !player.techniques.includes("azure_cloud_breathing")
+      ? "A proper breathing method would make the route safer."
+      : null,
+  ].filter((risk): risk is string => risk !== null);
+}
+
+function getFoundationOutlookBody(quality: FoundationQuality): string {
+  const bodies: Record<FoundationQuality, string> = {
+    fractured:
+      "The signs are poor. Something would give way if you forced the boundary now.",
+    unstable:
+      "The bottleneck may open, but the qi would not settle cleanly.",
+    stable:
+      "The route looks usable. It should hold, though little about it feels exceptional.",
+    refined:
+      "The signs are strong. With patience, the breakthrough could leave a clean foundation.",
+    perfect:
+      "The signs are excellent. Breath, meridians, and foundation move in rare harmony.",
+  };
+
+  return bodies[quality];
 }
 
 function getFoundationStatGains(

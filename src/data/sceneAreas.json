@@ -37,35 +37,75 @@
   },
   {
     "id": "lower_grove",
-    "name": "Lower Grove"
+    "name": "Lower Grove",
+    "image": {
+      "src": "/assets/locations/cloud_stag.png",
+      "alt": "A misted lower grove with pale spirit light and quiet beast tracks",
+      "caption": "The lower grove is close enough for new disciples, but not harmless."
+    }
   },
   {
     "id": "scripture_pavilion",
-    "name": "Scripture Pavilion"
+    "name": "Scripture Pavilion",
+    "image": {
+      "src": "/assets/items/book_manual.png",
+      "alt": "A worn cultivation manual opened under soft lamplight",
+      "caption": "Copied fragments and borrowed manuals still cut open the mind."
+    }
   },
   {
     "id": "medicine_garden",
-    "name": "Medicine Garden"
+    "name": "Medicine Garden",
+    "image": {
+      "src": "/assets/locations/medicine_hall.png",
+      "alt": "A medicine hall lined with jars, herbs, and low lamplight",
+      "caption": "Medicine work begins with careful hands before it becomes alchemy."
+    }
   },
   {
     "id": "medicine_hall",
-    "name": "Medicine Hall"
+    "name": "Medicine Hall",
+    "image": {
+      "src": "/assets/locations/medicine_hall.png",
+      "alt": "A medicine hall lined with jars, herbs, and low lamplight",
+      "caption": "The Medicine Hall smells of herbs, ash, and instructions given twice."
+    }
   },
   {
     "id": "craft_hall",
-    "name": "Craft Hall"
+    "name": "Craft Hall",
+    "image": {
+      "src": "/assets/locations/iron_bridge_town.png",
+      "alt": "A work-focused town quarter of stone, timber, trade roads, and forge smoke",
+      "caption": "Craft begins as practical work before it earns a sect name."
+    }
   },
   {
     "id": "arena",
-    "name": "Blade-Scarred Arena"
+    "name": "Blade-Scarred Arena",
+    "image": {
+      "src": "/assets/locations/bandit_scout.png",
+      "alt": "A tense martial figure poised for a practical fight",
+      "caption": "The arena teaches what polished forms forget."
+    }
   },
   {
     "id": "cloud_edge",
-    "name": "Cloud Edge Overlook"
+    "name": "Cloud Edge Overlook",
+    "image": {
+      "src": "/assets/locations/azure_cloud_mountain_gate.jpg",
+      "alt": "A misted Azure Cloud mountain vista above a sea of cloud",
+      "caption": "At the cloud edge, the sect grows quiet enough to hear your own breath."
+    }
   },
   {
     "id": "black_thread_hollow",
-    "name": "Black-Thread Hollow"
+    "name": "Black-Thread Hollow",
+    "image": {
+      "src": "/assets/locations/black_thread_hollow_entrance.png",
+      "alt": "A hidden cave entrance under broken road stone and dark mountain roots",
+      "caption": "Black-Thread Hollow waits below the road like an old secret."
+    }
   },
   {
     "id": "iron_bridge_town",

@@ -21,7 +21,7 @@
     "rarity": "mortal",
     "tier": "mortal",
     "description": "A wooden token proving provisional acceptance into the Azure Cloud Sect.",
-    "icon": "/assets/items/outer_disciple_token.png",
+    "icon": "/assets/items/book_manual.png",
     "effects": {}
   },
   {
@@ -32,7 +32,7 @@
     "rarity": "low-grade",
     "tier": "low_grade_spirit",
     "description": "A faint spirit core taken from a mist wolf. Useful for pills, formations, or sect contribution.",
-    "icon": "/assets/items/mist_wolf_core.png",
+    "icon": "/assets/items/elixirs/elixir_rare.png",
     "effects": {}
   },
   {
@@ -158,7 +158,7 @@
     "rarity": "mortal",
     "tier": "mortal",
     "description": "Scraps of merchant gossip about talismans, sect debts, and a black-thread token seen near the broken trade road.",
-    "icon": "/assets/items/roadside_whisper_notes.png",
+    "icon": "/assets/items/book_manual.png",
     "effects": {}
   },
   {
@@ -195,7 +195,7 @@
     "rarity": "low-grade",
     "tier": "low_grade_spirit",
     "description": "A black-threaded bronze token marked with a cloud-over-mountain symbol. It hums faintly when turned toward the north.",
-    "icon": "/assets/items/azure_cloud_trial_token.png",
+    "icon": "/assets/items/book_manual.png",
     "effects": {}
   },
   {
@@ -292,7 +292,7 @@
     "rarity": "low-grade",
     "tier": "low_grade_spirit",
     "description": "A stiff-stemmed herb that grows on cold, permanently shaded stone faces. Its sap carries a faint icy qi trace used in breakthrough elixirs.",
-    "icon": "/assets/items/herbs/herb_rare.png",
+    "icon": "/assets/items/void_hollow_root.png",
     "effects": {}
   },
   {
@@ -479,6 +479,7 @@
     "rarity": "mid_grade_spirit",
     "tier": "mid_grade_spirit",
     "description": "A pale root recovered from the Black-Thread Hollow's formation chamber, where it spent years absorbing qi overflow from the Azure Cloud base formation. Medicine elders would classify it as a Foundation Establishment-tier ingredient.",
+    "icon": "/assets/items/void_hollow_root.png",
     "effects": {}
   },
   {
@@ -489,6 +490,7 @@
     "rarity": "low-grade",
     "tier": "low_grade_spirit",
     "description": "A sealed codex recovered from the hollow's leader. It names the black-thread order, details their philosophy of collecting what spills from great formations, and lists three secondary siphon sites embedded near major sect formations across the region.",
+    "icon": "/assets/items/black_thread_codex.png",
     "effects": {}
   },
   {
@@ -570,7 +572,7 @@
     "rarity": "low-grade",
     "tier": "low_grade_spirit",
     "description": "An earthy, antler-rich decoction that settles rough qi before a bottleneck attempt. It steadies the foundation but leaves the body tired.",
-    "icon": "/assets/items/elixirs/elixir_legendary.png",
+    "icon": "/assets/items/foundation_steadying_decoction.png",
     "effects": {
       "foundationStability": 2,
       "cultivationInsight": 1,

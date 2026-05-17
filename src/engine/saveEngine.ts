@@ -188,6 +188,10 @@ function mergePlayer(initialPlayer: Player, savedPlayer?: Partial<Player>): Play
       ...initialPlayer.skillPractice,
       ...savedPlayer?.skillPractice,
     },
+    skillBottleneckFailures: {
+      ...initialPlayer.skillBottleneckFailures,
+      ...savedPlayer?.skillBottleneckFailures,
+    },
     elementalEssence: {
       ...initialPlayer.elementalEssence,
       ...savedPlayer?.elementalEssence,

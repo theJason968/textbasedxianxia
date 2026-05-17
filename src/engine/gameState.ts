@@ -42,6 +42,7 @@ export function createInitialGameState(): GameState {
       techniques: [],
       skills: {},
       skillPractice: {},
+      skillBottleneckFailures: {},
       elementalEssence: {},
       constitutions: [],
       techniqueMastery: {},
